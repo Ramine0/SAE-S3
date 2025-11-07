@@ -1,4 +1,14 @@
-.idea
-.~lock.Feuille de tâches.ods#
-.~lock.Dossier de conception.docx#
-out
+code/target/
+!code/.mvn/wrapper/maven-wrapper.jar
+!code/**/src/main/**/target/
+!code/**/src/test/**/target/
+code/.kotlin
+
+### IntelliJ IDEA ###
+code/.idea/modules.xml
+code/.idea/jarRepositories.xml
+code/.idea/compiler.xml
+code/.idea/libraries/
+code/*.iws
+code/*.iml
+code/*.ipr

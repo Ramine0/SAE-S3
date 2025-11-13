@@ -16,15 +16,14 @@ public class Table
 
     /**
      * Fonction qui permettra d'afficher les informations des tables dans le plan
-     * @return les informations de la table, soit son id si pas d'étudiant, soit son id+studentid si étudiant
+     * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant
      */
     public String description()
     {
-        String res=String.valueOf(num);
         if (student!=null){
-            return (res+" "+student.id);
+            return (num+" "+student.id);
         }else{
-            return res;
+            return String.valueOf(num);
         }
     }
 
@@ -43,9 +42,4 @@ public class Table
     public int getId(){
         return id;
     }
-
-    /**
-     * Fonction permettant de mettre à jour l'id.
-     * @param fin booléen permettant de savoir si on retire la dernière table ou non.
-     */
 }

@@ -8,7 +8,7 @@ public class Room
 
     public Room()
     {
-        this.positioningIntermediate = new PositioningIntermediate();
+        this.positioningIntermediate = new PositioningIntermediate(null, null);
     }
 
     private void createRoom()
@@ -34,10 +34,6 @@ public class Room
      */
     private void deleteTable(int num)
     {
-        if (num==positioningIntermediate.tables[num].getId()){
-            positioningIntermediate.tables[num].destruction(true);
-        }
-
         positioningIntermediate.tables[num] = null;
     }
 

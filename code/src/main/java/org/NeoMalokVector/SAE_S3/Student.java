@@ -15,4 +15,14 @@ public class Student
 
         this.id = id;
     }
+
+    public String descrip(boolean inline ) {
+        String result = "L'etudiant d'id "+id ;
+        result +=  inline ? "\n" : " " ;
+        result += "est "+ name + " " + firstName;
+        result +=  inline ? "\n" : " " ;
+        result += "du groupe "+ group +"."+ subGroup;
+        return  result ;
+
+    }
 }

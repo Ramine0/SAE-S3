@@ -36,3 +36,17 @@ public class HelloServlet extends HttpServlet
     {
     }
 }
+
+
+
+
+public int pos(int nb, int[] tab) {
+
+    for (int  i = 0; i < tab.length ; i++ ) {
+        if (tab[i] == nb) {
+            return i;
+        }
+    }
+
+    return -1;
+}

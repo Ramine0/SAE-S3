@@ -8,7 +8,7 @@ public class Room
 
     public Room()
     {
-        this.positioningIntermediate = new PositioningIntermediate();
+        this.positioningIntermediate = new PositioningIntermediate("R00",null);
     }
 
     private void createRoom()

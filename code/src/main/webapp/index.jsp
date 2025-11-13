@@ -1,12 +1,39 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
+
 <head>
-  <title>JSP - Hello World</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SAE de goat</title>
+    <link rel="stylesheet" href="resources/css/styles.css">
 </head>
+
 <body>
-<h1><%= "Hello World!" %></h1>
-<br/>
-<a href="hello-servlet">click me i want to be clicked</a>
+
+<header>
+    <img src="resources/img/logo.gif" alt="Logo">
+
+    <h1>DSRoomMaker</h1>
+</header>
+
+<main>
+    <div id="butts">
+        <a href="">G&eacute;n&eacute;rer un placement</a>
+        <a href="">Visualiser/Modifier</a>
+    </div>
+
+    <hr>
+
+    <div id="tutorial">
+        <a href="">T&eacute;l&eacute;charger le tutoriel</a>
+    </div>
+
+</main>
+
+<footer>
+    <div>&copy; Copyright</div>
+</footer>
+
 </body>
 </html>

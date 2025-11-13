@@ -2,23 +2,44 @@ package org.NeoMalokVector.SAE_S3;
 
 public class Table
 {
-    private static int qty=0;
+    private static int id=0;
     public int num;
     public Student student;
+
+    /**
+     * Constructeur par défaut de table, crée une table à la suite de la dernière table
+     */
     public Table(){
-        qty++;
-        num=qty;
+        id++;
+        num=id;
     }
+
+    /**
+     * Fonction qui permettra d'afficher les informations des tables dans le plan
+     * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant
+     */
     public String description()
     {
-        String res=String.valueOf(num);
         if (student!=null){
-            return (res+" "+student.id);
+            return (num+" "+student.id);
         }else{
-            return res;
+            return String.valueOf(num);
         }
     }
-    public void destruction(){
-        qty--;
+
+    /**
+     * getter du numéro de table
+     * @return num
+     */
+    public int getNum() {
+        return num;
+    }
+
+    /**
+     * getter de l'id maximal attribué à une table
+     * @return id
+     */
+    public int getId(){
+        return id;
     }
 }

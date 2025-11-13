@@ -5,19 +5,33 @@ import org.NeoMalokVector.SAE_S3.Table;
 
 public class ImposedPlacement extends Constraint
 {
-    public Table table;
-    public Student student;
+    public int numTable;
+    public String numEtu;
 
     @Override
-    public boolean validate(Table table, Table[] tables)
+    public boolean validate(Student student, Table table, Table[] tables)
     {
-        if (table.student == null)
+        if (!contraint(student)){
+            return true;
+        }else if (table.student == null)
         {
+            numTable=table.num;
+            numEtu=student.id;
             table.student = student;
 
             return true;
         }
 
+        return false;
+    }
+
+    @Override
+    public boolean contraint(Student student) {
+        for (Student s: studentsConstraints){
+            if (s.id==student.id){
+                return true;
+            }
+        }
         return false;
     }
 }

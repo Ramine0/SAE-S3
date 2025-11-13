@@ -20,13 +20,4 @@ public class PerGroup extends Constraint
         }
     }
 
-    public boolean  contraint(Student student)
-    {
-        for (Student s: studentsConstraints){
-            if (s.id==student.id){
-                return true;
-            }
-        }
-        return false;
-    }
 }

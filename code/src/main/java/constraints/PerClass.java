@@ -20,15 +20,4 @@ public class PerClass extends Constraint
         }
     }
 
-    @Override
-    public boolean contraint(Student student) {
-        for (String s: groupsConstraints){
-            if (s.charAt(0)==student.group){
-                return true;
-            }else if (s.charAt(2)==student.subGroup){
-                return true;
-            }
-        }
-        return false;
-    }
 }

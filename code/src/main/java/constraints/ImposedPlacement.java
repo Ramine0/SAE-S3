@@ -25,13 +25,5 @@ public class ImposedPlacement extends Constraint
         return false;
     }
 
-    @Override
-    public boolean contraint(Student student) {
-        for (Student s: studentsConstraints){
-            if (s.id==student.id){
-                return true;
-            }
-        }
-        return false;
-    }
+
 }

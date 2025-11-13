@@ -8,6 +8,7 @@ public class RectangularMap extends Map
 {
     public int width, height;
 
+    // a revoir car on ne prends pas en compte les tables supprimées et les L et l
     @Override
     public Table[] neighbours(Table table, Table[] tables)
     {
@@ -21,4 +22,11 @@ public class RectangularMap extends Map
 
         return neighbours.toArray(new Table[0]);
     }
+
+    public RectangularMap(int longu, int larg) {
+        width = larg ;
+        height = longu;
+    }
+
+
 }

@@ -36,7 +36,7 @@ public class Table
     }
 
     /**
-     * getter du dernier id des tables
+     * getter de l'id maximal attribué à une table
      * @return id
      */
     public int getId(){

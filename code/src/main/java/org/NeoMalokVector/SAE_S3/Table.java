@@ -21,7 +21,7 @@ public class Table
     public String description()
     {
         if (student!=null){
-            return (num+" "+student.id);
+            return (num+" "+student.getId());
         }else{
             return String.valueOf(num);
         }

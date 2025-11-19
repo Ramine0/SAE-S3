@@ -5,9 +5,12 @@ import org.NeoMalokVector.SAE_S3.Table;
 
 public class PerGroup extends Constraint
 {
+    private String[] groupe ;
+    public PerGroup(String[] etus) {groupe = etus ;}
     @Override
-    public boolean validate(Student student, Table table, Table[] tables)
+    public boolean validate(Student student, Table table, Student[] etu)
     {
+        /*
         if (!contraint(student)){
             return true;
         }else{
@@ -18,6 +21,9 @@ public class PerGroup extends Constraint
             }
             return true;
         }
+
+         */
+        return false ;
     }
 
 }

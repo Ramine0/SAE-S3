@@ -39,7 +39,7 @@ public class PositioningIntermediate {
         if (Constraint.contraint(s)) {
 
             // on prends les tables voisines pour regarder
-            Table[] voisins = neighbours(t) ;
+            Student[] voisins = neighbours(t) ;
             for (Constraint c : constraints) {
                 // si ca bloque
                 if (! c.validate(s,t,voisins)) {
@@ -53,16 +53,16 @@ public class PositioningIntermediate {
     }
 
     // je prends les voisins de ma table
-    private Table[] neighbours(Table t) {
-        ArrayList<Table> voisins = new ArrayList<>() ;
-
+    private Student[] neighbours(Table t) {
+        ArrayList<Student> voisins = new ArrayList<>() ;
         // pour tous les voisins de la map
         for (int i : map.neighbours(t.getNum(), numDispo() )) {
-            //je recupere la table
-            voisins.add(tableFromNumber(i));
+
+            //je recupere l'etu de la table si on a bien une table
+            if (i != -1) {voisins.add(tableFromNumber(i).student);}
         }
 
-        return voisins.toArray(new Table[0])  ;
+        return voisins.toArray(new Student[0])  ;
     }
 
     // je recupere la table via son numero

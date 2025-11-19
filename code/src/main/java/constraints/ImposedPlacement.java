@@ -8,22 +8,15 @@ public class ImposedPlacement extends Constraint
     public int numTable;
     public String numEtu;
 
+    // pas besoin de valider on doit juste placer l'etu a la place qu'on lui a donné
     @Override
-    public boolean validate(Student student, Table table, Table[] tables)
-    {
-        if (!contraint(student)){
-            return true;
-        }else if (table.student == null)
-        {
-            numTable=table.num;
-            numEtu=student.id;
-            table.student = student;
-
-            return true;
-        }
-
-        return false;
+    public boolean validate(Student student, Table table, Student[] etu) {
+        return true ;
     }
 
+    public String[] getPaire() {
+        String [] result =  {Integer.toString(numTable),numEtu} ;
+        return result;
+    }
 
 }

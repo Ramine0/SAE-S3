@@ -32,9 +32,8 @@ public class Student
             if (sub) {
                 return subGroup == etu.subGroup;
             }
-            return true;
         }
-        return false ;
+        return etu.group==this.group ;
     }
 
 }

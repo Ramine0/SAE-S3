@@ -1,6 +1,8 @@
 package placement;
 
 import constraints.Constraint;
+import constraints.ImposedPlacement;
+import constraints.PerClass;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -15,7 +17,38 @@ public class PositioningIntermediate {
     public Table[] tables;
     public Student[] students;
 
-    public void CreerPlacement () {}
+    public void CreerPlacement () {
+        if (constraints.length!=0){
+            for (Student student : students){
+                for (Constraint constraint : constraints) {
+                    if (constraint instanceof ImposedPlacement && student.getId().equals(((ImposedPlacement) constraint).numEtu)){
+                        changePlace(student, ((ImposedPlacement) constraint).numTable);
+                    }else if(Utilitaire.in(student, Constraint.studentsConstraints) || Utilitaire.in(student.getClass(), Constraint.groupsConstraints)){
+                        for (Table table : tables) {
+                            if (constraint.validate(student, table, neighbours(table)) && !Utilitaire.in(table, deletedTables)){
+                                changePlace(student, table.getNum());
+                            }
+                        }
+                    }
+                }
+            }
+
+        }else{
+            int numTable = 0;
+            for (Student student : students) {
+                numTable++;
+                changePlace(student, numTable);
+            }
+        }
+    }
+
+    public void changePlace(Student student, int numTable) {
+        for (Table table : tables){
+            if (table.getNum()==numTable){
+                table.student=student;
+            }
+        }
+    }
 
     // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
     // charAt(0) c le type (rectangle) et les 2 suivants c l et L (pour rect)

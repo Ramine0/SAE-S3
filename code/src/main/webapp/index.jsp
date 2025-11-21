@@ -26,7 +26,7 @@
     <hr>
 
     <div id="tutorial">
-        <a href="">T&eacute;l&eacute;charger le tutoriel</a>
+        <a href="resources/tuto.pdf">T&eacute;l&eacute;charger le tutoriel</a>
     </div>
 
 </main>

@@ -19,19 +19,6 @@ public class PerGroup extends Constraint
             }
         }
         return true;
-        /*
-        if (!contraint(student)){
-            return true;
-        }else{
-            for (Table t : tables){
-                if (t.student!=null && contraint(t.student)){
-                    return false;
-                }
-            }
-            return true;
-        }
-
-         */
     }
 
 }

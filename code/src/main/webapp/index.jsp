@@ -19,8 +19,8 @@
 
 <main>
     <div id="butts">
-        <a href="">G&eacute;n&eacute;rer un placement</a>
-        <a href="">Visualiser/Modifier</a>
+        <a href="creation.jsp">G&eacute;n&eacute;rer un placement</a>
+        <a href="visualisation.jsp">Visualiser/Modifier</a>
     </div>
 
     <hr>

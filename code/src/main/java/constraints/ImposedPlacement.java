@@ -19,8 +19,8 @@ public class ImposedPlacement extends Constraint
     }
 
     /**
-     *
-     * @return
+     * Fonction permettant d'obtenir l'étudiant avec sa table. On devrait l'utiliser plus tard au début de la génération du placement
+     * @return un tableau de string contenant le numéro de la table et le numéro de l'étudiant
      */
     public String[] getPaire() {
         String [] result =  {Integer.toString(numTable),numEtu} ;

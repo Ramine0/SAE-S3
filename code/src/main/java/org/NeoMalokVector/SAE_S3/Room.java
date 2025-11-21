@@ -50,8 +50,27 @@ public class Room
      * Exporte le placement sous les différents formats demandés.
      * !!! Il faudra rajouter un moyen de choisir les différents formats d'export (3 booléens ou un string) !!!
      */
-    private void export()
+    private void export(String opt)
     {
+        if (opt.length()==3){
 
+        }else if  (opt.length()==2){
+            if (opt.equals("EP")){
+
+            }else if (opt.equals("EL")){
+
+            }else{
+
+            }
+
+        }else if (opt.length()==1){
+            if (opt.equals("E")){
+
+            }else if (opt.equals("P")){
+
+            }else{
+
+            }
+        }
     }
 }

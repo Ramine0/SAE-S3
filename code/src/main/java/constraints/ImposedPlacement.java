@@ -5,19 +5,18 @@ import org.NeoMalokVector.SAE_S3.Table;
 
 public class ImposedPlacement extends Constraint
 {
-    public Table table;
-    public Student student;
+    public int numTable;
+    public String numEtu;
 
+    // pas besoin de valider on doit juste placer l'etu a la place qu'on lui a donné
     @Override
-    public boolean validate(Table table, Table[] tables)
-    {
-        if (table.student == null)
-        {
-            table.student = student;
-
-            return true;
-        }
-
-        return false;
+    public boolean validate(Student student, Table table, Student[] etu) {
+        return true ;
     }
+
+    public String[] getPaire() {
+        String [] result =  {Integer.toString(numTable),numEtu} ;
+        return result;
+    }
+
 }

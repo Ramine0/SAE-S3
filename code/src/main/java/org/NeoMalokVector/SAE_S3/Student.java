@@ -2,8 +2,8 @@ package org.NeoMalokVector.SAE_S3;
 
 public class Student
 {
-    public int group, subGroup;
-    public String name, firstName, id;
+    private int group, subGroup;
+    private String name, firstName, id;
 
     public Student(int group, int subGroup, String name, String firstName, String id)
     {
@@ -25,4 +25,16 @@ public class Student
         return  result ;
 
     }
+
+    public String getId() {return id;}
+    public boolean sameGroup(Student etu, boolean sub) {
+        if (etu.group == this.group) {
+            if (sub) {
+                return subGroup == etu.subGroup;
+            }
+            return true;
+        }
+        return false ;
+    }
+
 }

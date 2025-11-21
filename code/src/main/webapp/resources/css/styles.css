@@ -59,6 +59,32 @@ img {
     text-align: center;
 }
 
+#visualisationHeader {
+    margin-left: 0;
+    margin-right: 0;
+
+    text-align: left;
+
+    border: 0;
+    background-color: white;
+}
+
+#topBar {
+    width: 200%;
+
+    display: flex;
+    justify-content: space-between;
+}
+
+#topMenu {
+    width: 50%;
+    height: 10em;
+    background-color: #cccccc;
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
 footer {
     height: 3em;
     margin-top: 5em;
@@ -79,4 +105,9 @@ footer div {
 hr {
     margin-top: 5em;
     border: 8px solid #5271ff;
+}
+
+#logo:hover
+{
+
 }

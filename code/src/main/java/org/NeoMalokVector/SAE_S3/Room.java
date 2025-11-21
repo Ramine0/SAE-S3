@@ -34,7 +34,6 @@ public class Room
      */
     private void deleteTable(int num)
     {
-        positioningIntermediate.tables[num].destruction();
         positioningIntermediate.tables[num] = null;
     }
 

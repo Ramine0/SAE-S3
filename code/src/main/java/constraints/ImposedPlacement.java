@@ -18,6 +18,10 @@ public class ImposedPlacement extends Constraint
         return (student.getId().equals(numEtu) && table.getNum()==numTable) ;
     }
 
+    /**
+     *
+     * @return
+     */
     public String[] getPaire() {
         String [] result =  {Integer.toString(numTable),numEtu} ;
         return result;

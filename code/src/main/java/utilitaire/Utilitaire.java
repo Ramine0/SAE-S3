@@ -2,6 +2,14 @@ package utilitaire;
 
 public class Utilitaire {
 
+    public static boolean in(Object o, Object[] O){
+        for (Object i : O){
+            if (i==o) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static int pos(int nb, int[] tab) {
 

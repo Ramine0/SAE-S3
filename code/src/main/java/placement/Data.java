@@ -8,6 +8,9 @@ import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
+import java.io.FileReader;
+import java.util.Scanner;
+
 // la classe va save les données pour les creer via un CreatingIntermediate et les avoir dans le positioning intermediate
 // elle aura plein de fonction utiles comme le lecture du fichier des etus ou le traitement des etus
 
@@ -61,19 +64,6 @@ public class Data {
         return  result ;
     }
 
-    public int tableFromNumber(int nb) {
-        //je cherche la table dans la liste...
-        for (Table t : tables ) {
-            if (t.getNum() == nb) {
-                return t.getNum();
-            }
-        }
-        return -1 ;
-    }
-
-
-
-
 
     public Constraint[] getConstr() {return constraints;}
     public int[] getTables() {
@@ -85,6 +75,29 @@ public class Data {
     }
     public Student[] getEtus() {return students;}
 
+    // le chargement du fichier exel donné par le/la prof
+    private boolean chargerFichier () {
+        try {
+            Scanner sc = new Scanner(new FileReader("../../webapp/resources/etudiants.csv"));
+            String[] line ;
+            // je pense que si l'ordre varie on va faire des shortInt pour enregistrer la position de chaque element
+            // par exemple le prenom en 3 -> prenom = line[indexPrenom]
+            // le plus dur serait alors de determiner la position des elements
 
+            while  (sc.hasNextLine()) {
+                line = sc.nextLine().split(";");
+
+
+
+            }
+
+
+
+            return true ;
+        } catch (Exception e) {
+            return false;
+        }
+
+    }
 
 }

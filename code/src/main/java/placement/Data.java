@@ -4,6 +4,7 @@ package placement;
 import constraints.Constraint;
 import constraints.ImposedPlacement;
 import constraints.PerClass;
+import jdk.jshell.execution.Util;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -21,6 +22,7 @@ public class Data {
 
     private int[] deletedTables;
 
+
     public void placeStudent(int table, String idStudent ) {
 
     }
@@ -28,12 +30,12 @@ public class Data {
     // liste des fonctions a implementer
     /*
     bool isDeleted(Table/int) FAIT
-    int[] freeTables()  revoie un tableau de num de tables disponibles
-    getTable(int)
-    getDeleted() renvoie le tableau
-    freeStudents() renvoie les etus qui sont pas deja placés
-    removeTable()
-    unremoveTable()
+    int[] freeTables()  revoie un tableau de num de tables disponibles FAIT
+    getTable(int) FAIT
+    getDeleted() renvoie le tableau FAIT
+    freeStudents() renvoie les etus qui sont pas deja placés FAIT
+    removeTable() FAIT
+    unremoveTable() FAIT
     findStudent(string id) ;
 
 
@@ -41,13 +43,37 @@ public class Data {
     public boolean isDeleted(int numTable){
         return (Utilitaire.in(numTable, deletedTables));
     }
-
+    public Table getTable(int numTable){
+        return tables[numTable];
+    }
+    public int[] getDeleted(){
+        return deletedTables;
+    }
+    public String[] freeStudents(){
+        String[] place=new String[students.length];
+        int numPla=0;
+        for (int i=0; i<tables.length; i++){
+            if (tables[i].getEtu()!=null){
+                place[numPla]=tables[i].getEtu().getId();
+                numPla++;
+            }
+        }
+        String[] rest=new String[numPla];
+        int numRest=0;
+        for (int i=0; i<tables.length; i++){
+            if (!Utilitaire.in(students[i].getId(),place)){
+                rest[numRest]=tables[i].getEtu().getId();
+                numRest++;
+            }
+        }
+        return rest;
+    }
     public Student getStuFromTab(int num) {
         return tables[num].getEtu();
     }
 
     // renvoie les numeros de tables disponibles
-    public int[] freeTables() {
+    public int[] existingTables() {
         int [] result = new int [tables.length - deletedTables.length];
         int numRes = 0 ; // la position dans les resultats
         for (int i = 0; i < tables.length ; i++) {
@@ -61,20 +87,25 @@ public class Data {
         return  result ;
     }
 
-    public int tableFromNumber(int nb) {
-        //je cherche la table dans la liste...
-        for (Table t : tables ) {
-            if (t.getNum() == nb) {
-                return t.getNum();
+    public int[] freeTables(){
+        int [] free=new int [tables.length - deletedTables.length];
+        int numRes = 0 ;
+        for (int i=0; i<tables.length; i++){
+            if (Utilitaire.in(i, existingTables()) && tables[i].getEtu()==null){
+                free[numRes] = i;
+                numRes++;
             }
         }
-        return -1 ;
+        return free;
     }
 
-
-
-
-
+    public void removeTable(int num) {
+        int i=tables.length-existingTables().length-1;
+        deletedTables[i]=num;
+    }
+    public void unremoveTable(int num){
+        deletedTables[num]=-1;
+    }
     public Constraint[] getConstr() {return constraints;}
     public int[] getTables() {
         int [] lesNums = new int[tables.length] ;

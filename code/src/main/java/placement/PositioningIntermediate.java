@@ -11,29 +11,37 @@ import java.util.ArrayList;
 
 public class PositioningIntermediate {
     public Map map;
-
     public Table[] deletedTables;
     public Constraint[] constraints;
     public Table[] tables;
     public Student[] students;
 
+    /**
+     * Crée le placement en fonction des contraintes.
+     */
     public void CreerPlacement () {
-        if (constraints.length!=0){
+        if (constraints.length!=0){ // on regarde s'il y a des contraintes
             for (Student student : students){
-                for (Constraint constraint : constraints) {
-                    if (constraint instanceof ImposedPlacement && student.getId().equals(((ImposedPlacement) constraint).numEtu)){
+                for (Constraint constraint : constraints) { // pour chaque étudiants on parcours les contraintes
+                    if (constraint instanceof ImposedPlacement && student.getId().equals(((ImposedPlacement) constraint).numEtu)){ // si jamais
                         changePlace(student, ((ImposedPlacement) constraint).numTable);
                     }else if(Utilitaire.in(student, Constraint.studentsConstraints) || Utilitaire.in(student.getClass(), Constraint.groupsConstraints)){
                         for (Table table : tables) {
                             if (constraint.validate(student, table, neighbours(table)) && !Utilitaire.in(table, deletedTables)){
                                 changePlace(student, table.getNum());
+                                break;
                             }
+                        }
+                    }else{
+                        for (Table table : tables) {
+                            changePlace(student, table.getNum());
+                            break;
                         }
                     }
                 }
             }
 
-        }else{
+        }else{ // sinon on place juste dans l'ordre
             int numTable = 0;
             for (Student student : students) {
                 numTable++;
@@ -44,7 +52,7 @@ public class PositioningIntermediate {
 
     public void changePlace(Student student, int numTable) {
         for (Table table : tables){
-            if (table.getNum()==numTable){
+            if (table.getNum()==numTable && table.student==null){
                 table.student=student;
             }
         }

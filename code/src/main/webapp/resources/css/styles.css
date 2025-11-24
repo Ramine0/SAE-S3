@@ -94,5 +94,8 @@ hr {
     width : 50% ;
 }
 
-
+#import, #create, select{
+    border: 8px solid #5271ff;
+    background-color: #cccccc;
+}
 

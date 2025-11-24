@@ -9,7 +9,7 @@ public class PerClass extends Constraint
     private static boolean subGroup = false ;
 
     @Override
-    public boolean validate(Student student, Table table, Student[] etu) {
+    public boolean validate(Student student, int table, Student[] etu) {
 
         if (Utilitaire.in(student.getClass(),groupsConstraints)) {
             // on cherche a savoir si les tables voisines de l'etu on la meme classe

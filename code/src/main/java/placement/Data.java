@@ -114,6 +114,9 @@ public class Data {
         }
         return lesNums ;
     }
+    public Student findStudent(String idStudent){
+        return null;
+    }
     public Student[] getEtus() {return students;}
 
 

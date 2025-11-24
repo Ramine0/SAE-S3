@@ -24,7 +24,7 @@ public class PositioningIntermediate {
 
         deletedTables = new Table[deleted.length];
         for (int i = 0; i < deleted.length; i++) {
-            deletedTables[i] = donnees.getTable(deleted[i]) ;
+            deletedTables[i] = donnees.getTables()[i] ;
         }
 
     }
@@ -35,8 +35,8 @@ public class PositioningIntermediate {
         if (donnees.getConstr().length!=0){
             for (Student student : donnees.getEtus()){
                 for (Constraint constraint : donnees.getConstr()) {
-                    if (constraint instanceof ImposedPlacement && student.getId().equals(((ImposedPlacement) constraint).numEtu)){
-                        placeStudent(student, ((ImposedPlacement) constraint).numTable);
+                    if (constraint instanceof ImposedPlacement && student.getId().equals(((ImposedPlacement) constraint).getNumEtu())){
+                        placeStudent(student, ((ImposedPlacement) constraint).getNumTable());
                     }else if(Utilitaire.in(student, Constraint.studentsConstraints) || Utilitaire.in(student.getClass(), Constraint.groupsConstraints)){
                         for (Table table : donnees.getTables()) {
                             if (constraint.validate(student, table, neighbours(table)) && !Utilitaire.in(table, deletedTables)){
@@ -59,7 +59,7 @@ public class PositioningIntermediate {
     public void placeStudent(Student student, int numTable) {
         for (Table table : donnees.getTables()){
             if (table.getNum()==numTable){
-                table.student=student;
+                table.setStudent(student);
             }
         }
     }
@@ -98,7 +98,7 @@ public class PositioningIntermediate {
         for (int i : map.neighbours(t.getNum(), numDispo() )) {
 
             //je recupere l'etu de la table si on a bien une table
-            if (i != -1) {voisins.add(tableFromNumber(i).student);}
+            if (i != -1) {voisins.add(tableFromNumber(i).getStudent());}
         }
 
         return voisins.toArray(new Student[0])  ;

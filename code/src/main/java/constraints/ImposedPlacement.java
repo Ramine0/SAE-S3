@@ -26,5 +26,11 @@ public class ImposedPlacement extends Constraint
         String [] result =  {Integer.toString(numTable),numEtu} ;
         return result;
     }
+    public int getNumTable() {
+        return numTable;
+    }
+    public String getNumEtu() {
+        return numEtu;
+    }
 
 }

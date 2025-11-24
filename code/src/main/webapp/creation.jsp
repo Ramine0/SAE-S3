@@ -16,20 +16,38 @@
     <link rel="stylesheet" href="resources/css/styles.css">
 </head>
 
-<body>
+<body class="pageCrea">
 
-<header>
-    <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
-    <h1>DSRoomMaker Creation</h1>
+    <header >
+        <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
+        <h1>DSRoomMaker Creation</h1>
 
-</header>
-<body>
+    </header>
+
+
     <main>
         <!-- on va utiliser les maquettes pour faire un truc cool -->
-        <div id="test">
-            contenu du div pour tester
-        </div>
+        <div class="le_Form">
 
+            <form action="" method="post">
+
+                <label></label>
+                <button></button>
+
+                <label></label>
+                <button></button>
+
+                <label></label>
+                <button></button>
+
+                <label></label>
+                <button class="boutPlus">+</button>
+
+
+            </form>
+
+
+        </div>
     </main>
 </body>
 </html>

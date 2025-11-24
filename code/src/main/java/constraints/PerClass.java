@@ -6,7 +6,7 @@ import utilitaire.Utilitaire;
 
 public class PerClass extends Constraint
 {
-    static boolean subGroup = false ;
+    private static boolean subGroup = false ;
 
     @Override
     public boolean validate(Student student, Table table, Student[] etu) {

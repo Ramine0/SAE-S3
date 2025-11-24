@@ -5,7 +5,7 @@ import utilitaire.Utilitaire;
 
 public class RectangularMap extends Map
 {
-    public int width, height;
+    private int width, height;
 
     // a revoir car on ne prends pas en compte les tables supprimées et les L et l
     // je v m'en charger

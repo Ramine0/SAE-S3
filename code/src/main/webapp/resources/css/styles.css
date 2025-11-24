@@ -80,3 +80,19 @@ hr {
     margin-top: 5em;
     border: 8px solid #5271ff;
 }
+
+.pageCrea {
+    display : inline-flex;
+}
+
+.pageCrea header {
+    margin-left: 0px;
+    height: 100%;
+}
+
+.logoPageSec {
+    width : 50% ;
+}
+
+
+

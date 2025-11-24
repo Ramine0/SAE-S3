@@ -53,23 +53,23 @@ public class Room
     private void export(String opt)
     {
         if (opt.length()==3){
-
+            //on exporte l'excel, le plan et le listing
         }else if  (opt.length()==2){
             if (opt.equals("EP")){
-
+            // on exporte l'excel et le plan
             }else if (opt.equals("EL")){
-
+            // on exporte l'excel et le listing
             }else{
-
+            //on exporte le plan et le listing
             }
 
         }else if (opt.length()==1){
             if (opt.equals("E")){
-
+            // on exporte l'excel
             }else if (opt.equals("P")){
-
+            // on exporte le plan
             }else{
-
+            // on exporte le listing
             }
         }
     }

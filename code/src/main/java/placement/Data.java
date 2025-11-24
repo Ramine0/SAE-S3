@@ -27,7 +27,7 @@ public class Data {
 
     // liste des fonctions a implementer
     /*
-    bool isDeleted(Table/int)
+    bool isDeleted(Table/int) FAIT
     int[] freeTables()  revoie un tableau de num de tables disponibles
     getTable(int)
     getDeleted() renvoie le tableau
@@ -38,6 +38,9 @@ public class Data {
 
 
      */
+    public boolean isDeleted(int numTable){
+        return (Utilitaire.in(numTable, deletedTables));
+    }
 
     public Student getStuFromTab(int num) {
         return tables[num].getEtu();
@@ -47,7 +50,7 @@ public class Data {
     public int[] freeTables() {
         int [] result = new int [tables.length - deletedTables.length];
         int numRes = 0 ; // la position dans les resultats
-        for (int i = 0; i < tables.length ; ) {
+        for (int i = 0; i < tables.length ; i++) {
             // je verifie que ma table soit pas supprimée
             if (! Utilitaire.in(i,deletedTables)) {
                 // si c ok je l'ajoute a la liste

@@ -9,6 +9,6 @@ public abstract class Constraint
     public static String[] groupsConstraints;
     public static Student[] studentsConstraints;
 
-    public abstract boolean validate(Student student, Table table, Student[] etu);
+    public abstract boolean validate(Student student, int table, Student[] etu);
     public static boolean contraint(Student student) {return Utilitaire.in(student, studentsConstraints);}
 }

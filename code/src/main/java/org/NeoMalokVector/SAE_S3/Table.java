@@ -42,4 +42,10 @@ public class Table
     public int getId(){
         return id;
     }
+    public Student getEtu () {return student ;}
+
+
+
+    public void setStudent(Student student) {this.student = student;}
+
 }

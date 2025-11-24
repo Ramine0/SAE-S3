@@ -21,4 +21,14 @@ public class Utilitaire {
 
         return -1;
     }
+
+    public static boolean in(int o, int[] O){
+        for (int i : O){
+            if (i==o) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

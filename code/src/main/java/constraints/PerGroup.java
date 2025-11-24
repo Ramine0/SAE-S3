@@ -9,7 +9,7 @@ public class PerGroup extends Constraint
     private String[] groupe ;
     private PerGroup(String[] etus) {groupe = etus ;}
     @Override
-    public boolean validate(Student student, Table table, Student[] etu)
+    public boolean validate(Student student, int table, Student[] etu)
     {
         if (Utilitaire.in(student, studentsConstraints)){
             for (Student s : etu) {

@@ -7,13 +7,12 @@ public class Room
 {
     private PositioningIntermediate positioningIntermediate;
 
-    public Room()
-    {
-        this.positioningIntermediate = new PositioningIntermediate("R00",null);
+
+    public Room() {
+        this.positioningIntermediate = new PositioningIntermediate("R00",null,null);
     }
 
-    private void createRoom()
-    {
+    private void createRoom() {
 
     }
 
@@ -26,24 +25,14 @@ public class Room
      * @param num1 numéro de la première table
      * @param num2 numéro de la deuxième table
      */
-    private void swapPlaces(int num1,  int num2)
-    {
-        Table temp = positioningIntermediate.tables[num1];
-        positioningIntermediate.tables[num1].student = positioningIntermediate.tables[num2].student;
-        positioningIntermediate.tables[num2].student = temp.student;
-    }
+    private void swapPlaces(int num1,  int num2) {}
 
     /**
      * Retire la table num des tables auxquelles un étudiant peut être placé.
      * @param num numéro de la table retirée
      */
     private void deleteTable(int num) {
-        positioningIntermediate.tables[num].student = null;
-        for (Table table : positioningIntermediate.tables){
-            if (num == table.getNum()) {
-                positioningIntermediate.deletedTables[num] = table;
-            }
-        }
+
     }
 
     /**

@@ -10,23 +10,37 @@ import utilitaire.Utilitaire;
 import java.util.ArrayList;
 
 public class PositioningIntermediate {
-    public Map map;
+    private Map map;
+    private Table[] deletedTables;
+    private Data donnees ;
 
-    public Table[] deletedTables;
-    public Constraint[] constraints;
-    public Table[] tables;
-    public Student[] students;
+    public PositioningIntermediate(String mapType, int[] deleted, Data d) {
+
+        donnees = d;
+        if (mapType.charAt(0) == 'R') {
+            // plan rectangulaire
+            map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
+        }
+
+        deletedTables = new Table[deleted.length];
+        for (int i = 0; i < deleted.length; i++) {
+            deletedTables[i] = donnees.getTable(deleted[i]) ;
+        }
+
+    }
+
+
 
     public void CreerPlacement () {
-        if (constraints.length!=0){
-            for (Student student : students){
-                for (Constraint constraint : constraints) {
+        if (donnees.getConstr().length!=0){
+            for (Student student : donnees.getEtus()){
+                for (Constraint constraint : donnees.getConstr()) {
                     if (constraint instanceof ImposedPlacement && student.getId().equals(((ImposedPlacement) constraint).numEtu)){
-                        changePlace(student, ((ImposedPlacement) constraint).numTable);
+                        placeStudent(student, ((ImposedPlacement) constraint).numTable);
                     }else if(Utilitaire.in(student, Constraint.studentsConstraints) || Utilitaire.in(student.getClass(), Constraint.groupsConstraints)){
-                        for (Table table : tables) {
+                        for (Table table : donnees.getTables()) {
                             if (constraint.validate(student, table, neighbours(table)) && !Utilitaire.in(table, deletedTables)){
-                                changePlace(student, table.getNum());
+                                placeStudent(student, table.getNum());
                             }
                         }
                     }
@@ -35,15 +49,15 @@ public class PositioningIntermediate {
 
         }else{
             int numTable = 0;
-            for (Student student : students) {
+            for (Student student : donnees.getEtus()) {
                 numTable++;
-                changePlace(student, numTable);
+                placeStudent(student, numTable);
             }
         }
     }
 
-    public void changePlace(Student student, int numTable) {
-        for (Table table : tables){
+    public void placeStudent(Student student, int numTable) {
+        for (Table table : donnees.getTables()){
             if (table.getNum()==numTable){
                 table.student=student;
             }
@@ -55,14 +69,6 @@ public class PositioningIntermediate {
     // on donne aussi les numero de tables supprimées
     // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
     // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
-    public PositioningIntermediate(String mapType, int[] deleted) {
-
-        if (mapType.charAt(0) == 'R') {
-            // plan rectangulaire
-            map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
-        }
-
-    }
 
     // valide ou non le placement
     private boolean walid (Student s, Table t){
@@ -73,7 +79,7 @@ public class PositioningIntermediate {
 
             // on prends les tables voisines pour regarder
             Student[] voisins = neighbours(t) ;
-            for (Constraint c : constraints) {
+            for (Constraint c : donnees.getConstr()) {
                 // si ca bloque
                 if (! c.validate(s,t,voisins)) {
                     return false; // ca bloque
@@ -101,7 +107,7 @@ public class PositioningIntermediate {
     // je recupere la table via son numero
     private Table tableFromNumber(int nb) {
         //je cherche la table dans la liste...
-        for (Table t : tables ) {
+        for (Table t : donnees.getTables() ) {
             if (t.getNum() == nb) {
                 return t;
             }
@@ -111,12 +117,12 @@ public class PositioningIntermediate {
 
     // je cherche tous les numeros de tables valide (pas supprimées)
     private int[] numDispo() {
-        int [] result = new int [tables.length - deletedTables.length];
-        for (int i = 0; i < tables.length ; i++ ) {
+        int [] result = new int [donnees.getTables().length - deletedTables.length];
+        for (int i = 0; i < donnees.getTables().length ; i++ ) {
             // je verifie que ma table soit pas supprimée
-            if (! Utilitaire.in(tables[i],deletedTables)) {
+            if (! Utilitaire.in(donnees.getTables()[i],deletedTables)) {
                 // si c ok je l'ajoute a la liste
-                result[i] = tables[i].getNum();
+                result[i] = donnees.getTables()[i].getNum();
             }
         }
         return  result ;

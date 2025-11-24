@@ -3,8 +3,8 @@ package org.NeoMalokVector.SAE_S3;
 public class Table
 {
     private static int id=0;
-    public int num;
-    public Student student;
+    private int num;
+    private Student student;
 
     /**
      * Constructeur par défaut de table, crée une table à la suite de la dernière table

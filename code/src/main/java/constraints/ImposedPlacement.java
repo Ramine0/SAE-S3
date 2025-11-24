@@ -5,8 +5,8 @@ import org.NeoMalokVector.SAE_S3.Table;
 
 public class ImposedPlacement extends Constraint
 {
-    public int numTable;
-    public String numEtu;
+    private int numTable;
+    private String numEtu;
 
     public ImposedPlacement(int numTable, String numEtu){
         this.numTable = numTable;

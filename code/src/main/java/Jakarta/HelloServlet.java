@@ -1,26 +1,16 @@
 package Jakarta;
 
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
+import placement.PositioningIntermediate;
 
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
-public class HelloServlet extends HttpServlet
+public class HelloServlet
 {
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+    static void main(String[] args)
     {
-        String userInput = request.getParameter("name");
+        System.out.println("Hello World");
 
-
-        response.setContentType("text/html");
-        response.getWriter().println("<h1>Your input was: " + userInput + "</h1>");
-    }
-
-    public void destroy()
-    {
+        PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, null);
+        intermediate.CreerPlacement();
     }
 }

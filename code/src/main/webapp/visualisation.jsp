@@ -13,11 +13,23 @@
 
 <header id="visualisationHeader">
     <div id="topBar">
-        <img src="resources/img/logo.gif" alt="Logo">
+        <img src="resources/img/logo.gif" alt="Logo" id="logo">
 
         <div id="topMenu">
-            <img src="resources/img/delete.png" alt="Supprimer">
-            <h2>Supprimer</h2>
+            <div>
+                <img src="resources/img/delete.png" alt="Supprimer">
+                <h2>Supprimer</h2>
+            </div>
+
+            <div>
+                <img src="resources/img/lock.png" alt="Verrouiller">
+                <h2>Verrouiller</h2>
+            </div>
+
+            <div>
+                <img src="resources/img/swap.png" alt="Échanger">
+                <h2>&Eacute;changer</h2>
+            </div>
         </div>
     </div>
 </header>

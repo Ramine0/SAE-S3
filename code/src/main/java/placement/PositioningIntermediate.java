@@ -1,26 +1,25 @@
 package placement;
 
 import constraints.Constraint;
-import constraints.ImposedPlacement;
-import constraints.PerClass;
 import org.NeoMalokVector.SAE_S3.Student;
-import org.NeoMalokVector.SAE_S3.Table;
-import utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 
-public class PositioningIntermediate {
+public class PositioningIntermediate
+{
     private Map map;
 
     // on passe par donnees pour acceder au données (etus et tables)
     // on manipule pas directement les tables on a juste leur numeros question d'optimisation et de securité
-    private Data donnees ;
+    private Data donnees;
     // on fait ce qu'on veux des contraintes c plus simple et + pratique
 
-    public PositioningIntermediate(String mapType, int[] deleted, Data d) {
+    public PositioningIntermediate(String mapType, int[] deleted, Data d)
+    {
 
         donnees = d;
-        if (mapType.charAt(0) == 'R') {
+        if (mapType.charAt(0) == 'R')
+        {
             // plan rectangulaire
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
         }
@@ -28,11 +27,10 @@ public class PositioningIntermediate {
     }
 
 
-
-    public void CreerPlacement () {
+    public void CreerPlacement()
+    {
 
     }
-
 
 
     // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
@@ -42,39 +40,47 @@ public class PositioningIntermediate {
     // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
 
     // valide ou non le placement
-    private boolean walid (Student s, int t){
+    private boolean walid(Student s, int t)
+    {
 
 
         // si on sait que l'etu as des contraintes
-        if (Constraint.contraint(s)) {
+        if (Constraint.contraint(s))
+        {
 
             // on prends les tables voisines pour regarder
-            Student[] voisins = neighbours(t) ;
-            for (Constraint c : donnees.getConstr()) {
+            Student[] voisins = neighbours(t);
+            for (Constraint c : donnees.getConstr())
+            {
                 // si ca bloque
-                if (! c.validate(s,t,voisins)) {
+                if (!c.validate(s, t, voisins))
+                {
                     return false; // ca bloque
                 }
             }
 
         }
         // sinon tout est ok
-        return true ;
+        return true;
     }
 
     // je prends les voisins de ma table
-    private Student[] neighbours(int t) {
-        ArrayList<Student> voisins = new ArrayList<>() ;
+    private Student[] neighbours(int t)
+    {
+        ArrayList<Student> voisins = new ArrayList<>();
         // pour tous les voisins de la map
-        for (int i : map.neighbours(t, donnees.freeTables() )) {
+        for (int i : map.neighbours(t, donnees.freeTables()))
+        {
 
             //je recupere l'etu de la table si on a bien une table
-            if (i != -1) {voisins.add(donnees.getStuFromTab(i));}
+            if (i != -1)
+            {
+                voisins.add(donnees.getStuFromTab(i));
+            }
         }
 
-        return voisins.toArray(new Student[0])  ;
+        return voisins.toArray(new Student[0]);
     }
-
 
 
 }

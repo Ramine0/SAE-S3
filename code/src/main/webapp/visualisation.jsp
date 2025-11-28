@@ -12,9 +12,7 @@
 <body>
 
 <header id="visualisationHeader">
-    <div id="topBar">
         <img src="resources/img/logo.gif" alt="Logo" id="logo">
-
         <div id="topMenu">
             <div>
                 <img src="resources/img/delete.png" alt="Supprimer">
@@ -31,7 +29,6 @@
                 <h2>&Eacute;changer</h2>
             </div>
         </div>
-    </div>
 </header>
 
 </body>

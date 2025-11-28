@@ -28,7 +28,6 @@
     <main>
         <!-- on va utiliser les maquettes pour faire un truc cool -->
         <div class="le_Form">
-
             <form action="" method="post">
                 <div id="creation">
                     <button id="import"> Importer un fichier </button>

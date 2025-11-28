@@ -136,8 +136,10 @@ public class Data {
     private boolean chargerFichier () {
         try {
 
-            Scanner sc = new Scanner(new FileReader("../../webapp/resources/etudiants.csv"));
+            Scanner sc = new Scanner(new File("../../webapp/resources/etudiants.csv").getAbsolutePath());
             String[] line ;
+
+            students = new ArrayList<>();
 
             String id, nom,prenom ;
             int group, subGroup ;
@@ -166,6 +168,7 @@ public class Data {
 
             return true ;
         } catch (Exception e) {
+            System.out.println("erreur espece de gros nul");
             return false;
         }
 

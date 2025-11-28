@@ -106,7 +106,11 @@ public class Data {
         deletedTables[i]=num;
     }
     public void unremoveTable(int num){
-        deletedTables[num]=-1;
+        for (int n: deletedTables){
+            if (deletedTables[n]==num){
+                deletedTables[n]=-1;
+            }
+        }
     }
     public Constraint[] getConstr() {return constraints;}
     public int[] getTables() {

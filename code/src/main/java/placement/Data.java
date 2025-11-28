@@ -9,7 +9,9 @@ import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
+import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 // la classe va save les données pour les creer via un CreatingIntermediate et les avoir dans le positioning intermediate
@@ -19,9 +21,14 @@ public class Data {
 
     private Constraint[] constraints;
     private Table[] tables;
-    private Student[] students;
+    private ArrayList<Student> students;
     // on laisse utiliser parfaitement les etus car c'est bcp plus des pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
+
+    public Data () {
+        chargerFichier();
+
+    }
 
     private int[] deletedTables;
 
@@ -52,7 +59,7 @@ public class Data {
         return deletedTables;
     }
     public String[] freeStudents(){
-        String[] place=new String[students.length];
+        String[] place=new String[students.size()];
         int numPla=0;
         for (int i=0; i<tables.length; i++){
             if (tables[i].getEtu()!=null){
@@ -63,7 +70,7 @@ public class Data {
         String[] rest=new String[numPla];
         int numRest=0;
         for (int i=0; i<tables.length; i++){
-            if (!Utilitaire.in(students[i].getId(),place)){
+            if (!Utilitaire.in(students.get(i).getId(),place)){
                 rest[numRest]=tables[i].getEtu().getId();
                 numRest++;
             }
@@ -123,25 +130,39 @@ public class Data {
     public Student findStudent(String idStudent){
         return null;
     }
-    public Student[] getEtus() {return students;}
+    public Student[] getEtus() {return students.toArray(new Student[students.size()]);}
 
     // le chargement du fichier exel donné par le/la prof
     private boolean chargerFichier () {
         try {
+
             Scanner sc = new Scanner(new FileReader("../../webapp/resources/etudiants.csv"));
             String[] line ;
-            // je pense que si l'ordre varie on va faire des shortInt pour enregistrer la position de chaque element
-            // par exemple le prenom en 3 -> prenom = line[indexPrenom]
-            // le plus dur serait alors de determiner la position des elements
 
+            String id, nom,prenom ;
+            int group, subGroup ;
             while  (sc.hasNextLine()) {
                 line = sc.nextLine().split(";");
+                id = null ; nom = null ; prenom = null; group = -1 ; subGroup = -1;
 
+                for (String s : line) {
 
+                    if (Character.isDigit(s.charAt(1)) && s.length() == 7) {
+                        id = s;
+                    } else if (s.contains("1") || s.contains("2") && group == 0) {
+                        group = Character.getNumericValue(s.charAt(2));
+                    } else if (s.contains("1") || s.contains("2") && group != 0) {
+                        subGroup = Character.getNumericValue(s.charAt(4));
+                    } else if (nom == null && ! s.contains("@")) {
+                        nom = s ;
+                    } else if (nom != null && ! s.equals("@") ) {
+                        prenom = s ;
+                    }
+
+                }
+                students.add(new Student(group,subGroup,nom,prenom,id));
 
             }
-
-
 
             return true ;
         } catch (Exception e) {
@@ -149,5 +170,18 @@ public class Data {
         }
 
     }
+
+    public String[] descrip () {
+        String [] text = new String[students.size()] ;
+        int i = 0 ;
+        for (Student s : students) {
+            text[i] = s.descrip(true) ;
+            i++ ;
+        }
+
+        return text ;
+    }
+
+
 
 }

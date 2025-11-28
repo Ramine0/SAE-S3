@@ -1,7 +1,10 @@
 package Jakarta;
 
 
+import placement.Data;
 import placement.PositioningIntermediate;
+
+import java.sql.SQLOutput;
 
 public class HelloServlet
 {
@@ -10,7 +13,11 @@ public class HelloServlet
     {
         System.out.println("Hello World");
 
-        PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, null);
+        Data d =  new Data();
+
+
+        PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, d);
         intermediate.CreerPlacement();
+        System.out.println(d.descrip());
     }
 }

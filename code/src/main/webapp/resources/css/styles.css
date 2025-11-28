@@ -26,15 +26,14 @@ header * {
     border: none;
     background-color: white;
     width: 100%;
+    display:flex;
 }
 
 #logo {
     border: 5px solid #5271ff;
 }
 
-#topBar {
-    display: flex;
-}
+
 
 #topMenu {
     display: flex;

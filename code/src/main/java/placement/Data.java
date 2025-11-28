@@ -10,6 +10,7 @@ import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -25,9 +26,11 @@ public class Data {
     // on laisse utiliser parfaitement les etus car c'est bcp plus des pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
 
-    public Data () {
-        chargerFichier();
+    public Data () throws FileNotFoundException {
+        if (! chargerFichier() ) {
+            //throw  new FileNotFoundException();
 
+        }
     }
 
     private int[] deletedTables;
@@ -136,10 +139,10 @@ public class Data {
     private boolean chargerFichier () {
         try {
 
-            Scanner sc = new Scanner(new File("../../webapp/resources/etudiants.csv").getAbsolutePath());
+            Scanner sc = new Scanner(new FileReader("src/main/webapp/resources/etudiants.csv"));
             String[] line ;
 
-            students = new ArrayList<>();
+            students = new ArrayList<>() ;
 
             String id, nom,prenom ;
             int group, subGroup ;
@@ -149,26 +152,35 @@ public class Data {
 
                 for (String s : line) {
 
-                    if (Character.isDigit(s.charAt(1)) && s.length() == 7) {
-                        id = s;
-                    } else if (s.contains("1") || s.contains("2") && group == 0) {
-                        group = Character.getNumericValue(s.charAt(2));
-                    } else if (s.contains("1") || s.contains("2") && group != 0) {
-                        subGroup = Character.getNumericValue(s.charAt(4));
-                    } else if (nom == null && ! s.contains("@")) {
-                        nom = s ;
-                    } else if (nom != null && ! s.equals("@") ) {
-                        prenom = s ;
+                    if (s != "") {
+                        if (Character.isDigit(s.charAt(1)) && s.length() == 8) {
+                            id = s;
+                        } else if (s.contains("1") || s.contains("2") && group == 0 && s.length() < 8) {
+
+                            if (s.contains(".")) {
+                                group = Character.getNumericValue(s.charAt(s.length() - 3));
+                                subGroup = Character.getNumericValue(s.charAt(s.length() - 1));
+                            } else {
+                                group = Character.getNumericValue(s.charAt(s.length() - 1));
+                            }
+                        } else if (s.contains("1") || s.contains("2") && group != -1 && subGroup == -1) {
+                            subGroup = s.charAt(s.length() - 2);
+                        } else if (nom == null && !s.contains("@")) {
+                            nom = s;
+                        } else if (nom != null && !s.equals("@") && prenom == null) {
+                            prenom = s;
+                        }
                     }
 
                 }
-                students.add(new Student(group,subGroup,nom,prenom,id));
+
+                if (id != null) {
+                    students.add(new Student(group, subGroup, nom, prenom, id));
+                }
 
             }
-
             return true ;
         } catch (Exception e) {
-            System.out.println("erreur espece de gros nul");
             return false;
         }
 

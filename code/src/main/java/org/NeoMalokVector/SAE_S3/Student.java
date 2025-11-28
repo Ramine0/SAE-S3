@@ -7,8 +7,10 @@ public class Student
 
     public Student(int group, int subGroup, String name, String firstName, String id)
     {
+
         this.group = group;
         this.subGroup = subGroup;
+
 
         this.name = name;
         this.firstName = firstName;

@@ -30,7 +30,18 @@
         <div class="le_Form">
 
             <form action="" method="post">
+                <div id="creation">
+                    <button id="import"> Importer un fichier </button>
+                    <select id="mode" name="mode">
+                        <option value="normal" selected> Placement basique</option>
+                        <option value="group"> Par groupe </option>
+                        <option value="sub-group"> Par sous-groupe </option>
+                    </select>
+                </div>
 
+                <div id="contraintes_gen">
+
+                </div>
                 <label></label>
                 <button></button>
 
@@ -43,6 +54,7 @@
                 <label></label>
                 <button class="boutPlus">+</button>
 
+                <button id="create"> Générer </button>
 
             </form>
 

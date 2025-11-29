@@ -15,7 +15,7 @@ public class HelloServlet
 
         Data d ;
         try {
-            d = new Data();
+
 
             PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, d);
             intermediate.CreerPlacement();

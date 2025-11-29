@@ -80,6 +80,7 @@ public class Data {
         }
         return rest;
     }
+
     public Student getStuFromTab(int num) {
         return tables[num].getEtu();
     }
@@ -198,5 +199,14 @@ public class Data {
     }
 
 
+    public void placerImposes () {
+        String[] s ;
+        for (Constraint c : constraints) {
+            if (c instanceof ImposedPlacement ) {
+                s =  ((ImposedPlacement) c).getPaire() ;
+                placeStudent(Integer.parseInt(s[0]), s[1]);
+            }
+        }
+    }
 
 }

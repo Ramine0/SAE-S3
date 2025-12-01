@@ -20,11 +20,6 @@
             </div>
 
             <div>
-                <img src="resources/img/lock.png" alt="Verrouiller">
-                <h2>Verrouiller</h2>
-            </div>
-
-            <div>
                 <img src="resources/img/swap.png" alt="Échanger">
                 <h2>&Eacute;changer</h2>
             </div>

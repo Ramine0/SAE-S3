@@ -194,7 +194,6 @@ public class Data {
             text[i] = s.descrip(true) ;
             i++ ;
         }
-
         return text ;
     }
 
@@ -208,5 +207,4 @@ public class Data {
             }
         }
     }
-
 }

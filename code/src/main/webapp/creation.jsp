@@ -40,19 +40,9 @@
                 </div>
 
                 <div id="contraintes_gen">
-
+                <label></label>
+                <button class="boutPlus" onclick="addConstraint()" >+</button>
                 </div>
-                <label></label>
-                <button></button>
-
-                <label></label>
-                <button></button>
-
-                <label></label>
-                <button></button>
-
-                <label></label>
-                <button class="boutPlus">+</button>
 
                 <button id="create"> Générer </button>
 
@@ -61,8 +51,7 @@
 
         </div>
     </main>
-    <footer>
-        <div> &copy; Copyright </div>
-    </footer>
+
+    <script src = "resources/JS/script.js" ></script>
 </body>
 </html>

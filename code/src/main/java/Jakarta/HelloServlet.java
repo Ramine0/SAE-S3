@@ -4,33 +4,26 @@ package Jakarta;
 import placement.Data;
 import placement.PositioningIntermediate;
 
-import java.io.FileReader;
-import java.sql.SQLOutput;
+import java.io.FileNotFoundException;
 
 public class HelloServlet
 {
 
-    static void main(String[] args)
+    static void main(String[] args) throws FileNotFoundException
     {
 
-        Data d=null ;
-        try {
 
+
+            Data d = new Data();
 
             PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, d);
             intermediate.CreerPlacement();
-            for (String s :d.descrip() ) {
+
+            for (String s : d.descrip())
+            {
                 System.out.println(s);
             }
-            new FileReader("src/main/webapp/resources/etudiants.csv") ;
-
-
-        } catch (Exception e) {
-            System.out.println("erreur etudiants non trouvés");
-        }
-
-
-
+//            new FileReader("../webapp/resources/etudiants.csv");
 
     }
 }

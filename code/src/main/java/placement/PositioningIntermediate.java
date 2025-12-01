@@ -42,11 +42,17 @@ public class PositioningIntermediate
         /*
         faire une boucle qui parcours les etus et les places petit a petit sur les places aleatiores si walid
         Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
-
          */
 
-    }
+        for (Student student : donnees.getEtus())
+        {
+            for (int table : donnees.getTables())
+                if (walid(student, table))
+                    donnees.placeStudent(table, student.getId());
+        }
 
+
+    }
 
 
     // valide ou non le placement

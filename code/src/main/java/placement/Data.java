@@ -168,7 +168,7 @@ public class Data {
                             subGroup = s.charAt(s.length() - 2);
                         } else if (nom == null && !s.contains("@")) {
                             nom = s;
-                        } else if (nom != null && !s.contains("@") && prenom == null) {
+                        } else if (nom != null && !s.equals("@") && prenom == null) {
                             prenom = s;
                         }
                     }
@@ -194,6 +194,7 @@ public class Data {
             text[i] = s.descrip(true) ;
             i++ ;
         }
+
         return text ;
     }
 
@@ -207,4 +208,5 @@ public class Data {
             }
         }
     }
+
 }

@@ -23,6 +23,8 @@ public class Data {
     private Constraint[] constraints;
     private Table[] tables;
     private ArrayList<Student> students;
+    private int[] deletedTables;
+
     // on laisse utiliser parfaitement les etus car c'est bcp plus des pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
 
@@ -33,7 +35,6 @@ public class Data {
         }
     }
 
-    private int[] deletedTables;
 
     public void placeStudent(int table, String idStudent ) {
 
@@ -201,12 +202,14 @@ public class Data {
 
     public void placerImposes () {
         String[] s ;
+
         for (Constraint c : constraints) {
             if (c instanceof ImposedPlacement ) {
                 s =  ((ImposedPlacement) c).getPaire() ;
                 placeStudent(Integer.parseInt(s[0]), s[1]);
             }
         }
+
     }
 
 }

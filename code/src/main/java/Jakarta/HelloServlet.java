@@ -13,21 +13,14 @@ public class HelloServlet
     static void main(String[] args)
     {
 
-        Data d ;
+        Data d = null ;
         try {
-
-
-            PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, d);
-            intermediate.CreerPlacement();
-            for (String s :d.descrip() ) {
-                System.out.println(s);
-            }
-            new FileReader("src/main/webapp/resources/etudiants.csv") ;
-
-
+            d = new Data();
         } catch (Exception e) {
             System.out.println("erreur etudiants non trouvés");
         }
+        PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, d);
+        intermediate.CreerPlacement();
 
 
 

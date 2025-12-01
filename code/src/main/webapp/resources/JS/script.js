@@ -1,0 +1,1 @@
+const constGp=document.querySelector('#mode');

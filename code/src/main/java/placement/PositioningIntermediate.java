@@ -14,6 +14,13 @@ public class PositioningIntermediate
     private Data donnees;
     // on fait ce qu'on veux des contraintes c plus simple et + pratique
 
+
+    // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
+    // charAt(0) c le type (rectangle) et les 2 suivants c l et L (pour rect)
+    // on donne aussi les numero de tables supprimées
+    // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
+    // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
+
     public PositioningIntermediate(String mapType, int[] deleted, Data d)
     {
 
@@ -29,15 +36,18 @@ public class PositioningIntermediate
 
     public void CreerPlacement()
     {
+        donnees.placerImposes();
+
+        // le reste du la fonction (placer les etu aleatoirement en tenant compte du validate
+        /*
+        faire une boucle qui parcours les etus et les places petit a petit sur les places aleatiores si walid
+        Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
+
+         */
 
     }
 
 
-    // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
-    // charAt(0) c le type (rectangle) et les 2 suivants c l et L (pour rect)
-    // on donne aussi les numero de tables supprimées
-    // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
-    // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
 
     // valide ou non le placement
     private boolean walid(Student s, int t)

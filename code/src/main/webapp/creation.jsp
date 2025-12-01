@@ -30,7 +30,8 @@
         <div class="le_Form">
             <form action="" method="post">
                 <div id="creation">
-                    <button id="import"> Importer un fichier </button>
+                    <label for="import"></label>
+                    <input type="file" name="import" id="import" accept="text/csv">
                     <select id="mode" name="mode">
                         <option value="normal" selected> Placement basique</option>
                         <option value="group"> Par groupe </option>
@@ -39,19 +40,9 @@
                 </div>
 
                 <div id="contraintes_gen">
-
+                <label></label>
+                <button class="boutPlus" onclick="addConstraint()" >+</button>
                 </div>
-                <label></label>
-                <button></button>
-
-                <label></label>
-                <button></button>
-
-                <label></label>
-                <button></button>
-
-                <label></label>
-                <button class="boutPlus">+</button>
 
                 <button id="create"> Générer </button>
 
@@ -60,5 +51,7 @@
 
         </div>
     </main>
+
+    <script src = "resources/JS/script.js" ></script>
 </body>
 </html>

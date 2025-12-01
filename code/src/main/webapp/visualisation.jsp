@@ -29,10 +29,20 @@
             </div>
         </div>
 </header>
-
+<div id="content">
 <main>
-
+    <button> Table </button>
 </main>
 
+<aside>
+    <label for="importvisu"></label>
+    <input type="file" name="importvisu" id="importvisu" accept="text/csv">
+    <button id="regenerate"> Regenerer </button>
+    <button id="exporter"> Exporter </button>
+</aside>
+</div>
+<footer>
+    <div> &copy; Copyright </div>
+</footer>
 </body>
 </html>

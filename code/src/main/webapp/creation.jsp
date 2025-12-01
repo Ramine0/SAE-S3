@@ -61,5 +61,8 @@
 
         </div>
     </main>
+    <footer>
+        <div> &copy; Copyright </div>
+    </footer>
 </body>
 </html>

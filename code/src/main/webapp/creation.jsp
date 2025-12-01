@@ -30,7 +30,8 @@
         <div class="le_Form">
             <form action="" method="post">
                 <div id="creation">
-                    <button id="import"> Importer un fichier </button>
+                    <label for="import"></label>
+                    <input type="file" name="import" id="import" accept="text/csv">
                     <select id="mode" name="mode">
                         <option value="normal" selected> Placement basique</option>
                         <option value="group"> Par groupe </option>

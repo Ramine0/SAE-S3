@@ -13,7 +13,7 @@ public class HelloServlet
     static void main(String[] args)
     {
 
-        Data d ;
+        Data d=null ;
         try {
 
 

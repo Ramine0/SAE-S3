@@ -51,7 +51,9 @@
 
         </div>
     </main>
-
+    <footer>
+        <div> &copy; Copyright </div>
+    </footer>
     <script src = "resources/JS/script.js" ></script>
 </body>
 </html>

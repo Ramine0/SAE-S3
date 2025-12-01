@@ -15,7 +15,7 @@ public class HelloServlet
 
         Data d = null ;
         try {
-            d = new Data();
+            d = new Data() ;
         } catch (Exception e) {
             System.out.println("erreur etudiants non trouvés");
         }

@@ -45,8 +45,15 @@ public class PositioningIntermediate
 
          */
 
-    }
+        for (Student student : donnees.getEtus())
+        {
+            for (int table : donnees.getTables())
+                if (walid(student, table))
+                    donnees.placeStudent(table, student.getId());
+        }
 
+
+    }
 
 
     // valide ou non le placement

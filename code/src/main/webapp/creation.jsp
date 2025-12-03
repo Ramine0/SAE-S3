@@ -19,7 +19,9 @@
 <body class="pageCrea">
 
     <header >
+        <a href="index.jsp">
         <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
+        </a>
         <h1>DSRoomMaker Creation</h1>
 
     </header>
@@ -44,7 +46,7 @@
                 <button class="boutPlus" onclick="addConstraint()" >+</button>
                 </div>
 
-                <button id="create"> Générer </button>
+                <button class="boutWalider" > Générer </button>
 
             </form>
 

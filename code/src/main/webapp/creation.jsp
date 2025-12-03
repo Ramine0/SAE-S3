@@ -21,11 +21,11 @@
     <header >
         <a href="index.jsp">
         <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
-        </a>
         <div class="logo">
             <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
             <h1>DSRoomMaker Creation</h1>
         </div>
+        </a>
         <div class="gen">
             <form action="" method="post">
                 <input type="file" name="import" id="import" accept="text/csv">

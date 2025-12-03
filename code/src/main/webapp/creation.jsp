@@ -20,7 +20,6 @@
 
     <header >
         <a href="index.jsp">
-        <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
         <div class="logo">
             <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
             <h1>DSRoomMaker Creation</h1>
@@ -38,16 +37,11 @@
                 <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
                 <label for="larg"><h3>Nombre de tables par lignes</h3></label>
                 <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
+                <button class="boutWalider" > Générer </button>
             </form>
         </div>
 
     </header>
-
-
-    <main>
-        <!-- on va utiliser les maquettes pour faire un truc cool -->
-        <div class="le_Form">
-
 
 
     <main>
@@ -60,7 +54,7 @@
                     <button class="boutPlus placeImpos" onclick="addConstraint()" >+</button>
                 </div>
 
-                <button class="boutWalider" > Générer </button>
+
 
             </form>
 

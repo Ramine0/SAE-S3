@@ -22,7 +22,7 @@ public class Data
     private Constraint[] constraints;
     private Table[] tables;
     private ArrayList<Student> students;
-    // on laisse utiliser parfaitement les etus car c'est bcp plus des pratique car il y a bcp de traitement a faire
+    // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
 
     public Data() throws FileNotFoundException

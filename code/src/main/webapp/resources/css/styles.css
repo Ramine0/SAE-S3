@@ -118,14 +118,17 @@ hr {
     border: 8px solid #5271ff;
 }
 
-.pageCrea {
+.headerCrea {
     display : inline-flex;
+    background-color:white;
 }
 
-.pageCrea header {
+.headerCrea .logo {
     margin-left: 0px;
     height: 100%;
+    background-color:#cccccc;
 }
+
 
 .logoPageSec {
     width : 50% ;
@@ -138,7 +141,6 @@ hr {
 
 #content{
     display: flex;
-    width: 80%;
 
     margin-left: auto;
     margin-right: auto;
@@ -146,6 +148,14 @@ hr {
     justify-content: space-around;
 }
 #content main{
+    width: 80%;
     margin-top: auto;
     margin-bottom: auto;
+}
+#content aside{
+    width:20%;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    justify-content: space-around;
 }

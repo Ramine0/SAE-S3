@@ -118,27 +118,29 @@ hr {
     border: 8px solid #5271ff;
 }
 
-.pageCrea {
+.headerCrea {
     display : inline-flex;
+    background-color:white;
 }
 
-.pageCrea header {
+.headerCrea .logo {
     margin-left: 0px;
     height: 100%;
+    background-color:#cccccc;
 }
+
 
 .logoPageSec {
     width : 50% ;
 }
 
-#import, #create, select{
-    border: 8px solid #5271ff;
+#import, select{
+    border: 4px solid #5271ff;
     background-color: #cccccc;
 }
 
 #content{
     display: flex;
-    width: 80%;
 
     margin-left: auto;
     margin-right: auto;
@@ -146,6 +148,22 @@ hr {
     justify-content: space-around;
 }
 #content main{
+    width: 80%;
     margin-top: auto;
     margin-bottom: auto;
 }
+#content aside{
+    width:20%;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    justify-content: space-around;
+}
+
+.boutWalider {
+    border: 1px solid black;
+    background-color: limegreen;
+
+}
+
+

@@ -35,7 +35,6 @@
 </main>
 
 <aside>
-    <label for="importvisu"></label>
     <input type="file" name="importvisu" id="importvisu" accept="text/csv">
     <button id="regenerate"> Regenerer </button>
     <button id="exporter"> Exporter </button>

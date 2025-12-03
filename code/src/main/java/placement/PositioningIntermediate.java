@@ -42,6 +42,7 @@ public class PositioningIntermediate
         /*
         faire une boucle qui parcours les etus et les places petit a petit sur les places aleatiores si walid
         Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
+
          */
 
         for (Student student : donnees.getEtus())

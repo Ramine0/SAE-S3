@@ -7,19 +7,19 @@ html {
 }
 
 header {
-    text-align: center;
+
     border: 3px solid #5271ff;
-
-    margin-left: auto;
-    margin-right: auto;
-
     background-color: #cccccc;
-
     width: 50%;
 }
 
 header * {
     margin: 1em;
+}
+.headerCentre {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #visualisationHeader {
@@ -65,7 +65,7 @@ h1 {
     color: #233dff;
 }
 
-img {
+.logoHomePage {
     border-radius: 25px;
     border: 10px solid #5271ff;
 }
@@ -118,20 +118,23 @@ hr {
     border: 5px solid #5271ff;
 }
 
-.headerCrea {
-    display : inline-flex;
-    background-color:white;
+.headerGauche {
+    display : flex ;
+    flex-direction: column;
+    margin-right: 20px;
+
 }
 
-.headerCrea .logo {
+.headerGauche .logo {
     margin-left: 0px;
     height: 100%;
-    background-color:#cccccc;
 }
 
 
 .logoPageSec {
-    width : 50% ;
+    width : 80% ;
+    border-radius: 15px;
+    border: 3px solid #5271ff;
 }
 
 #import, select{
@@ -164,6 +167,39 @@ hr {
     border: 1px solid black;
     background-color: limegreen;
 
+}
+
+.pageCrea {
+    display: inline-flex;
+}
+
+
+.boutPlus {
+    padding: 3px 7px;
+    font-size: medium ;
+    border : 1px solid #233dff;
+    background-color: #cccccc;
+    border-radius: 30px;
+
+}
+
+.invalid, .valid {
+    border : 1px solid #233dff;
+    padding: 5px ;
+
+}
+
+.invalid {
+    background-color: rgba(255, 69, 0, 0.61) ;
+}
+
+.valid {
+    background-color: rgba(26, 255, 0, 0.61);
+}
+
+.ligne {
+    display: flex;
+    flex-direction: row;
 }
 
 

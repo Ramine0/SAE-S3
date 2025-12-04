@@ -18,7 +18,7 @@
 
 <body class="pageCrea">
 
-    <header >
+    <header class ="headerGauche">
         <a href="index.jsp">
         <div class="logo">
             <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
@@ -47,11 +47,19 @@
     <main>
         <!-- on va utiliser les maquettes pour faire un truc cool -->
         <div class="le_Form">
-            <form action="" method="post">
+            <form action="generer()" method="post">
 
                 <div id="contraintes_gen">
-                    <label><h2> Places imposées </h2></label>
-                    <button class="boutPlus placeImpos" onclick="addConstraint()" >+</button>
+                    <h2> Places imposées </h2>
+                    <div class="ligne">
+                        <section class="invalid">
+                            <label for="studentImposed1"> id Etudiant </label>
+                            <imput name="idEtu1" id="studentImposed1" type="text"></imput>
+                            <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" >find</button>
+                        </section>
+
+                        <button class="boutPlus" onclick="addConstraint()" >+</button>
+                    </div>
                 </div>
 
 

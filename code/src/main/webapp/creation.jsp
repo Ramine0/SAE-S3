@@ -20,7 +20,6 @@
 
     <header >
         <a href="index.jsp">
-        <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
         <div class="logo">
             <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
             <h1>DSRoomMaker Creation</h1>

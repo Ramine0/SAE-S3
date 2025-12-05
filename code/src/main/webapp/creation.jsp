@@ -28,7 +28,7 @@
         </div>
     </a>
     <div class="gen">
-        <form action="" method="post" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data" action="file-upload">
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
             <select id="mode" name="mode">
                 <option value="normal" selected> Placement basique</option>

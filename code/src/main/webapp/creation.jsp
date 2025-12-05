@@ -28,7 +28,7 @@
             </div>
         </a>
         <div class="general">
-            <form class="column" action="" method="post" enctype="multipart/form-data">
+            <form class="column" action="" method="post" enctype="multipart/form-data" action="file-upload">
                 <input type="file" name="studentFile" id="studentFile" accept="text/csv">
                 <select id="mode" name="mode">
                     <option value="normal" selected> Placement basique</option>
@@ -81,7 +81,6 @@
                 <h2> Tables Supprimées </h2>
                 <div class="ligne">
 
-                    <section class="invalid">
 
                         <span>
                             <label for="numTabSup1"> Num Table </label>

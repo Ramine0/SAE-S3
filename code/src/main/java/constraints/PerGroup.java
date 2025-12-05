@@ -6,10 +6,19 @@ import utilitaire.Utilitaire;
 public class PerGroup extends Constraint
 {
     private String[] groupe;
+    private int id;
 
-    private PerGroup(String[] etus)
+    public PerGroup(String[] etus)
     {
         groupe = etus;
+        id=0;
+    }
+    public void addStudent(String numetu){
+        groupe[id]=numetu;
+        id++;
+    }
+    public void modifStudent(String numetu, int index){
+        groupe[index]=numetu;
     }
 
     @Override

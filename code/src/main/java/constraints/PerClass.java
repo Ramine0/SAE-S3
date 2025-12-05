@@ -7,6 +7,11 @@ public class PerClass extends Constraint
 {
     private static boolean subGroup = false;
 
+    public PerClass(boolean sg)
+    {
+        subGroup=sg;
+    }
+
     @Override
     public boolean validate(Student student, int table, Student[] etu)
     {

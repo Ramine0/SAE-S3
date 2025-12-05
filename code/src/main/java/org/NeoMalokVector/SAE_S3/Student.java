@@ -35,6 +35,7 @@ public class Student
         return id;
     }
 
+
     public boolean sameGroup(Student etu, boolean sub)
     {
         if (etu.group == this.group)

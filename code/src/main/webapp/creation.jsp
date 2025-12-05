@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
+
 <html>
 
 <head>
@@ -18,28 +20,28 @@
 
 <body class="pageCrea">
 
-    <header >
+    <header class ="headerGauche">
         <a href="index.jsp">
         <div class="logo">
             <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
             <h1>DSRoomMaker Creation</h1>
         </div>
-        </a>
-        <div class="gen">
-            <form action="" method="post">
-                <input type="file" name="import" id="import" accept="text/csv">
-                <select id="mode" name="mode">
-                    <option value="normal" selected> Placement basique</option>
-                    <option value="group"> Par groupe </option>
-                    <option value="sub-group"> Par sous-groupe </option>
-                </select>
-                <label for="long"><h3>Nombre de tables par colonnes</h3></label>
-                <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
-                <label for="larg"><h3>Nombre de tables par lignes</h3></label>
-                <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
-                <button class="boutWalider" > Générer </button>
-            </form>
-        </div>
+    </a>
+    <div class="gen">
+        <form action="" method="post" enctype="multipart/form-data">
+            <input type="file" name="studentFile" id="studentFile" accept="text/csv">
+            <select id="mode" name="mode">
+                <option value="normal" selected> Placement basique</option>
+                <option value="group"> Par groupe</option>
+                <option value="sub-group"> Par sous-groupe</option>
+            </select>
+            <label for="long"><h3>Nombre de tables par colonnes</h3></label>
+            <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
+            <label for="larg"><h3>Nombre de tables par lignes</h3></label>
+            <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
+            <button type="submit" class="boutWalider" onclick=""> Générer</button>
+        </form>
+    </div>
 
     </header>
 
@@ -50,8 +52,16 @@
             <form action="" method="post">
 
                 <div id="contraintes_gen">
-                    <label><h2> Places imposées </h2></label>
-                    <button class="boutPlus placeImpos" onclick="addConstraint()" >+</button>
+                    <h2> Places imposées </h2>
+                    <div class="ligne">
+                        <section class="invalid">
+                            <label for="studentImposed1"> id Etudiant </label>
+                            <imput name="idEtu1" id="studentImposed1" type="text"></imput>
+                            <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" >find</button>
+                        </section>
+
+                        <button class="boutPlus" onclick="createImposed()" >+</button>
+                    </div>
                 </div>
 
 

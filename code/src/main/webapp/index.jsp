@@ -11,8 +11,8 @@
 
 <body>
 
-<header>
-    <img src="resources/img/logo.gif" alt="Logo">
+<header class = "headerCentre">
+    <img class="logoHomePage" src="resources/img/logo.gif" alt="Logo">
 
     <h1>DSRoomMaker</h1>
 </header>

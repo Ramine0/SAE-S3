@@ -3,6 +3,8 @@ package placement;
 
 import constraints.Constraint;
 import constraints.ImposedPlacement;
+import constraints.PerClass;
+import constraints.PerGroup;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -22,14 +24,15 @@ public class Data
     private Constraint[] constraints;
     private Table[] tables;
     private ArrayList<Student> students;
+    int idC;
     // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
 
     public Data() throws FileNotFoundException
     {
         chargerFichier();//throw  new FileNotFoundException();
-
         constraints = new Constraint[students.size()];
+        idC=1;
 
         tables = new Table[students.size()];
         for (int i = 0; i < tables.length; i++)
@@ -226,7 +229,7 @@ public class Data
                         subGroup = numericValue;
                     else if (nom == null && !s.contains("@"))
                         nom = s;
-                    else if (nom != null && prenom == null)
+                    else if (nom != null && prenom == null && !s.contains("@"))
                         prenom = s;
                 }
             }
@@ -264,5 +267,32 @@ public class Data
             }
         }
     }
+    public void setNumberTables(int num)
+    {
+        tables = new Table[num];
+        for (int i = 0; i < tables.length; i++)
+            tables[i] = new Table();
+    }
+    public void addConstraint(String numStudent, int numTable, String constr){
+        if (constr.equals("PI")){
+            constraints[idC]=new ImposedPlacement(numTable, numStudent);
+        }else if (constr.charAt(0)=='G'){
+            if (constr.charAt(1)=='N'){
+                String[] s=new String[10];
+                constraints[idC]=new PerGroup(s);
+            }
+        }else{
+            changeMode(constr.charAt(1));
+        }
+    }
 
+    public void changeMode(char mode){
+        if (mode=='G'){
+            constraints[0]=new PerClass(false);
+        }else if (mode=='S'){
+            constraints[0]=new PerClass(true);
+        }else{
+            constraints[0]=null;
+        }
+    }
 }

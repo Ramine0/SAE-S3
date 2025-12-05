@@ -49,24 +49,27 @@
     <main>
         <!-- on va utiliser les maquettes pour faire un truc cool -->
         <div class="le_Form">
-            <form action="" method="post">
+            <div id="contraintes_impose">
 
-                <div id="contraintes_gen">
-                    <h2> Places imposées </h2>
-                    <div class="ligne">
-                        <section class="invalid">
+                <h2> Places imposées </h2>
+                <div class="ligne">
+
+                    <section class="invalid">
+                        <span>
                             <label for="studentImposed1"> id Etudiant </label>
-                            <imput name="idEtu1" id="studentImposed1" type="text"></imput>
-                            <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" >find</button>
-                        </section>
+                            <input name="idEtuImp1" id="studentImposed1" type="text"></input>
+                        </span>
+                        <span>
+                            <label for="tableImposed1"> Num Table </label>
+                            <input name="idTabImp1" id="tableImposed1" type="number"></input>
+                        </span>
+                        <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" >find</button>
+                    </section>
 
-                        <button class="boutPlus" onclick="createImposed()" >+</button>
-                    </div>
+                    <button class="boutPlus" onclick="createImposed()" >+</button>
                 </div>
 
-
-
-            </form>
+            </div>
 
 
         </div>

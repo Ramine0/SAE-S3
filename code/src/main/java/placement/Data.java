@@ -34,7 +34,7 @@ public class Data
         constraints = new Constraint[students.size()];
         idC=1;
 
-        tables = new Table[students.size()];
+        tables = new Table[students.size()]; // Quand le js sera fini, faudra changer la taille
         for (int i = 0; i < tables.length; i++)
             tables[i] = new Table();
     }
@@ -276,14 +276,63 @@ public class Data
     public void addConstraint(String numStudent, int numTable, String constr){
         if (constr.equals("PI")){
             constraints[idC]=new ImposedPlacement(numTable, numStudent);
-        }else if (constr.charAt(0)=='G'){
+        }else {
             if (constr.charAt(1)=='N'){
                 String[] s=new String[10];
                 constraints[idC]=new PerGroup(s);
             }
-        }else{
-            changeMode(constr.charAt(1));
         }
+    }
+    public void modifConstraint(String numStudent, String prevStudent, int numTable, String constr, int id, int index){
+        if (constr.equals("PI")){
+            getImposedPlacement(id).set(numTable, numStudent);
+        }else if (constr.charAt(1)=='G'){
+
+        }else{
+            changeMode(constr.charAt(0));
+        }
+    }
+    public void removeConstraint(String numStudent, int numTable, String constr){
+
+    }
+    public void addStudentGroupConstraint(String numStudent, int idGp){
+        if (getPerGroup(idGp) != null){
+            ((PerGroup) constraints[idGp]).addStudent(numStudent);
+        }
+    }
+    public void modifStudentGroupConstraint(String numStudent, int idGp){
+
+    }
+    public void removeStudentGroupConstraint(String numStudent, int idGp){
+
+    }
+
+    public PerGroup getPerGroup(int id){
+        int cnt=0;
+        for (int i=0; i< constraints.length; i++){
+            if (constraints[i] instanceof PerGroup){
+                if (cnt==id){
+                    return (PerGroup) constraints[i];
+                }else{
+                    cnt++;
+                }
+            }
+        }
+        return null;
+    }
+
+    public ImposedPlacement getImposedPlacement(int id){
+        int cnt=0;
+        for (int i=0; i< constraints.length; i++){
+            if (constraints[i] instanceof ImposedPlacement){
+                if (cnt==id){
+                    return (ImposedPlacement) constraints[i];
+                }else{
+                    cnt++;
+                }
+            }
+        }
+        return null;
     }
 
     public void changeMode(char mode){

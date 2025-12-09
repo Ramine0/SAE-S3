@@ -12,6 +12,10 @@ public class ImposedPlacement extends Constraint
         this.numTable = numTable;
         this.numEtu = numEtu;
     }
+    public void set(int numTable, String numEtu){
+        this.numTable = numTable;
+        this.numEtu = numEtu;
+    }
     // pas besoin de valider on doit juste placer l'etu a la place qu'on lui a donné
     @Override
     public boolean validate(Student student, int table, Student[] etu) {

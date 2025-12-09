@@ -80,19 +80,41 @@
 
                 <h2> Tables Supprimées </h2>
                 <div class="ligne">
-
+                    <section class = "invalid">
 
                         <span>
                             <label for="numTabSup1"> Num Table </label>
                             <input name="idTabSup1" id="numTabSup1" type="number" disabled></input>
                         </span>
-                        <button class="chercher" id="tabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
-                        <button class="chercher" id="tabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
+                        <button class="chercher" id="supTabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
+                        <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
                     </section>
 
                     <button class="boutPlus" onclick="createSuppr()" disabled >+</button>
                 </div>
 
+            </div>
+
+            <div id="EtuDist">
+
+                <h2> Eleves mis a distance  </h2>
+                <div class="ligne" id="Gp1">
+                    <section class = "invalid" >
+
+                        <span>
+                            <label for="Etu1groupe1"> Num Table </label>
+                            <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
+                        </span>
+                        <button class="chercher" id="supEtu1G1" onclick="enleverEtuGp(1)" disabled>remove</button>
+                        <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
+                    </section>
+
+                    <button class="boutPlus" onclick="addEtuGrp()" disabled >+</button>
+                    <h4>ajouter un etudiant au groupe</h4>
+                </div>
+
+                <h4>ajouter un groupe</h4>
+                <button class="boutPlus" onclick="CreateGrp()" disabled >+</button>
             </div>
 
 

@@ -22,26 +22,31 @@
 
     <header class ="headerGauche">
         <a href="index.jsp">
-        <div class="logo">
-            <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
-            <h1>DSRoomMaker Creation</h1>
+            <div class="logo">
+                <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
+                <h1>DSRoomMaker Creation</h1>
+            </div>
+        </a>
+        <div class="general">
+            <form class="column" method="post" enctype="multipart/form-data" action="file-upload">
+                <input type="file" name="studentFile" id="studentFile" accept="text/csv">
+                <select id="mode" name="mode">
+                    <option value="normal" selected> Placement basique</option>
+                    <option value="group"> Par groupe</option>
+                    <option value="sub-group"> Par sous-groupe</option>
+                </select>
+                <span class="ligne">
+                    <label for="long"><h4>Nombre de tables par colonnes</h4></label>
+                    <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
+                </span>
+                <span class="ligne">
+                    <label for="larg"><h4>Nombre de tables par lignes</h4></label>
+                    <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
+                </span>
+                <button type="submit" id="boutNbPlaces">valider</button>
+                <button type="submit" class="boutWalider" onclick=""> Générer</button>
+            </form>
         </div>
-    </a>
-    <div class="gen">
-        <form action="" method="post" enctype="multipart/form-data">
-            <input type="file" name="studentFile" id="studentFile" accept="text/csv">
-            <select id="mode" name="mode">
-                <option value="normal" selected> Placement basique</option>
-                <option value="group"> Par groupe</option>
-                <option value="sub-group"> Par sous-groupe</option>
-            </select>
-            <label for="long"><h3>Nombre de tables par colonnes</h3></label>
-            <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
-            <label for="larg"><h3>Nombre de tables par lignes</h3></label>
-            <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
-            <button type="submit" class="boutWalider" onclick=""> Générer</button>
-        </form>
-    </div>
 
     </header>
 
@@ -49,24 +54,68 @@
     <main>
         <!-- on va utiliser les maquettes pour faire un truc cool -->
         <div class="le_Form">
-            <form action="" method="post">
+            <div id="contraintes_impose">
 
-                <div id="contraintes_gen">
-                    <h2> Places imposées </h2>
-                    <div class="ligne">
-                        <section class="invalid">
+                <h2> Places imposées </h2>
+                <div class="ligne">
+
+                    <section class="invalid">
+                        <span>
                             <label for="studentImposed1"> id Etudiant </label>
-                            <imput name="idEtu1" id="studentImposed1" type="text"></imput>
-                            <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" >find</button>
-                        </section>
+                            <input name="idEtuImp1" id="studentImposed1" type="text" disabled></input>
+                        </span>
+                        <span>
+                            <label for="tableImposed1"> Num Table </label>
+                            <input name="idTabImp1" id="tableImposed1" type="number" disabled></input>
+                        </span>
+                        <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" disabled>find</button>
+                    </section>
 
-                        <button class="boutPlus" onclick="createImposed()" >+</button>
-                    </div>
+                    <button class="boutPlus" onclick="createImposed()" disabled >+</button>
                 </div>
 
+            </div>
 
+            <div id="contraintes_suppr">
 
-            </form>
+                <h2> Tables Supprimées </h2>
+                <div class="ligne">
+                    <section class = "invalid">
+
+                        <span>
+                            <label for="numTabSup1"> Num Table </label>
+                            <input name="idTabSup1" id="numTabSup1" type="number" disabled></input>
+                        </span>
+                        <button class="chercher" id="supTabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
+                        <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
+                    </section>
+
+                    <button class="boutPlus" onclick="createSuppr()" disabled >+</button>
+                </div>
+
+            </div>
+
+            <div id="EtuDist">
+
+                <h2> Eleves mis a distance  </h2>
+                <div class="ligne" id="Gp1">
+                    <section class = "invalid" >
+
+                        <span>
+                            <label for="Etu1groupe1"> Num Table </label>
+                            <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
+                        </span>
+                        <button class="chercher" id="supEtu1G1" onclick="enleverEtuGp(1)" disabled>remove</button>
+                        <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
+                    </section>
+
+                    <button class="boutPlus" onclick="addEtuGrp()" disabled >+</button>
+                    <h4>ajouter un etudiant au groupe</h4>
+                </div>
+
+                <h4>ajouter un groupe</h4>
+                <button class="boutPlus" onclick="CreateGrp()" disabled >+</button>
+            </div>
 
 
         </div>

@@ -1,4 +1,6 @@
-const constGp=document.querySelector('#mode');
+// const constGp=document.querySelector('#mode');
+
+const studentFile = document.querySelector('#studentFile');
 
 // dans les fonctions javascript a faire il y a :
 /*
@@ -24,3 +26,27 @@ const constGp=document.querySelector('#mode');
 
 */
 
+function importFicher()
+{
+
+}
+
+function validerEtu(idPartiel)
+{
+    console.log(idPartiel);
+}
+
+function validerTable()
+{
+
+}
+
+function validerEtuGroup()
+{
+
+}
+
+function createImposed()
+{
+
+}

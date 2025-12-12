@@ -68,10 +68,11 @@
                             <label for="tableImposed1"> Num Table </label>
                             <input name="idTabImp1" id="tableImposed1" type="number" disabled></input>
                         </span>
+                        <button class="remove" id="supTabImp1" onclick="enleverPlaceSuppr()" disabled>remove</button>
                         <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" disabled>find</button>
                     </section>
 
-                    <button class="boutPlus" onclick="createImposed()" disabled >+</button>
+                    <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" >+</button>
                 </div>
 
             </div>
@@ -86,11 +87,11 @@
                             <label for="numTabSup1"> Num Table </label>
                             <input name="idTabSup1" id="numTabSup1" type="number" disabled></input>
                         </span>
-                        <button class="chercher" id="supTabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
+                        <button class="remove" id="supTabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
                         <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
                     </section>
 
-                    <button class="boutPlus" onclick="createSuppr()" disabled >+</button>
+                    <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()"  >+</button>
                 </div>
 
             </div>
@@ -105,16 +106,16 @@
                             <label for="Etu1groupe1"> Num Table </label>
                             <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
                         </span>
-                        <button class="chercher" id="supEtu1G1" onclick="enleverEtuGp(1)" disabled>remove</button>
+                        <button class="remove" id="supEtu1G1" onclick="enleverEtuGp(1)" disabled>remove</button>
                         <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
                     </section>
 
-                    <button class="boutPlus" onclick="addEtuGrp()" disabled >+</button>
+                    <button id="ajoutEtuGrp" class="boutPlus" onclick="addEtuGrp()" disabled >+</button>
                     <h4>ajouter un etudiant au groupe</h4>
                 </div>
 
                 <h4>ajouter un groupe</h4>
-                <button class="boutPlus" onclick="CreateGrp()" disabled >+</button>
+                <button id="ajoutGroup" class="boutPlus" onclick="CreateGrp()" disabled >+</button>
             </div>
 
 

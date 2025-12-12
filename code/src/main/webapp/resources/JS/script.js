@@ -4,20 +4,13 @@ nbPlacesSuppr = 1;
 groupes = [[]] ;
 
 
-groupEtu = `<section class = "invalid" >
-    <span>
-        <label for="Etu1groupe1"> Num Table </label>
-        <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
-    </span>
-    <button class="chercher" id="supEtu1G1" onclick="enleverEtuGp(1)" disabled>remove</button>
-    <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
-</section>`
+
 
 const studentFile = document.querySelector('#studentFile');
 
 // dans les fonctions javascript a faire il y a :
 /*
-    generer() ; genere le plcament !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
+    generer() ; genere le placement !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
     sinon message en rouge "Generation Impossible un numero ne correspond a aucun etudiant " par exemple
 
     les fonction walider vont etre appelée par les fonctions qui vont valider dans les sections
@@ -27,11 +20,9 @@ const studentFile = document.querySelector('#studentFile');
     boolean validerEtuGroup() ; utilise valider Etu pour valider le group
     void validerPlaceImposee() ; utiliser validerEtu et table pour valider la contrainte de place imposee
 
-    boolean chercherEtu() ; cherche l'etu via son num etu si pas trouvé la section ou on cherche
     (dans l'ideal la section est rouge mais deviens vert si on trouve !!!! pas important c'est apres quand tout marche)
 
-    createImposed() ; Crée une contrainte de place imposée
-    createGroup() ; ajoute un nouveau groupe
+
     addToGroup() ; ajoute au groupe l'etudiant trouvé
     setClassMode() ; change le mode de contrainte par classe
 
@@ -39,10 +30,6 @@ const studentFile = document.querySelector('#studentFile');
 
 */
 
-function importFicher()
-{
-
-}
 
 function validerEtu(idPartiel)
 {
@@ -87,12 +74,40 @@ function createSuppr() {
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
     <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled></input>
 </span>
-<button class="chercher" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" disabled>remove</button>
+<button class="remove" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" disabled>remove</button>
 <button class="chercher" id="walTabSup${nbPlacesSuppr}" onclick="validerPlaceSuppr()" disabled>find</button>
 </section>` ;
 
     document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin",placesSuppr) ;
 }
 
+function createGrp() {
+    groupes.push([]) ;
+    groupEtu = `<section class = "invalid" >
+    <span>
+        <label for="Etu1groupe${groupes.length}"> Num Table </label>
+        <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
+    </span>
+    <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGp(1)" disabled>remove</button>
+    <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" disabled>find</button>
+</section>`
+
+    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin",groupEtu) ;
+
+}
 
 
+function createGrp() {
+    groupes.push([]) ;
+    groupEtu = `<section class = "invalid" >
+    <span>
+        <label for="Etu1groupe${groupes.length}"> Num Table </label>
+        <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
+    </span>
+    <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGp(1)" disabled>remove</button>
+    <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" disabled>find</button>
+</section>`
+
+    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin",groupEtu) ;
+
+}

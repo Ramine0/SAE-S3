@@ -2,6 +2,7 @@ package placement;
 
 import constraints.Constraint;
 import org.NeoMalokVector.SAE_S3.Student;
+import utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 
@@ -37,30 +38,40 @@ public class PositioningIntermediate
     public void CreerPlacement()
     {
         donnees.placerImposes();
-
         // le reste du la fonction (placer les etu aleatoirement en tenant compte du validate
         /*
         faire une boucle qui parcours les etus et les places petit a petit sur les places aleatiores si walid
         Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
 
          */
-
+/*
         for (Student student : donnees.getEtus())
         {
             for (int table : donnees.getTables())
                 if (walid(student, table))
                     donnees.placeStudent(table, student.getId());
         }
-
-
+*/
+        //on commence à la table 1
+        int table=1;
+        //on parcours les tables jusqu'à la dernière ou jusqu'à ce qu'il n'y ait plus d'étu à placer
+        while (table<donnees.getTables().length || donnees.freeStudents().length==0){
+            int idStudent=(int)(Math.random()*donnees.freeStudents().length); // etu aléatoire parmis les non placés
+            if (Utilitaire.in(table, donnees.freeTables())) {// on verifie que la table soit dans les places libres
+                if (walid(donnees.getStudentFromId(donnees.freeStudents()[idStudent]), table)) {// on vérifie qu'on puisse placer l'etu
+                    donnees.placeStudent(table, donnees.freeStudents()[idStudent]); // on place l'etu à table
+                    table++; // on passe à la table suivante
+                }
+            }else{// s'il la table n'est pas dans les places libres (retirée ou déjà prise):
+                table++;// on passe à la table suivante
+            }
+        }
     }
 
 
     // valide ou non le placement
     private boolean walid(Student s, int t)
     {
-
-
         // si on sait que l'etu as des contraintes
         if (Constraint.contraint(s))
         {
@@ -77,7 +88,7 @@ public class PositioningIntermediate
             }
 
         }
-        // sinon tout est ok
+        // sinon tout est ok à moins que la place soit déjà prise
         return true;
     }
 

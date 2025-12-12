@@ -283,11 +283,11 @@ public class Data
             }
         }
     }
-    public void modifConstraint(String numStudent, String prevStudent, int numTable, String constr, int id, int index){
+    public void modifConstraint(String numStudent, int numTable, String constr, int id, int index){
         if (constr.equals("PI")){
             getImposedPlacement(id).set(numTable, numStudent);
         }else if (constr.charAt(1)=='G'){
-
+            getPerGroup(id).modifStudent(numStudent, index);
         }else{
             changeMode(constr.charAt(0));
         }

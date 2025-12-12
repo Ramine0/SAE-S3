@@ -68,7 +68,6 @@ public class PositioningIntermediate
         }
     }
 
-
     // valide ou non le placement
     private boolean walid(Student s, int t)
     {

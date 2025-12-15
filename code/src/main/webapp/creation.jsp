@@ -72,7 +72,7 @@
                         <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" disabled>find</button>
                     </section>
 
-                    <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" >+</button>
+                    <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled >+</button>
                 </div>
 
             </div>
@@ -91,7 +91,7 @@
                         <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
                     </section>
 
-                    <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()"  >+</button>
+                    <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled >+</button>
                 </div>
 
             </div>
@@ -107,24 +107,28 @@
                                 <label for="Etu1groupe1"> Num Etudiant </label>
                                 <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
                             </span>
-                            <button class="remove" id="supEtu1G1" onclick="enleverEtuGp(1)" disabled>remove</button>
+                            <button class="remove" id="supEtu1G1" onclick="enleverEtuGp()" disabled>remove</button>
                             <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
                         </section>
 
-                        <button id="ajoutEtuGrp" class="boutPlus" onclick="createGrp()" disabled >+</button>
+                        <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled >+</button>
                         <h4>ajouter un etudiant au groupe</h4>
 
                     </div>
 
-                    <button id="ajoutGroup" class="boutPlus" onclick="createGrp()"  >+</button>
+                    <button id="ajoutGroup" class="boutPlus" onclick="createGrp()" disabled >+</button>
                     <h4>ajouter un groupe</h4>
                 </span>
             </div>
 
-
+            <button id="hmmm test reussi ?!" value="reussi" onclick="displayID()" disabled></button>
         </div>
     </main>
 
+
     <script src = "resources/JS/script.js" ></script>
+
+
+
 </body>
 </html>

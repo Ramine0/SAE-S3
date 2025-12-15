@@ -81,33 +81,45 @@ function createSuppr() {
     document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin",placesSuppr) ;
 }
 
+
 function createGrp() {
     groupes.push([]) ;
-    groupEtu = `<section class = "invalid" >
-    <span>
-        <label for="Etu1groupe${groupes.length}"> Num Table </label>
-        <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
-    </span>
-    <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGp(1)" disabled>remove</button>
-    <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" disabled>find</button>
-</section>`
+    etuGrp = `
+    <h4>Mis a distance ${groupes.length} </h4>
+    <div class="ligne" id="Gp1">
+        <section class = "invalid">
+            <span>
+                <label for="Etu1groupe${groupes.length}"> Num Etudiant </label>
+                <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
+            </span>
+            <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGp()" disabled>remove</button>
+            <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" disabled>find</button>
+        </section>
+        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" onclick="createEtuGrp()" disabled >+</button>
+        <h4>ajouter un etudiant au groupe</h4>
+    </div>`
 
-    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin",groupEtu) ;
+    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin",etuGrp) ;
 
 }
 
-
-function createGrp() {
-    groupes.push([]) ;
+function createEtuGrp() {
+    numGrp = window.event.target.id.charAt(11) -1;
+    groupes[numGrp].push(0) ;
+    numEtu = groupes[numGrp].length ;
     groupEtu = `<section class = "invalid" >
     <span>
-        <label for="Etu1groupe${groupes.length}"> Num Table </label>
-        <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
+        <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
+        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="number" disabled></input>
     </span>
-    <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGp(1)" disabled>remove</button>
-    <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" disabled>find</button>
-</section>`
+    <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGp()" disabled>remove</button>
+    <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtu()" disabled>find</button>`
+    console.log()
+    document.querySelector(`#ajoutEtuGrp${numGrp+1}`).insertAdjacentHTML("beforebegin",groupEtu) ;
 
-    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin",groupEtu) ;
+}
 
+function displayID(){
+    console.log(window.event.target.id) ;
+    "string1 test2"
 }

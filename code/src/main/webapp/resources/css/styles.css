@@ -70,6 +70,9 @@ h1 {
 .logoHomePage {
     border-radius: 25px;
     border: 10px solid #5271ff;
+
+    width:30%;
+    height:30%;
 }
 
 #butts {

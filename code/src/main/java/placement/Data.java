@@ -292,7 +292,7 @@ public class Data
             changeMode(constr.charAt(0));
         }
     }
-    public void removeConstraint(String numStudent, int numTable, String constr){
+    public void removeConstraint(String constr, int id){
 
     }
     public void addStudentGroupConstraint(String numStudent, int idGp){

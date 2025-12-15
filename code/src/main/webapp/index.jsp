@@ -12,7 +12,7 @@
 <body>
 
 <header class = "headerCentre">
-    <img class="logoHomePage" src="resources/img/logo.gif" alt="Logo">
+    <img class="logoHomePage" src="resources/img/Logo_DSRoomMaker.png" alt="Logo">
 
     <h1>DSRoomMaker</h1>
 </header>

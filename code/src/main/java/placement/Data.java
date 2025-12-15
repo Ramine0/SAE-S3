@@ -32,7 +32,7 @@ public class Data
     {
         chargerFichier();//throw  new FileNotFoundException();
         constraints = new Constraint[students.size()];
-        idC=1;
+        idC=0;
 
         tables = new Table[students.size()]; // Quand le js sera fini, faudra changer la taille
         for (int i = 0; i < tables.length; i++)
@@ -273,40 +273,15 @@ public class Data
         for (int i = 0; i < tables.length; i++)
             tables[i] = new Table();
     }
-    public void addConstraint(String numStudent, int numTable, String constr){
-        if (constr.equals("PI")){
-            constraints[idC]=new ImposedPlacement(numTable, numStudent);
-        }else {
-            if (constr.charAt(1)=='N'){
-                String[] s=new String[10];
-                constraints[idC]=new PerGroup(s);
-            }
-        }
-    }
-    public void modifConstraint(String numStudent, int numTable, String constr, int id, int index){
-        if (constr.equals("PI")){
-            getImposedPlacement(id).set(numTable, numStudent);
-        }else if (constr.charAt(1)=='G'){
-            getPerGroup(id).modifStudent(numStudent, index);
+    public void changeMode(char mode){
+        if (mode=='G'){
+            constraints[0]=new PerClass(false);
+        }else if (mode=='S'){
+            constraints[0]=new PerClass(true);
         }else{
-            changeMode(constr.charAt(0));
+            constraints[0]=null;
         }
     }
-    public void removeConstraint(String constr, int id){
-
-    }
-    public void addStudentGroupConstraint(String numStudent, int idGp){
-        if (getPerGroup(idGp) != null){
-            ((PerGroup) constraints[idGp]).addStudent(numStudent);
-        }
-    }
-    public void modifStudentGroupConstraint(String numStudent, int idGp){
-
-    }
-    public void removeStudentGroupConstraint(String numStudent, int idGp){
-
-    }
-
     public PerGroup getPerGroup(int id){
         int cnt=0;
         for (int i=0; i< constraints.length; i++){
@@ -335,13 +310,51 @@ public class Data
         return null;
     }
 
-    public void changeMode(char mode){
-        if (mode=='G'){
-            constraints[0]=new PerClass(false);
-        }else if (mode=='S'){
-            constraints[0]=new PerClass(true);
+    /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
+    public void addConstraint(String numStudent, int numTable, String constr){
+        if (constr.equals("PI")){
+            constraints[idC]=new ImposedPlacement(numTable, numStudent);
+        }else {
+            if (constr.charAt(1)=='N'){
+                String[] s=new String[10];
+                constraints[idC]=new PerGroup(s);
+            }
+        }
+    }
+    public void modifConstraint(String numStudent, int numTable, String constr, int id, int index){
+        if (constr.equals("PI")){
+            getImposedPlacement(id).set(numTable, numStudent);
+        }else if (constr.charAt(1)=='G'){
+            getPerGroup(id).modifStudent(numStudent, index);
         }else{
-            constraints[0]=null;
+            changeMode(constr.charAt(0));
+        }
+    }
+    public void removeConstraint(String constr, int id) {
+        if (id < idC) {
+            for (int i = id; i < idC; i++) {
+                if (i==idC-1){
+                    constraints[i]=null;
+                }else{
+                    constraints[i]=constraints[i+1];
+                }
+            }
+            idC--;
+        }
+    }
+    public void addStudentGroupConstraint(String numStudent, int idGp){
+        if (getPerGroup(idGp) != null){
+            getPerGroup(idGp).addStudent(numStudent);
+        }
+    }
+    public void modifStudentGroupConstraint(String numStudent, int idGp, int idStu){
+        if (getPerGroup(idGp)!=null){
+            getPerGroup(idGp).modifStudent(numStudent, idStu);
+        }
+    }
+    public void removeStudentGroupConstraint(int idGp, int idStu){
+        if (getPerGroup(idGp)!=null){
+            getPerGroup(idGp).removeStudent(idStu);
         }
     }
 }

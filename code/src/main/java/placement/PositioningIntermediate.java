@@ -52,6 +52,13 @@ public class PositioningIntermediate
                     donnees.placeStudent(table, student.getId());
         }
 */
+        /*
+        * Bon dcp on va faire autrement pour insérer l'aléatoire plus facilement:
+        * Grosso modo on parcours les tables dans l'ordre croissant jusque soit qu'il y en ait plus, soit qu'il y ait
+        * plus d'etu a placer. Pour l'aléatoire, on prend un étu aléatoire parmi les étudiants pas placés. Si la table
+        * est pas dans les places libres, on passe à la suivante, sinon on essaye de placer l'étudiant, en prenant
+        * compte des contraintes, et si on peut le placer on passe à la table suivante.
+        * */
         //on commence à la table 1
         int table=1;
         //on parcours les tables jusqu'à la dernière ou jusqu'à ce qu'il n'y ait plus d'étu à placer

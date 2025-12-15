@@ -56,7 +56,7 @@ function createImposed() {
 </span>
 <span>
     <label for="tableImposed1"> Num Table </label>
-    <input name="idTabImp${nbImposedPlace}" id="tableImposed${nbImposedPlace}" type="number" disabled></input>
+    <input name="idTabImp${nbImposedPlace}" id="tableImposed${nbImposedPlace}" type="number" disabled>
 </span>
 <button class="remove" id="supTabSup${nbImposedPlace}" onclick="enleverPlaceSuppr()" disabled>remove</button>
 <button class="chercher" id="imposed${nbImposedPlace}" onclick="validerPlaceImposee()" disabled>find</button>
@@ -72,7 +72,7 @@ function createSuppr() {
         `<section class = "invalid">
 <span>
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
-    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled></input>
+    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled>
 </span>
 <button class="remove" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" disabled>remove</button>
 <button class="chercher" id="walTabSup${nbPlacesSuppr}" onclick="validerPlaceSuppr()" disabled>find</button>
@@ -80,22 +80,6 @@ function createSuppr() {
 
     document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin",placesSuppr) ;
 }
-
-function createGrp() {
-    groupes.push([]) ;
-    groupEtu = `<section class = "invalid" >
-    <span>
-        <label for="Etu1groupe${groupes.length}"> Num Table </label>
-        <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
-    </span>
-    <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGp(1)" disabled>remove</button>
-    <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" disabled>find</button>
-</section>`
-
-    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin",groupEtu) ;
-
-}
-
 
 function createGrp() {
     groupes.push([]) ;

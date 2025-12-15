@@ -20,6 +20,15 @@ public class PerGroup extends Constraint
     public void modifStudent(String numetu, int index){
         groupe[index]=numetu;
     }
+    public void removeStudent(int index){
+        for (int i=index; i<groupe.length; i++){
+            if (i==groupe.length-1){
+                groupe[i]=null;
+            }else{
+                groupe[i]=groupe[i+1];
+            }
+        }
+    }
 
     @Override
     public boolean validate(Student student, int table, Student[] etu)

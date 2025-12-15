@@ -85,7 +85,7 @@
 
                         <span>
                             <label for="numTabSup1"> Num Table </label>
-                            <input name="idTabSup1" id="numTabSup1" type="number" disabled></input>
+                            <input name="idTabSup1" id="numTabSup1" type="number" disabled>
                         </span>
                         <button class="remove" id="supTabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
                         <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>

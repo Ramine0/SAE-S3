@@ -81,7 +81,6 @@ function createSuppr() {
     document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin",placesSuppr) ;
 }
 
-
 function createGrp() {
     groupes.push([]) ;
     etuGrp = `

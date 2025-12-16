@@ -23,7 +23,7 @@
     <header class ="headerGauche">
         <a href="index.jsp">
             <div class="logo">
-                <img class="logoPageSec" src="resources/img/logo.gif" alt="Logo">
+                <img class="logoPageSec" src="resources/img/Logo_DSRoomMaker.png" alt="Logo">
                 <h1>DSRoomMaker Creation</h1>
             </div>
         </a>

@@ -134,12 +134,17 @@ hr {
     margin-left: 0px;
     height: 100%;
 }
-
-
-.logoPageSec {
-    width : 80% ;
+#logo{
     border-radius: 15px;
     border: 3px solid #5271ff;
+    width:30%;
+}
+
+.logoPageSec {
+    border-radius: 15px;
+    border: 3px solid #5271ff;
+    width: 30%;
+    height:30%;
 }
 
 #import, select{

@@ -12,7 +12,9 @@
 <body>
 
 <header id="visualisationHeader">
-        <img src="resources/img/logo.gif" alt="Logo" id="logo">
+    <a href="index.jsp">
+        <img src="resources/img/Logo_DSRoomMaker.png" alt="Logo" id="logo">
+    </a>
         <div id="topMenu">
             <div>
                 <button class="modif">

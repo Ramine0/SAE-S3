@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="placement.CreatingIntermediate" %>
+<% CreatingIntermediate crea ;%>
 <!DOCTYPE html>
 
 <html>
@@ -28,7 +30,7 @@
             </div>
         </a>
         <div class="general">
-            <form class="column" method="post" enctype="multipart/form-data" action="file-upload">
+            <form class="column" method="post" enctype="multipart/form-data" action="">
                 <input type="file" name="studentFile" id="studentFile" accept="text/csv">
                 <select id="mode" name="mode">
                     <option value="normal" selected> Placement basique</option>
@@ -43,9 +45,10 @@
                     <label for="larg"><h4>Nombre de tables par lignes</h4></label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
-                <button type="submit" id="boutNbPlaces">valider</button>
+                <button type="submit" id="boutNbPlaces" onclick=<% crea = new CreatingIntermediate() ;%>>valider</button>
                 <button type="submit" class="boutWalider" onclick=""> Générer</button>
             </form>
+
         </div>
 
     </header>

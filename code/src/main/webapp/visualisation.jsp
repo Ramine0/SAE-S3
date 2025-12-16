@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,9 +12,9 @@
 
 <header id="visualisationHeader">
     <a href="index.jsp">
-        <img src="resources/img/Logo_DSRoomMaker.png" alt="Logo" id="logo">
+        <img src="resources/img/Logo_DSRoomMaker.png" alt="Logo" class="logoPageSec">
     </a>
-        <div id="topMenu">
+        <div class="topMenu">
             <div>
                 <button class="modif">
                 <img src="resources/img/delete.png" alt="Supprimer">
@@ -31,16 +30,25 @@
             </div>
         </div>
 </header>
-<div id="content">
-<main>
-    <button> Table </button>
-</main>
+<div class="reverseLigne" id="content">
+    <main>
+        <button> Table </button>
+    </main>
 
-<aside>
-    <input type="file" name="importvisu" id="importvisu" accept="text/csv">
-    <button id="regenerate"> Regenerer </button>
-    <button id="exporter"> Exporter </button>
-</aside>
+    <aside class="asideCrea">
+        <div clas="topAsside">
+            <input type="file" name="importvisu" id="importvisu" accept="text/csv">
+            <button id="exporter"> Exporter </button>
+        </div>
+        <div class="valuesOfTable">
+            <span>
+                <label for="numTabSup1"> Num Table </label>
+                <input name="idTabSup1" id="numTabSup1" type="number" disabled>
+           </span>
+
+        </div>
+
+    </aside>
 </div>
 <footer>
     <div> &copy; Copyright </div>

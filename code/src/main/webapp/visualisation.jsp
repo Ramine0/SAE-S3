@@ -33,7 +33,7 @@
 </header>
 <div id="content">
 <main>
-    <button> Table </button>
+    <button class="table"> Table </button>
 </main>
 
 <aside>

@@ -28,12 +28,16 @@
     <div id="tutorial">
         <a href="resources/tuto.pdf">T&eacute;l&eacute;charger le tutoriel</a>
     </div>
-
+    <button id="boutest" onclick=""></button>
 </main>
 
 <footer>
     <div>&copy; Copyright</div>
 </footer>
+    <script src="resources/JS/script.js">
+        start() ;
+        callServlet() ;
 
+    </script>
 </body>
 </html>

@@ -5,9 +5,7 @@
   Time: 10:22
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ page import="placement.CreatingIntermediate" %>
-<% CreatingIntermediate crea ;%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 
 <html>
@@ -31,21 +29,23 @@
     </a>
     <div class="general">
         <form class="column" method="post" enctype="multipart/form-data" action="">
+            <label for="studentFile">Deposez votre fichier d'etudiants (CSV) </label>
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
+            <label for="mode">Separation des etudiants par Groupes Classes </label>
             <select id="mode" name="mode">
                 <option value="normal" selected> Placement basique</option>
                 <option value="group"> Par groupe</option>
                 <option value="sub-group"> Par sous-groupe</option>
             </select>
             <span class="ligne">
-                    <label for="long"><h4>Nombre de tables par colonnes</h4></label>
+                    <h4><label for="long">Nombre de tables par colonnes</label></h4>
                     <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
                 </span>
             <span class="ligne">
                     <label for="larg"><h4>Nombre de tables par lignes</h4></label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
-            <button type="submit" id="boutNbPlaces" onclick=<% crea = new CreatingIntermediate() ;%>>valider</button>
+            <button type="submit" id="boutNbPlaces" onclick="">valider</button>
             <button type="submit" class="boutWalider" onclick=""> Générer</button>
         </form>
 
@@ -65,11 +65,11 @@
                 <section class="invalid">
                         <span>
                             <label for="studentImposed1"> id Etudiant </label>
-                            <input name="idEtuImp1" id="studentImposed1" type="text" disabled></input>
+                            <input name="idEtuImp1" id="studentImposed1" type="text" disabled>
                         </span>
                     <span>
                             <label for="tableImposed1"> Num Table </label>
-                            <input name="idTabImp1" id="tableImposed1" type="number" disabled></input>
+                            <input name="idTabImp1" id="tableImposed1" type="number" disabled>
                         </span>
                     <button class="remove" id="supTabImp1" onclick="enleverPlaceSuppr()" disabled>remove</button>
                     <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" disabled>find</button>

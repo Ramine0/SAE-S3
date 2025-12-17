@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +33,7 @@
 </header>
 <div class="reverseLigne" id="content">
     <main>
-        <button> Table </button>
+        <button class="table"> Table </button>
     </main>
 
     <aside class="asideCrea">

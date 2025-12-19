@@ -30,7 +30,7 @@ document.getElementById("findImposed").onclick = function () {
     const studentId = document.getElementById("imposedStudentId").value;
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}`, true);
+    xhr.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&forCompletingId=${encodeURIComponent("0")}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -42,6 +42,20 @@ document.getElementById("findImposed").onclick = function () {
     };
 
     xhr.send();
+
+    const xhr2 = new XMLHttpRequest();
+    xhr2.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&forCompletingId=${encodeURIComponent("1")}`, true);
+
+    xhr2.onreadystatechange = function () {
+        if (xhr2.readyState === XMLHttpRequest.DONE) {
+            if (xhr2.status === 200)
+                document.getElementById("imposedStudentId").value = xhr2.responseText;
+            else
+                console.error('Error fetching student data');
+        }
+    };
+
+    xhr2.send();
 };
 
 

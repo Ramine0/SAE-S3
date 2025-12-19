@@ -2,8 +2,6 @@ package placement;
 
 import utilitaire.Utilitaire;
 
-import java.io.FileNotFoundException;
-
 public class CreatingIntermediate {
     private Data d;
     public CreatingIntermediate() {
@@ -67,6 +65,11 @@ public class CreatingIntermediate {
 
     public String[] descripData() {
         return d.descrip() ;
+    }
+
+    public Data getData()
+    {
+        return d;
     }
 
     //public void createConstraint(String constraint){ // pas sur pour l'instant, faut voir ce que renvoie la view vis à vis des contraintes

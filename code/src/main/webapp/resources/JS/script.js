@@ -27,35 +27,35 @@ groupes = [[]];
 */
 
 document.getElementById("findImposed").onclick = function () {
-    studentId = document.getElementById("imposedStudentId").value;
+    const studentId = document.getElementById("imposedStudentId").value;
 
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&forCompletingId=${encodeURIComponent("0")}`, true);
+    const idRequest = new XMLHttpRequest();
+    idRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
 
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200)
-                document.getElementById("imposedStudentId").value = xhr.responseText ;
+    idRequest.onreadystatechange = function () {
+        if (idRequest.readyState === XMLHttpRequest.DONE) {
+            if (idRequest.status === 200)
+                document.getElementById("imposedStudentId").value = idRequest.responseText ;
             else
                 console.error('Error fetching student data');
         }
     };
 
-    xhr.send();
+    idRequest.send();
 
-    const xhr2 = new XMLHttpRequest();
-    xhr2.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&forCompletingId=${encodeURIComponent("1")}`, true);
+    const nameRequest = new XMLHttpRequest();
+    nameRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("name")}`, true);
 
-    xhr2.onreadystatechange = function () {
-        if (xhr2.readyState === XMLHttpRequest.DONE) {
-            if (xhr2.status === 200)
-                document.getElementById("imposedStudentId").value = xhr2.responseText;
+    nameRequest.onreadystatechange = function () {
+        if (nameRequest.readyState === XMLHttpRequest.DONE) {
+            if (nameRequest.status === 200)
+                document.getElementById("imposedStudentName").value = nameRequest.responseText;
             else
                 console.error('Error fetching student data');
         }
     };
 
-    xhr2.send();
+    nameRequest.send();
 };
 
 

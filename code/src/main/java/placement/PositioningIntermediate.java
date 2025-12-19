@@ -63,14 +63,21 @@ public class PositioningIntermediate
         int table=1;
         //on parcours les tables jusqu'à la dernière ou jusqu'à ce qu'il n'y ait plus d'étu à placer
         while (table<donnees.getTables().length || donnees.freeStudents().length==0){
-            int idStudent=(int)(Math.random()*donnees.freeStudents().length); // etu aléatoire parmis les non placés
-            if (Utilitaire.in(table, donnees.freeTables())) {// on verifie que la table soit dans les places libres
-                if (walid(donnees.getStudentFromId(donnees.freeStudents()[idStudent]), table)) {// on vérifie qu'on puisse placer l'etu
-                    donnees.placeStudent(table, donnees.freeStudents()[idStudent]); // on place l'etu à table
-                    table++; // on passe à la table suivante
+            int idStudent=(int)(Math.random()*donnees.freeStudents().length);
+            // etu aléatoire parmis les non placés
+            if (Utilitaire.in(table, donnees.freeTables())) {
+                // on verifie que la table soit dans les places libres
+                if (walid(donnees.getStudentFromId(donnees.freeStudents()[idStudent]), table)) {
+                    // on vérifie qu'on puisse placer l'etu
+                    donnees.placeStudent(table, donnees.freeStudents()[idStudent]);
+                    // on place l'etu à table
+                    table++;
+                    // on passe à la table suivante
                 }
-            }else{// s'il la table n'est pas dans les places libres (retirée ou déjà prise):
-                table++;// on passe à la table suivante
+            }else{
+                // s'il la table n'est pas dans les places libres (retirée ou déjà prise):
+                table++;
+                // on passe à la table suivante
             }
         }
     }

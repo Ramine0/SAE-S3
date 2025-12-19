@@ -37,6 +37,8 @@ public class CreatingIntermediate {
     }
 
 
+
+
     public int findStudentForGroup (String idPartiel,int numGrp) {
         String etu = findEtu(idPartiel) ;
         if (etu.equals("le num donné n'existe pas")) {

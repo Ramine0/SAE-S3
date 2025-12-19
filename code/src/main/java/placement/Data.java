@@ -328,19 +328,13 @@ public class Data
     }
 
     /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
-    public void addConstraint(String numStudent, int numTable, String constr)
-    {
-        if (constr.equals("PI"))
-        {
-            constraints[idC] = new ImposedPlacement(numTable, numStudent);
-        } else
-        {
-            if (constr.charAt(1) == 'N')
-            {
-                String[] s = new String[10];
-                constraints[idC] = new PerGroup(s);
-            }
+    public boolean addStudentGroupConstraint(String numStudent, int idGp){
+        if (getPerGroup(idGp) != null){
+            if (getPerGroup(idGp).haveStu(numStudent)) { return false; }
+            getPerGroup(idGp).addStudent(numStudent);
+            return true ;
         }
+        return false ;
     }
 
     public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)
@@ -375,14 +369,6 @@ public class Data
         }
     }
 
-    public void addStudentGroupConstraint(String numStudent, int idGp)
-    {
-        if (getPerGroup(idGp) != null)
-        {
-            getPerGroup(idGp).addStudent(numStudent);
-        }
-    }
-
     public void modifStudentGroupConstraint(String numStudent, int idGp, int idStu)
     {
         if (getPerGroup(idGp) != null)
@@ -398,4 +384,29 @@ public class Data
             getPerGroup(idGp).removeStudent(idStu);
         }
     }
+
+    public String completeId(String incomplet) {
+        String possib ="" ;
+        if (incomplet.startsWith("p") && students.get(0).getId().startsWith("1")){
+            incomplet = "1"+ incomplet.substring(1);
+        } else if (incomplet.startsWith("1") && students.get(0).getId().startsWith("p")){
+            incomplet = "p"+ incomplet.substring(1);
+        }
+
+        for (Student s : students) {
+            if (s.getId() == incomplet) {
+                return incomplet;
+            }else if(possib != "" && s.getId().startsWith(incomplet)) {
+                return "" ;
+            }else if (s.getId().startsWith(incomplet)) {
+                possib = s.getId() ;
+            }
+        }
+        return possib ;
+    }
+
+    public boolean addGrp () {
+        return addConstraint( null,  0, 'N') ;
+    }
+
 }

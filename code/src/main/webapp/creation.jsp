@@ -82,7 +82,7 @@
                     <button class="chercher" id="findImposed">find</button>
                 </section>
 
-                <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>
+                <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" >+</button>
             </div>
 
         </div>

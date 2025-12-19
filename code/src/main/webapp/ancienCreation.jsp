@@ -1,6 +1,6 @@
 <%--
   Created by IntelliJ IDEA.
-  User: malimam
+  User: malimam (aka. le goat)
   Date: 19/11/2025
   Time: 10:22
   To change this template use File | Settings | File Templates.
@@ -20,7 +20,7 @@
 
 <body class="pageCrea">
 
-<header class ="headerGauche">
+<header class="headerGauche">
     <a href="index.jsp">
         <div class="logo">
             <img class="logoPageSec" src="resources/img/Logo_DSRoomMaker.png" alt="Logo">
@@ -63,19 +63,26 @@
             <div class="ligne">
 
                 <section class="invalid">
-                        <span>
-                            <label for="studentImposed1"> id Etudiant </label>
-                            <input name="idEtuImp1" id="studentImposed1" type="text" disabled>
-                        </span>
-                    <span>
-                            <label for="tableImposed1"> Num Table </label>
-                            <input name="idTabImp1" id="tableImposed1" type="number" disabled>
-                        </span>
-                    <button class="remove" id="supTabImp1" onclick="enleverPlaceSuppr()" disabled>remove</button>
-                    <button class="chercher" id="imposed1" onclick="validerPlaceImposee()" disabled>find</button>
+                    <div>
+                        <label for="imposedStudentId"> id Etudiant </label>
+                        <input name="imposedStudentId" id="imposedStudentId" type="text">
+                    </div>
+
+                    <div>
+                        <label for="imposedTableId"> Num Table </label>
+                        <input name="imposedTableId" id="imposedTableId" type="number" disabled>
+                    </div>
+
+                    <div>
+                        <label for="imposedStudentName">Nom de l'étudiant</label>
+                        <input type="text" id="imposedStudentName" disabled>
+                    </div>
+
+                    <button class="remove" id="deleteImposed" disabled>remove</button>
+                    <button class="chercher" id="findImposed">find</button>
                 </section>
 
-                <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled >+</button>
+                <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>
             </div>
 
         </div>
@@ -84,7 +91,7 @@
 
             <h2> Tables Supprimées </h2>
             <div class="ligne">
-                <section class = "invalid">
+                <section class="invalid">
 
                         <span>
                             <label for="numTabSup1"> Num Table </label>
@@ -94,17 +101,17 @@
                     <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
                 </section>
 
-                <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled >+</button>
+                <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled>+</button>
             </div>
 
         </div>
 
         <div id="EtuDist">
 
-            <h2> Eleves mis a distance  </h2>
+            <h2> Eleves mis a distance </h2>
             <span>
                     <div class="ligne" id="Gp1">
-                        <section class = "invalid" >
+                        <section class="invalid">
 
                             <span>
                                 <label for="Etu1groupe1"> Num Etudiant </label>
@@ -114,12 +121,12 @@
                             <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
                         </section>
 
-                        <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled >+</button>
+                        <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled>+</button>
                         <h4>ajouter un etudiant au groupe</h4>
 
                     </div>
 
-                    <button id="ajoutGroup" class="boutPlus" onclick="createGrp()" disabled >+</button>
+                    <button id="ajoutGroup" class="boutPlus" onclick="createGrp()" disabled>+</button>
                     <h4>ajouter un groupe</h4>
                 </span>
         </div>
@@ -129,8 +136,7 @@
 </main>
 
 
-<script src = "resources/JS/script.js" ></script>
-
+<script src="resources/JS/script.js"></script>
 
 
 </body>

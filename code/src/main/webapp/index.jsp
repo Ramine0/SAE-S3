@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<%@ page contentType="text/html;charset=UTF-8" %>
+
 <html lang="fr">
 
 <head>
@@ -11,7 +13,7 @@
 
 <body>
 
-<header class = "headerCentre">
+<header class="headerCentre">
     <img class="logoHomePage" src="resources/img/Logo_DSRoomMaker.png" alt="Logo">
 
     <h1>DSRoomMaker</h1>
@@ -19,14 +21,14 @@
 
 <main>
     <div id="butts">
-        <a href="creation">G&eacute;n&eacute;rer un placement</a>
+        <a href="ancienCreation.jsp">Générer un placement</a>
         <a href="visualisation.jsp">Visualiser/Modifier</a>
     </div>
 
     <hr>
 
     <div id="tutorial">
-        <a href="resources/tuto.pdf">T&eacute;l&eacute;charger le tutoriel</a>
+        <a href="resources/tuto.pdf">Télécharger le tutoriel</a>
     </div>
     <button id="boutest" onclick=""></button>
 </main>
@@ -34,10 +36,10 @@
 <footer>
     <div>&copy; Copyright</div>
 </footer>
-    <script src="resources/JS/script.js">
-        start() ;
-        callServlet() ;
+<script src="resources/JS/script.js">
+    start();
+    callServlet();
 
-    </script>
+</script>
 </body>
 </html>

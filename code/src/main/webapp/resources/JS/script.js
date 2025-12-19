@@ -1,12 +1,8 @@
 // const constGp=document.querySelector('#mode');
 nbImposedPlace = 1;
 nbPlacesSuppr = 1;
-groupes = [[]] ;
+groupes = [[]];
 
-
-
-
-const studentFile = document.querySelector('#studentFile');
 
 // dans les fonctions javascript a faire il y a :
 /*
@@ -30,26 +26,41 @@ const studentFile = document.querySelector('#studentFile');
 
 */
 
+document.getElementById("findImposed").onclick = function () {
+    const studentId = document.getElementById("imposedStudentId").value;
 
-function validerEtu(idPartiel)
-{
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}`, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200)
+                document.getElementById("imposedStudentName").value = xhr.responseText;
+            else
+                console.error('Error fetching student data');
+        }
+    };
+
+    xhr.send();
+};
+
+
+function validerEtu(idPartiel) {
     console.log(idPartiel);
 }
 
-function validerTable()
-{
+function validerTable() {
 
 }
 
-function validerEtuGroup()
-{
+function validerEtuGroup() {
 
 }
 
 function createImposed() {
-    nbImposedPlace++ ;
+    nbImposedPlace++;
     imposedPlace =
-`<section class="invalid">
+        `<section class="invalid">
 <span>
     <label for="studentImposed${nbImposedPlace}"> id Etudiant </label>
     <input name="idEtuImp${nbImposedPlace}" id="studentImposed${nbImposedPlace}" type="text" disabled></input>
@@ -60,14 +71,14 @@ function createImposed() {
 </span>
 <button class="remove" id="supTabSup${nbImposedPlace}" onclick="enleverPlaceSuppr()" disabled>remove</button>
 <button class="chercher" id="imposed${nbImposedPlace}" onclick="validerPlaceImposee()" disabled>find</button>
-</section>` ;
+</section>`;
 
-    document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin",imposedPlace) ;
+    document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
 }
 
 
 function createSuppr() {
-    nbPlacesSuppr++ ;
+    nbPlacesSuppr++;
     placesSuppr =
         `<section class = "invalid">
 <span>
@@ -76,13 +87,13 @@ function createSuppr() {
 </span>
 <button class="remove" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" disabled>remove</button>
 <button class="chercher" id="walTabSup${nbPlacesSuppr}" onclick="validerPlaceSuppr()" disabled>find</button>
-</section>` ;
+</section>`;
 
-    document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin",placesSuppr) ;
+    document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin", placesSuppr);
 }
 
 function createGrp() {
-    groupes.push([]) ;
+    groupes.push([]);
     etuGrp = `
     <h4>Mis a distance ${groupes.length} </h4>
     <div class="ligne" id="Gp1">
@@ -98,14 +109,14 @@ function createGrp() {
         <h4>ajouter un etudiant au groupe</h4>
     </div>`
 
-    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin",etuGrp) ;
+    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
 
 }
 
 function createEtuGrp() {
-    numGrp = window.event.target.id.charAt(11) -1;
-    groupes[numGrp].push(0) ;
-    numEtu = groupes[numGrp].length ;
+    numGrp = window.event.target.id.charAt(11) - 1;
+    groupes[numGrp].push(0);
+    numEtu = groupes[numGrp].length;
     groupEtu = `<section class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
@@ -114,16 +125,16 @@ function createEtuGrp() {
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGp()" disabled>remove</button>
     <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtu()" disabled>find</button>`
     console.log()
-    document.querySelector(`#ajoutEtuGrp${numGrp+1}`).insertAdjacentHTML("beforebegin",groupEtu) ;
+    document.querySelector(`#ajoutEtuGrp${numGrp + 1}`).insertAdjacentHTML("beforebegin", groupEtu);
 
 }
 
-function displayID(){
-    console.log(window.event.target.id) ;
+function displayID() {
+    console.log(window.event.target.id);
 }
 
 function displayValOf(id) {
-    console.log(document.querySelector('#'+id)) ;
+    console.log(document.querySelector('#' + id));
 }
 
 

@@ -35,6 +35,15 @@ public class Student
         return id;
     }
 
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
 
     public boolean sameGroup(Student etu, boolean sub)
     {

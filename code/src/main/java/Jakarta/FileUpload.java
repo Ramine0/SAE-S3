@@ -11,7 +11,6 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -33,7 +32,7 @@ public class FileUpload extends HttpServlet
 
             // Save the file to the server
             InputStream inputStream = filePart.getInputStream();
-            Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), new  CopyOption[] { StandardCopyOption.REPLACE_EXISTING });
+            Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);
 
 
         } catch (IOException | ServletException e)

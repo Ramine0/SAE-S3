@@ -120,5 +120,10 @@ function createEtuGrp() {
 
 function displayID(){
     console.log(window.event.target.id) ;
-    "string1 test2"
 }
+
+function displayValOf(id) {
+    console.log(document.querySelector('#'+id)) ;
+}
+
+

@@ -311,15 +311,16 @@ public class Data
     }
 
     /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
-    public void addConstraint(String numStudent, int numTable, String constr){
-        if (constr.equals("PI")){
+    public boolean addConstraint(String numStudent, int numTable, char constr){
+        if (constr == 'P'){
             constraints[idC]=new ImposedPlacement(numTable, numStudent);
-        }else {
-            if (constr.charAt(1)=='N'){
+            return true ;
+        }else if (constr =='N'){
                 String[] s=new String[10];
                 constraints[idC]=new PerGroup(s);
-            }
+                return true ;
         }
+        return false ;
     }
     public void modifConstraint(String numStudent, int numTable, String constr, int id, int index){
         if (constr.equals("PI")){
@@ -342,10 +343,13 @@ public class Data
             idC--;
         }
     }
-    public void addStudentGroupConstraint(String numStudent, int idGp){
+    public boolean addStudentGroupConstraint(String numStudent, int idGp){
         if (getPerGroup(idGp) != null){
+            if (getPerGroup(idGp).haveStu(numStudent)) { return false; }
             getPerGroup(idGp).addStudent(numStudent);
+            return true ;
         }
+        return false ;
     }
     public void modifStudentGroupConstraint(String numStudent, int idGp, int idStu){
         if (getPerGroup(idGp)!=null){
@@ -376,6 +380,10 @@ public class Data
             }
         }
         return possib ;
+    }
+
+    public boolean addGrp () {
+        return addConstraint( null,  0, 'N') ;
     }
 
 }

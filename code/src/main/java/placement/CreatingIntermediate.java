@@ -36,10 +36,26 @@ public class CreatingIntermediate {
         return Utilitaire.in(numTab,d.freeTables()) ;
     }
 
-    /*
-    public boolean findStudentForGroup (String idPartiel) {
 
-    }*/
+    public int findStudentForGroup (String idPartiel,int numGrp) {
+        String etu = findEtu(idPartiel) ;
+        if (etu.equals("le num donné n'existe pas")) {
+            return -1 ;
+        }else if (etu.length() > 8) {
+            return 0 ;
+        }else {
+            if (d.addStudentGroupConstraint(etu,numGrp)) {
+                return 1;
+            }else {
+                return 2 ;
+            }
+        }
+
+    }
+
+    public boolean addGrp() {
+        return d.addGrp() ;
+    }
 
 
     //public void createConstraint(String constraint){ // pas sur pour l'instant, faut voir ce que renvoie la view vis à vis des contraintes

@@ -35,7 +35,7 @@ document.getElementById("findImposed").onclick = function () {
     idRequest.onreadystatechange = function () {
         if (idRequest.readyState === XMLHttpRequest.DONE) {
             if (idRequest.status === 200)
-                document.getElementById("imposedStudentId").value = idRequest.responseText ;
+                document.getElementById("imposedStudentId").value = idRequest.responseText;
             else
                 console.error('Error fetching student data');
         }
@@ -57,6 +57,18 @@ document.getElementById("findImposed").onclick = function () {
 
     nameRequest.send();
 };
+
+function moveFileAndEnableFields() {
+    const data = new FormData(document.getElementById("fileUploadForm"));
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "file-upload");
+
+    xhr.send(data);
+
+    document.getElementById("imposedTableId").disabled = false;
+    document.getElementById("imposedStudentId").disabled = false;
+}
 
 
 function validerEtu(idPartiel) {

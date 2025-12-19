@@ -1,5 +1,6 @@
 package placement;
 
+import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
 public class CreatingIntermediate {
@@ -40,8 +41,23 @@ public class CreatingIntermediate {
         return Utilitaire.in(numTab,d.freeTables()) ;
     }
 
-
-
+    public int findNumsForImp (String id, int num) {
+        String etu = findEtu(id) ;
+        num = findTable(num) ? num : -1 ;
+        if (etu.equals("le num donné n'existe pas")) {
+            return -1 ;
+        }else if (etu.length() > 8) {
+            return 0 ;
+        }else if (num == -1 ) {
+            return -2 ;
+        }else {
+            if (d.addImp(etu,num)) {
+                return 1;
+            }else {
+                return 2 ;
+            }
+        }
+    }
 
     public int findStudentForGroup (String idPartiel,int numGrp) {
         String etu = findEtu(idPartiel) ;
@@ -59,18 +75,11 @@ public class CreatingIntermediate {
 
     }
 
-    public boolean addGrp() {
-        return d.addGrp() ;
-    }
-
     public String[] descripData() {
         return d.descrip() ;
     }
 
-    public Data getData()
-    {
-        return d;
-    }
+    public String studentInfo (String num) { Student student = d.getStudentFromId(num); return student.getName() + " " + student.getFirstName() ;}
 
     //public void createConstraint(String constraint){ // pas sur pour l'instant, faut voir ce que renvoie la view vis à vis des contraintes
     // Pas sur d'en avoir besoin pour le coup

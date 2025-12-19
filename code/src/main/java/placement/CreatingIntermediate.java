@@ -81,6 +81,19 @@ public class CreatingIntermediate {
 
     public String studentInfo (String num) { Student student = d.getStudentFromId(num); return student.getName() + " " + student.getFirstName() ;}
 
+    public int supprTable(int num) {
+        num = findTable(num) ? num : -1 ;
+        if (num == -1 ) {
+            return -2 ;
+        }else {
+            if (d.removeTable(num) && ! d.isDeleted(num)) {
+                return 1;
+            }else {
+                return 2 ;
+            }
+        }
+    }
+
     //public void createConstraint(String constraint){ // pas sur pour l'instant, faut voir ce que renvoie la view vis à vis des contraintes
     // Pas sur d'en avoir besoin pour le coup
     //}

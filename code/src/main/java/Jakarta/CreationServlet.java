@@ -28,10 +28,12 @@ public class CreationServlet extends HttpServlet
         PrintWriter out = response.getWriter();
 
         String id = salle.crea.findEtu(request.getParameter("id"));
-
+        String num = request.getParameter("table");
         if (request.getParameter("fieldToFill").equals("id"))
             out.print(id);
-        else if (request.getParameter("fieldToFill").equals("name"))
+        else if( request.getParameter("fieldToFill").equals("table")){
+            out.print(num);
+        }else if (request.getParameter("fieldToFill").equals("name"))
         {
             Student student = salle.crea.getData().getStudentFromId(id);
             out.print(student.getName() + " " + student.getFirstName());

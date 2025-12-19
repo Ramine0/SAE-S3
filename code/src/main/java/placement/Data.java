@@ -377,6 +377,19 @@ public class Data
         }
     }
 
+    public boolean addConstraint(String numStudent, int numTable, char constr){
+        if (constr == 'P'){
+            constraints[idC]=new ImposedPlacement(numTable, numStudent);
+            return true ;
+        }else if (constr =='N'){
+            String[] s=new String[10];
+            constraints[idC]=new PerGroup(s);
+            return true ;
+        }
+        return false ;
+    }
+
+
     public void removeStudentGroupConstraint(int idGp, int idStu)
     {
         if (getPerGroup(idGp) != null)

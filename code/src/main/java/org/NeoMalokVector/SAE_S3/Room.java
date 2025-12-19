@@ -1,17 +1,25 @@
 package org.NeoMalokVector.SAE_S3;
 
 import jdk.jshell.execution.Util;
+import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
 public class Room
 {
+
+    public CreatingIntermediate crea ;
     private PositioningIntermediate positioningIntermediate;
 
 
     public Room() {
-        this.positioningIntermediate = new PositioningIntermediate("R00",null,null);
+        crea = new CreatingIntermediate();
+
     }
 
+    public Room(String path) {
+        crea = new CreatingIntermediate(path);
+
+    }
     private void createRoom() {
 
     }

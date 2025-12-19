@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.NeoMalokVector.SAE_S3.Room;
 import org.NeoMalokVector.SAE_S3.Student;
 import placement.Data;
 
@@ -14,26 +15,22 @@ import java.io.PrintWriter;
 public class CreationServlet extends HttpServlet
 {
 
-    private Data data = null;
+    private Room salle = null;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        if (data == null)
-        {
-            data = new Data();
-            data.chargerFichier(request.getServletContext().getRealPath("/") + getServletContext().getInitParameter("upload.path"));
-            data.init();
+        if (salle == null) {
+            salle = new Room(request.getServletContext().getRealPath("/")+"/") ;
         }
-
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
         String id = request.getParameter("id");
-        Student student = data.getStudentFromId(id);
-
-        out.print(student.getName() + " " + student.getFirstName());
+        String student = salle.crea.findEtu(id) ;
+        out.print(student);
         out.flush();
+
     }
 
 }

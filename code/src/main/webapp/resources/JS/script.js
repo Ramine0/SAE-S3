@@ -27,7 +27,7 @@ groupes = [[]];
 */
 
 document.getElementById("findImposed").onclick = function () {
-    const studentId = document.getElementById("imposedStudentId").value;
+    studentId = document.getElementById("imposedStudentId").value;
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}`, true);
@@ -35,7 +35,7 @@ document.getElementById("findImposed").onclick = function () {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200)
-                document.getElementById("imposedStudentName").value = xhr.responseText;
+                document.getElementById("imposedStudentId").value = xhr.responseText ;
             else
                 console.error('Error fetching student data');
         }

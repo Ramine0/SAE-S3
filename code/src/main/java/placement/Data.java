@@ -27,18 +27,33 @@ public class Data
     // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
 
-    public Data()
-    {
+    public Data (String path) {
+        try {
+            chargerFichier(path);
+        }catch (FileNotFoundException e) {
+            System.out.println("Fichier n'existe pas");
+        }
+        init() ;
     }
 
-    public void init()
-    {
+    public Data() {
+        try {
+            chargerFichier();
+        }catch (FileNotFoundException e) {
+            System.out.println("Fichier n'existe pas");
+        }
+        init() ;
+    }
+    private void init() {
+
         constraints = new Constraint[students.size()];
         idC = 0;
 
         tables = new Table[students.size()]; // Quand le js sera fini, faudra changer la taille
         for (int i = 0; i < tables.length; i++)
             tables[i] = new Table();
+
+
     }
 
     private int[] deletedTables;
@@ -190,10 +205,13 @@ public class Data
         return students.toArray(new Student[0]);
     }
 
+    private void chargerFichier() throws FileNotFoundException {
+        chargerFichier("src/main/webapp/") ;
+    }
     // le chargement du fichier exel donné par le/la prof
-    public void chargerFichier(String filePath) throws FileNotFoundException
+    private void chargerFichier(String path) throws FileNotFoundException
     {
-        Scanner sc = new Scanner(new FileReader(filePath + "/etudiants.csv"));
+        Scanner sc = new Scanner(new FileReader(path+"resources/etudiants.csv"));
         String[] line;
 
         String id, nom, prenom;

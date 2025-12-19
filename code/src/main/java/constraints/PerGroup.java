@@ -46,4 +46,8 @@ public class PerGroup extends Constraint
         return true;
     }
 
+    public  boolean haveStu (String id) {
+        return Utilitaire.in(id,studentsConstraints.toArray()) ;
+    }
+
 }

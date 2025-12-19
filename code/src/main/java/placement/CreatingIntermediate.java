@@ -94,6 +94,11 @@ public class CreatingIntermediate {
         }
     }
 
+    public Data getData()
+    {
+        return d;
+    }
+
     //public void createConstraint(String constraint){ // pas sur pour l'instant, faut voir ce que renvoie la view vis à vis des contraintes
     // Pas sur d'en avoir besoin pour le coup
     //}

@@ -3,6 +3,9 @@ nbImposedPlace = 1;
 nbPlacesSuppr = 1;
 groupes = [[]];
 
+document.getElementById("imposedTableId").disabled = true;
+document.getElementById("imposedStudentId").disabled = true;
+
 
 // dans les fonctions javascript a faire il y a :
 /*

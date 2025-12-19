@@ -1,6 +1,7 @@
 package Jakarta;
 
 
+import placement.CreatingIntermediate;
 import placement.Data;
 import placement.PositioningIntermediate;
 
@@ -11,19 +12,14 @@ public class HelloServlet
 
     static void main(String[] args) throws FileNotFoundException
     {
+        CreatingIntermediate crea = new CreatingIntermediate() ;
+        System.out.println(crea.findEtu("12403674")) ;
 
 
 
-            Data d = new Data();
 
-            PositioningIntermediate intermediate = new PositioningIntermediate("R00", null, d);
-            intermediate.CreerPlacement();
-
-            for (String s : d.descrip())
-            {
-                System.out.println(s);
-            }
-//            new FileReader("../webapp/resources/etudiants.csv");
 
     }
+
+
 }

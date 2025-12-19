@@ -22,6 +22,13 @@ public class Data
 {
     private Constraint[] constraints;
     private Table[] tables;
+    private int[] deletedTables;
+
+
+    public int[] getDeletedTables() {
+        return deletedTables;
+    }
+
     public final ArrayList<Student> students = new ArrayList<>();
     int idC;
     // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
@@ -52,11 +59,11 @@ public class Data
         tables = new Table[students.size()]; // Quand le js sera fini, faudra changer la taille
         for (int i = 0; i < tables.length; i++)
             tables[i] = new Table();
-
+        deletedTables = new  int[tables.length/2];
 
     }
 
-    private int[] deletedTables;
+
 
     public void placeStudent(int table, String idStudent)
     {
@@ -79,16 +86,6 @@ public class Data
     public boolean isDeleted(int numTable)
     {
         return (Utilitaire.in(numTable, deletedTables));
-    }
-
-    public Table getTable(int numTable)
-    {
-        return tables[numTable];
-    }
-
-    public int[] getDeleted()
-    {
-        return deletedTables;
     }
 
     public String[] freeStudents()
@@ -154,10 +151,15 @@ public class Data
         return free;
     }
 
-    public void removeTable(int num)
+    public boolean removeTable(int num)
     {
-        int i = tables.length - existingTables().length - 1;
-        deletedTables[i] = num;
+        for (int i : deletedTables) {
+            if (deletedTables[i] == 0) {
+                deletedTables[i] = num;
+                return true ;
+            }
+        }
+        return false ;
     }
 
     public void unremoveTable(int num)
@@ -396,7 +398,7 @@ public class Data
     }
 
     public boolean addConstraint(String numStudent, int numTable, char constr){
-        if (constr == 'P'){
+        if (constr == 'I'){
             constraints[idC]=new ImposedPlacement(numTable, numStudent);
             return true ;
         }else if (constr =='N'){
@@ -438,6 +440,10 @@ public class Data
 
     public boolean addGrp () {
         return addConstraint( null,  0, 'N') ;
+    }
+
+    public boolean addImp(String id, int num) {
+        return addConstraint(id, num, 'I') ;
     }
 
 }

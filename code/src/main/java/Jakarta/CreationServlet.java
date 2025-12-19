@@ -9,7 +9,6 @@ import placement.Data;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Objects;
 
 @WebServlet("/getStudentName")
 public class CreationServlet extends HttpServlet
@@ -33,11 +32,7 @@ public class CreationServlet extends HttpServlet
         String id = request.getParameter("id");
         Student student = data.getStudentFromId(id);
 
-        if (Objects.equals(request.getParameter("forCompletingId"), "0"))
-            out.print(student.getName() + " " + student.getFirstName());
-        else
-            out.print("loooooollll");
-
+        out.print(student.getName() + " " + student.getFirstName());
         out.flush();
     }
 

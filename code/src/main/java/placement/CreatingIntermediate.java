@@ -12,6 +12,12 @@ public class CreatingIntermediate {
         }catch(Exception e) {}
 
     }
+    public CreatingIntermediate(String path) {
+        try {
+            d = new Data(path) ;
+        }catch(Exception e) {}
+
+    }
     public void createTables(int lon, int lar){
         d.setNumberTables(lon*lar);
     }
@@ -59,6 +65,9 @@ public class CreatingIntermediate {
         return d.addGrp() ;
     }
 
+    public String[] descripData() {
+        return d.descrip() ;
+    }
 
     //public void createConstraint(String constraint){ // pas sur pour l'instant, faut voir ce que renvoie la view vis à vis des contraintes
     // Pas sur d'en avoir besoin pour le coup

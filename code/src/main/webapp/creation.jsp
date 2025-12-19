@@ -28,7 +28,7 @@
         </div>
     </a>
     <div class="general">
-        <form class="column" method="post" enctype="multipart/form-data" action="">
+        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm" onchange="return moveFileAndEnableFields()">
             <label for="studentFile">Deposez votre fichier d'etudiants (CSV) </label>
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
             <label for="mode">Separation des etudiants par Groupes Classes </label>
@@ -45,7 +45,6 @@
                     <label for="larg"><h4>Nombre de tables par lignes</h4></label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
-            <button type="submit" id="boutNbPlaces" onclick="">valider</button>
             <button type="submit" class="boutWalider" onclick=""> Générer</button>
         </form>
 
@@ -65,7 +64,7 @@
                 <section class="invalid">
                     <div>
                         <label for="imposedStudentId"> id Etudiant </label>
-                        <input name="imposedStudentId" id="imposedStudentId" type="text">
+                        <input name="imposedStudentId" id="imposedStudentId" type="text" disabled>
                     </div>
 
                     <div>
@@ -82,7 +81,7 @@
                     <button class="chercher" id="findImposed">find</button>
                 </section>
 
-                <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" >+</button>
+                <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>
             </div>
 
         </div>

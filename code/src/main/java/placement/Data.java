@@ -88,16 +88,6 @@ public class Data
         return (Utilitaire.in(numTable, deletedTables));
     }
 
-    public Table getTable(int numTable)
-    {
-        return tables[numTable];
-    }
-
-    public int[] getDeleted()
-    {
-        return deletedTables;
-    }
-
     public String[] freeStudents()
     {
         String[] place = new String[students.size()];
@@ -161,10 +151,15 @@ public class Data
         return free;
     }
 
-    public void removeTable(int num)
+    public boolean removeTable(int num)
     {
-        int i = tables.length - existingTables().length - 1;
-        deletedTables[i] = num;
+        for (int i : deletedTables) {
+            if (deletedTables[i] == 0) {
+                deletedTables[i] = num;
+                return true ;
+            }
+        }
+        return false ;
     }
 
     public void unremoveTable(int num)

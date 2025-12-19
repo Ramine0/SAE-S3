@@ -35,7 +35,8 @@ public class CreationServlet extends HttpServlet
                 out.print(num);
             }else if (request.getParameter("fieldToFill").equals("name"))
             {
-                out.print(salle.crea.studentInfo(id));
+                Student student = salle.crea.getData().getStudentFromId(id);
+                out.print(student.getName() + " " + student.getFirstName());
             }
         }else if (request.getParameter("constraint").equals("supprimeTable")){
             String num = request.getParameter("table");
@@ -47,7 +48,8 @@ public class CreationServlet extends HttpServlet
                 out.print(id);
             else if (request.getParameter("fieldToFill").equals("name"))
             {
-                out.print(salle.crea.studentInfo(id));
+                Student student = salle.crea.getData().getStudentFromId(id);
+                out.print(student.getName() + " " + student.getFirstName());
             }
         }
 

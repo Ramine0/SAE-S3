@@ -26,15 +26,30 @@ public class CreationServlet extends HttpServlet
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        if (request.getParameter("constraint").equals("imposePlace")){
+            String id = salle.crea.findEtu(request.getParameter("id"));
+            String num = request.getParameter("table");
+            if (request.getParameter("fieldToFill").equals("id"))
+                out.print(id);
+            else if( request.getParameter("fieldToFill").equals("table")){
+                out.print(num);
+            }else if (request.getParameter("fieldToFill").equals("name"))
+            {
 
-        String id = salle.crea.findEtu(request.getParameter("id"));
-
-        if (request.getParameter("fieldToFill").equals("id"))
-            out.print(id);
-        else if (request.getParameter("fieldToFill").equals("name"))
-        {
-            Student student = salle.crea.getData().getStudentFromId(id);
-            out.print(student.getName() + " " + student.getFirstName());
+                out.print(salle.crea.studentInfo(id));
+            }
+        }else if (request.getParameter("constraint").equals("supprimeTable")){
+            String num = request.getParameter("table");
+            if( request.getParameter("fieldToFill").equals("table"))
+                out.print(num);
+        }else if (request.getParameter("constraint").equals("separeEtu")){
+            String id = salle.crea.findEtu(request.getParameter("id"));
+            if (request.getParameter("fieldToFill").equals("id"))
+                out.print(id);
+            else if (request.getParameter("fieldToFill").equals("name"))
+            {
+                out.print(salle.crea.studentInfo(id));
+            }
         }
 
         out.flush();

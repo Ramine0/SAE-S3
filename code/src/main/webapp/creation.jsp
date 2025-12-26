@@ -42,9 +42,10 @@
                     <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
                 </span>
             <span class="ligne">
-                    <label for="larg"><h4>Nombre de tables par lignes</h4></label>
-                    <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
-                </span>
+                <label for="larg"><h4>Nombre de tables par lignes</h4></label>
+                <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
+            </span>
+            <button class="boutEnable" onclick="enableZone()"> Générer</button>
             <button type="submit" class="boutWalider" onclick=""> Générer</button>
         </form>
 

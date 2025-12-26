@@ -69,8 +69,19 @@ function moveFileAndEnableFields() {
 
     xhr.send(data);
 
-    document.getElementById("imposedTableId").disabled = false;
     document.getElementById("imposedStudentId").disabled = false;
+    document.getElementById("Etu1groupe1").disabled=false;
+}
+
+function setTableNumber(){
+    const lon = document.getElementById("long");
+    const lar = document.getElementById("larg");
+
+    const xhr=new XMLHttpRequest();
+    xhr.open("POST", "set-table");
+
+    document.getElementById("imposedTableId").disabled = false;
+    document.getElementById("numTabSup1").disabled=false;
 }
 
 

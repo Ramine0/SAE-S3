@@ -45,6 +45,7 @@
                     <label for="larg"><h4>Nombre de tables par lignes</h4></label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
+            <button class="validNbTable" onclick="setTableNumber()"></button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
             <button type="submit" class="boutWalider" onclick=""> Générer</button>
         </form>
 
@@ -69,7 +70,7 @@
 
                     <div>
                         <label for="imposedTableId"> Num Table </label>
-                        <input name="imposedTableId" id="imposedTableId" type="number" disabled>
+                        <input name="imposedTableId" id="imposedTableId" type="number" enabled>
                     </div>
 
                     <div>

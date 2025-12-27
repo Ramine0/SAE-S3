@@ -39,7 +39,7 @@
             </select>
             <span class="ligne">
                     <h4><label for="long">Nombre de tables par colonnes</label></h4>
-                    <input type="number" name="long" id="long" min="4" max="20" step="1" value="4">
+                    <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
                 </span>
             <span class="ligne">
                     <label for="larg"><h4>Nombre de tables par lignes</h4></label>

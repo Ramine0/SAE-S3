@@ -290,6 +290,9 @@ public class Data
 
     public void setNumberTables(int num)
     {
+        if (tables!=null){
+            tables=null; //jsp si on delete comme ça, en gros si le prof veut changer les dimensions, faut delete ce qu'il y avait avant
+        }
         tables = new Table[num];
         for (int i = 0; i < tables.length; i++)
             tables[i] = new Table();

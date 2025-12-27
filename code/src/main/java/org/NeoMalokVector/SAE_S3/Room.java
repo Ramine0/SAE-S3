@@ -7,7 +7,7 @@ import placement.PositioningIntermediate;
 public class Room
 {
 
-    public CreatingIntermediate crea ;
+    private CreatingIntermediate crea ;
     private PositioningIntermediate positioningIntermediate;
 
 
@@ -19,6 +19,12 @@ public class Room
     public Room(String path) {
         crea = new CreatingIntermediate(path);
 
+    }
+    public CreatingIntermediate getCrea() {
+        return crea;
+    }
+    public PositioningIntermediate getPositioningIntermediate() {
+        return positioningIntermediate;
     }
     private void createRoom() {
 

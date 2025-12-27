@@ -74,6 +74,12 @@ public class RectangularMap extends Map
         width = larg ;
         height = longu;
     }
+    public int getWidth(){
+        return width;
+    }
+    public int getHeight(){
+        return height;
+    }
 
 }
 

@@ -15,7 +15,6 @@ public class PositioningIntermediate
     private Data donnees;
     // on fait ce qu'on veux des contraintes c plus simple et + pratique
 
-
     // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
     // charAt(0) c le type (rectangle) et les 2 suivants c l et L (pour rect)
     // on donne aussi les numero de tables supprimées
@@ -122,6 +121,9 @@ public class PositioningIntermediate
 
         return voisins.toArray(new Student[0]);
     }
-
+    public boolean setDimensions(int lon, int lar){
+        map=new RectangularMap(lon, lar);
+        return true;
+    }
 
 }

@@ -61,6 +61,7 @@ document.getElementById("findImposed").onclick = function () {
     nameRequest.send();
 };
 
+
 function moveFileAndEnableFields() {
     const data = new FormData(document.getElementById("fileUploadForm"));
 
@@ -78,7 +79,7 @@ function setTableNumber(){
     const lar = document.getElementById("larg");
 
     const xhr=new XMLHttpRequest();
-    xhr.open("POST", "set-table");
+    xhr.open("GET", `set-table?long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
 
     document.getElementById("imposedTableId").disabled = false;
     document.getElementById("numTabSup1").disabled=false;

@@ -3,8 +3,8 @@ nbImposedPlace = 1;
 nbPlacesSuppr = 1;
 groupes = [[]];
 
-document.getElementById("imposedTableId").disabled = true;
-document.getElementById("imposedStudentId").disabled = true;
+fileOk = false ;
+
 
 
 // dans les fonctions javascript a faire il y a :
@@ -29,7 +29,7 @@ document.getElementById("imposedStudentId").disabled = true;
 
 */
 
-document.getElementById("findImposed").onclick = function () {
+document.getElementById("findImposed1").onclick = function () {
     const studentId = document.getElementById("imposedStudentId").value;
 
     const idRequest = new XMLHttpRequest();
@@ -61,7 +61,7 @@ document.getElementById("findImposed").onclick = function () {
     nameRequest.send();
 };
 
-function moveFileAndEnableFields() {
+function moveFile() {
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
@@ -69,8 +69,10 @@ function moveFileAndEnableFields() {
 
     xhr.send(data);
 
-    document.getElementById("imposedTableId").disabled = false;
-    document.getElementById("imposedStudentId").disabled = false;
+    fileOk = true;
+    console.log("no soucy") ;
+
+
 }
 
 
@@ -166,4 +168,41 @@ function displayValOf(id) {
     console.log(document.querySelector('#' + id));
 }
 
+function enableZone() {
+    if (fileOk) {
+        document.querySelector("#studentFile").disabled = true ;
+        document.querySelector("#long").disabled = true ;
+        document.querySelector("#larg").disabled = true ;
 
+        /*
+        faire un get de creation des datas
+         */
+
+        // imposed
+        document.querySelector("#imposedStudentId1").disabled = false ;
+        document.querySelector("#imposedTableId1").disabled = false ;
+        document.querySelector("#findImposed1").disabled = false ;
+        document.querySelector("#imposedStudentName1").disabled = false ;
+        document.querySelector("#deleteImposed1").disabled = false ;
+
+        // deleted
+        document.querySelector("#supTabSup1").disabled = false ;
+        document.querySelector("#numTabSup1").disabled = false ;
+        document.querySelector("#walTabSup1").disabled = false ;
+
+        // group
+
+        document.querySelector("#walEtu1G1").disabled = false ;
+        document.querySelector("#supEtu1G1").disabled = false ;
+        document.querySelector("#Etu1groupe1").disabled = false ;
+        document.querySelector("#findImposed").disabled = false ;
+        document.querySelector("#imposedStudentName").disabled = false ;
+        document.querySelector("#deleteImposed").disabled = false ;
+
+
+    }else {
+        document.querySelector("#startConstr").insertAdjacentHTML("afterend","<h5 class='error'>Aucun fichier donné</h5>");
+    }
+
+
+}

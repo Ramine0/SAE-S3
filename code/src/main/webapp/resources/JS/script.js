@@ -30,7 +30,7 @@ fileOk = false ;
 */
 
 document.getElementById("findImposed1").onclick = function () {
-    const studentId = document.getElementById("imposedStudentId").value;
+    const studentId = document.getElementById("imposedStudentId1").value;
 
     const idRequest = new XMLHttpRequest();
     idRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
@@ -52,7 +52,7 @@ document.getElementById("findImposed1").onclick = function () {
     nameRequest.onreadystatechange = function () {
         if (nameRequest.readyState === XMLHttpRequest.DONE) {
             if (nameRequest.status === 200)
-                document.getElementById("imposedStudentName").value = nameRequest.responseText;
+                document.getElementById("imposedStudentName1").value = nameRequest.responseText;
             else
                 console.error('Error fetching student data');
         }
@@ -81,7 +81,7 @@ function setTableNumber(){
     const xhr=new XMLHttpRequest();
     xhr.open("POST", "set-table");
 
-    document.getElementById("imposedTableId").disabled = false;
+    document.getElementById("imposedTableId1").disabled = false;
     document.getElementById("numTabSup1").disabled=false;
 }
 
@@ -179,23 +179,25 @@ function displayValOf(id) {
 
 function enableZone() {
     if (fileOk) {
-        document.querySelector("#studentFile").disabled = true ;
-        document.querySelector("#long").disabled = true ;
-        document.querySelector("#larg").disabled = true ;
 
-        /*
-        faire un get de creation des datas
-         */
+        //on valide les nb de tables
+        setTableNumber() ;
+
+        document.querySelector("#studentFile").disabled = true;
+        document.querySelector("#long").disabled = true;
+        document.querySelector("#larg").disabled = true;
 
         // imposed
-        document.querySelector("#imposedStudentId1").disabled = false ;
-        document.querySelector("#imposedTableId1").disabled = false ;
-        document.querySelector("#findImposed1").disabled = false ;
-        document.querySelector("#imposedStudentName1").disabled = false ;
-        document.querySelector("#deleteImposed1").disabled = false ;
+        document.querySelector("#imposedStudentId1").disabled = false;
+        document.querySelector("#imposedTableId1").disabled = false;
+        document.querySelector("#findImposed1").disabled = false;
+        document.querySelector("#imposedStudentName1").disabled = false;
+        document.querySelector("#deleteImposed1").disabled = false;
 
         // deleted
-        document.querySelector("#supTabSup1").disabled = false ;
-        document.querySelector("#numTabSup1").disabled = false ;
-        document.querySelector("#walTabSup1").disabled = false ;
+        document.querySelector("#supTabSup1").disabled = false;
+        document.querySelector("#numTabSup1").disabled = false;
+        document.querySelector("#walTabSup1").disabled = false;
 
+    }
+}

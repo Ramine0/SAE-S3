@@ -3,8 +3,7 @@ nbImposedPlace = 1;
 nbPlacesSuppr = 1;
 groupes = [[]];
 
-document.getElementById("imposedTableId").disabled = true;
-document.getElementById("imposedStudentId").disabled = true;
+fileOk = false ;
 
 
 // dans les fonctions javascript a faire il y a :
@@ -29,8 +28,8 @@ document.getElementById("imposedStudentId").disabled = true;
 
 */
 
-document.getElementById("findImposed").onclick = function () {
-    const studentId = document.getElementById("imposedStudentId").value;
+document.getElementById("findImposed1").onclick = function () {
+    const studentId = document.getElementById("imposedStudentId1").value;
 
     const idRequest = new XMLHttpRequest();
     idRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
@@ -52,7 +51,7 @@ document.getElementById("findImposed").onclick = function () {
     nameRequest.onreadystatechange = function () {
         if (nameRequest.readyState === XMLHttpRequest.DONE) {
             if (nameRequest.status === 200)
-                document.getElementById("imposedStudentName").value = nameRequest.responseText;
+                document.getElementById("imposedStudentName1").value = nameRequest.responseText;
             else
                 console.error('Error fetching student data');
         }
@@ -61,7 +60,7 @@ document.getElementById("findImposed").onclick = function () {
     nameRequest.send();
 };
 
-function moveFileAndEnableFields() {
+function moveFile() {
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
@@ -69,8 +68,9 @@ function moveFileAndEnableFields() {
 
     xhr.send(data);
 
-    document.getElementById("imposedStudentId").disabled = false;
-    document.getElementById("Etu1groupe1").disabled=false;
+    fileOk = true;
+    console.log("no soucy") ;
+
 }
 
 function setTableNumber(){
@@ -78,12 +78,9 @@ function setTableNumber(){
     const lar = document.getElementById("larg");
 
     const xhr=new XMLHttpRequest();
-    xhr.open("POST", "set-table");
-
-    document.getElementById("imposedTableId").disabled = false;
-    document.getElementById("numTabSup1").disabled=false;
+    xhr.open("GET", `set-table?long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
+    console.log(xhr.responseText);
 }
-
 
 function validerEtu(idPartiel) {
     console.log(idPartiel);
@@ -177,4 +174,31 @@ function displayValOf(id) {
     console.log(document.querySelector('#' + id));
 }
 
+function enableZone() {
+    if (fileOk) { // donc j'ai fais des tests, il rentre bien là dedans et il fait les trucs, mais après il actualise
+        //on valide les nb de tables
+        setTableNumber() ; //autre test fait, ça vient pas de ça, j'ai essayé en mettant en comm et ça règle rien du tout
+        // ça vient peut être du bouton, mais je vois pas trop d'où ça viendrait
+        //pk le prof pourrait pas modifier après???
+        //document.querySelector("#studentFile").disabled = true;
+        //document.querySelector("#long").disabled = true;
+        //document.querySelector("#larg").disabled = true;
 
+        // imposed
+        document.querySelector("#imposedStudentId1").disabled = false;
+        document.querySelector("#imposedTableId1").disabled = false;
+        document.querySelector("#findImposed1").disabled = false;
+        document.querySelector("#imposedStudentName1").disabled = false;
+        document.querySelector("#deleteImposed1").disabled = false;
+
+        // deleted
+        document.querySelector("#supTabSup1").disabled = false;
+        document.querySelector("#numTabSup1").disabled = false;
+        document.querySelector("#walTabSup1").disabled = false;
+
+        // groupe
+        document.querySelector("#Etu1groupe1").disabled=false;
+        document.querySelector("#supEtu1G1").disabled=false;
+        document.querySelector("#walEtu1G1").disabled=false;
+    }
+}

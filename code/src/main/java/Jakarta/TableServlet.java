@@ -20,15 +20,20 @@ import java.nio.file.StandardCopyOption;
 @WebServlet("/set-table")
 @MultipartConfig
 
-public class TableServlet {
+public class TableServlet extends HttpServlet {
     private Room salle=null;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (salle==null){
             salle = new Room(request.getServletContext().getRealPath("/") + "/");
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        salle.getCrea().createTables(Integer.parseInt(request.getParameter("long")), Integer.parseInt(request.getParameter("larg")));
-        salle.getPositioningIntermediate();
+        int lon=Integer.parseInt(request.getParameter("long"));
+        int lar=Integer.parseInt(request.getParameter("larg"));
+        salle.getCrea().createTables(lon, lar);
+        salle.getPositioningIntermediate().setDimensions(lon, lar);
+        out.print(salle.getCrea().getNumberTables());
+        out.flush();
     }
 }

@@ -125,5 +125,8 @@ public class PositioningIntermediate
         map=new RectangularMap(lon, lar);
         return true;
     }
+    public Map getMap(){
+        return map;
+    }
 
 }

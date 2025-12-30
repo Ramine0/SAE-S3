@@ -20,7 +20,9 @@ public class CreatingIntermediate {
     public void createTables(int lon, int lar){
         d.setNumberTables(lon*lar);
     }
-
+    public int getNumberTables(){
+        return d.getTables().length;
+    }
     public String afc() {
         return "as une donnée" ;
     }

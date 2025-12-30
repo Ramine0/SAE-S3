@@ -72,9 +72,18 @@ function moveFile() {
     fileOk = true;
     console.log("no soucy") ;
 
-
 }
 
+function setTableNumber(){
+    const lon = document.getElementById("long");
+    const lar = document.getElementById("larg");
+
+    const xhr=new XMLHttpRequest();
+    xhr.open("POST", "set-table");
+
+    document.getElementById("imposedTableId").disabled = false;
+    document.getElementById("numTabSup1").disabled=false;
+}
 
 function validerEtu(idPartiel) {
     console.log(idPartiel);
@@ -190,19 +199,3 @@ function enableZone() {
         document.querySelector("#numTabSup1").disabled = false ;
         document.querySelector("#walTabSup1").disabled = false ;
 
-        // group
-
-        document.querySelector("#walEtu1G1").disabled = false ;
-        document.querySelector("#supEtu1G1").disabled = false ;
-        document.querySelector("#Etu1groupe1").disabled = false ;
-        document.querySelector("#findImposed").disabled = false ;
-        document.querySelector("#imposedStudentName").disabled = false ;
-        document.querySelector("#deleteImposed").disabled = false ;
-
-
-    }else {
-        document.querySelector("#startConstr").insertAdjacentHTML("afterend","<h5 class='error'>Aucun fichier donné</h5>");
-    }
-
-
-}

@@ -79,7 +79,8 @@ function setTableNumber(){
 
     const xhr=new XMLHttpRequest();
     xhr.open("GET", `set-table?long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
-    console.log(xhr.responseText);
+    const res=xhr.responseText;
+    console.log(res);
 }
 
 function validerEtu(idPartiel) {

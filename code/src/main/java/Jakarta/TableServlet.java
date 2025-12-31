@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import org.NeoMalokVector.SAE_S3.Room;
+import placement.RectangularMap;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +35,10 @@ public class TableServlet extends HttpServlet {
         salle.getCrea().createTables(lon, lar);
         salle.getPositioningIntermediate().setDimensions(lon, lar);
         out.print(salle.getCrea().getNumberTables());
+        out.print(";");
+        out.print(((RectangularMap)salle.getPositioningIntermediate().getMap()).getHeight());
+        out.print(";");
+        out.print(((RectangularMap)salle.getPositioningIntermediate().getMap()).getWidth());
         out.flush();
     }
 }

@@ -62,7 +62,7 @@
             <h2> Places imposées </h2>
             <div class="ligne">
 
-                <section class="invalid">
+                <section id="impose1" class="invalid">
                     <div>
                         <label for="imposedStudentId1"> id Etudiant </label>
                         <input name="imposedStudentId1" id="imposedStudentId1" type="text" disabled>
@@ -91,7 +91,7 @@
 
             <h2> Tables Supprimées </h2>
             <div class="ligne">
-                <section class="invalid">
+                <section id="supTable1" class="invalid">
 
                         <span>
                             <label for="numTabSup1"> Num Table </label>
@@ -111,7 +111,7 @@
             <h2> Eleves mis a distance </h2>
             <span>
                     <div class="ligne" id="Gp1">
-                        <section class="invalid">
+                        <section id="E1G1" class="invalid">
 
                             <span>
                                 <label for="Etu1groupe1"> Num Etudiant </label>

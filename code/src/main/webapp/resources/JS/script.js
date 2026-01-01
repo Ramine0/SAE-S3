@@ -30,7 +30,9 @@ fileOk = false ;
 
 document.getElementById("findImposed1").onclick = function () {
     const studentId = document.getElementById("imposedStudentId1").value;
-
+    const tableId = document.getElementById("imposedTableId1").value;
+    const studentName = document.getElementById("imposedStudentName1");
+    valid=true;
     const idRequest = new XMLHttpRequest();
     idRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
 
@@ -38,26 +40,33 @@ document.getElementById("findImposed1").onclick = function () {
         if (idRequest.readyState === XMLHttpRequest.DONE) {
             if (idRequest.status === 200)
                 document.getElementById("imposedStudentId").value = idRequest.responseText;
-            else
+            else{
                 console.error('Error fetching student data');
+                valid=false;
+            }
         }
     };
 
     idRequest.send();
+    if (studentName==null){
+        const nameRequest = new XMLHttpRequest();
+        nameRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("name")}`, true);
 
-    const nameRequest = new XMLHttpRequest();
-    nameRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("name")}`, true);
+        nameRequest.onreadystatechange = function () {
+            if (nameRequest.readyState === XMLHttpRequest.DONE) {
+                if (nameRequest.status === 200)
+                    document.getElementById("imposedStudentName1").value = nameRequest.responseText;
+                else
+                    console.error('Error fetching student data');
+                    valid=false;
+            }
+        };
+        nameRequest.send();
+    }
+    const tableVerif=new XMLHttpRequest();
+    tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&table=${encodeURIComponent(tableId)}`, true);
 
-    nameRequest.onreadystatechange = function () {
-        if (nameRequest.readyState === XMLHttpRequest.DONE) {
-            if (nameRequest.status === 200)
-                document.getElementById("imposedStudentName1").value = nameRequest.responseText;
-            else
-                console.error('Error fetching student data');
-        }
-    };
 
-    nameRequest.send();
 };
 
 function moveFile() {
@@ -78,9 +87,8 @@ function setTableNumber(){
     const lar = document.getElementById("larg");
 
     const xhr=new XMLHttpRequest();
-    xhr.open("GET", `set-table?long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
-    const res=xhr.responseText;
-    console.log(res);
+    xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
+    console.log(xhr.responseText);
 }
 
 function validerEtu(idPartiel) {
@@ -176,10 +184,8 @@ function displayValOf(id) {
 }
 
 function enableZone() {
-    if (fileOk) { // donc j'ai fais des tests, il rentre bien là dedans et il fait les trucs, mais après il actualise
-        //on valide les nb de tables
-        setTableNumber() ; //autre test fait, ça vient pas de ça, j'ai essayé en mettant en comm et ça règle rien du tout
-        // ça vient peut être du bouton, mais je vois pas trop d'où ça viendrait
+    if (fileOk) {
+        setTableNumber() ;
         //pk le prof pourrait pas modifier après???
         //document.querySelector("#studentFile").disabled = true;
         //document.querySelector("#long").disabled = true;

@@ -18,7 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-@WebServlet("/set-table")
+@WebServlet("/table")
 @MultipartConfig
 
 public class TableServlet extends HttpServlet {
@@ -30,15 +30,27 @@ public class TableServlet extends HttpServlet {
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        int lon=Integer.parseInt(request.getParameter("long"));
-        int lar=Integer.parseInt(request.getParameter("larg"));
-        salle.getCrea().createTables(lon, lar);
-        salle.getPositioningIntermediate().setDimensions(lon, lar);
-        out.print(salle.getCrea().getNumberTables());
-        out.print(";");
-        out.print(((RectangularMap)salle.getPositioningIntermediate().getMap()).getHeight());
-        out.print(";");
-        out.print(((RectangularMap)salle.getPositioningIntermediate().getMap()).getWidth());
+        if (request.getParameter("action").equals("define")){
+            int lon=Integer.parseInt(request.getParameter("long"));
+            int lar=Integer.parseInt(request.getParameter("larg"));
+            salle.getCrea().createTables(lon, lar);
+            salle.getPositioningIntermediate().setDimensions(lon, lar);
+            if(salle.getCrea().getNumberTables()==0){
+                out.print("Table nulle");
+            }
+            else if (salle.getCrea().getNumberTables()==lon*lar && ((RectangularMap)salle.getPositioningIntermediate().getMap()).getHeight()==lon && ((RectangularMap)salle.getPositioningIntermediate().getMap()).getWidth()==lar){
+                out.print("Table construite comme il faut");
+            }else{
+                out.print("Mauvaises valeurs");
+            }
+        }else if (request.getParameter("action").equals("present")){
+            int num=Integer.parseInt(request.getParameter("num"));
+            if (salle.getCrea().findTable(num)){
+                out.print("valide");
+            }else{
+                out.print("table introuvable");
+            }
+        }
         out.flush();
     }
 }

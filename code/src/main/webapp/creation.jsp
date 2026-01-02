@@ -46,7 +46,7 @@
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
             <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
-            <button type="submit" class="boutWalider" onclick=""> Générer</button>
+            <button type="submit" id="walid" class="boutWalider" onclick=""> Générer</button>
         </form>
 
     </div>
@@ -117,7 +117,7 @@
                                 <label for="Etu1groupe1"> Num Etudiant </label>
                                 <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
                             </span>
-                            <button class="remove" id="supEtu1G1" onclick="enleverEtuGp()" disabled>remove</button>
+                            <button class="remove" id="supEtu1G1" onclick="enleverEtuGrp()" disabled>remove</button>
                             <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
                         </section>
 

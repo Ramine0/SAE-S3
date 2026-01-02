@@ -1,7 +1,7 @@
 // const constGp=document.querySelector('#mode');
 nbImposedPlace = 1;
 nbPlacesSuppr = 1;
-groupes = [[]];
+groupes = [[1]];
 
 fileOk = false ;
 
@@ -78,8 +78,6 @@ function moveFile() {
     xhr.send(data);
 
     fileOk = true;
-    console.log("no soucy") ;
-
 }
 
 function setTableNumber(){
@@ -95,13 +93,6 @@ function validerEtu(idPartiel) {
     console.log(idPartiel);
 }
 
-function validerTable() {
-
-}
-
-function validerEtuGroup() {
-
-}
 
 function createImposed() {
     nbImposedPlace++;
@@ -109,14 +100,14 @@ function createImposed() {
         `<section class="invalid">
 <span>
     <label for="studentImposed${nbImposedPlace}"> id Etudiant </label>
-    <input name="idEtuImp${nbImposedPlace}" id="studentImposed${nbImposedPlace}" type="text" disabled></input>
+    <input name="idEtuImp${nbImposedPlace}" id="studentImposed${nbImposedPlace}" type="text" ></input>
 </span>
 <span>
     <label for="tableImposed1"> Num Table </label>
-    <input name="idTabImp${nbImposedPlace}" id="tableImposed${nbImposedPlace}" type="number" disabled></input>
+    <input name="idTabImp${nbImposedPlace}" id="tableImposed${nbImposedPlace}" type="number" ></input>
 </span>
-<button class="remove" id="supTabSup${nbImposedPlace}" onclick="enleverPlaceSuppr()" disabled>remove</button>
-<button class="chercher" id="imposed${nbImposedPlace}" onclick="validerPlaceImposee()" disabled>find</button>
+<button class="remove" id="supTabSup${nbImposedPlace}" onclick="enleverPlaceSuppr()" >remove</button>
+<button class="chercher" id="imposed${nbImposedPlace}" onclick="validerPlaceImposee()" >find</button>
 </section>`;
 
     document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
@@ -131,8 +122,8 @@ function createSuppr() {
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
     <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled></input>
 </span>
-<button class="remove" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" disabled>remove</button>
-<button class="chercher" id="walTabSup${nbPlacesSuppr}" onclick="validerPlaceSuppr()" disabled>find</button>
+<button class="remove" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" >remove</button>
+<button class="chercher" id="walTabSup${nbPlacesSuppr}" onclick="validerPlaceSuppr()" >find</button>
 </section>`;
 
     document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin", placesSuppr);
@@ -148,14 +139,15 @@ function createGrp() {
                 <label for="Etu1groupe${groupes.length}"> Num Etudiant </label>
                 <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
             </span>
-            <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGp()" disabled>remove</button>
-            <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" disabled>find</button>
+            <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
+            <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" >find</button>
         </section>
-        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" onclick="createEtuGrp()" disabled >+</button>
+        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" onclick="createEtuGrp()"  >+</button>
         <h4>ajouter un etudiant au groupe</h4>
     </div>`
 
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
+    document.querySelector('#ajoutGroup').disabled = true ;
 
 }
 
@@ -166,13 +158,13 @@ function createEtuGrp() {
     groupEtu = `<section class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
-        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="number" disabled></input>
+        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="number" ></input>
     </span>
-    <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGp()" disabled>remove</button>
-    <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtu()" disabled>find</button>`
+    <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
+    <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtu()" >find</button>`
     console.log()
     document.querySelector(`#ajoutEtuGrp${numGrp + 1}`).insertAdjacentHTML("beforebegin", groupEtu);
-
+    document.querySelector(`#ajoutEtuGrp${numGrp + 1}`).disabled = true  ;
 }
 
 function displayID() {
@@ -207,5 +199,57 @@ function enableZone() {
         document.querySelector("#Etu1groupe1").disabled=false;
         document.querySelector("#supEtu1G1").disabled=false;
         document.querySelector("#walEtu1G1").disabled=false;
+
+        //le bout generer
+        document.querySelector("#walid").style.backgroundColor = '#ec400b' ;
+
     }
 }
+
+function setValid(section) {
+    if (! section.startsWith("#")) {
+        section = "#"+section ;
+    }
+    document.querySelector(section).classList.remove("invalid") ;
+    document.querySelector(section).classList.add("valid") ;
+    if (section.includes("impose")) {
+        document.querySelector("#ajoutImpos").disabled = false;
+
+        document.querySelector(`#imposedStudentId${nbImposedPlace}`).disabled = true;
+        document.querySelector(`#imposedTableId${nbImposedPlace}`).disabled = true;
+        document.querySelector(`#findImposed${nbImposedPlace}`).disabled = true;
+        document.querySelector(`#imposedStudentName${nbImposedPlace}`).disabled = true;
+
+    }else if (section.includes("supTable")) {
+        document.querySelector("#ajoutSuppr").disabled = false ;
+
+        document.querySelector(`#numTabSup${nbPlacesSuppr}`).disabled = true;
+        document.querySelector(`#walTabSup${nbPlacesSuppr}`).disabled = true;
+
+    }else {
+        numGrp = groupes.length ;
+        if (section.includes(`G${numGrp}`)) {
+            document.querySelector("#ajoutGroup").disabled = false ;
+        }else {
+            numGrp = section.charAt(3) ;
+        }
+
+        numEtu = groupes[numGrp-1].length ;
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled =false ;
+        console.log(`desactivation de l'etu : #Etu${numEtu}groupe${numGrp}`)
+        document.querySelector(`#Etu${numEtu}groupe${numGrp}`).disabled=true;
+        document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled=true;
+        
+    }
+
+}
+
+function enleverEtuGrp() {
+
+    numGrp = window.event.target.id.charAt(8) ;
+    numEtu = window.event.target.id.charAt(6) ;
+    console.log(`validation de la section : E${numEtu}G${numGrp} `)
+
+    setValid(`E${numEtu}G${numGrp}`) ;
+}
+

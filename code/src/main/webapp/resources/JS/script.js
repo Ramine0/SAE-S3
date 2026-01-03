@@ -38,7 +38,7 @@ document.getElementById("findImposed1").onclick = function () {
     idRequest.onreadystatechange = function () {
         if (idRequest.readyState === XMLHttpRequest.DONE) {
             if (idRequest.status === 200) {
-                document.getElementById("imposedStudentId").value = idRequest.responseText;
+                document.getElementById("imposedStudentId1").value = idRequest.responseText;
             }else{
                 console.error('Error fetching student data');
                 valid=false;
@@ -68,7 +68,6 @@ document.getElementById("findImposed1").onclick = function () {
     }else{
         console.log("PROBLEME");
     }
-
 };
 
 function moveFile() {

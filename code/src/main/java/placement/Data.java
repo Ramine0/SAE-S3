@@ -55,12 +55,6 @@ public class Data
 
         constraints = new Constraint[students.size()];
         idC = 0;
-
-        tables = new Table[students.size()]; // Quand le js sera fini, faudra changer la taille
-        for (int i = 0; i < tables.length; i++)
-            tables[i] = new Table();
-        deletedTables = new  int[tables.length/2];
-
     }
 
 
@@ -293,9 +287,22 @@ public class Data
         if (tables!=null){
             tables=null; //jsp si on delete comme ça, en gros si le prof veut changer les dimensions, faut delete ce qu'il y avait avant
         }
-        tables = new Table[num];
-        for (int i = 0; i < tables.length; i++)
-            tables[i] = new Table();
+        if (deletedTables!=null){
+            deletedTables=null;
+        }
+        if (num>=students.size()){
+            tables = new Table[num];
+            for (int i = 0; i < tables.length; i++)
+                tables[i] = new Table();
+            deletedTables = new int[num];
+        }else{
+            tables=new Table[students.size()];
+            for (int i=0; i<tables.length; i++){
+                tables[i]=new Table();
+            }
+            deletedTables = new int[students.size()];
+        }
+
     }
 
     public void changeMode(char mode)
@@ -403,10 +410,12 @@ public class Data
     public boolean addConstraint(String numStudent, int numTable, char constr){
         if (constr == 'I'){
             constraints[idC]=new ImposedPlacement(numTable, numStudent);
+            idC++;
             return true ;
         }else if (constr =='N'){
             String[] s=new String[10];
             constraints[idC]=new PerGroup(s);
+            idC++;
             return true ;
         }
         return false ;

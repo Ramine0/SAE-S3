@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.NeoMalokVector.SAE_S3.Room;
 import org.NeoMalokVector.SAE_S3.Student;
+import utilitaire.Utilitaire;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -28,14 +29,9 @@ public class CreationServlet extends HttpServlet
         PrintWriter out = response.getWriter();
         if (request.getParameter("constraint").equals("imposePlace")){
             String id = salle.getCrea().findEtu(request.getParameter("id"));
-            String num = request.getParameter("table");
-            if (request.getParameter("fieldToFill").equals("id"))
+            if (request.getParameter("fieldToFill").equals("id")){
                 out.print(id);
-            else if( request.getParameter("fieldToFill").equals("table")){
-                out.print(num);
-            }else if (request.getParameter("fieldToFill").equals("name"))
-            {
-
+            }else if (request.getParameter("fieldToFill").equals("name")) {
                 out.print(salle.getCrea().studentInfo(id));
             }
         }else if (request.getParameter("constraint").equals("supprimeTable")){

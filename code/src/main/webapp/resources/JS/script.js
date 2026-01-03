@@ -31,16 +31,15 @@ fileOk = false ;
 document.getElementById("findImposed1").onclick = function () {
     const studentId = document.getElementById("imposedStudentId1").value;
     const tableId = document.getElementById("imposedTableId1").value;
-    const studentName = document.getElementById("imposedStudentName1");
     valid=true;
     const idRequest = new XMLHttpRequest();
-    idRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
+    idRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
 
     idRequest.onreadystatechange = function () {
         if (idRequest.readyState === XMLHttpRequest.DONE) {
-            if (idRequest.status === 200)
+            if (idRequest.status === 200) {
                 document.getElementById("imposedStudentId").value = idRequest.responseText;
-            else{
+            }else{
                 console.error('Error fetching student data');
                 valid=false;
             }
@@ -48,24 +47,27 @@ document.getElementById("findImposed1").onclick = function () {
     };
 
     idRequest.send();
-    if (studentName==null){
-        const nameRequest = new XMLHttpRequest();
-        nameRequest.open("GET", `getStudentName?id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("name")}`, true);
+    const nameRequest = new XMLHttpRequest();
+    nameRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("name")}`, true);
 
-        nameRequest.onreadystatechange = function () {
-            if (nameRequest.readyState === XMLHttpRequest.DONE) {
-                if (nameRequest.status === 200)
-                    document.getElementById("imposedStudentName1").value = nameRequest.responseText;
-                else
-                    console.error('Error fetching student data');
-                    valid=false;
+    nameRequest.onreadystatechange = function () {
+        if (nameRequest.readyState === XMLHttpRequest.DONE) {
+            if (nameRequest.status === 200) {
+                document.getElementById("imposedStudentName1").value = nameRequest.responseText;
+            }else {
+                console.error('Error fetching student data');
+                valid = false;
             }
-        };
-        nameRequest.send();
-    }
+        }
+    };
+    nameRequest.send();
     const tableVerif=new XMLHttpRequest();
     tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&table=${encodeURIComponent(tableId)}`, true);
-
+    if (valid && tableVerif.responseText==="valide"){
+        console.log("Tout est bon");
+    }else{
+        console.log("PROBLEME");
+    }
 
 };
 

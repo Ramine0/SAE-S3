@@ -72,7 +72,7 @@ function validerPlaceImposee()  {
     }else{
         console.log("PROBLEME");
     }
-};
+}
 
 function moveFile() {
     const data = new FormData(document.getElementById("fileUploadForm"));
@@ -102,15 +102,15 @@ function createImposed() {
         `<section id="impose${nbImposedPlace}" class="invalid">
 <span>
     <label for="studentImposedId${nbImposedPlace}"> id Etudiant </label>
-    <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" ></input>
+    <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
 </span>
 <span>
     <label for="imposedTable${nbImposedPlace}"> Num Table </label>
-    <input name="idTabImp${nbImposedPlace}" id="imposedTable${nbImposedPlace}" type="number" ></input>
+    <input name="idTabImp${nbImposedPlace}" id="imposedTable${nbImposedPlace}" type="number" >
 </span>
 <span>
     <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
-    <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" ></input>
+    <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
 </span>
 <button class="remove" id="supTabSup${nbImposedPlace}" onclick="enleverPlaceSuppr()" >remove</button>
 <button class="chercher" id="findImposed${nbImposedPlace}" onclick="validerPlaceImposee()" >find</button>
@@ -126,7 +126,7 @@ function createSuppr() {
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
 <span>
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
-    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled></input>
+    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled>
 </span>
 <button class="remove" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" >remove</button>
 <button class="chercher" id="walTabSup${nbPlacesSuppr}" onclick="validerPlaceSuppr()" >find</button>
@@ -143,7 +143,7 @@ function createGrp() {
         <section id="E1G${groupes.length}" class = "invalid">
             <span>
                 <label for="Etu1groupe${groupes.length}"> Num Etudiant </label>
-                <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
+                <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled>
             </span>
             <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtuGrp('waletu1G${groupes.length}')" >find</button>
@@ -164,7 +164,7 @@ function createEtuGrp() {
     groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
-        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="number" ></input>
+        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="number" >
     </span>
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
     <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`

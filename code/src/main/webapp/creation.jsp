@@ -70,16 +70,16 @@
 
                     <div>
                         <label for="imposedTableId1"> Num Table </label>
-                        <input name="imposedTableId" id="imposedTableId1" type="number" disabled>
+                        <input name="imposedTableId" id="imposedTable1" type="number" disabled>
                     </div>
 
                     <div>
                         <label for="imposedStudentName1">Nom de l'étudiant</label>
-                        <input type="text" id="imposedStudentName1" disabled>
+                        <input name="idStudentImp1" type="text" id="imposedStudentName1" disabled>
                     </div>
 
                     <button class="remove" id="deleteImposed1" disabled>remove</button>
-                    <button class="chercher" id="findImposed1">find</button>
+                    <button class="chercher" id="findImposed1" onclick="validerPlaceImposee()" disabled>find</button>
                 </section>
 
                 <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>
@@ -118,7 +118,7 @@
                                 <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
                             </span>
                             <button class="remove" id="supEtu1G1" onclick="enleverEtuGrp()" disabled>remove</button>
-                            <button class="chercher" id="walEtu1G1" onclick="validerEtu()" disabled>find</button>
+                            <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')" disabled>find</button>
                         </section>
 
                         <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled>+</button>

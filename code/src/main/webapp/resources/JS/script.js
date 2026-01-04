@@ -28,9 +28,12 @@ fileOk = false ;
 
 */
 
-document.getElementById("findImposed1").onclick = function () {
-    const studentId = document.getElementById("imposedStudentId1").value;
-    const tableId = document.getElementById("imposedTableId1").value;
+function validerPlaceImposee()  {
+    idFind = window.event.target.id ;
+    numConstr = idFind.charAt(11) ;
+    console.log(idFind,numConstr) ;
+    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
+    const tableId = document.getElementById(`imposedTable${numConstr}`).value;
     valid=true;
     const idRequest = new XMLHttpRequest();
     idRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
@@ -38,7 +41,7 @@ document.getElementById("findImposed1").onclick = function () {
     idRequest.onreadystatechange = function () {
         if (idRequest.readyState === XMLHttpRequest.DONE) {
             if (idRequest.status === 200) {
-                document.getElementById("imposedStudentId1").value = idRequest.responseText;
+                document.getElementById(`imposedStudentId${numConstr}`).value = idRequest.responseText;
             }else{
                 console.error('Error fetching student data');
                 valid=false;
@@ -53,7 +56,8 @@ document.getElementById("findImposed1").onclick = function () {
     nameRequest.onreadystatechange = function () {
         if (nameRequest.readyState === XMLHttpRequest.DONE) {
             if (nameRequest.status === 200) {
-                document.getElementById("imposedStudentName1").value = nameRequest.responseText;
+                document.getElementById(`imposedStudentName${numConstr}`).value = nameRequest.responseText;
+                validerSectImpose(idFind) ;
             }else {
                 console.error('Error fetching student data');
                 valid = false;
@@ -90,25 +94,26 @@ function setTableNumber(){
     console.log(xhr.responseText);
 }
 
-function validerEtu(idPartiel) {
-    console.log(idPartiel);
-}
 
 
 function createImposed() {
     nbImposedPlace++;
     imposedPlace =
-        `<section class="invalid">
+        `<section id="impose${nbImposedPlace}" class="invalid">
 <span>
-    <label for="studentImposed${nbImposedPlace}"> id Etudiant </label>
-    <input name="idEtuImp${nbImposedPlace}" id="studentImposed${nbImposedPlace}" type="text" ></input>
+    <label for="studentImposedId${nbImposedPlace}"> id Etudiant </label>
+    <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" ></input>
 </span>
 <span>
-    <label for="tableImposed1"> Num Table </label>
-    <input name="idTabImp${nbImposedPlace}" id="tableImposed${nbImposedPlace}" type="number" ></input>
+    <label for="imposedTable${nbImposedPlace}"> Num Table </label>
+    <input name="idTabImp${nbImposedPlace}" id="imposedTable${nbImposedPlace}" type="number" ></input>
+</span>
+<span>
+    <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
+    <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" ></input>
 </span>
 <button class="remove" id="supTabSup${nbImposedPlace}" onclick="enleverPlaceSuppr()" >remove</button>
-<button class="chercher" id="imposed${nbImposedPlace}" onclick="validerPlaceImposee()" >find</button>
+<button class="chercher" id="findImposed${nbImposedPlace}" onclick="validerPlaceImposee()" >find</button>
 </section>`;
 
     document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
@@ -118,7 +123,7 @@ function createImposed() {
 function createSuppr() {
     nbPlacesSuppr++;
     placesSuppr =
-        `<section class = "invalid">
+        `<section id="supTable${nbPlacesSuppr}" class = "invalid">
 <span>
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
     <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled></input>
@@ -134,14 +139,14 @@ function createGrp() {
     groupes.push([]);
     etuGrp = `
     <h4>Mis a distance ${groupes.length} </h4>
-    <div class="ligne" id="Gp1">
-        <section class = "invalid">
+    <div class="ligne" id="Gp${groupes.length}">
+        <section id="E1G${groupes.length}" class = "invalid">
             <span>
                 <label for="Etu1groupe${groupes.length}"> Num Etudiant </label>
                 <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled></input>
             </span>
             <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
-            <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtu()" >find</button>
+            <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtuGrp('waletu1G${groupes.length}')" >find</button>
         </section>
         <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" onclick="createEtuGrp()"  >+</button>
         <h4>ajouter un etudiant au groupe</h4>
@@ -153,19 +158,19 @@ function createGrp() {
 }
 
 function createEtuGrp() {
-    numGrp = window.event.target.id.charAt(11) - 1;
-    groupes[numGrp].push(0);
-    numEtu = groupes[numGrp].length;
-    groupEtu = `<section class = "invalid" >
+    numGrp = window.event.target.id.charAt(11);
+    groupes[numGrp-1].push(0);
+    numEtu = groupes[numGrp-1].length;
+    groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
         <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="number" ></input>
     </span>
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
-    <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtu()" >find</button>`
+    <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
     console.log()
-    document.querySelector(`#ajoutEtuGrp${numGrp + 1}`).insertAdjacentHTML("beforebegin", groupEtu);
-    document.querySelector(`#ajoutEtuGrp${numGrp + 1}`).disabled = true  ;
+    document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
+    document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true  ;
 }
 
 function displayID() {
@@ -186,7 +191,7 @@ function enableZone() {
 
         // imposed
         document.querySelector("#imposedStudentId1").disabled = false;
-        document.querySelector("#imposedTableId1").disabled = false;
+        document.querySelector("#imposedTable1").disabled = false;
         document.querySelector("#findImposed1").disabled = false;
         document.querySelector("#imposedStudentName1").disabled = false;
         document.querySelector("#deleteImposed1").disabled = false;
@@ -217,7 +222,7 @@ function setValid(section) {
         document.querySelector("#ajoutImpos").disabled = false;
 
         document.querySelector(`#imposedStudentId${nbImposedPlace}`).disabled = true;
-        document.querySelector(`#imposedTableId${nbImposedPlace}`).disabled = true;
+        document.querySelector(`#imposedTable${nbImposedPlace}`).disabled = true;
         document.querySelector(`#findImposed${nbImposedPlace}`).disabled = true;
         document.querySelector(`#imposedStudentName${nbImposedPlace}`).disabled = true;
 
@@ -237,7 +242,6 @@ function setValid(section) {
 
         numEtu = groupes[numGrp-1].length ;
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled =false ;
-        console.log(`desactivation de l'etu : #Etu${numEtu}groupe${numGrp}`)
         document.querySelector(`#Etu${numEtu}groupe${numGrp}`).disabled=true;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled=true;
         
@@ -247,10 +251,28 @@ function setValid(section) {
 
 function enleverEtuGrp() {
 
-    numGrp = window.event.target.id.charAt(8) ;
-    numEtu = window.event.target.id.charAt(6) ;
-    console.log(`validation de la section : E${numEtu}G${numGrp} `)
 
+}
+
+function validerEtuGrp(idBout) {
+    // a modifier
+    numGrp = idBout.charAt(8) ;
+    numEtu = idBout.charAt(6) ;
+    // a modifier
+    console.log(`validation de la section : E${numEtu}G${numGrp} `)
     setValid(`E${numEtu}G${numGrp}`) ;
+}
+
+function validerSectImpose(idBout) {
+    // a modifier findImposed1
+    numConstr = idBout.charAt(11) ;
+    // a modifier
+    console.log(`validation de la section : impose${numConstr} `)
+    setValid(`impose${numConstr}`) ;
+
+}
+
+function validerPlaceSuppr() {
+
 }
 

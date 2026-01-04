@@ -264,15 +264,15 @@ function validerEtuGrp(idBout) {
 }
 
 function validerSectImpose(idBout) {
-    // a modifier findImposed1
     numConstr = idBout.charAt(11) ;
-    // a modifier
     console.log(`validation de la section : impose${numConstr} `)
     setValid(`impose${numConstr}`) ;
 
 }
 
-function validerPlaceSuppr() {
-
+function validerPlaceSuppr(idBout) {
+    numConstr = idBout.charAt(9) ;
+    console.log(`validation de la section : supTable${numConstr} `) ;
+    setValid(`supTable${numConstr}`) ;
 }
 

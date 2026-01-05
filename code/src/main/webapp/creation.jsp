@@ -115,8 +115,14 @@
                         <section id="E1G1" class="invalid">
 
                             <span>
-                                <label for="Etu1groupe1"> Num Etudiant </label>
-                                <input name="idEtu1G1" id="Etu1groupe1" type="number" disabled></input>
+                                <div>
+                                    <label for="idEtu1G1"> Num Etudiant </label>
+                                    <input name="idEtu1G1" id="idEtu1G1" type="text" disabled>
+                                </div>
+                                <div>
+                                    <label for="nomEtu1G1"> Nom de l'étudiant </label>
+                                    <input name="nomEtu1G1" id="nomEtu1G1" type="text" disabled>
+                                </div>
                             </span>
                             <button class="remove" id="supEtu1G1" onclick="enleverEtuGrp()" disabled>remove</button>
                             <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')" disabled>find</button>

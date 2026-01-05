@@ -2,8 +2,9 @@
 nbImposedPlace = 1;
 nbPlacesSuppr = 1;
 groupes = [[1]];
+tables=0;
 
-fileOk = false;
+fileOk = false ;
 
 
 // dans les fonctions javascript a faire il y a :
@@ -67,7 +68,7 @@ function validerPlaceImposee() {
                 valid = false;
             }
         }
-    }
+    };
     nameRequest.send();
 
     const tableRequest = new XMLHttpRequest();
@@ -90,11 +91,13 @@ function validerPlaceImposee() {
     const tableVerif = new XMLHttpRequest();
     tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&table=${encodeURIComponent(tableNumber)}`, true);
     if (valid && tableVerif.responseText === "valide") {
+
         console.log("Tout est bon");
     } else {
         console.log("PROBLEME");
 
     }
+    tableVerif.send();
 }
 
 function moveFile() {
@@ -117,6 +120,16 @@ function setTableNumber() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
     console.log(xhr.responseText);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                document.getElementById(`imposedStudentId${numConstr}`).value = idRequest.responseText;
+            }else{
+                console.error('Error fetching student data');
+            }
+        }
+    };
     xhr.send();
 }
 
@@ -142,6 +155,7 @@ function createImposed() {
 </section>`;
 
     document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
+    document.querySelector("#ajoutImpos").disabled = true ;
 }
 
 
@@ -161,19 +175,21 @@ function createSuppr() {
 }
 
 function createGrp() {
-    groupes.push([]);
+    groupes.push([0]);
     etuGrp = `
     <h4>Mis a distance ${groupes.length} </h4>
     <div class="ligne" id="Gp${groupes.length}">
         <section id="E1G${groupes.length}" class = "invalid">
             <span>
-                <label for="Etu1groupe${groupes.length}"> Num Etudiant </label>
-                <input name="idEtu1G1" id="Etu1groupe${groupes.length}" type="number" disabled>
+                <label for="idEtu1G${groupes.length}"> Num Etudiant </label>
+                <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
+                <label for="nomEtu1G${groupes.length}"> Nom de l'étudiant </label>
+                <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
             </span>
             <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtuGrp('waletu1G${groupes.length}')" >find</button>
         </section>
-        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" onclick="createEtuGrp()"  >+</button>
+        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" onclick="createEtuGrp()"  disabled >+</button>
         <h4>ajouter un etudiant au groupe</h4>
     </div>`
 
@@ -189,7 +205,9 @@ function createEtuGrp() {
     groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
-        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="number" >
+        <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
+        <label for="nomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
+        <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
     </span>
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
     <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
@@ -197,6 +215,12 @@ function createEtuGrp() {
     document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
     document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
 }
+
+//function createTable(){
+//     tables++;
+//     table= `<section id="T${tables}">
+// `
+// }
 
 function displayID() {
     console.log(window.event.target.id);
@@ -230,6 +254,10 @@ function enableZone() {
         document.querySelector("#Etu1groupe1").disabled = false;
         document.querySelector("#supEtu1G1").disabled = false;
         document.querySelector("#walEtu1G1").disabled = false;
+        document.querySelector("#idEtu1G1").disabled=false;
+        document.querySelector("#nomEtu1G1").disabled=false;
+        document.querySelector("#supEtu1G1").disabled=false;
+        document.querySelector("#walEtu1G1").disabled=false;
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
@@ -266,12 +294,22 @@ function setValid(section) {
             document.querySelector("#ajoutGroup").disabled = false;
         } else {
             numGrp = section.charAt(3);
+            document.querySelector("#ajoutGroup").disabled = false ;
+        }else {
+            numGrp = section.charAt(4) ;
         }
 
         numEtu = groupes[numGrp - 1].length;
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector(`#Etu${numEtu}groupe${numGrp}`).disabled = true;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
+
+        console.log(numGrp) ; // !!!!!!!!!!!!!!!!!!!!!erreur avec bcp
+        numEtu = groupes[numGrp-1].length ;
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled =false ;
+        document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled=true;
+        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled=true;
+        document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled=true;
 
     }
 
@@ -287,6 +325,9 @@ function validerEtuGrp(idBout) {
     numGrp = idBout.charAt(8);
     numEtu = idBout.charAt(6);
     // a modifier
+function validerSectEtuGrp(idBout) {
+    numGrp = idBout.charAt(8) ;
+    numEtu = idBout.charAt(6) ;
     console.log(`validation de la section : E${numEtu}G${numGrp} `)
     setValid(`E${numEtu}G${numGrp}`);
 }
@@ -303,4 +344,49 @@ function validerPlaceSuppr(idBout) {
     console.log(`validation de la section : supTable${numConstr} `);
     setValid(`supTable${numConstr}`);
 }
+
+function validerEtuGrp() {
+    idFind = window.event.target.id;
+    numGrp = idFind.charAt(8) ;
+    numEtu = idFind.charAt(6) ;
+    console.log(idFind, numEtu, numGrp);
+    const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
+    const studentName = document.getElementById(`nomEtu${numEtu}G${numGrp}`).value;
+    valid = true;
+    const idRequest = new XMLHttpRequest();
+    idRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
+
+    idRequest.onreadystatechange = function () {
+        if (idRequest.readyState === XMLHttpRequest.DONE) {
+            if (idRequest.status === 200) {
+                document.getElementById(`idEtu${numEtu}G${numGrp}`).value = idRequest.responseText;
+            } else {
+                console.error('Error fetching student data');
+                valid = false;
+            }
+        }
+    };
+
+    idRequest.send();
+    const nameRequest = new XMLHttpRequest();
+    nameRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("name")}`, true);
+
+    nameRequest.onreadystatechange = function () {
+        if (nameRequest.readyState === XMLHttpRequest.DONE) {
+            if (nameRequest.status === 200) {
+                document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = nameRequest.responseText;
+                validerSectEtuGrp(idFind);
+            } else {
+                console.error('Error fetching student data');
+                valid = false;
+            }
+        }
+    };
+    nameRequest.send();
+
+}
+
+
+
+
 

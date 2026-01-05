@@ -2,6 +2,7 @@
 nbImposedPlace = 1;
 nbPlacesSuppr = 1;
 groupes = [[1]];
+tables=0;
 
 fileOk = false ;
 
@@ -157,7 +158,7 @@ function createGrp() {
                 <label for="idEtu1G${groupes.length}"> Num Etudiant </label>
                 <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
                 <label for="nomEtu1G${groupes.length}"> Nom de l'étudiant </label>
-                <input name="nomEtu1G${groupes.length}" id="numEtu1G${groupes.length}" type="text" >
+                <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
             </span>
             <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtuGrp('waletu1G${groupes.length}')" >find</button>
@@ -178,9 +179,9 @@ function createEtuGrp() {
     groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
-        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="text" >
+        <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
         <label for="nomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
-        <input name="nomEtu${numEtu}G${numGrp}" id="numEtu${numEtu}G${numGrp}" type="text" >
+        <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
     </span>
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
     <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
@@ -188,6 +189,12 @@ function createEtuGrp() {
     document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
     document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true  ;
 }
+
+//function createTable(){
+//     tables++;
+//     table= `<section id="T${tables}">
+// `
+// }
 
 function displayID() {
     console.log(window.event.target.id);
@@ -291,7 +298,6 @@ function validerPlaceSuppr(idBout) {
     console.log(`validation de la section : supTable${numConstr} `) ;
     setValid(`supTable${numConstr}`) ;
 }
-
 
 function validerEtuGrp() {
     idFind = window.event.target.id;

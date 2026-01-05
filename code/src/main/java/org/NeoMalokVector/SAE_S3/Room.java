@@ -4,6 +4,8 @@ import jdk.jshell.execution.Util;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
+import java.io.FileNotFoundException;
+
 public class Room
 {
 
@@ -11,12 +13,13 @@ public class Room
     private PositioningIntermediate positioningIntermediate;
 
 
-    public Room() {
+    public Room() throws FileNotFoundException
+    {
         crea = new CreatingIntermediate();
-
     }
 
-    public Room(String path) {
+    public Room(String path) throws FileNotFoundException
+    {
         crea = new CreatingIntermediate(path);
 
     }

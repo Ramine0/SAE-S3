@@ -8,6 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>SAE de goat</title>
+    <link rel="icon" type="image/png" href="resources/img/Logo_DSRoomMaker.png">
+
     <link rel="stylesheet" href="resources/css/styles.css">
 </head>
 

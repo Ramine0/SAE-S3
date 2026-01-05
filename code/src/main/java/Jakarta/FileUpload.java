@@ -20,25 +20,17 @@ import java.nio.file.StandardCopyOption;
 public class FileUpload extends HttpServlet
 {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         String uploadPath = request.getServletContext().getRealPath("/") + getServletContext().getInitParameter("upload.path");
 
-        try
-        {
-            // Retrieve the file part from the request
-            Part filePart = request.getPart("studentFile");
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        // Retrieve the file part from the request
+        Part filePart = request.getPart("studentFile");
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-            // Save the file to the server
-            InputStream inputStream = filePart.getInputStream();
-            Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);
-
-
-        } catch (IOException | ServletException e)
-        {
-            response.getWriter().println("File upload failed due to an error: " + e.getMessage());
-        }
+        // Save the file to the server
+        InputStream inputStream = filePart.getInputStream();
+        Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);
 
 
     }

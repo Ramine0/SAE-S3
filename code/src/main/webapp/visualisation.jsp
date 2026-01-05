@@ -7,6 +7,7 @@
 
     <title>Page de visualisation</title>
     <link rel="stylesheet" href="resources/css/styles.css">
+    <link rel="icon" type="image/png" href="resources/img/Logo_DSRoomMaker.png">
 </head>
 
 <body>

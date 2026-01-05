@@ -24,8 +24,11 @@ public class Data
     private Table[] tables;
     private int[] deletedTables;
 
+    private Map map;
 
-    public int[] getDeletedTables() {
+
+    public int[] getDeletedTables()
+    {
         return deletedTables;
     }
 
@@ -34,29 +37,31 @@ public class Data
     // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
 
-    public Data (String path) {
-        try {
-            chargerFichier(path);
-        }catch (FileNotFoundException e) {
-            System.out.println("Fichier n'existe pas");
+    public Data(String path, String mapType) throws FileNotFoundException
+    {
+        chargerFichier(path);
+
+        if (mapType.charAt(0) == 'R')
+        {
+            // plan rectangulaire
+            map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
         }
-        init() ;
+
+        init();
     }
 
-    public Data() {
-        try {
-            chargerFichier();
-        }catch (FileNotFoundException e) {
-            System.out.println("Fichier n'existe pas");
-        }
-        init() ;
+    public Data() throws FileNotFoundException
+    {
+        chargerFichier();
+        init();
     }
-    private void init() {
+
+    private void init()
+    {
 
         constraints = new Constraint[students.size()];
         idC = 0;
     }
-
 
 
     public void placeStudent(int table, String idStudent)
@@ -115,7 +120,7 @@ public class Data
     // renvoie les numeros de tables disponibles
     public int[] existingTables()
     {
-        int[] result = new int[tables.length - deletedTables.length];
+        int[] result = new int[tables.length];
         int numRes = 0; // la position dans les resultats
         for (int i = 0; i < tables.length; i++)
         {
@@ -132,7 +137,7 @@ public class Data
 
     public int[] freeTables()
     {
-        int[] free = new int[tables.length - deletedTables.length];
+        int[] free = new int[tables.length];
         int numRes = 0;
         for (int i = 0; i < tables.length; i++)
         {
@@ -147,13 +152,15 @@ public class Data
 
     public boolean removeTable(int num)
     {
-        for (int i : deletedTables) {
-            if (deletedTables[i] == 0) {
+        for (int i : deletedTables)
+        {
+            if (deletedTables[i] == 0)
+            {
                 deletedTables[i] = num;
-                return true ;
+                return true;
             }
         }
-        return false ;
+        return false;
     }
 
     public void unremoveTable(int num)
@@ -201,13 +208,15 @@ public class Data
         return students.toArray(new Student[0]);
     }
 
-    private void chargerFichier() throws FileNotFoundException {
-        chargerFichier("src/main/webapp/") ;
+    private void chargerFichier() throws FileNotFoundException
+    {
+        chargerFichier("src/main/webapp/");
     }
+
     // le chargement du fichier exel donné par le/la prof
     private void chargerFichier(String path) throws FileNotFoundException
     {
-        Scanner sc = new Scanner(new FileReader(path+"resources/etudiants.csv"));
+        Scanner sc = new Scanner(new FileReader(path + "resources/etudiants.csv"));
         String[] line;
 
         String id, nom, prenom;
@@ -284,21 +293,26 @@ public class Data
 
     public void setNumberTables(int num)
     {
-        if (tables!=null){
-            tables=null; //jsp si on delete comme ça, en gros si le prof veut changer les dimensions, faut delete ce qu'il y avait avant
+        if (tables != null)
+        {
+            tables = null; //jsp si on delete comme ça, en gros si le prof veut changer les dimensions, faut delete ce qu'il y avait avant
         }
-        if (deletedTables!=null){
-            deletedTables=null;
+        if (deletedTables != null)
+        {
+            deletedTables = null;
         }
-        if (num>=students.size()){
+        if (num >= students.size())
+        {
             tables = new Table[num];
             for (int i = 0; i < tables.length; i++)
                 tables[i] = new Table();
             deletedTables = new int[num];
-        }else{
-            tables=new Table[students.size()];
-            for (int i=0; i<tables.length; i++){
-                tables[i]=new Table();
+        } else
+        {
+            tables = new Table[students.size()];
+            for (int i = 0; i < tables.length; i++)
+            {
+                tables[i] = new Table();
             }
             deletedTables = new int[students.size()];
         }
@@ -358,13 +372,18 @@ public class Data
     }
 
     /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
-    public boolean addStudentGroupConstraint(String numStudent, int idGp){
-        if (getPerGroup(idGp) != null){
-            if (getPerGroup(idGp).haveStu(numStudent)) { return false; }
+    public boolean addStudentGroupConstraint(String numStudent, int idGp)
+    {
+        if (getPerGroup(idGp) != null)
+        {
+            if (getPerGroup(idGp).haveStu(numStudent))
+            {
+                return false;
+            }
             getPerGroup(idGp).addStudent(numStudent);
-            return true ;
+            return true;
         }
-        return false ;
+        return false;
     }
 
     public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)
@@ -407,18 +426,21 @@ public class Data
         }
     }
 
-    public boolean addConstraint(String numStudent, int numTable, char constr){
-        if (constr == 'I'){
-            constraints[idC]=new ImposedPlacement(numTable, numStudent);
+    public boolean addConstraint(String numStudent, int numTable, char constr)
+    {
+        if (constr == 'I')
+        {
+            constraints[idC] = new ImposedPlacement(numTable, numStudent);
             idC++;
-            return true ;
-        }else if (constr =='N'){
-            String[] s=new String[10];
-            constraints[idC]=new PerGroup(s);
+            return true;
+        } else if (constr == 'N')
+        {
+            String[] s = new String[10];
+            constraints[idC] = new PerGroup(s);
             idC++;
-            return true ;
+            return true;
         }
-        return false ;
+        return false;
     }
 
 
@@ -430,32 +452,69 @@ public class Data
         }
     }
 
-    public String completeId(String incomplet) {
-        String possib ="" ;
-        if (incomplet.startsWith("p") && students.get(0).getId().startsWith("1")){
-            incomplet = "1"+ incomplet.substring(1);
-        } else if (incomplet.startsWith("1") && students.get(0).getId().startsWith("p")){
-            incomplet = "p"+ incomplet.substring(1);
+    public String completeId(String incomplet)
+    {
+        String possib = "";
+        if (incomplet.startsWith("p") && students.get(0).getId().startsWith("1"))
+        {
+            incomplet = "1" + incomplet.substring(1);
+        } else if (incomplet.startsWith("1") && students.get(0).getId().startsWith("p"))
+        {
+            incomplet = "p" + incomplet.substring(1);
         }
 
-        for (Student s : students) {
-            if (s.getId() == incomplet) {
+        for (Student s : students)
+        {
+            if (s.getId() == incomplet)
+            {
                 return incomplet;
-            }else if(possib != "" && s.getId().startsWith(incomplet)) {
-                return "" ;
-            }else if (s.getId().startsWith(incomplet)) {
-                possib = s.getId() ;
+            } else if (possib != "" && s.getId().startsWith(incomplet))
+            {
+                return "";
+            } else if (s.getId().startsWith(incomplet))
+            {
+                possib = s.getId();
             }
         }
-        return possib ;
+        return possib;
     }
 
-    public boolean addGrp () {
-        return addConstraint( null,  0, 'N') ;
+    public boolean addGrp()
+    {
+        return addConstraint(null, 0, 'N');
     }
 
-    public boolean addImp(String id, int num) {
-        return addConstraint(id, num, 'I') ;
+    public boolean addImp(String id, int num)
+    {
+        return addConstraint(id, num, 'I');
     }
 
+    public boolean setDimensions(int lon, int lar)
+    {
+        map = new RectangularMap(lon, lar);
+        return true;
+    }
+
+    // je prends les voisins de ma table
+    public Student[] neighbours(int t)
+    {
+        ArrayList<Student> voisins = new ArrayList<>();
+        // pour tous les voisins de la map
+        for (int i : map.neighbours(t, freeTables()))
+        {
+
+            //je recupere l'etu de la table si on a bien une table
+            if (i != -1)
+            {
+                voisins.add(getStuFromTab(i));
+            }
+        }
+
+        return voisins.toArray(new Student[0]);
+    }
+
+    public Map getMap()
+    {
+        return map;
+    }
 }

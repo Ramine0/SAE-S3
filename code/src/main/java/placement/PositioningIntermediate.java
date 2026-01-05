@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class PositioningIntermediate
 {
-    private Map map;
+
 
     // on passe par donnees pour acceder au données (etus et tables)
     // on manipule pas directement les tables on a juste leur numeros question d'optimisation et de securité
@@ -21,15 +21,11 @@ public class PositioningIntermediate
     // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
     // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
 
-    public PositioningIntermediate(String mapType, int[] deleted, Data d)
+    public PositioningIntermediate(int[] deleted, Data d)
     {
 
         donnees = d;
-        if (mapType.charAt(0) == 'R')
-        {
-            // plan rectangulaire
-            map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
-        }
+
 
     }
 
@@ -89,7 +85,7 @@ public class PositioningIntermediate
         {
 
             // on prends les tables voisines pour regarder
-            Student[] voisins = neighbours(t);
+            Student[] voisins = donnees.neighbours(t);
             for (Constraint c : donnees.getConstr())
             {
                 // si ca bloque
@@ -104,29 +100,6 @@ public class PositioningIntermediate
         return true;
     }
 
-    // je prends les voisins de ma table
-    private Student[] neighbours(int t)
-    {
-        ArrayList<Student> voisins = new ArrayList<>();
-        // pour tous les voisins de la map
-        for (int i : map.neighbours(t, donnees.freeTables()))
-        {
 
-            //je recupere l'etu de la table si on a bien une table
-            if (i != -1)
-            {
-                voisins.add(donnees.getStuFromTab(i));
-            }
-        }
-
-        return voisins.toArray(new Student[0]);
-    }
-    public boolean setDimensions(int lon, int lar){
-        map=new RectangularMap(lon, lar);
-        return true;
-    }
-    public Map getMap(){
-        return map;
-    }
 
 }

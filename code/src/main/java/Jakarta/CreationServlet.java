@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 @WebServlet("/getStudentName")
 public class CreationServlet extends HttpServlet
 {
-
     private Room salle = null;
 
     @Override
@@ -21,23 +20,39 @@ public class CreationServlet extends HttpServlet
     {
         if (salle == null)
         {
-            salle = new Room(request.getServletContext().getRealPath("/") + "/");
+            salle = TableServlet.salle;
         }
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        if (request.getParameter("constraint").equals("imposePlace")){
-            String id = salle.getCrea().findEtu(request.getParameter("id"));
-            if (request.getParameter("fieldToFill").equals("id")){
-                out.print(id);
-            }else if (request.getParameter("fieldToFill").equals("name")) {
-                out.print(salle.getCrea().studentInfo(id));
+
+        if (request.getParameter("constraint").equals("imposePlace"))
+        {
+            String studentId = salle.getCrea().findEtu(request.getParameter("studentId"));
+
+            if (request.getParameter("fieldToFill").equals("studentId"))
+            {
+                out.print(studentId);
+            } else if (request.getParameter("fieldToFill").equals("studentName"))
+            {
+                out.print(salle.getCrea().studentInfo(studentId));
+            } else if (request.getParameter("fieldToFill").equals("tableNumber"))
+            {
+                String tableNumber = request.getParameter("tableNumber");
+
+                if (tableNumber.isEmpty())
+                {
+                    out.print("Please choose a table");
+                } else
+                    salle.getCrea().findNumsForImp(studentId, Integer.parseInt(tableNumber));
             }
-        }else if (request.getParameter("constraint").equals("supprimeTable")){
+        } else if (request.getParameter("constraint").equals("supprimeTable"))
+        {
             String num = request.getParameter("table");
-            if( request.getParameter("fieldToFill").equals("table"))
+            if (request.getParameter("fieldToFill").equals("table"))
                 out.print(num);
-        }else if (request.getParameter("constraint").equals("separeEtu")){
+        } else if (request.getParameter("constraint").equals("separeEtu"))
+        {
             String id = salle.getCrea().findEtu(request.getParameter("id"));
             if (request.getParameter("fieldToFill").equals("id"))
                 out.print(id);

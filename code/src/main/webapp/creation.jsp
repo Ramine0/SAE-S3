@@ -16,6 +16,7 @@
 
     <title>Saisie des données</title>
     <link rel="stylesheet" href="resources/css/styles.css">
+    <link rel="icon" type="image/png" href="resources/img/Logo_DSRoomMaker.png">
 </head>
 
 <body class="pageCrea">
@@ -69,8 +70,8 @@
                     </div>
 
                     <div>
-                        <label for="imposedTable1"> Num Table </label>
-                        <input name="imposedTableId1" id="imposedTable1" type="number" disabled>
+                        <label for="imposedTableId1"> Num Table </label>
+                        <input name="imposedTableId" id="imposedTableId1" type="number" disabled>
                     </div>
 
                     <div>

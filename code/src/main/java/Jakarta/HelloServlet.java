@@ -8,12 +8,14 @@ import java.io.FileNotFoundException;
 public class HelloServlet
 {
 
-    static void main(String[] args)
+    static void main(String[] args) throws FileNotFoundException
     {
         Room salle = new Room() ;
-        System.out.println(salle.getCrea().descripData());
-        System.out.println(salle.getCrea().findEtu("p2406")) ;
-        System.out.println(salle.getCrea().findNumsForImp("p2406",1)) ;
+
+        salle.getCrea().createTables(1, 1);
+        salle.getCrea().setDimensions(1, 1);
+
+        System.out.println(salle.getCrea().findNumsForImp("p2403367", 0));
 
 
 

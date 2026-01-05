@@ -3,99 +3,142 @@ package placement;
 import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
-public class CreatingIntermediate {
+import java.io.FileNotFoundException;
+
+public class CreatingIntermediate
+{
     private Data d;
-    public CreatingIntermediate() {
-        try {
-            d = new Data() ;
-        }catch(Exception e) {}
+
+    public CreatingIntermediate() throws FileNotFoundException
+    {
+        d = new Data();
 
     }
-    public CreatingIntermediate(String path) {
-        try {
-            d = new Data(path) ;
-        }catch(Exception e) {}
+
+    public CreatingIntermediate(String path) throws FileNotFoundException
+    {
+        d = new Data(path, "R11");
     }
-    
-    public void createTables(int lon, int lar){
-        d.setNumberTables(lon*lar);
+
+    public void createTables(int lon, int lar)
+    {
+        d.setNumberTables(lon * lar);
     }
-    public int getNumberTables(){
+
+    public int getNumberTables()
+    {
         return d.getTables().length;
     }
-    public String afc() {
-        return "as une donnée" ;
+
+    public String afc()
+    {
+        return "as une donnée";
     }
 
-    public String findEtu(String id) {
-        String trouve = d.completeId(id) ;
-        if (trouve != "") {
+    public String findEtu(String id)
+    {
+        String trouve = d.completeId(id);
+        if (trouve != "")
+        {
             return trouve;
-        }else if (id.length()==8) {
-            return "le num donné n'existe pas" ;
-        }else {
-            return "etudiant non trouvé" ;
+        } else if (id.length() == 8)
+        {
+            return "le num donné n'existe pas";
+        } else
+        {
+            return "etudiant non trouvé";
         }
 
     }
 
-    public boolean findTable(int numTab) {
-        return Utilitaire.in(numTab,d.freeTables()) ;
+    public boolean findTable(int numTab)
+    {
+        return Utilitaire.in(numTab, d.freeTables());
     }
 
-    public int findNumsForImp (String id, int num) {
-        String etu = findEtu(id) ;
-        num = findTable(num) ? num : -1 ;
-        if (etu.equals("le num donné n'existe pas")) {
-            return -1 ;
-        }else if (etu.length() > 8) {
-            return 0 ;
-        }else if (num == -1 ) {
-            return -2 ;
-        }else {
-            if (d.addImp(etu,num)) {
+    public int findNumsForImp(String id, int num)
+    {
+        String etu = findEtu(id);
+        num = findTable(num) ? num : -1;
+        if (etu.equals("le num donné n'existe pas"))
+        {
+            return -1;
+        } else if (etu.length() > 8)
+        {
+            return 0;
+        } else if (num == -1)
+        {
+            return -2;
+        } else
+        {
+            if (d.addImp(etu, num))
+            {
                 return 1;
-            }else {
-                return 2 ;
+            } else
+            {
+                return 2;
             }
         }
     }
 
-    public int findStudentForGroup (String idPartiel,int numGrp) {
-        String etu = findEtu(idPartiel) ;
-        if (etu.equals("le num donné n'existe pas")) {
-            return -1 ;
-        }else if (etu.length() > 8) {
-            return 0 ;
-        }else {
-            if (d.addStudentGroupConstraint(etu,numGrp)) {
+    public int findStudentForGroup(String idPartiel, int numGrp)
+    {
+        String etu = findEtu(idPartiel);
+        if (etu.equals("le num donné n'existe pas"))
+        {
+            return -1;
+        } else if (etu.length() > 8)
+        {
+            return 0;
+        } else
+        {
+            if (d.addStudentGroupConstraint(etu, numGrp))
+            {
                 return 1;
-            }else {
-                return 2 ;
+            } else
+            {
+                return 2;
             }
         }
 
     }
 
-    public String[] descripData() {
-        return d.descrip() ;
+    public String[] descripData()
+    {
+        return d.descrip();
     }
 
-    public String studentInfo (String num) { Student student = d.getStudentFromId(num); return student.getName() + " " + student.getFirstName() ;}
+    public String studentInfo(String num)
+    {
+        Student student = d.getStudentFromId(num);
+        return student.getName() + " " + student.getFirstName();
+    }
 
-    public int supprTable(int num) {
-        num = findTable(num) ? num : -1 ;
-        if (num == -1 ) {
-            return -2 ;
-        }else {
-            if (d.removeTable(num) && ! d.isDeleted(num)) {
+    public int supprTable(int num)
+    {
+        num = findTable(num) ? num : -1;
+        if (num == -1)
+        {
+            return -2;
+        } else
+        {
+            if (d.removeTable(num) && !d.isDeleted(num))
+            {
                 return 1;
-            }else {
-                return 2 ;
+            } else
+            {
+                return 2;
             }
         }
     }
 
+    public boolean setDimensions(int lon, int lar)
+    {
+        return d.setDimensions(lon, lar);
+    }
 
-
+    public Map getMap()
+    {
+        return d.getMap();
+    }
 }

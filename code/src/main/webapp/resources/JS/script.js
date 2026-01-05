@@ -67,6 +67,7 @@ function validerPlaceImposee()  {
     nameRequest.send();
     const tableVerif=new XMLHttpRequest();
     tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&table=${encodeURIComponent(tableId)}`, true);
+    tableVerif.send();
     if (valid && tableVerif.responseText==="valide"){
         console.log("Tout est bon");
     }else{
@@ -86,12 +87,22 @@ function moveFile() {
 }
 
 function setTableNumber(){
-    const lon = document.getElementById("long");
-    const lar = document.getElementById("larg");
+    const lon = document.getElementById("long").value;
+    const lar = document.getElementById("larg").value;
 
     const xhr=new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
     console.log(xhr.responseText);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                document.getElementById(`imposedStudentId${numConstr}`).value = idRequest.responseText;
+            }else{
+                console.error('Error fetching student data');
+            }
+        }
+    };
+    xhr.send();
 }
 
 

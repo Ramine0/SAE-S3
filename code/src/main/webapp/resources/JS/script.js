@@ -1,9 +1,9 @@
 // const constGp=document.querySelector('#mode');
-nbImposedPlace = 1;
-nbPlacesSuppr = 1;
-groupes = [[1]];
+let nbImposedPlace = 1;
+let nbPlacesSuppr = 1;
+let groupes = [[1]];
 
-fileOk = false ;
+let fileOk = false ;
 
 
 // dans les fonctions javascript a faire il y a :
@@ -29,8 +29,8 @@ fileOk = false ;
 */
 
 function validerPlaceImposee()  {
-    idFind = window.event.target.id ;
-    numConstr = idFind.charAt(11) ;
+    let idFind = window.event.target.id ;
+    let numConstr = idFind.charAt(11) ;
     console.log(idFind,numConstr) ;
     const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
     const tableId = document.getElementById(`imposedTable${numConstr}`).value;
@@ -98,7 +98,7 @@ function setTableNumber(){
 
 function createImposed() {
     nbImposedPlace++;
-    imposedPlace =
+    let imposedPlace =
         `<section id="impose${nbImposedPlace}" class="invalid">
 <span>
     <label for="studentImposedId${nbImposedPlace}"> id Etudiant </label>
@@ -123,7 +123,7 @@ function createImposed() {
 
 function createSuppr() {
     nbPlacesSuppr++;
-    placesSuppr =
+    let placesSuppr =
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
 <span>
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
@@ -138,9 +138,9 @@ function createSuppr() {
 
 function createGrp() {
     groupes.push([0]);
-    etuGrp = `
-    <h4>Mis a distance ${groupes.length} </h4>
-    <div class="ligne" id="Gp${groupes.length}">
+    let etuGrp = `
+    <h4 id="h4${groupes.length}">Mis a distance ${groupes.length} </h4>
+    <div class="ligne" id="Gp${groupes.length}">       
         <section id="E1G${groupes.length}" class = "invalid">
             <span>
                 <label for="idEtu1G${groupes.length}"> Num Etudiant </label>
@@ -161,10 +161,10 @@ function createGrp() {
 }
 
 function createEtuGrp() {
-    numGrp = window.event.target.id.charAt(11);
+    let numGrp = window.event.target.id.charAt(11);
     groupes[numGrp-1].push(0);
-    numEtu = groupes[numGrp-1].length;
-    groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
+    let numEtu = groupes[numGrp-1].length;
+    let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
         <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="text" >
@@ -239,7 +239,7 @@ function setValid(section) {
         document.querySelector(`#walTabSup${nbPlacesSuppr}`).disabled = true;
 
     }else {
-        numGrp = groupes.length ;
+        let numGrp = groupes.length ;
         if (section.includes(`G${numGrp}`)) {
             document.querySelector("#ajoutGroup").disabled = false ;
         }else {
@@ -257,7 +257,32 @@ function setValid(section) {
 }
 
 function enleverEtuGrp() {
+    let idBout = window.event.target.id;
+    let numGrp = idBout.charAt(8) ;
+    let numEtu = idBout.charAt(6) ;
+    console.log(`etu : ${numEtu}, grp : ${numGrp}`) ;
+    if (numEtu == groupes[numGrp-1].length) {
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+        document.querySelector("#ajoutGroup").disabled = false;
+        if (numEtu == 1 && numGrp != 1) {
+            document.querySelector(`#Gp${numGrp}`).remove();
+            document.querySelector(`#h4${numGrp}`).remove();
+            groupes.splice(numGrp - 1, 1);
+            return;
+        }
 
+    }
+    console.log(`suppression de la section : E${numEtu}G${numGrp} `);
+    document.querySelector(`#E${numEtu}G${numGrp}`).remove() ;
+    if (!numEtu == groupes[numGrp-1].length) {
+        for ( let g of groupes[numGrp] ) {
+            if(g > numEtu) {
+                decreaseId("") ;
+            }
+        }
+    }
+
+    groupes[numGrp-1].splice(numEtu-1,1) ;
 
 }
 

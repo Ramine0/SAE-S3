@@ -3,6 +3,8 @@ let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
 
+tables=0;
+
 let fileOk = false ;
 
 
@@ -67,6 +69,7 @@ function validerPlaceImposee()  {
     nameRequest.send();
     const tableVerif=new XMLHttpRequest();
     tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&table=${encodeURIComponent(tableId)}`, true);
+    tableVerif.send();
     if (valid && tableVerif.responseText==="valide"){
         console.log("Tout est bon");
     }else{
@@ -86,12 +89,22 @@ function moveFile() {
 }
 
 function setTableNumber(){
-    const lon = document.getElementById("long");
-    const lar = document.getElementById("larg");
+    const lon = document.getElementById("long").value;
+    const lar = document.getElementById("larg").value;
 
     const xhr=new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
     console.log(xhr.responseText);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                document.getElementById(`imposedStudentId${numConstr}`).value = idRequest.responseText;
+            }else{
+                console.error('Error fetching student data');
+            }
+        }
+    };
+    xhr.send();
 }
 
 
@@ -146,7 +159,7 @@ function createGrp() {
                 <label for="idEtu1G${groupes.length}"> Num Etudiant </label>
                 <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
                 <label for="nomEtu1G${groupes.length}"> Nom de l'étudiant </label>
-                <input name="nomEtu1G${groupes.length}" id="numEtu1G${groupes.length}" type="text" >
+                <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
             </span>
             <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtuGrp('waletu1G${groupes.length}')" >find</button>
@@ -167,9 +180,9 @@ function createEtuGrp() {
     let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
         <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
-        <input name="idEtu${numEtu}G${numGrp}" id="Etu${numEtu}groupe${numGrp}" type="text" >
+        <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
         <label for="nomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
-        <input name="nomEtu${numEtu}G${numGrp}" id="numEtu${numEtu}G${numGrp}" type="text" >
+        <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
     </span>
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
     <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
@@ -177,6 +190,12 @@ function createEtuGrp() {
     document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
     document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true  ;
 }
+
+//function createTable(){
+//     tables++;
+//     table= `<section id="T${tables}">
+// `
+// }
 
 function displayID() {
     console.log(window.event.target.id);
@@ -305,7 +324,6 @@ function validerPlaceSuppr(idBout) {
     console.log(`validation de la section : supTable${numConstr} `) ;
     setValid(`supTable${numConstr}`) ;
 }
-
 
 function validerEtuGrp() {
     idFind = window.event.target.id;

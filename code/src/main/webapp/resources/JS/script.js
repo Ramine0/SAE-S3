@@ -120,13 +120,12 @@ function setTableNumber() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
     console.log(xhr.responseText);
-    xhr.send();
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                document.getElementById(`imposedStudentId${numConstr}`).value = idRequest.responseText;
+                console.log("tables enregistred") ;
             }else{
-                console.error('Error fetching student data');
+                console.log("error number tables")
             }
         }
     };
@@ -144,7 +143,7 @@ function createImposed() {
 </span>
 <span>
     <label for="imposedTableId${nbImposedPlace}"> Num Table </label>
-    <input name="idTabImp${nbImposedPlace}" id="imposedTable${nbImposedPlace}" type="number" >
+    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
 </span>
 <span>
     <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
@@ -291,9 +290,7 @@ function setValid(section) {
             document.querySelector("#ajoutGroup").disabled = false;
         } else {
             numGrp = section.charAt(3);
-            document.querySelector("#ajoutGroup").disabled = false ;
-        }else {
-            numGrp = section.charAt(4) ;
+            document.querySelector("#ajoutGroup").disabled = false;
         }
         console.log(numGrp) ;
         numEtu = groupes[numGrp-1].length ;

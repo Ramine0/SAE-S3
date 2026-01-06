@@ -391,7 +391,8 @@ function validerEtuGrp() {
         if (nameRequest.readyState === XMLHttpRequest.DONE) {
             if (nameRequest.status === 200) {
                 document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = nameRequest.responseText;
-                validerSectEtuGrp(idFind);
+                if (nameRequest.responseText != "null") {validerSectEtuGrp(idFind); }
+
             } else {
                 console.error('Error fetching student data');
                 valid = false;

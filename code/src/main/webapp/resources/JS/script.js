@@ -233,11 +233,11 @@ function createEtuGrp() {
     document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
 }
 
-//function createTable(){
-//     tables++;
-//     table= `<section id="T${tables}">
-// `
-// }
+function createTable(){
+    tables++;
+    table= `<button id="T${tables}" class="table"> Table ${tables} </button>`;
+    document.querySelector()
+}
 
 function displayID() {
     console.log(window.event.target.id);

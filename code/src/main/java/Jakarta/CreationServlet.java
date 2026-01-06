@@ -30,22 +30,18 @@ public class CreationServlet extends HttpServlet
         {
             String studentId = salle.getCrea().findEtu(request.getParameter("studentId"));
 
-            if (request.getParameter("fieldToFill").equals("studentId"))
-            {
-                out.print(studentId);
-            } else if (request.getParameter("fieldToFill").equals("studentName"))
-            {
-                out.print(salle.getCrea().studentInfo(studentId));
-            } else if (request.getParameter("fieldToFill").equals("tableNumber"))
-            {
-                String tableNumber = request.getParameter("tableNumber");
+            String result = studentId + ";";
+            result += salle.getCrea().studentInfo(studentId) + ";";
 
-                if (tableNumber.isEmpty())
-                {
-                    out.print("Please choose a table");
-                } else
-                    out.print(salle.getCrea().findNumsForImp(studentId, Integer.parseInt(tableNumber)));
-            }
+            String tableNumber = request.getParameter("tableNumber");
+
+            if (tableNumber.isEmpty())
+            {
+                result += "null;";
+            } else
+                result += salle.getCrea().findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
+
+            out.print(result);
         } else if (request.getParameter("constraint").equals("supprimeTable"))
         {
             String num = request.getParameter("table");

@@ -80,7 +80,7 @@
                     </div>
 
                     <button class="remove" id="deleteImposed1" onclick="supprimerPlaceImposee()" disabled>remove</button>
-                    <button class="chercher" id="findImposed1" onclick="validerPlaceImposee()" disabled>find</button>
+                    <button class="chercher" id="findImposed1" disabled>find</button>
                 </section>
 
                 <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>

@@ -180,10 +180,14 @@ function createGrp() {
     <div class="ligne" id="Gp${groupes.length}">       
         <section id="E1G${groupes.length}" class = "invalid">
             <span>
-                <label for="idEtu1G${groupes.length}"> Num Etudiant </label>
-                <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
-                <label for="nomEtu1G${groupes.length}"> Nom de l'étudiant </label>
-                <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
+                <div>
+                    <label for="idEtu1G${groupes.length}"> Num Etudiant </label>
+                    <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
+                </div>
+                <div>
+                    <label for="nomEtu1G${groupes.length}"> Nom de l'étudiant </label>
+                    <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
+                </div>
             </span>
             <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtuGrp('waletu1G${groupes.length}')" >find</button>
@@ -203,10 +207,14 @@ function createEtuGrp() {
     let numEtu = groupes[numGrp-1].length;
     let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
-        <label for="Etu${numEtu}groupe${numGrp}"> Num Etudiant </label>
-        <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
-        <label for="nomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
-        <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
+        <div>
+            <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Num Etudiant </label>
+            <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
+        </div>
+        <div>
+            <label for="nomEtu${numEtu}G${numGrp}" id="labelnomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
+            <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
+        </div>
     </span>
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
     <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
@@ -298,6 +306,11 @@ function setValid(section) {
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled=true;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled=true;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled=true;
+
+    }
+    if (document.querySelector(".invalid")==null) {
+        document.querySelector("#walid").enabled = true ;
+        document.querySelector("#walid").backgroundColor = "#1AFF009B" ;
 
     }
 
@@ -396,16 +409,24 @@ function validerEtuGrp() {
 
 function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
-        let numGrp =  idElem.charAt(3) ;
-        let newNumEtu = idElem.charAt(1)-1 ;
-        console.log("newnum", newNumEtu) ;
-        document.querySelector(idElem).id =  idElem.charAt(0).concat((idElem.charAt(1)-1).toString(), idElem.substring(2));
+        let numGrp =  idElem.charAt(4) ;
+        let numEtu = idElem.charAt(2) ;
+        console.log(numEtu) ;
+        let newNumEtu = numEtu-1 ;
 
-        document.querySelector(`#ajoutEtu${newNumEtu}Grp${numGrp}`).id = `#ajoutEtu${newNumEtu}Grp${numGrp}`;
-        document.querySelector(`#idEtu${numEtu}G${numGrp}`).id = `#idEtu${newNumEtu}G${numGrp}` ;
-        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `#nomEtu${newNumEtu}G${numGrp}` ;
-        document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `#walEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(idElem).id =  idElem.charAt(1).concat((idElem.charAt(2)-1).toString(), idElem.substring(3));
+
+        document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).for = `idEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).for = `nomEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(`#idEtu${numEtu}G${numGrp}`).id = `idEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `nomEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `walEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(`#supEtu${numEtu}G${numGrp}`).id = `supEtu${newNumEtu}G${numGrp}` ;
+        console.log("changements effectués") ;
+
     }
+
+
 
 }
 

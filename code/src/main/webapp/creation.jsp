@@ -47,7 +47,7 @@
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
             <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
-            <button type="submit" id="walid" class="boutWalider" onclick=""> Générer</button>
+            <button type="submit" id="walid" class="boutWalider" onclick="" disabled> Générer</button>
         </form>
 
     </div>

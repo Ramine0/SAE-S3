@@ -79,8 +79,8 @@
                         <input name="idStudentImp1" type="text" id="imposedStudentName1" disabled>
                     </div>
 
-                    <button class="remove" id="deleteImposed1" onclick="supprimerPlaceImposee()" disabled>remove</button>
-                    <button class="chercher" id="findImposed1" onclick="validerPlaceImposee()" disabled>find</button>
+                    <button class="remove" id="deleteImposed1" disabled>remove</button>
+                    <button class="chercher" id="findImposed1" disabled>find</button>
                 </section>
 
                 <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>

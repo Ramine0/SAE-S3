@@ -33,88 +33,47 @@ if (document.querySelector("#studentFile").files.length !== 0) {
 
 */
 
-function validerPlaceImposee() {
-    let idFind = window.event.target.id;
+document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+
+function validerPlaceImposee(event) {
+    let idFind = event.target.id;
     let numConstr = idFind.charAt(11);
-    console.log(idFind, numConstr);
+
     const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
     const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
 
-    valid = true;
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
 
-    console.log("tableId = " + tableNumber);
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE)
+            if (xhr.status === 200) {
+                const response = xhr.responseText.split(";");
 
-    const idRequest = new XMLHttpRequest();
-    idRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("studentId")}`, true);
-
-    idRequest.onreadystatechange = function () {
-        if (idRequest.readyState === XMLHttpRequest.DONE) {
-            if (idRequest.status === 200) {
-                document.getElementById(`imposedStudentId${numConstr}`).value = idRequest.responseText;
-            } else {
-                valid = false;
-                console.error('Error fetching student data');
-            }
-        }
-    };
-    idRequest.send();
-
-    const nameRequest = new XMLHttpRequest();
-    nameRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("studentName")}`, true);
-
-    nameRequest.onreadystatechange = function () {
-        if (nameRequest.readyState === XMLHttpRequest.DONE) {
-            if (nameRequest.status === 200 && nameRequest.responseText !== "null") {
-                document.getElementById(`imposedStudentName${numConstr}`).value = nameRequest.responseText;
-            } else {
-                valid = false;
-                console.error('Error fetching name data');
-            }
-        }
-    };
-    nameRequest.send();
-
-    const tableRequest = new XMLHttpRequest();
-    tableRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}&fieldToFill=${encodeURIComponent("tableNumber")}`, true);
-
-    tableRequest.onreadystatechange = function () {
-        if (tableRequest.readyState === XMLHttpRequest.DONE) {
-            if (tableRequest.status === 200) {
-                if (tableRequest.responseText === "Please choose a table")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = tableRequest.responseText;
-                else if (tableRequest.responseText === "1") {
-                    valid = false;
+                if (response[1] === "null")
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
+                else if (response[2] === "null")
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+                else if (response[2] === "1")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
-                } else if (tableRequest.responseText === "2") {
-                    valid = false;
+                else if (response[2] === "2")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                else {
+                    validerSectImpose(idFind);
+
+                    document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
+                    document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
                 }
-            } else {
-                console.error('Error fetching table data');
-            }
-        }
-    }
-    tableRequest.send();
-
-    console.log(valid);
-
-    if (valid)
-        validerSectImpose(idFind);
-
-    // const tableVerif = new XMLHttpRequest();
-    // tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&num=${encodeURIComponent(tableNumber)}`, true);
-    // if (valid && tableVerif.responseText === "valide") {
-    //
-    //     console.log("Tout est bon");
-    // } else {
-    //     console.log("PROBLEME");
-    //
-    // }
-    // tableVerif.send();
+            } else
+                console.error("Error fetching student data");
+    };
+    xhr.send();
 }
 
-function supprimerPlaceImposee() {
-    let idRemove = window.event.target.id;
+document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
+
+function supprimerPlaceImposee(event) {
+    let idRemove = event.target.id;
     let numConstr = idRemove.charAt(13);
 
     console.log(idRemove, numConstr);
@@ -189,12 +148,15 @@ function createImposed() {
     <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
     <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
 </span>
-<button class="remove" id="deleteImposed${nbImposedPlace}" onclick="supprimerPlaceImposee()" >remove</button>
-<button class="chercher" id="findImposed${nbImposedPlace}" onclick="validerPlaceImposee()" >find</button>
+<button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
+<button class="chercher" id="findImposed${nbImposedPlace}">find</button>
 </section>`;
 
     document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
     document.querySelector("#ajoutImpos").disabled = true;
+
+    document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
+    document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
 }
 
 function createSuppr() {

@@ -378,12 +378,13 @@ public class Data
     {
         if (getPerGroup(idGp) != null)
         {
-            if (getPerGroup(idGp).haveStu(numStudent))
-            {
+            if (getPerGroup(idGp).haveStu(numStudent)) {
                 return false;
             }
             getPerGroup(idGp).addStudent(numStudent);
             return true;
+        }else {
+            addConstraint(numStudent,0,'N') ;
         }
         return false;
     }
@@ -440,10 +441,8 @@ public class Data
     {
         if (constr == 'I')
         {
-            if (!Utilitaire.in(numStudent, imposedStudents()))
-            {
-                if (!Utilitaire.in(numTable, imposedTables()))
-                {
+            if (!Utilitaire.in(numStudent, imposedStudents())) {
+                if (!Utilitaire.in(numTable, imposedTables())) {
                     constraints[idC] = new ImposedPlacement(numTable, numStudent);
                     nbImposed++;
                     idC++;
@@ -454,12 +453,11 @@ public class Data
             }
 
             return 1;
-        } else if (constr == 'N')
-        {
+        } else if (constr == 'N') {
             String[] s = new String[10];
+            s[0] = numStudent;
             constraints[idC] = new PerGroup(s);
             idC++;
-
             return 0;
         }
 
@@ -486,25 +484,21 @@ public class Data
             incomplet = "p" + incomplet.substring(1);
         }
 
-        for (Student s : students)
-        {
-            if (s.getId() == incomplet)
-            {
-                return incomplet;
-            } else if (possib != "" && s.getId().startsWith(incomplet))
-            {
+        for (Student s : students) {
+            if (s.getId() == incomplet) {return incomplet;
+
+            } else if (possib != "" && s.getId().startsWith(incomplet)) {
                 return "";
-            } else if (s.getId().startsWith(incomplet))
-            {
+            } else if (s.getId().startsWith(incomplet)) {
                 possib = s.getId();
             }
         }
         return possib;
     }
 
-    public int addGrp()
+    public int addGrp(String id)
     {
-        return addConstraint(null, 0, 'N');
+        return addConstraint(id, 0, 'N');
     }
 
     public int addImp(String id, int num)
@@ -512,23 +506,20 @@ public class Data
         return addConstraint(id, num, 'I');
     }
 
-    public boolean setDimensions(int lon, int lar)
-    {
+    public boolean setDimensions(int lon, int lar) {
         map = new RectangularMap(lon, lar);
         return true;
     }
 
     // je prends les voisins de ma table
-    public Student[] neighbours(int t)
-    {
+    public Student[] neighbours(int t) {
+
         ArrayList<Student> voisins = new ArrayList<>();
         // pour tous les voisins de la map
-        for (int i : map.neighbours(t, freeTables()))
-        {
+        for (int i : map.neighbours(t, freeTables())) {
 
             //je recupere l'etu de la table si on a bien une table
-            if (i != -1)
-            {
+            if (i != -1) {
                 voisins.add(getStuFromTab(i));
             }
         }
@@ -545,10 +536,8 @@ public class Data
     {
         String[] result = new String[nbImposed];
         int i = 0;
-        for (Constraint c : constraints)
-        {
-            if (c instanceof ImposedPlacement)
-            {
+        for (Constraint c : constraints) {
+            if (c instanceof ImposedPlacement) {
                 result[i] = ((ImposedPlacement) c).getNumEtu();
                 i++;
             }

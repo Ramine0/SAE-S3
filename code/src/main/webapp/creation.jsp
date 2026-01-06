@@ -47,7 +47,7 @@
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
             <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
-            <button type="submit" id="walid" class="boutWalider" onclick=""> Générer</button>
+            <button type="submit" id="walid" class="boutWalider" onclick="" disabled> Générer</button>
         </form>
 
     </div>
@@ -79,7 +79,7 @@
                         <input name="idStudentImp1" type="text" id="imposedStudentName1" disabled>
                     </div>
 
-                    <button class="remove" id="deleteImposed1" onclick="supprimerPlaceImposee()" disabled>remove</button>
+                    <button class="remove" id="deleteImposed1" disabled>remove</button>
                     <button class="chercher" id="findImposed1" disabled>find</button>
                 </section>
 

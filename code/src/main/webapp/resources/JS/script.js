@@ -3,7 +3,6 @@ let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
 
-tables = 0;
 
 let fileOk = false;
 
@@ -69,21 +68,12 @@ function validerPlaceImposee(event) {
                 console.error("Error fetching student data");
     };
     xhr.send();
-
-// const tableVerif = new XMLHttpRequest();
-// tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&num=${encodeURIComponent(tableNumber)}`, true);
-// if (valid && tableVerif.responseText === "valide") {
-//
-//     console.log("Tout est bon");
-// } else {
-//     console.log("PROBLEME");
-//
-// }
-// tableVerif.send();
 }
 
-function supprimerPlaceImposee() {
-    let idRemove = window.event.target.id;
+document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
+
+function supprimerPlaceImposee(event) {
+    let idRemove = event.target.id;
     let numConstr = idRemove.charAt(13);
 
     console.log(idRemove, numConstr);
@@ -158,14 +148,15 @@ function createImposed() {
     <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
     <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
 </span>
-<button class="remove" id="deleteImposed${nbImposedPlace}" onclick="supprimerPlaceImposee()" >remove</button>
-<button class="chercher" id="findImposed${nbImposedPlace}" >find</button>
+<button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
+<button class="chercher" id="findImposed${nbImposedPlace}">find</button>
 </section>`;
 
     document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
     document.querySelector("#ajoutImpos").disabled = true;
 
     document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
+    document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
 }
 
 function createSuppr() {
@@ -228,7 +219,7 @@ function createEtuGrp() {
     </span>
     <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
     <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
-    console.log()
+
     document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
     document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
 }
@@ -243,9 +234,6 @@ function displayID() {
     console.log(window.event.target.id);
 }
 
-function displayValOf(id) {
-    console.log(document.querySelector('#' + id));
-}
 
 function enableZone() {
     if (fileOk) {
@@ -310,18 +298,16 @@ function setValid(section) {
             numGrp = section.charAt(3);
             document.querySelector("#ajoutGroup").disabled = false;
         }
-        console.log(numGrp);
         numEtu = groupes[numGrp - 1].length;
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
-
     }
-    if (document.querySelector(".invalid") == null) {
-        document.querySelector("#walid").enabled = true;
-        document.querySelector("#walid").backgroundColor = "#1AFF009B";
 
+    if (document.querySelector(".invalid") === null) {
+        document.querySelector("#walid").disabled = false;
+        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
     }
 
 }
@@ -330,7 +316,6 @@ function enleverEtuGrp() {
     let idBout = window.event.target.id;
     let numGrp = idBout.charAt(8);
     let numEtu = idBout.charAt(6);
-    console.log(`etu : ${numEtu}, grp : ${numGrp}`);
     if (numEtu == groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
@@ -359,20 +344,17 @@ function enleverEtuGrp() {
 function validerSectEtuGrp(idBout) {
     numGrp = idBout.charAt(8);
     numEtu = idBout.charAt(6);
-    console.log(`validation de la section : E${numEtu}G${numGrp} `)
     setValid(`E${numEtu}G${numGrp}`);
 }
 
 function validerSectImpose(idBout) {
     numConstr = idBout.charAt(11);
-    console.log(`validation de la section : impose${numConstr} `)
     setValid(`impose${numConstr}`);
 
 }
 
 function validerPlaceSuppr(idBout) {
     numConstr = idBout.charAt(9);
-    console.log(`validation de la section : supTable${numConstr} `);
     setValid(`supTable${numConstr}`);
 }
 
@@ -380,7 +362,6 @@ function validerEtuGrp() {
     idFind = window.event.target.id;
     numGrp = idFind.charAt(8);
     numEtu = idFind.charAt(6);
-    console.log(idFind, numEtu, numGrp);
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     const studentName = document.getElementById(`nomEtu${numEtu}G${numGrp}`).value;
     valid = true;
@@ -421,7 +402,6 @@ function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
         let numGrp = idElem.charAt(4);
         let numEtu = idElem.charAt(2);
-        console.log(numEtu);
         let newNumEtu = numEtu - 1;
 
         document.querySelector(idElem).id = idElem.charAt(1).concat((idElem.charAt(2) - 1).toString(), idElem.substring(3));
@@ -432,7 +412,6 @@ function decreaseId(idElem) {
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `nomEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `walEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#supEtu${numEtu}G${numGrp}`).id = `supEtu${newNumEtu}G${numGrp}`;
-        console.log("changements effectués");
 
     } else if (idElem.startsWith("#i")) {
         let children = document.getElementById("ligneImposed").children;
@@ -451,6 +430,10 @@ function decreaseId(idElem) {
         }
     }
 
+    if (document.querySelector(".invalid") === null) {
+        document.querySelector("#walid").disabled = false;
+        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+    }
 
 }
 

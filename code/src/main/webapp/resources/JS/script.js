@@ -199,7 +199,7 @@ function createGrp() {
 
 function createEtuGrp() {
     let numGrp = window.event.target.id.charAt(11);
-    groupes[numGrp-1].push(0);
+    groupes[numGrp-1].push(groupes[numGrp-1].length);
     let numEtu = groupes[numGrp-1].length;
     let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
     <span>
@@ -319,14 +319,14 @@ function enleverEtuGrp() {
         }
 
     }
-    console.log(`suppression de la section : E${numEtu}G${numGrp} `);
     document.querySelector(`#E${numEtu}G${numGrp}`).remove() ;
-    if (!numEtu == groupes[numGrp-1].length) {
-        for ( let g of groupes[numGrp] ) {
+    if ( numEtu != groupes[numGrp-1].length) {
+        for ( let g = 1 ; g <= groupes[numGrp-1].length; g++ ) {
             if(g > numEtu) {
-                decreaseId("") ;
+                decreaseId(`#E${g}G${numGrp}`) ;
             }
         }
+
     }
 
     groupes[numGrp-1].splice(numEtu-1,1) ;
@@ -394,7 +394,20 @@ function validerEtuGrp() {
 
 }
 
+function decreaseId(idElem) {
+    if (idElem.startsWith("#E")) {
+        let numGrp =  idElem.charAt(3) ;
+        let newNumEtu = idElem.charAt(1)-1 ;
+        console.log("newnum", newNumEtu) ;
+        document.querySelector(idElem).id =  idElem.charAt(0).concat((idElem.charAt(1)-1).toString(), idElem.substring(2));
 
+        document.querySelector(`#ajoutEtu${newNumEtu}Grp${numGrp}`).id = `#ajoutEtu${newNumEtu}Grp${numGrp}`;
+        document.querySelector(`#idEtu${numEtu}G${numGrp}`).id = `#idEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `#nomEtu${newNumEtu}G${numGrp}` ;
+        document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `#walEtu${newNumEtu}G${numGrp}` ;
+    }
+
+}
 
 
 

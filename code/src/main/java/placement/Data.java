@@ -23,6 +23,7 @@ public class Data
     private Constraint[] constraints;
     private Table[] tables;
     private int[] deletedTables;
+    private int nbImposed = 0;
 
     private Map map;
 
@@ -99,13 +100,13 @@ public class Data
                 numPla++;
             }
 
-        String[] rest = new String[numPla];
+        String[] rest = new String[students.size() -numPla];
         int numRest = 0;
-        for (int i = 0; i < tables.length; i++)
+        for (Student s : students)
         {
-            if (!Utilitaire.in(students.get(i).getId(), place))
+            if (!Utilitaire.in(s.getId(), place))
             {
-                rest[numRest] = tables[i].getEtu().getId();
+                rest[numRest] = s.getId() ;
                 numRest++;
             }
         }
@@ -408,7 +409,9 @@ public class Data
             {
                 if (i == idC - 1)
                 {
+                    if (constraints[i] instanceof ImposedPlacement) {nbImposed -- ;}
                     constraints[i] = null;
+
                 } else
                 {
                     constraints[i] = constraints[i + 1];
@@ -431,6 +434,7 @@ public class Data
         if (constr == 'I')
         {
             constraints[idC] = new ImposedPlacement(numTable, numStudent);
+            nbImposed ++ ;
             idC++;
             return true;
         } else if (constr == 'N')
@@ -517,4 +521,21 @@ public class Data
     {
         return map;
     }
+
+    public String[] imposedStudents() {
+        String[] result = new String[nbImposed];
+        int i = 0;
+        for (Constraint c : constraints) {
+            if (c instanceof ImposedPlacement) {
+                result[i] = ((ImposedPlacement) c).getNumEtu();
+                i++ ;
+            }
+        }
+
+        return result ;
+    }
+
+
+
+
 }

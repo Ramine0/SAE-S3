@@ -12,11 +12,14 @@ public class HelloServlet
     {
         Room salle = new Room() ;
 
-        salle.getCrea().createTables(1, 1);
-        salle.getCrea().setDimensions(1, 1);
+        salle.getCrea().createTables(2, 2);
+        salle.getCrea().setDimensions(2, 2);
 
-        System.out.println(salle.getCrea().findNumsForImp("p2403367", 0));
+        System.out.println(salle.getCrea().findNumsForImp("p2406",3)) ;
 
+        for (String s : salle.getCrea().getImposedStud()){
+            System.out.println(s);
+        }
 
 
     }

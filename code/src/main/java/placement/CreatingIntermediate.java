@@ -141,4 +141,7 @@ public class CreatingIntermediate
     {
         return d.getMap();
     }
+
+    public String[] getImposedStud() {return d.imposedStudents() ;}
+
 }

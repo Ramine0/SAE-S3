@@ -126,13 +126,9 @@ public class Data
         int numRes = 0; // la position dans les resultats
         for (int i = 0; i < tables.length; i++)
         {
-            // je verifie que ma table soit pas supprimée
-            if (!Utilitaire.in(i, deletedTables))
-            {
-                // si c ok je l'ajoute a la liste
-                result[numRes] = i;
-                numRes++;
-            }
+            result[numRes] = i;
+            numRes++;
+
         }
         return result;
     }
@@ -154,7 +150,7 @@ public class Data
 
     public boolean removeTable(int num)
     {
-        for (int i : deletedTables)
+        for (int i = 0; i < deletedTables.length; i++)
         {
             if (deletedTables[i] == 0)
             {
@@ -167,11 +163,12 @@ public class Data
 
     public void unremoveTable(int num)
     {
-        for (int n : deletedTables)
+        for (int i = 0; i < deletedTables.length; i++)
         {
-            if (deletedTables[n] == num)
+            if (deletedTables[i] == num)
             {
-                deletedTables[n] = -1;
+                deletedTables[i] = 0;
+                break;
             }
         }
     }
@@ -273,6 +270,9 @@ public class Data
             text[i] = s.descrip(true);
             i++;
         }
+
+        for (int t : deletedTables)
+            System.out.println(t);
 
         return text;
     }

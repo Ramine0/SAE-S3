@@ -29,7 +29,8 @@
         </div>
     </a>
     <div class="general">
-        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm" onchange="return moveFile()">
+        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm"
+              onchange="return moveFile()">
             <label for="studentFile">Deposez votre fichier d'etudiants (CSV) </label>
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
             <label for="mode">Separation des etudiants par Groupes Classes </label>
@@ -46,7 +47,10 @@
                     <label for="larg"><h4>Nombre de tables par lignes</h4></label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
-            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
+            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le
+                nombre de places
+            </button>
+            <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
             <button type="submit" id="walid" class="boutWalider" onclick="" disabled> Générer</button>
         </form>
 
@@ -91,15 +95,15 @@
         <div id="contraintes_suppr">
 
             <h2> Tables Supprimées </h2>
-            <div class="ligne">
+            <div class="ligne" id="deletedTableRow">
                 <section id="supTable1" class="invalid">
 
                         <span>
                             <label for="numTabSup1"> Num Table </label>
                             <input name="idTabSup1" id="numTabSup1" type="number" disabled>
                         </span>
-                    <button class="remove" id="supTabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
-                    <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
+                    <button class="remove" id="deleteTable1" disabled>remove</button>
+                    <button class="chercher" id="findTable1" disabled>find</button>
                 </section>
 
                 <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled>+</button>
@@ -125,7 +129,8 @@
                                 </div>
                             </span>
                             <button class="remove" id="supEtu1G1" onclick="enleverEtuGrp()" disabled>remove</button>
-                            <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')" disabled>find</button>
+                            <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')"
+                                    disabled>find</button>
                         </section>
 
                         <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled>+</button>

@@ -121,17 +121,25 @@ public class CreatingIntermediate
         num = findTable(num) ? num : -1;
         if (num == -1)
         {
-            return -2;
+            return 2;
         } else
         {
-            if (d.removeTable(num) && !d.isDeleted(num))
+            if (d.isDeleted(num))
+                return 2;
+            else if (d.removeTable(num))
             {
-                return 1;
+                return 0;
             } else
             {
-                return 2;
+                return 1;
             }
         }
+    }
+
+    public void unremoveTable(int num)
+    {
+        num = findTable(num) ? num : -1;
+        d.unremoveTable(num);
     }
 
     public boolean setDimensions(int lon, int lar)

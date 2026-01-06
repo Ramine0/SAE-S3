@@ -10,19 +10,19 @@ public class HelloServlet
 
     static void main(String[] args) throws FileNotFoundException
     {
-        Room salle = new Room() ;
+        Room salle = new Room();
 
-        salle.getCrea().createTables(2, 2);
-        salle.getCrea().setDimensions(2, 2);
+        salle.getCrea().createTables(1, 1);
 
-        System.out.println(salle.getCrea().findNumsForImp("p2403367", 1));
+        salle.getCrea().supprTable(1);
 
-        salle.getCrea().removeImp(0);
+        salle.getCrea().descripData();
 
-        System.out.println(salle.getCrea().findNumsForImp("p2403367", 2));
+        salle.getCrea().unremoveTable(1);
 
+        System.out.println();
 
-
+        salle.getCrea().descripData();
     }
 
 

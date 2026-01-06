@@ -59,7 +59,11 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("removeImposedPlace"))
         {
             salle.getCrea().removeImp(Integer.parseInt(request.getParameter("id")));
-        }
+        } else if (request.getParameter("constraint").equals("deleteTable"))
+        {
+            out.print(salle.getCrea().supprTable(Integer.parseInt(request.getParameter("tableNumber"))));
+        } else if (request.getParameter("constraint").equals("removeDeletedTable"))
+            salle.getCrea().unremoveTable(Integer.parseInt(request.getParameter("tableNumber")));
 
         out.flush();
     }

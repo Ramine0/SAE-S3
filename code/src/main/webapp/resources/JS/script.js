@@ -305,9 +305,7 @@ function setValid(section) {
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
     }
 
-    console.log("invalides : ",document.querySelector(".invalid")) ;
     if (document.querySelector(".invalid") === null) {
-        console.log("cas find") ;
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
     }
@@ -432,9 +430,7 @@ function decreaseId(idElem) {
         }
     }
 
-    console.log("invalides :", document.querySelector(".invalid")) ;
     if (document.querySelector(".invalid") === null) {
-        console.log("casSuppr") ;
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
     }

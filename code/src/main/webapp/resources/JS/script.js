@@ -203,25 +203,27 @@ function createGrp() {
 }
 
 function createEtuGrp() {
-    let numGrp = window.event.target.id.charAt(11);
+    let numGrp = window.event.target.id.substring(11);
     groupes[numGrp - 1].push(groupes[numGrp - 1].length);
     let numEtu = groupes[numGrp - 1].length;
-    let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
-    <span>
-        <div>
-            <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Num Etudiant </label>
-            <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
-        </div>
-        <div>
-            <label for="nomEtu${numEtu}G${numGrp}" id="labelnomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
-            <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
-        </div>
-    </span>
-    <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
-    <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
+    if (numEtu < 10 ) {
+        let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
+        <span>
+            <div>
+                <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Num Etudiant </label>
+                <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
+            </div>
+            <div>
+                <label for="nomEtu${numEtu}G${numGrp}" id="labelnomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
+                <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
+            </div>
+        </span>
+        <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
+        <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
 
-    document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
-    document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
+    }
 }
 
 //function createTable(){
@@ -295,11 +297,12 @@ function setValid(section) {
         if (section.includes(`G${numGrp}`)) {
             document.querySelector("#ajoutGroup").disabled = false;
         } else {
-            numGrp = section.charAt(3);
-            document.querySelector("#ajoutGroup").disabled = false;
+            numGrp = section.substring(3);
         }
-        numEtu = groupes[numGrp - 1].length;
-        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+
+
+        let numEtu = groupes[numGrp - 1].length;
+        if (numEtu < 9) { document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;}
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
@@ -314,7 +317,7 @@ function setValid(section) {
 
 function enleverEtuGrp() {
     let idBout = window.event.target.id;
-    let numGrp = idBout.charAt(8);
+    let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
     if (numEtu == groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
@@ -342,29 +345,30 @@ function enleverEtuGrp() {
 }
 
 function validerSectEtuGrp(idBout) {
-    numGrp = idBout.charAt(8);
-    numEtu = idBout.charAt(6);
+    let numGrp = idBout.substring(8);
+    let numEtu = idBout.charAt(6);
     setValid(`E${numEtu}G${numGrp}`);
 }
 
 function validerSectImpose(idBout) {
-    numConstr = idBout.charAt(11);
+    let numConstr = idBout.charAt(11);
     setValid(`impose${numConstr}`);
 
 }
 
 function validerPlaceSuppr(idBout) {
-    numConstr = idBout.charAt(9);
+    let numConstr = idBout.charAt(9);
     setValid(`supTable${numConstr}`);
 }
 
 function validerEtuGrp() {
-    idFind = window.event.target.id;
-    numGrp = idFind.charAt(8);
-    numEtu = idFind.charAt(6);
+    let idFind = window.event.target.id;
+    let numGrp = idFind.substring(8);
+    let numEtu = idFind.charAt(6);
+
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     const studentName = document.getElementById(`nomEtu${numEtu}G${numGrp}`).value;
-    valid = true;
+    let valid = true;
     const idRequest = new XMLHttpRequest();
     idRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
 
@@ -400,7 +404,7 @@ function validerEtuGrp() {
 
 function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
-        let numGrp = idElem.charAt(4);
+        let numGrp = idElem.substring(4);
         let numEtu = idElem.charAt(2);
         let newNumEtu = numEtu - 1;
 
@@ -408,6 +412,9 @@ function decreaseId(idElem) {
 
         document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).for = `idEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).for = `nomEtu${newNumEtu}G${numGrp}`;
+
+        document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).id = `labelidEtu${newNumEtu}G${numGrp}`;
+        document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).id = `labelnomEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).id = `idEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `nomEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `walEtu${newNumEtu}G${numGrp}`;

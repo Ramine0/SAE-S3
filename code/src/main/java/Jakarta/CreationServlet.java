@@ -44,7 +44,7 @@ public class CreationServlet extends HttpServlet
                 {
                     out.print("Please choose a table");
                 } else
-                    salle.getCrea().findNumsForImp(studentId, Integer.parseInt(tableNumber));
+                    out.print(salle.getCrea().findNumsForImp(studentId, Integer.parseInt(tableNumber)));
             }
         } else if (request.getParameter("constraint").equals("supprimeTable"))
         {

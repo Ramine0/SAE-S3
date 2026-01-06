@@ -1,12 +1,11 @@
 package constraints;
 
 import org.NeoMalokVector.SAE_S3.Student;
-import org.NeoMalokVector.SAE_S3.Table;
 
 public class ImposedPlacement extends Constraint
 {
     private int numTable;
-    private String numEtu;
+    private String numEtu = "";
 
     public ImposedPlacement(int numTable, String numEtu){
         this.numTable = numTable;

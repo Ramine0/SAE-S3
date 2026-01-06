@@ -15,11 +15,9 @@ public class HelloServlet
         salle.getCrea().createTables(2, 2);
         salle.getCrea().setDimensions(2, 2);
 
-        System.out.println(salle.getCrea().findNumsForImp("p2406",3)) ;
-
-        for (String s : salle.getCrea().getImposedStud()){
-            System.out.println(s);
-        }
+        System.out.println(salle.getCrea().findNumsForImp("p2403367", 1));
+        System.out.println(salle.getCrea().findNumsForImp("p2403367", 2));
+        System.out.println(salle.getCrea().findNumsForImp("p2403367", 3));
 
 
     }

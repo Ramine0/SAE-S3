@@ -62,6 +62,7 @@ public class Data
 
         constraints = new Constraint[students.size()];
         idC = 0;
+        nbImposed = 0;
     }
 
 
@@ -100,13 +101,13 @@ public class Data
                 numPla++;
             }
 
-        String[] rest = new String[students.size() -numPla];
+        String[] rest = new String[students.size() - numPla];
         int numRest = 0;
         for (Student s : students)
         {
             if (!Utilitaire.in(s.getId(), place))
             {
-                rest[numRest] = s.getId() ;
+                rest[numRest] = s.getId();
                 numRest++;
             }
         }
@@ -409,7 +410,10 @@ public class Data
             {
                 if (i == idC - 1)
                 {
-                    if (constraints[i] instanceof ImposedPlacement) {nbImposed -- ;}
+                    if (constraints[i] instanceof ImposedPlacement)
+                    {
+                        nbImposed--;
+                    }
                     constraints[i] = null;
 
                 } else
@@ -429,22 +433,34 @@ public class Data
         }
     }
 
-    public boolean addConstraint(String numStudent, int numTable, char constr)
+    public int addConstraint(String numStudent, int numTable, char constr)
     {
         if (constr == 'I')
         {
-            constraints[idC] = new ImposedPlacement(numTable, numStudent);
-            nbImposed ++ ;
-            idC++;
-            return true;
+            if (!Utilitaire.in(numStudent, imposedStudents()))
+            {
+                if (!Utilitaire.in(numTable, imposedTables()))
+                {
+                    constraints[idC] = new ImposedPlacement(numTable, numStudent);
+                    nbImposed++;
+                    idC++;
+
+                    return 0;
+                } else
+                    return 2;
+            }
+
+            return 1;
         } else if (constr == 'N')
         {
             String[] s = new String[10];
             constraints[idC] = new PerGroup(s);
             idC++;
-            return true;
+
+            return 0;
         }
-        return false;
+
+        return 1;
     }
 
 
@@ -483,12 +499,12 @@ public class Data
         return possib;
     }
 
-    public boolean addGrp()
+    public int addGrp()
     {
         return addConstraint(null, 0, 'N');
     }
 
-    public boolean addImp(String id, int num)
+    public int addImp(String id, int num)
     {
         return addConstraint(id, num, 'I');
     }
@@ -522,20 +538,42 @@ public class Data
         return map;
     }
 
-    public String[] imposedStudents() {
+    public String[] imposedStudents()
+    {
         String[] result = new String[nbImposed];
         int i = 0;
-        for (Constraint c : constraints) {
-            if (c instanceof ImposedPlacement) {
+        for (Constraint c : constraints)
+        {
+            if (c instanceof ImposedPlacement)
+            {
                 result[i] = ((ImposedPlacement) c).getNumEtu();
-                i++ ;
+                i++;
             }
         }
 
-        return result ;
+        return result;
     }
 
+    public int[] imposedTables()
+    {
+        int[] result = new int[nbImposed];
+        int i = 0;
+        for (Constraint c : constraints)
+        {
+            if (c instanceof ImposedPlacement)
+            {
+                result[i] = ((ImposedPlacement) c).getNumTable();
+                i++;
+            }
+        }
 
+        return result;
+    }
+
+    public void reset()
+    {
+        init();
+    }
 
 
 }

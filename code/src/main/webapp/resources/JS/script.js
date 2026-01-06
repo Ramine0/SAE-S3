@@ -7,6 +7,9 @@ tables=0;
 
 let fileOk = false ;
 
+if (document.querySelector("#studentFile").files.length !== 0)
+    fileOk = true;
+
 
 // dans les fonctions javascript a faire il y a :
 /*
@@ -79,8 +82,12 @@ function validerPlaceImposee()  {
             if (tableRequest.status === 200) {
                 if (tableRequest.responseText === "Please choose a table")
                     document.getElementById(`imposedStudentName${numConstr}`).value = tableRequest.responseText;
-                else
+                else if (tableRequest.responseText === "0")
                     validerSectImpose(idFind);
+                else if (tableRequest.responseText === "1")
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
+                else if (tableRequest.responseText === "2")
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
             } else {
                 console.error('Error fetching table data');
             }

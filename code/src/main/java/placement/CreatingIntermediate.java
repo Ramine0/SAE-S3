@@ -4,6 +4,7 @@ import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class CreatingIntermediate
 {
@@ -70,15 +71,7 @@ public class CreatingIntermediate
         {
             return -2;
         } else
-        {
-            if (d.addImp(etu, num))
-            {
-                return 1;
-            } else
-            {
-                return 2;
-            }
-        }
+            return d.addImp(etu, num);
     }
 
     public int findStudentForGroup(String idPartiel, int numGrp)
@@ -142,6 +135,14 @@ public class CreatingIntermediate
         return d.getMap();
     }
 
-    public String[] getImposedStud() {return d.imposedStudents() ;}
+    public String[] getImposedStud()
+    {
+        return d.imposedStudents();
+    }
+
+    public void resetData()
+    {
+        d.reset();
+    }
 
 }

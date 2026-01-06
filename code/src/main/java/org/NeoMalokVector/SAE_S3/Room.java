@@ -33,6 +33,8 @@ public class Room
 
     }
 
+
+
     /**
      * Fonction qui change la place de l'étudiant à la table num1 avec l'étudiant à la table num2.
      * S'il n'y a pas d'étudiant à l'une des tables, change juste la place d'un étudiant.

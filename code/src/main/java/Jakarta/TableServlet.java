@@ -64,6 +64,7 @@ public class TableServlet extends HttpServlet
         } else if (request.getParameter("action").equals("delete"))
         {
             crea.createTables(lon, lar);
+            crea.resetData();
         }
 
         out.flush();

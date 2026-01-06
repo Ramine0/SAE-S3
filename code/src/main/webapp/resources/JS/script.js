@@ -89,7 +89,7 @@ function validerPlaceImposee()  {
     tableRequest.send();
 
     const tableVerif = new XMLHttpRequest();
-    tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&table=${encodeURIComponent(tableNumber)}`, true);
+    tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&num=${encodeURIComponent(tableNumber)}`, true);
     if (valid && tableVerif.responseText === "valide") {
 
         console.log("Tout est bon");

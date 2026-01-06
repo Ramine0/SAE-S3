@@ -69,21 +69,12 @@ function validerPlaceImposee(event) {
                 console.error("Error fetching student data");
     };
     xhr.send();
-
-// const tableVerif = new XMLHttpRequest();
-// tableVerif.open("GET", `table?action=${encodeURIComponent("present")}&num=${encodeURIComponent(tableNumber)}`, true);
-// if (valid && tableVerif.responseText === "valide") {
-//
-//     console.log("Tout est bon");
-// } else {
-//     console.log("PROBLEME");
-//
-// }
-// tableVerif.send();
 }
 
-function supprimerPlaceImposee() {
-    let idRemove = window.event.target.id;
+document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
+
+function supprimerPlaceImposee(event) {
+    let idRemove = event.target.id;
     let numConstr = idRemove.charAt(13);
 
     console.log(idRemove, numConstr);
@@ -158,14 +149,15 @@ function createImposed() {
     <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
     <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
 </span>
-<button class="remove" id="deleteImposed${nbImposedPlace}" onclick="supprimerPlaceImposee()" >remove</button>
-<button class="chercher" id="findImposed${nbImposedPlace}" >find</button>
+<button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
+<button class="chercher" id="findImposed${nbImposedPlace}">find</button>
 </section>`;
 
     document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
     document.querySelector("#ajoutImpos").disabled = true;
 
     document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
+    document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
 }
 
 function createSuppr() {

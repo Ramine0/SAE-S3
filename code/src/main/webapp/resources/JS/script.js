@@ -84,9 +84,7 @@ function supprimerPlaceImposee(event) {
     document.querySelector("#impose" + numConstr).remove();
 
     nbImposedPlace--;
-
-    if (nbImposedPlace === 0)
-        document.querySelector("#ajoutImpos").disabled = false;
+    document.querySelector("#ajoutImpos").disabled = false;
 
     decreaseId("#i");
 }
@@ -97,6 +95,7 @@ function validateDeletedTable(event) {
     const findId = event.target.id;
     const contraintId = findId.charAt(9);
     const tableNumber = document.getElementById("numTabSup" + contraintId).value;
+
 
     if (tableNumber === "")
         return;
@@ -127,11 +126,16 @@ function removeDeletedTable(event) {
     const contraintId = findId.charAt(11);
     const tableNumber = document.getElementById("numTabSup" + contraintId).value;
 
-    console.log(tableNumber);
+    console.log(findId, contraintId);
 
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
-    xhr.send();
+    if (tableNumber !== "") {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+        xhr.send();
+    }
+
+    nbPlacesSuppr--;
+    document.querySelector("#ajoutSuppr").disabled = false;
 
     document.querySelector("#supTable" + contraintId).remove();
     decreaseId("#DT");
@@ -209,6 +213,7 @@ function createSuppr() {
 <button class="chercher" id="findTable${nbPlacesSuppr}">find</button>
 </section>`;
 
+    document.querySelector("#ajoutSuppr").disabled = true;
     document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin", placesSuppr);
 
     document.querySelector("#findTable" + nbPlacesSuppr).addEventListener("click", validateDeletedTable);
@@ -276,7 +281,7 @@ function displayID() {
 }
 
 
-function enableZone()   {
+function enableZone() {
     if (fileOk) {
         setTableNumber();
         //pk le prof pourrait pas modifier après???
@@ -471,10 +476,10 @@ function decreaseId(idElem) {
 
             children[i].id = "supTable" + newId;
 
-            children[i].children[0].children[1].id = "numSupTable" + newId;
+            children[i].children[0].children[1].id = "numTabSup" + newId;
 
-            children[i].children[3].id = "deleteTable" + newId;
-            children[i].children[4].id = "findTable" + newId;
+            children[i].children[1].id = "deleteTable" + newId;
+            children[i].children[2].id = "findTable" + newId;
         }
     }
 

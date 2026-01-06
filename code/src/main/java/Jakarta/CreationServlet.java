@@ -60,6 +60,9 @@ public class CreationServlet extends HttpServlet
             {
                 out.print(salle.getCrea().studentInfo(id));
             }
+        } else if (request.getParameter("constraint").equals("removeImposedPlace"))
+        {
+            salle.getCrea().removeImp(Integer.parseInt(request.getParameter("id")));
         }
 
         out.flush();

@@ -74,6 +74,11 @@ public class CreatingIntermediate
             return d.addImp(etu, num);
     }
 
+    public void removeImp(int id)
+    {
+        d.removeConstraint("I", id - 1);
+    }
+
     public int findStudentForGroup(String idPartiel, int numGrp)
     {
         String etu = findEtu(idPartiel);
@@ -104,6 +109,10 @@ public class CreatingIntermediate
     public String studentInfo(String num)
     {
         Student student = d.getStudentFromId(num);
+
+        if (student == null)
+            return null;
+
         return student.getName() + " " + student.getFirstName();
     }
 

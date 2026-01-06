@@ -16,8 +16,11 @@ public class HelloServlet
         salle.getCrea().setDimensions(2, 2);
 
         System.out.println(salle.getCrea().findNumsForImp("p2403367", 1));
+
+        salle.getCrea().removeImp(0);
+
         System.out.println(salle.getCrea().findNumsForImp("p2403367", 2));
-        System.out.println(salle.getCrea().findNumsForImp("p2403367", 3));
+
 
 
     }

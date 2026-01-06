@@ -61,7 +61,7 @@
         <div id="contraintes_impose">
 
             <h2> Places imposées </h2>
-            <div class="ligne">
+            <div class="ligne" id="ligneImposed">
 
                 <section id="impose1" class="invalid">
                     <div>
@@ -79,7 +79,7 @@
                         <input name="idStudentImp1" type="text" id="imposedStudentName1" disabled>
                     </div>
 
-                    <button class="remove" id="deleteImposed1" disabled>remove</button>
+                    <button class="remove" id="deleteImposed1" onclick="supprimerPlaceImposee()" disabled>remove</button>
                     <button class="chercher" id="findImposed1" onclick="validerPlaceImposee()" disabled>find</button>
                 </section>
 

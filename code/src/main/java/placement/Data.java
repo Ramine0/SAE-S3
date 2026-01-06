@@ -404,24 +404,27 @@ public class Data
 
     public void removeConstraint(String constr, int id)
     {
-        if (id < idC)
+        if (constr.equals("I"))
         {
-            for (int i = id; i < idC; i++)
+            if (id < idC)
             {
-                if (i == idC - 1)
+                for (int i = id; i < idC; i++)
                 {
-                    if (constraints[i] instanceof ImposedPlacement)
+                    if (i == idC - 1)
                     {
-                        nbImposed--;
-                    }
-                    constraints[i] = null;
+                        if (constraints[i] instanceof ImposedPlacement)
+                        {
+                            nbImposed--;
+                        }
+                        constraints[i] = null;
 
-                } else
-                {
-                    constraints[i] = constraints[i + 1];
+                    } else
+                    {
+                        constraints[i] = constraints[i + 1];
+                    }
                 }
+                idC--;
             }
-            idC--;
         }
     }
 

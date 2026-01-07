@@ -2,7 +2,10 @@
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
+let long=0;
+let larg=0;
 
+let tables=1;
 
 let fileOk = false;
 
@@ -68,6 +71,21 @@ function validerPlaceImposee(event) {
                 console.error("Error fetching student data");
     };
     xhr.send();
+}
+function changeMode(){
+    const m=document.getElementById("mode").value;
+    const mode=new XMLHttpRequest();
+    mode.open("GET", `getStudentName?constraints=mode&mode=${encodeURIComponent(m)}`, true);
+    mode.onreadystatechange= function(){
+        if (mode.readyState===XMLHttpRequest.DONE){
+            if (mode.state===200){
+                console.log("ça marche à priori");
+            }else{
+                console.log("Oh helllll naaah");
+            }
+        }
+    };
+    mode.send();
 }
 
 document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
@@ -224,13 +242,19 @@ function enleverEtuGrp() {
 
 }
 
-function moveFile() {
+document.getElementById("fileUploadForm").addEventListener("change", moveFile)
+
+function moveFile(event) {
+    if (event.target.id !== "studentFile")
+        return;
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
 
     xhr.send(data);
+
+    console.log("File uploaded. I guess...")
 
     fileOk = true;
 }
@@ -245,7 +269,9 @@ function setTableNumber() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log("tables enregistred");
+                console.log("tables saved");
+                long=lon;
+                larg=lar;
             } else {
                 console.log("error number tables")
             }
@@ -371,11 +397,14 @@ function createEtuGrp() {
     }
 }
 
-//function createTable(){
-//     tables++;
-//     table= `<section id="T${tables}">
-// `
-// }
+function createTable(){
+    tables++;
+    let t= `<button id="T${tables}" class="table"> Table ${tables} </button>`;
+    if (tables%larg===0){
+        t+=`<br><p id="endLine${tables/larg+1}">`;
+    }
+    document.querySelector(`#endLine${tables/larg+1}`).insertAdjacentHTML("beforebegin", t);
+}
 
 function displayID() {
     console.log(window.event.target.id);
@@ -385,6 +414,7 @@ function displayID() {
 function enableZone() {
     if (fileOk) {
         setTableNumber();
+        changeMode();
         //pk le prof pourrait pas modifier après???
         //document.querySelector("#studentFile").disabled = true;
         //document.querySelector("#long").disabled = true;

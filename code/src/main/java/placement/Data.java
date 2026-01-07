@@ -126,9 +126,13 @@ public class Data
         int numRes = 0; // la position dans les resultats
         for (int i = 0; i < tables.length; i++)
         {
-            result[numRes] = i;
-            numRes++;
-
+            // je verifie que ma table soit pas supprimée
+            if (!Utilitaire.in(i, deletedTables))
+            {
+                // si c ok je l'ajoute a la liste
+                result[numRes] = i;
+                numRes++;
+            }
         }
         return result;
     }
@@ -150,7 +154,7 @@ public class Data
 
     public boolean removeTable(int num)
     {
-        for (int i = 0; i < deletedTables.length; i++)
+        for (int i : deletedTables)
         {
             if (deletedTables[i] == 0)
             {
@@ -163,12 +167,11 @@ public class Data
 
     public void unremoveTable(int num)
     {
-        for (int i = 0; i < deletedTables.length; i++)
+        for (int n : deletedTables)
         {
-            if (deletedTables[i] == num)
+            if (deletedTables[n] == num)
             {
-                deletedTables[i] = 0;
-                break;
+                deletedTables[n] = -1;
             }
         }
     }
@@ -270,9 +273,6 @@ public class Data
             text[i] = s.descrip(true);
             i++;
         }
-
-        for (int t : deletedTables)
-            System.out.println(t);
 
         return text;
     }
@@ -378,13 +378,12 @@ public class Data
     {
         if (getPerGroup(idGp) != null)
         {
-            if (getPerGroup(idGp).haveStu(numStudent)) {
+            if (getPerGroup(idGp).haveStu(numStudent))
+            {
                 return false;
             }
             getPerGroup(idGp).addStudent(numStudent);
             return true;
-        }else {
-            addConstraint(numStudent,0,'N') ;
         }
         return false;
     }
@@ -441,8 +440,10 @@ public class Data
     {
         if (constr == 'I')
         {
-            if (!Utilitaire.in(numStudent, imposedStudents())) {
-                if (!Utilitaire.in(numTable, imposedTables())) {
+            if (!Utilitaire.in(numStudent, imposedStudents()))
+            {
+                if (!Utilitaire.in(numTable, imposedTables()))
+                {
                     constraints[idC] = new ImposedPlacement(numTable, numStudent);
                     nbImposed++;
                     idC++;
@@ -453,11 +454,12 @@ public class Data
             }
 
             return 1;
-        } else if (constr == 'N') {
+        } else if (constr == 'N')
+        {
             String[] s = new String[10];
-            s[0] = numStudent;
             constraints[idC] = new PerGroup(s);
             idC++;
+
             return 0;
         }
 
@@ -484,21 +486,25 @@ public class Data
             incomplet = "p" + incomplet.substring(1);
         }
 
-        for (Student s : students) {
-            if (s.getId() == incomplet) {return incomplet;
-
-            } else if (possib != "" && s.getId().startsWith(incomplet)) {
+        for (Student s : students)
+        {
+            if (s.getId() == incomplet)
+            {
+                return incomplet;
+            } else if (possib != "" && s.getId().startsWith(incomplet))
+            {
                 return "";
-            } else if (s.getId().startsWith(incomplet)) {
+            } else if (s.getId().startsWith(incomplet))
+            {
                 possib = s.getId();
             }
         }
         return possib;
     }
 
-    public int addGrp(String id)
+    public int addGrp()
     {
-        return addConstraint(id, 0, 'N');
+        return addConstraint(null, 0, 'N');
     }
 
     public int addImp(String id, int num)
@@ -506,20 +512,23 @@ public class Data
         return addConstraint(id, num, 'I');
     }
 
-    public boolean setDimensions(int lon, int lar) {
+    public boolean setDimensions(int lon, int lar)
+    {
         map = new RectangularMap(lon, lar);
         return true;
     }
 
     // je prends les voisins de ma table
-    public Student[] neighbours(int t) {
-
+    public Student[] neighbours(int t)
+    {
         ArrayList<Student> voisins = new ArrayList<>();
         // pour tous les voisins de la map
-        for (int i : map.neighbours(t, freeTables())) {
+        for (int i : map.neighbours(t, freeTables()))
+        {
 
             //je recupere l'etu de la table si on a bien une table
-            if (i != -1) {
+            if (i != -1)
+            {
                 voisins.add(getStuFromTab(i));
             }
         }
@@ -536,8 +545,10 @@ public class Data
     {
         String[] result = new String[nbImposed];
         int i = 0;
-        for (Constraint c : constraints) {
-            if (c instanceof ImposedPlacement) {
+        for (Constraint c : constraints)
+        {
+            if (c instanceof ImposedPlacement)
+            {
                 result[i] = ((ImposedPlacement) c).getNumEtu();
                 i++;
             }

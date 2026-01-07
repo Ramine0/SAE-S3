@@ -244,6 +244,15 @@ section span {
     flex-direction: row-reverse;
 }
 
+.inputLabel {
+    margin : 2px ;
+}
+
+.valuesOfTable {
+    margin: 10px 5px;
+}
+
+
 
 
 

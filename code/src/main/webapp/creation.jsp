@@ -29,8 +29,7 @@
         </div>
     </a>
     <div class="general">
-        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm"
-              onchange="return moveFile()">
+        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm" onchange="return moveFile()">
             <label for="studentFile">Deposez votre fichier d'etudiants (CSV) </label>
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
             <label for="mode">Separation des etudiants par Groupes Classes </label>
@@ -47,10 +46,7 @@
                     <label for="larg"><h4>Nombre de tables par lignes</h4></label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
-            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le
-                nombre de places
-            </button>
-            <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
+            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
             <button type="submit" id="walid" class="boutWalider" onclick="" disabled> Générer</button>
         </form>
 
@@ -68,17 +64,17 @@
             <div class="ligne" id="ligneImposed">
 
                 <section id="impose1" class="invalid">
-                    <div>
+                    <div  class="inputLabel">
                         <label for="imposedStudentId1"> id Etudiant </label>
                         <input name="imposedStudentId1" id="imposedStudentId1" type="text" disabled>
                     </div>
 
-                    <div>
+                    <div  class="inputLabel" >
                         <label for="imposedTableId1"> Num Table </label>
                         <input name="imposedTableId" id="imposedTableId1" type="number" disabled>
                     </div>
 
-                    <div>
+                    <div  class="inputLabel">
                         <label for="imposedStudentName1">Nom de l'étudiant</label>
                         <input name="idStudentImp1" type="text" id="imposedStudentName1" disabled>
                     </div>
@@ -95,15 +91,15 @@
         <div id="contraintes_suppr">
 
             <h2> Tables Supprimées </h2>
-            <div class="ligne" id="deletedTableRow">
+            <div class="ligne">
                 <section id="supTable1" class="invalid">
 
-                        <span>
+                        <span  class="inputLabel">
                             <label for="numTabSup1"> Num Table </label>
                             <input name="idTabSup1" id="numTabSup1" type="number" disabled>
                         </span>
-                    <button class="remove" id="deleteTable1" disabled>remove</button>
-                    <button class="chercher" id="findTable1" disabled>find</button>
+                    <button class="remove" id="supTabSup1" onclick="enleverPlaceSuppr()" disabled>remove</button>
+                    <button class="chercher" id="walTabSup1" onclick="validerPlaceSuppr()" disabled>find</button>
                 </section>
 
                 <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled>+</button>
@@ -119,18 +115,17 @@
                         <section id="E1G1" class="invalid">
 
                             <span>
-                                <div>
+                                <div  class="inputLabel">
                                     <label for="idEtu1G1"> Num Etudiant </label>
                                     <input name="idEtu1G1" id="idEtu1G1" type="text" disabled>
                                 </div>
-                                <div>
+                                <div  class="inputLabel">
                                     <label for="nomEtu1G1"> Nom de l'étudiant </label>
                                     <input name="nomEtu1G1" id="nomEtu1G1" type="text" disabled>
                                 </div>
                             </span>
                             <button class="remove" id="supEtu1G1" onclick="enleverEtuGrp()" disabled>remove</button>
-                            <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')"
-                                    disabled>find</button>
+                            <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')" disabled>find</button>
                         </section>
 
                         <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled>+</button>

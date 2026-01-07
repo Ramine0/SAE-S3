@@ -13,6 +13,7 @@ public class CreatingIntermediate
     public CreatingIntermediate() throws FileNotFoundException
     {
         d = new Data();
+
     }
 
     public CreatingIntermediate(String path) throws FileNotFoundException

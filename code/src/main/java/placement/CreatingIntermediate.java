@@ -31,11 +31,6 @@ public class CreatingIntermediate
         return d.getTables().length;
     }
 
-    public String afc()
-    {
-        return "as une donnée";
-    }
-
     public String findEtu(String id)
     {
         String trouve = d.completeId(id);
@@ -65,7 +60,7 @@ public class CreatingIntermediate
             return -1;
         } else if (id.length() > 8)
         {
-            return 0;
+            return -3;
         } else if (num == -1)
         {
             return -2;
@@ -163,6 +158,10 @@ public class CreatingIntermediate
     public void resetData()
     {
         d.reset();
+    }
+
+    public PositioningIntermediate generatePos () {
+        return new PositioningIntermediate(d) ;
     }
 
 }

@@ -2,8 +2,11 @@ package Jakarta;
 
 
 import org.NeoMalokVector.SAE_S3.Room;
+import placement.CreatingIntermediate;
+import placement.PositioningIntermediate;
 
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 
 public class HelloServlet
 {
@@ -11,13 +14,20 @@ public class HelloServlet
     static void main(String[] args) throws FileNotFoundException
     {
         Room salle = new Room() ;
-
-        salle.getCrea().createTables(2, 2);
-        salle.getCrea().setDimensions(2, 2);
-
-        System.out.println(salle.getCrea().findStudentForGroup("p24033", 0));
-        System.out.println(salle.getCrea().findStudentForGroup("p24033", 0));
-        System.out.println(salle.getCrea().findStudentForGroup("p24033", 0));
+        CreatingIntermediate crea = salle.getCrea() ;
+        crea.createTables(2, 2);
+        crea.setDimensions(2, 2);
+        PositioningIntermediate pos ;
+        pos = salle.getPositioningIntermediate() ;
+        System.out.println("imposer la place a moi : "+ crea.findNumsForImp("12406410",1)) ;
+        System.out.println("remove une table"+crea.supprTable(2));
+        System.out.println("changer le mode : " + salle.positioningMode());
+        crea = null ;
+        pos = salle.getPositioningIntermediate() ;
+        System.out.println("lancer la generation : " + salle.generate() );
+        for (String s : pos.getAllInfo()) {
+            System.out.println(s);
+        }
 
     }
 

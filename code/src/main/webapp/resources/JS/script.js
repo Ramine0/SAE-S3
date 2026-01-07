@@ -2,7 +2,10 @@
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
+let long=0;
+let larg=0;
 
+let tables=1;
 
 let fileOk = false;
 
@@ -11,10 +14,25 @@ if (document.querySelector("#studentFile").files.length !== 0) {
     enableZone();
 }
 
+// dans les fonctions javascript a faire il y a :
 /*
     generer() ; genere le placement !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
+    sinon message en rouge "Generation Impossible un numero ne correspond a aucun etudiant " par exemple
 
+    les fonction walider vont etre appelée par les fonctions qui vont valider dans les sections
+    string validerEtu(String idPartiel) ; renvoie l'id de l'etu si il existe (on peu donner un id incomplet et le completer si unique
+    boolean validerTable() ; dit si la table existe et est pas supprimée
+
+    boolean validerEtuGroup() ; utilise valider Etu pour valider le group
+    void validerPlaceImposee() ; utiliser validerEtu et table pour valider la contrainte de place imposee
+
+    (dans l'ideal la section est rouge mais deviens vert si on trouve !!!! pas important c'est apres quand tout marche)
+
+
+    addToGroup() ; ajoute au groupe l'etudiant trouvé
     setClassMode() ; change le mode de contrainte par classe
+
+    importFichier() ; enregistre le fichier etudiants.csv
 
 */
 
@@ -53,6 +71,21 @@ function validerPlaceImposee(event) {
                 console.error("Error fetching student data");
     };
     xhr.send();
+}
+function changeMode(){
+    const m=document.getElementById("mode").value;
+    const mode=new XMLHttpRequest();
+    mode.open("GET", `getStudentName?constraints=mode&mode=${encodeURIComponent(m)}`, true);
+    mode.onreadystatechange= function(){
+        if (mode.readyState===XMLHttpRequest.DONE){
+            if (mode.state===200){
+                console.log("ça marche à priori");
+            }else{
+                console.log("Oh helllll naaah");
+            }
+        }
+    };
+    mode.send();
 }
 
 document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
@@ -137,13 +170,19 @@ function removeDeletedTable(event) {
 
 }
 
-function moveFile() {
+document.getElementById("fileUploadForm").addEventListener("change", moveFile)
+
+function moveFile(event) {
+    if (event.target.id !== "studentFile")
+        return;
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
 
     xhr.send(data);
+
+    console.log("File uploaded. I guess...")
 
     fileOk = true;
 }
@@ -158,7 +197,9 @@ function setTableNumber() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log("tables enregistred");
+                console.log("tables saved");
+                long=lon;
+                larg=lar;
             } else {
                 console.log("error number tables")
             }
@@ -284,11 +325,14 @@ function createEtuGrp() {
     }
 }
 
-//function createTable(){
-//     tables++;
-//     table= `<section id="T${tables}">
-// `
-// }
+function createTable(){
+    tables++;
+    let t= `<button id="T${tables}" class="table"> Table ${tables} </button>`;
+    if (tables%larg===0){
+        t+=`<br><p id="endLine${tables/larg+1}">`;
+    }
+    document.querySelector(`#endLine${tables/larg+1}`).insertAdjacentHTML("beforebegin", t);
+}
 
 function displayID() {
     console.log(window.event.target.id);
@@ -298,6 +342,7 @@ function displayID() {
 function enableZone() {
     if (fileOk) {
         setTableNumber();
+        changeMode();
         //pk le prof pourrait pas modifier après???
         //document.querySelector("#studentFile").disabled = true;
         //document.querySelector("#long").disabled = true;
@@ -389,7 +434,6 @@ function enleverEtuGrp() {
             document.querySelector(`#Gp${numGrp}`).remove();
             document.querySelector(`#h4${numGrp}`).remove();
             groupes.splice(numGrp - 1, 1);
-
             return;
         }
 

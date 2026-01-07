@@ -58,12 +58,11 @@ public class CreatingIntermediate
 
     public int findNumsForImp(String id, int num)
     {
-        String etu = findEtu(id);
         num = findTable(num) ? num : -1;
-        if (etu.equals("le num donné n'existe pas"))
+        if (id.equals("le num donné n'existe pas"))
         {
             return -1;
-        } else if (etu.length() > 8)
+        } else if (id.length() > 8)
         {
             return 0;
         } else if (num == -1)
@@ -71,7 +70,7 @@ public class CreatingIntermediate
             return -2;
         } else
         {
-            return d.addImp(etu, num);
+            return d.addImp(id, num);
         }
     }
 

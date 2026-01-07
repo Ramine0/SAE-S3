@@ -49,13 +49,14 @@ public class CreationServlet extends HttpServlet
                 out.print(num);
         } else if (request.getParameter("constraint").equals("separeEtu"))
         {
-            String id = salle.getCrea().findEtu(request.getParameter("id"));
-            if (request.getParameter("fieldToFill").equals("id"))
-                out.print(id);
-            else if (request.getParameter("fieldToFill").equals("name"))
-            {
-                out.print(salle.getCrea().studentInfo(id));
-            }
+            String studentId = salle.getCrea().findEtu(request.getParameter("id"));
+
+            String result = studentId + ";";
+            result += salle.getCrea().studentInfo(studentId) + ";";
+
+            result += salle.getCrea().findStudentForGroup(studentId, Integer.parseInt(request.getParameter("numGrp"))) + ";";
+
+            out.print(result);
         } else if (request.getParameter("constraint").equals("removeImposedPlace"))
         {
             salle.getCrea().removeImp(Integer.parseInt(request.getParameter("id")));

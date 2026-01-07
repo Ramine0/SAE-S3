@@ -88,7 +88,6 @@ function changeMode(){
     mode.send();
 }
 
-
 document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {

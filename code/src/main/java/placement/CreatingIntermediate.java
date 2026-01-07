@@ -10,9 +10,15 @@ public class CreatingIntermediate
 {
     private Data d;
 
-    public CreatingIntermediate() throws FileNotFoundException {d = new Data();}
+    public CreatingIntermediate() throws FileNotFoundException
+    {
+        d = new Data();
+    }
 
-    public CreatingIntermediate(String path) throws FileNotFoundException {d = new Data(path, "R11");}
+    public CreatingIntermediate(String path) throws FileNotFoundException
+    {
+        d = new Data(path, "R11");
+    }
 
     public void createTables(int lon, int lar)
     {
@@ -32,11 +38,14 @@ public class CreatingIntermediate
     public String findEtu(String id)
     {
         String trouve = d.completeId(id);
-        if (!trouve.isEmpty()) {
+        if (!trouve.isEmpty())
+        {
             return trouve;
-        } else if (id.length() == 8) {
+        } else if (id.length() == 8)
+        {
             return "le num donné n'existe pas";
-        } else {
+        } else
+        {
             return "etudiant non trouvé";
         }
 
@@ -51,25 +60,45 @@ public class CreatingIntermediate
     {
         String etu = findEtu(id);
         num = findTable(num) ? num : -1;
-        if (etu.equals("le num donné n'existe pas")) {return -1;
-        } else if (etu.length() > 8){return 0;
-        } else if (num == -1) {return -2;
-        } else {return d.addImp(etu, num) ;}
+        if (etu.equals("le num donné n'existe pas"))
+        {
+            return -1;
+        } else if (etu.length() > 8)
+        {
+            return 0;
+        } else if (num == -1)
+        {
+            return -2;
+        } else
+        {
+            return d.addImp(etu, num);
+        }
     }
 
-    public void removeImp(int id) {d.removeConstraint("I", id - 1);}
+    public void removeImp(int id)
+    {
+        d.removeConstraint("I", id - 1);
+    }
 
     public int findStudentForGroup(String idPartiel, int numGrp)
     {
         String etu = findEtu(idPartiel);
 
-        if (etu.equals("le num donné n'existe pas")) {
+        if (etu.equals("le num donné n'existe pas"))
+        {
             return -1;
-        } else if (etu.length() > 8) {
+        } else if (etu.length() > 8)
+        {
             return 0;
-        } else {
-            if (d.addStudentGroupConstraint(etu, numGrp)) {return 1;}
-            else {return 2;}
+        } else
+        {
+            if (d.addStudentGroupConstraint(etu, numGrp))
+            {
+                return 1;
+            } else
+            {
+                return 2;
+            }
         }
 
     }
@@ -82,7 +111,10 @@ public class CreatingIntermediate
     public String studentInfo(String num)
     {
         Student student = d.getStudentFromId(num);
-        if (student == null) {return null;}
+        if (student == null)
+        {
+            return null;
+        }
 
         return student.getName() + " " + student.getFirstName();
     }
@@ -90,11 +122,20 @@ public class CreatingIntermediate
     public int supprTable(int num)
     {
         num = findTable(num) ? num : -1;
-        if (num == -1) {
-            return -2;
-        } else {
-            if (d.removeTable(num) && !d.isDeleted(num)) {return 1;}
-            else {return 2;}
+        if (num == -1)
+        {
+            return 2;
+        } else
+        {
+            if (d.isDeleted(num))
+                return 2;
+            else if (d.removeTable(num))
+            {
+                return 0;
+            } else
+            {
+                return 1;
+            }
         }
     }
 

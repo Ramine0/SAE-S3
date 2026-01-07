@@ -6,6 +6,7 @@ import utilitaire.Utilitaire;
 
 import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class PositioningIntermediate
 {
@@ -22,49 +23,75 @@ public class PositioningIntermediate
     // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
     // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
 
-    public PositioningIntermediate( Data d)
+    public PositioningIntermediate(Data d)
     {
         donnees = d;
     }
 
-    private PositioningIntermediate(String path) {
-        try {
+    private PositioningIntermediate(String path)
+    {
+        try
+        {
             donnees = new Data("path", "R");
-        }catch (Exception e) {}
+        } catch (Exception e)
+        {
+        }
 
     }
 
     public boolean creerPlacement()
     {
         donnees.placerImposes();
-        // le reste du la fonction (placer les etu aleatoirement en tenant compte du validate
+
+        int tableNumber = 1;
+
+        for (String studentId : donnees.freeStudents())
+        {
+            while (!Utilitaire.in(tableNumber, donnees.freeTables()))
+            {
+                tableNumber++;
+
+                if (tableNumber > donnees.existingTables().length)
+                    break;
+            }
+
+            if (walid(donnees.getStudentFromId(studentId), tableNumber))
+            {
+                donnees.placeStudent(tableNumber, studentId);
+            }
+
+            tableNumber++;
+        }
+
+        // le reste du la fonction (placer les etu aleatoirement en tenant compte du validateç
         /*
         faire une boucle qui parcours les etus et les places petit a petit sur les places aleatiores si walid
         Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
          */
 
         /*
-        * Bon dcp on va faire autrement pour insérer l'aléatoire plus facilement:
-        * Grosso modo on parcours les tables dans l'ordre croissant jusque soit qu'il y en ait plus, soit qu'il y ait
-        * plus d'etu a placer. Pour l'aléatoire, on prend un étu aléatoire parmi les étudiants pas placés. Si la table
-        * est pas dans les places libres, on passe à la suivante, sinon on essaye de placer l'étudiant, en prenant
-        * compte des contraintes, et si on peut le placer on passe à la table suivante.
-        * */
+         * Bon dcp on va faire autrement pour insérer l'aléatoire plus facilement:
+         * Grosso modo on parcours les tables dans l'ordre croissant jusque soit qu'il y en ait plus, soit qu'il y ait
+         * plus d'etu a placer. Pour l'aléatoire, on prend un étu aléatoire parmi les étudiants pas placés. Si la table
+         * est pas dans les places libres, on passe à la suivante, sinon on essaye de placer l'étudiant, en prenant
+         * compte des contraintes, et si on peut le placer on passe à la table suivante.
+         * */
         //on commence à la table 1
-        int table=1;
-        int temp ;
+        int table = 1;
+        int temp;
 
 
-
-
-        return donnees.freeStudents().length==0 ;
+        return donnees.freeStudents().length == 0;
     }
 
     // valide ou non le placement
     private boolean walid(Student s, int t)
     {
+        if (!Utilitaire.in(t, donnees.freeTables()))
+            return false;
+
         // si on sait que l'etu as des contraintes
-        if (Constraint.contraint(s))
+        if (Constraint.contraint(s.getId()))
         {
 
             // on prends les tables voisines pour regarder
@@ -83,18 +110,25 @@ public class PositioningIntermediate
         return true;
     }
 
-    public String[] getAllInfo() {
-        String[] infos = new String [donnees.getTables().length] ;
-        int cpt = 0 ;
-        for (int t : donnees.getTables()) {
-            infos[cpt] = donnees.getTableInfos(t) ;
-            cpt++ ;
+    public String[] getAllInfo()
+    {
+        String[] infos = new String[donnees.getTables().length];
+        int cpt = 0;
+        for (int t : donnees.getTables())
+        {
+            infos[cpt] = donnees.getTableInfos(t);
+
+            if (donnees.isDeleted(t))
+                infos[cpt] += " - SUPPRIMÉE";
+
+            cpt++;
         }
-        return infos ;
+        return infos;
     }
 
-    public String getAllTable(int numTable) {
-        return donnees.getTableInfos(numTable) ;
+    public String getAllTable(int numTable)
+    {
+        return donnees.getTableInfos(numTable);
     }
 
 }

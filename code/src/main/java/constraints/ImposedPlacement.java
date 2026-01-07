@@ -10,6 +10,8 @@ public class ImposedPlacement extends Constraint
     public ImposedPlacement(int numTable, String numEtu){
         this.numTable = numTable;
         this.numEtu = numEtu;
+
+        studentsConstraints.add(numEtu);
     }
     public void set(int numTable, String numEtu){
         this.numTable = numTable;

@@ -12,6 +12,7 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -125,7 +126,7 @@ public class Data
     {
         int[] result = new int[tables.length];
         int numRes = 0; // la position dans les resultats
-        for (int i = 0; i < tables.length; i++)
+        for (int i = 0; i <= tables.length; i++)
         {
             // je verifie que ma table soit pas supprimée
             if (!Utilitaire.in(i, deletedTables))
@@ -142,9 +143,10 @@ public class Data
     {
         int[] free = new int[tables.length];
         int numRes = 0;
+
         for (int i = 0; i < tables.length; i++)
         {
-            if (Utilitaire.in(i, existingTables()) && tables[i].getEtu() == null)
+            if (Utilitaire.in(i+1, existingTables()) && tables[i].getEtu() == null)
             {
                 free[numRes] = tables[i].getNum();
                 numRes++;
@@ -172,7 +174,7 @@ public class Data
         {
             if (deletedTables[n] == num)
             {
-                deletedTables[n] = 0 ;
+                deletedTables[n] = 0;
             }
         }
     }
@@ -180,8 +182,10 @@ public class Data
     public Student getStudentFromId(String id)
     {
         for (Student student : students)
+        {
             if (student.getId().equals(id))
                 return student;
+        }
 
         return null;
     }
@@ -343,7 +347,7 @@ public class Data
         {
             if (constraint instanceof PerGroup)
             {
-                    return (PerGroup) constraint;
+                return (PerGroup) constraint;
             }
         }
         return null;
@@ -576,26 +580,30 @@ public class Data
     }
 
 
-    public String getTableInfos(int numTable) {
-        String result = getTable(numTable).description() ;
-        result.replace(" ",";") ;
-        return result ;
+    public String getTableInfos(int numTable)
+    {
+        String result = getTable(numTable).description();
+        result.replace(" ", ";");
+        return result;
     }
 
-    private Table getTable(int num) {
-        for (Table tb : tables) {
-            if (tb.getNum() == num) {
+    private Table getTable(int num)
+    {
+        for (Table tb : tables)
+        {
+            if (tb.getNum() == num)
+            {
                 return tb;
             }
         }
 
-        return null ;
+        return null;
     }
 
-    public int maxNumTable() {
+    public int maxNumTable()
+    {
         return Utilitaire.max(freeTables());
     }
-
 
 
 }

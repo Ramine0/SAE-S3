@@ -54,6 +54,7 @@ public class CreatingIntermediate
 
     public int findNumsForImp(String id, int num)
     {
+        id = findEtu(id);
         num = findTable(num) ? num : -1;
         if (id.equals("le num donné n'existe pas"))
         {

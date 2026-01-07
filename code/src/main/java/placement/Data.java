@@ -338,17 +338,11 @@ public class Data
     public PerGroup getPerGroup(int id)
     {
         int cnt = 0;
-        for (int i = 0; i < constraints.length; i++)
+        for (Constraint constraint : constraints)
         {
-            if (constraints[i] instanceof PerGroup)
+            if (constraint instanceof PerGroup)
             {
-                if (cnt == id)
-                {
-                    return (PerGroup) constraints[i];
-                } else
-                {
-                    cnt++;
-                }
+                    return (PerGroup) constraint;
             }
         }
         return null;
@@ -379,13 +373,15 @@ public class Data
         if (getPerGroup(idGp) != null)
         {
             if (getPerGroup(idGp).haveStu(numStudent))
-            {
                 return false;
-            }
+
             getPerGroup(idGp).addStudent(numStudent);
-            return true;
+        } else
+        {
+            addConstraint(numStudent, 0, 'N');
         }
-        return false;
+
+        return true;
     }
 
     public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)

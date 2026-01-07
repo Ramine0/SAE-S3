@@ -76,25 +76,15 @@ public class CreatingIntermediate
         d.removeConstraint("I", id - 1);
     }
 
-    public int findStudentForGroup(String idPartiel, int numGrp)
+    public String findStudentForGroup(String idPartiel, int numGrp)
     {
         String etu = findEtu(idPartiel);
 
-        if (etu.equals("le num donné n'existe pas"))
+        if (etu.length()==8)
         {
-            return -1;
-        } else if (etu.length() > 8)
-        {
-            return 0;
-        } else
-        {
-            if (d.addStudentGroupConstraint(etu, numGrp))
-            {
-                return 1;
-            } else
-            {
-                return 2;
-            }
+            return d.addStudentGroupConstraint(etu, numGrp) ;
+        }else {
+            return etu ;
         }
 
     }

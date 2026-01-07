@@ -182,10 +182,8 @@ public class Data
     public Student getStudentFromId(String id)
     {
         for (Student student : students)
-        {
             if (student.getId().equals(id))
                 return student;
-        }
 
         return null;
     }
@@ -203,11 +201,6 @@ public class Data
             lesNums[i] = tables[i].getNum();
         }
         return lesNums;
-    }
-
-    public Student findStudent(String idStudent)
-    {
-        return null;
     }
 
     public Student[] getEtus()
@@ -342,12 +335,11 @@ public class Data
 
     public PerGroup getPerGroup(int id)
     {
-        int cnt = 0;
         for (Constraint constraint : constraints)
         {
             if (constraint instanceof PerGroup)
             {
-                return (PerGroup) constraint;
+                if (((PerGroup) constraint).getNum()==id){return (PerGroup) constraint ;}
             }
         }
         return null;
@@ -373,20 +365,26 @@ public class Data
     }
 
     /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
-    public boolean addStudentGroupConstraint(String numStudent, int idGp)
+    public String addStudentGroupConstraint(String numStudent, int idGp)
     {
         if (getPerGroup(idGp) != null)
         {
-            if (getPerGroup(idGp).haveStu(numStudent))
-                return false;
-
-            getPerGroup(idGp).addStudent(numStudent);
+            if (getPerGroup(idGp).haveStu(numStudent)) {
+                return "Etudiant deja dans le groupe";
+            }else {
+                getPerGroup(idGp).addStudent(numStudent);
+                return numStudent +";"+ getFullName(numStudent);
+            }
         } else
         {
-            addConstraint(numStudent, 0, 'N');
+            if( addConstraint(numStudent, idGp, 'N') == 0) {
+                return numStudent +";"+getFullName(numStudent);
+            }else {
+                return "Erreur interne lors de la creation de la contrainte";
+            }
+
         }
 
-        return true;
     }
 
     public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)
@@ -580,30 +578,26 @@ public class Data
     }
 
 
-    public String getTableInfos(int numTable)
-    {
-        String result = getTable(numTable).description();
-        result.replace(" ", ";");
-        return result;
+    public String getTableInfos(int numTable) {
+        String result = getTable(numTable).description() ;
+        result.replace(" ",";") ;
+        return result ;
     }
 
-    private Table getTable(int num)
-    {
-        for (Table tb : tables)
-        {
-            if (tb.getNum() == num)
-            {
+    private Table getTable(int num) {
+        for (Table tb : tables) {
+            if (tb.getNum() == num) {
                 return tb;
             }
         }
 
-        return null;
+        return null ;
     }
 
-    public int maxNumTable()
-    {
+    public int maxNumTable() {
         return Utilitaire.max(freeTables());
     }
+
 
 
 }

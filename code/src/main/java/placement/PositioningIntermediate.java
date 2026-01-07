@@ -21,7 +21,7 @@ public class PositioningIntermediate
     // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
     // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
 
-    public PositioningIntermediate(int[] deleted, Data d)
+    public PositioningIntermediate( Data d)
     {
 
         donnees = d;
@@ -39,14 +39,7 @@ public class PositioningIntermediate
         Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
 
          */
-/*
-        for (Student student : donnees.getEtus())
-        {
-            for (int table : donnees.getTables())
-                if (walid(student, table))
-                    donnees.placeStudent(table, student.getId());
-        }
-*/
+
         /*
         * Bon dcp on va faire autrement pour insérer l'aléatoire plus facilement:
         * Grosso modo on parcours les tables dans l'ordre croissant jusque soit qu'il y en ait plus, soit qu'il y ait
@@ -101,5 +94,9 @@ public class PositioningIntermediate
     }
 
 
+
+    public String getALlTable(int numTable) {
+        return donnees.getTableInfos(numTable) ;
+    }
 
 }

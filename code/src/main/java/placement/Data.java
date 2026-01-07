@@ -568,4 +568,10 @@ public class Data
     }
 
 
+    public String getTableInfos(int numTable) {
+        String result = tables[numTable].description() ;
+        result.replace(" ",";") ;
+        return result ;
+    }
+
 }

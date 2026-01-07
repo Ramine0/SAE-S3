@@ -7,11 +7,17 @@ public class PerGroup extends Constraint
 {
     private String[] groupe;
     private int id;
+    private int num ;
 
-    public PerGroup(String[] etus)
+    public int getNum() {return num ;}
+
+    public PerGroup(String etu, int numGrp)
     {
-        groupe = etus;
+        num =  numGrp;
+        groupe = new String[9] ;
         id=0;
+        addStudent(etu);
+
     }
     public void addStudent(String numetu){
         groupe[id]=numetu;
@@ -47,7 +53,7 @@ public class PerGroup extends Constraint
     }
 
     public  boolean haveStu (String id) {
-        return Utilitaire.in(id,studentsConstraints.toArray()) ;
+        return Utilitaire.in(id,groupe) ;
     }
 
 }

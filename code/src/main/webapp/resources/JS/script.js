@@ -183,15 +183,12 @@ function validerEtuGrp() {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
-                console.log(response[2]);
+                console.log("rep :",response);
 
-                if (response[2] === "2")
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
-                else {
+                document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[0];
+                if (response.length > 1) {
                     validerSectEtuGrp(idFind);
-
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
-                    document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
                 }
             } else {
                 console.error('Error fetching group data');

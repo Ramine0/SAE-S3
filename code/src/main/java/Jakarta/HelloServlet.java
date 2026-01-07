@@ -19,15 +19,9 @@ public class HelloServlet
         crea.setDimensions(2, 2);
         PositioningIntermediate pos ;
         pos = salle.getPositioningIntermediate() ;
-        System.out.println("imposer la place a moi : "+ crea.findNumsForImp("12406410",1)) ;
-        System.out.println("remove une table"+crea.supprTable(2));
-        System.out.println("changer le mode : " + salle.positioningMode());
-        crea = null ;
-        pos = salle.getPositioningIntermediate() ;
-        System.out.println("lancer la generation : " + salle.generate() );
-        for (String s : pos.getAllInfo()) {
-            System.out.println(s);
-        }
+        System.out.println("creer un grp : "+ crea.findStudentForGroup("12406410",1)) ;
+        System.out.println("creer un grp : "+ crea.findStudentForGroup("12y06410",1));
+
 
     }
 

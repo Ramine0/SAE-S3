@@ -201,11 +201,6 @@ public class Data
         return lesNums;
     }
 
-    public Student findStudent(String idStudent)
-    {
-        return null;
-    }
-
     public Student[] getEtus()
     {
         return students.toArray(new Student[0]);
@@ -338,12 +333,11 @@ public class Data
 
     public PerGroup getPerGroup(int id)
     {
-        int cnt = 0;
         for (Constraint constraint : constraints)
         {
             if (constraint instanceof PerGroup)
             {
-                    return (PerGroup) constraint;
+                if (((PerGroup) constraint).getNum()==id){return (PerGroup) constraint ;}
             }
         }
         return null;
@@ -369,20 +363,28 @@ public class Data
     }
 
     /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
-    public boolean addStudentGroupConstraint(String numStudent, int idGp)
+    public String addStudentGroupConstraint(String numStudent, int idGp)
     {
-        if (getPerGroup(idGp) != null)
-        {
-            if (getPerGroup(idGp).haveStu(numStudent))
-                return false;
+        System.out.println(getPerGroup(idGp));
+        if (getPerGroup(idGp) != null) {
 
-            getPerGroup(idGp).addStudent(numStudent);
+            if (getPerGroup(idGp).haveStu(numStudent)) {
+                return "Etudiant deja dans le groupe";
+            }else {
+                getPerGroup(idGp).addStudent(numStudent);
+                return numStudent +";"+ getFullName(numStudent);
+            }
         } else
         {
-            addConstraint(numStudent, 0, 'N');
+            if( addConstraint(numStudent, idGp, 'N') == 0) {
+                return numStudent +";"+getFullName(numStudent);
+            }else {
+                return "Erreur interne lors de la creation de la contrainte";
+            }
+
         }
 
-        return true;
+
     }
 
     public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)
@@ -453,10 +455,8 @@ public class Data
             return 1;
         } else if (constr == 'N')
         {
-            String[] s = new String[10];
-            constraints[idC] = new PerGroup(s);
+            constraints[idC] = new PerGroup(numStudent,numTable);
             idC++;
-
             return 0;
         }
 
@@ -596,6 +596,9 @@ public class Data
         return Utilitaire.max(freeTables());
     }
 
-
+    public String getFullName(String id) {
+        Student etu = getStudentFromId(id) ;
+        return etu.getName() +" "+etu.getFirstName() ;
+    }
 
 }

@@ -10,12 +10,13 @@ public class Room
 {
 
     private CreatingIntermediate crea ;
-    private PositioningIntermediate positioningIntermediate;
+    private PositioningIntermediate posing;
 
 
     public Room() throws FileNotFoundException
     {
         crea = new CreatingIntermediate();
+        posing = null ;
     }
 
     public Room(String path) throws FileNotFoundException
@@ -27,12 +28,21 @@ public class Room
         return crea;
     }
     public PositioningIntermediate getPositioningIntermediate() {
-        return positioningIntermediate;
-    }
-    private void createRoom() {
-
+        return posing;
     }
 
+    public boolean positioningMode() {
+        posing = crea.generatePos() ;
+        if (posing != null) {
+            crea = null ;
+            return true;
+        }
+        return false ;
+    }
+
+    public boolean generate() {
+        return posing.creerPlacement() ;
+    }
 
 
     /**

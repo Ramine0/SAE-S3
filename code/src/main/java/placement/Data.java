@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
+
 // la classe va save les données pour les creer via un CreatingIntermediate et les avoir dans le positioning intermediate
 // elle aura plein de fonction utiles comme le lecture du fichier des etus ou le traitement des etus
 
@@ -68,7 +69,7 @@ public class Data
 
     public void placeStudent(int table, String idStudent)
     {
-        tables[table - 1].setStudent(getStudentFromId(idStudent));
+        getTable(table).setStudent(getStudentFromId(idStudent));
     }
 
     // liste des fonctions a implementer
@@ -116,7 +117,7 @@ public class Data
 
     public Student getStuFromTab(int num)
     {
-        return tables[num].getEtu();
+        return getTable(num).getEtu();
     }
 
     // renvoie les numeros de tables disponibles
@@ -145,7 +146,7 @@ public class Data
         {
             if (Utilitaire.in(i, existingTables()) && tables[i].getEtu() == null)
             {
-                free[numRes] = i;
+                free[numRes] = tables[i].getNum();
                 numRes++;
             }
         }
@@ -171,7 +172,7 @@ public class Data
         {
             if (deletedTables[n] == num)
             {
-                deletedTables[n] = -1;
+                deletedTables[n] = 0 ;
             }
         }
     }
@@ -580,9 +581,25 @@ public class Data
 
 
     public String getTableInfos(int numTable) {
-        String result = tables[numTable].description() ;
+        String result = getTable(numTable).description() ;
         result.replace(" ",";") ;
         return result ;
     }
+
+    private Table getTable(int num) {
+        for (Table tb : tables) {
+            if (tb.getNum() == num) {
+                return tb;
+            }
+        }
+
+        return null ;
+    }
+
+    public int maxNumTable() {
+        return Utilitaire.max(freeTables());
+    }
+
+
 
 }

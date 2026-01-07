@@ -99,22 +99,75 @@ function supprimerPlaceImposee(event) {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
 
-    if (xhr.readyState === XMLHttpRequest.DONE) {
-        if (xhr.status === 200)
-            console.log("Deleted constraint successfully");
-        else
-            console.error("Error deleting constraint");
-    }
-    xhr.send();
-
     document.querySelector("#impose" + numConstr).remove();
 
     nbImposedPlace--;
-
-    if (nbImposedPlace === 0)
-        document.querySelector("#ajoutImpos").disabled = false;
+    document.querySelector("#ajoutImpos").disabled = false;
 
     decreaseId("#i");
+
+    if (document.querySelector(".invalid") === null) {
+        document.querySelector("#walid").disabled = false;
+        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+    }
+
+}
+
+document.getElementById("findTable1").addEventListener("click", validateDeletedTable);
+
+function validateDeletedTable(event) {
+    const findId = event.target.id;
+    const contraintId = findId.charAt(9);
+    const tableNumber = document.getElementById("numTabSup" + contraintId).value;
+
+
+    if (tableNumber === "")
+        return;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+
+                if (xhr.responseText !== "1" && xhr.responseText !== "2") {
+                    setValid(`supTable${contraintId}`);
+                    console.log("Deleted table successfully");
+                }
+            } else
+                console.error("Error deleting table");
+        }
+    }
+    xhr.send();
+}
+
+document.getElementById("deleteTable1").addEventListener("click", removeDeletedTable);
+
+function removeDeletedTable(event) {
+    const findId = event.target.id;
+    const contraintId = findId.charAt(11);
+    const tableNumber = document.getElementById("numTabSup" + contraintId).value;
+
+
+    if (tableNumber !== "") {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+        xhr.send();
+    }
+
+    nbPlacesSuppr--;
+    document.querySelector("#ajoutSuppr").disabled = false;
+
+    document.querySelector("#supTable" + contraintId).remove();
+    decreaseId("#DT");
+
+    if (document.querySelector(".invalid") === null) {
+        document.querySelector("#walid").disabled = false;
+        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+    }
+
 }
 
 document.getElementById("fileUploadForm").addEventListener("change", moveFile)
@@ -129,7 +182,7 @@ function moveFile(event) {
 
     xhr.send(data);
 
-    console.log(data);
+    console.log("File uploaded. I guess...")
 
     fileOk = true;
 }
@@ -181,6 +234,11 @@ function createImposed() {
 
     document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
     document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
+
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
 }
 
 function createSuppr() {
@@ -189,13 +247,22 @@ function createSuppr() {
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
 <span>
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
-    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number" disabled>
+    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number">
 </span>
-<button class="remove" id="supTabSup${nbPlacesSuppr}" onclick="enleverPlaceSuppr()" >remove</button>
-<button class="chercher" id="walTabSup${nbPlacesSuppr}" onclick="validerPlaceSuppr()" >find</button>
+<button class="remove" id="deleteTable${nbPlacesSuppr}">remove</button>
+<button class="chercher" id="findTable${nbPlacesSuppr}">find</button>
 </section>`;
 
+    document.querySelector("#ajoutSuppr").disabled = true;
     document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin", placesSuppr);
+
+    document.querySelector("#findTable" + nbPlacesSuppr).addEventListener("click", validateDeletedTable);
+    document.querySelector("#deleteTable" + nbPlacesSuppr).addEventListener("click", removeDeletedTable);
+
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
 }
 
 function createGrp() {
@@ -224,28 +291,38 @@ function createGrp() {
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
     document.querySelector('#ajoutGroup').disabled = true;
 
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
 }
 
 function createEtuGrp() {
-    let numGrp = window.event.target.id.charAt(11);
+    let numGrp = window.event.target.id.substring(11);
     groupes[numGrp - 1].push(groupes[numGrp - 1].length);
     let numEtu = groupes[numGrp - 1].length;
-    let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
-    <span>
-        <div>
-            <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Num Etudiant </label>
-            <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
-        </div>
-        <div>
-            <label for="nomEtu${numEtu}G${numGrp}" id="labelnomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
-            <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
-        </div>
-    </span>
-    <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
-    <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
+    if (numEtu < 10 ) {
+        let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
+        <span>
+            <div>
+                <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Num Etudiant </label>
+                <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
+            </div>
+            <div>
+                <label for="nomEtu${numEtu}G${numGrp}" id="labelnomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
+                <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
+            </div>
+        </span>
+        <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
+        <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
 
-    document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
-    document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
+
+        document.querySelector("#walid").disabled = true;
+        document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+    }
 }
 
 function createTable(){
@@ -256,7 +333,6 @@ function createTable(){
     }
     document.querySelector(`#endLine${tables/larg+1}`).insertAdjacentHTML("beforebegin", t);
 }
-
 
 function displayID() {
     console.log(window.event.target.id);
@@ -280,9 +356,9 @@ function enableZone() {
         document.querySelector("#deleteImposed1").disabled = false;
 
         // deleted
-        document.querySelector("#supTabSup1").disabled = false;
+        document.querySelector("#findTable1").disabled = false;
         document.querySelector("#numTabSup1").disabled = false;
-        document.querySelector("#walTabSup1").disabled = false;
+        document.querySelector("#deleteTable1").disabled = false;
 
         // groupe
         document.querySelector("#idEtu1G1").disabled = false;
@@ -316,19 +392,20 @@ function setValid(section) {
     } else if (section.includes("supTable")) {
         document.querySelector("#ajoutSuppr").disabled = false;
 
-        document.querySelector(`#numTabSup${nbPlacesSuppr}`).disabled = true;
-        document.querySelector(`#walTabSup${nbPlacesSuppr}`).disabled = true;
+        document.querySelector(`#findTable${nbPlacesSuppr}`).disabled = true;
 
     } else {
         let numGrp = groupes.length;
         if (section.includes(`G${numGrp}`)) {
             document.querySelector("#ajoutGroup").disabled = false;
         } else {
-            numGrp = section.charAt(3);
-            document.querySelector("#ajoutGroup").disabled = false;
+            numGrp = section.substring(4);
         }
-        numEtu = groupes[numGrp - 1].length;
-        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+
+
+        let numEtu = groupes[numGrp - 1].length;
+
+        if (numEtu < 9) { document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;}
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
@@ -337,18 +414,23 @@ function setValid(section) {
     if (document.querySelector(".invalid") === null) {
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+
     }
 
 }
 
 function enleverEtuGrp() {
     let idBout = window.event.target.id;
-    let numGrp = idBout.charAt(8);
+    let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
-    if (numEtu == groupes[numGrp - 1].length) {
+    if (numEtu === groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
-        if (numEtu == 1 && numGrp != 1) {
+        if (document.querySelector(".invalid") === null) {
+            document.querySelector("#walid").disabled = false;
+            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+        }
+        if (numEtu === 1 && numGrp !== 1) {
             document.querySelector(`#Gp${numGrp}`).remove();
             document.querySelector(`#h4${numGrp}`).remove();
             groupes.splice(numGrp - 1, 1);
@@ -357,7 +439,7 @@ function enleverEtuGrp() {
 
     }
     document.querySelector(`#E${numEtu}G${numGrp}`).remove();
-    if (numEtu != groupes[numGrp - 1].length) {
+    if (numEtu !== groupes[numGrp - 1].length) {
         for (let g = 1; g <= groupes[numGrp - 1].length; g++) {
             if (g > numEtu) {
                 decreaseId(`#E${g}G${numGrp}`);
@@ -366,34 +448,36 @@ function enleverEtuGrp() {
 
     }
 
-    groupes[numGrp - 1].splice(numEtu - 1, 1);
+    if (numEtu <= groupes[numGrp.length]) {
+        groupes[numGrp - 1].splice(numEtu - 1, 1);
+        if (document.querySelector(".invalid") === null) {
+            document.querySelector("#walid").disabled = false;
+            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+        }
+    }
 
 }
 
 function validerSectEtuGrp(idBout) {
-    numGrp = idBout.charAt(8);
-    numEtu = idBout.charAt(6);
+    let numGrp = idBout.substring(8);
+    let numEtu = idBout.charAt(6);
     setValid(`E${numEtu}G${numGrp}`);
 }
 
 function validerSectImpose(idBout) {
-    numConstr = idBout.charAt(11);
+    let numConstr = idBout.charAt(11);
     setValid(`impose${numConstr}`);
 
 }
 
-function validerPlaceSuppr(idBout) {
-    numConstr = idBout.charAt(9);
-    setValid(`supTable${numConstr}`);
-}
-
 function validerEtuGrp() {
-    idFind = window.event.target.id;
-    numGrp = idFind.charAt(8);
-    numEtu = idFind.charAt(6);
+    let idFind = window.event.target.id;
+    let numGrp = idFind.substring(8);
+    let numEtu = idFind.charAt(6);
+
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     const studentName = document.getElementById(`nomEtu${numEtu}G${numGrp}`).value;
-    valid = true;
+    let valid = true;
     const idRequest = new XMLHttpRequest();
     idRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
 
@@ -416,7 +500,8 @@ function validerEtuGrp() {
         if (nameRequest.readyState === XMLHttpRequest.DONE) {
             if (nameRequest.status === 200) {
                 document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = nameRequest.responseText;
-                validerSectEtuGrp(idFind);
+                if (nameRequest.responseText !== "null") {validerSectEtuGrp(idFind); }
+
             } else {
                 console.error('Error fetching student data');
                 valid = false;
@@ -429,7 +514,7 @@ function validerEtuGrp() {
 
 function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
-        let numGrp = idElem.charAt(4);
+        let numGrp = idElem.substring(4);
         let numEtu = idElem.charAt(2);
         let newNumEtu = numEtu - 1;
 
@@ -437,6 +522,9 @@ function decreaseId(idElem) {
 
         document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).for = `idEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).for = `nomEtu${newNumEtu}G${numGrp}`;
+
+        document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).id = `labelidEtu${newNumEtu}G${numGrp}`;
+        document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).id = `labelnomEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).id = `idEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `nomEtu${newNumEtu}G${numGrp}`;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `walEtu${newNumEtu}G${numGrp}`;
@@ -457,12 +545,21 @@ function decreaseId(idElem) {
             children[i].children[3].id = "deleteImposed" + newId;
             children[i].children[4].id = "findImposed" + newId;
         }
+    } else if (idElem.startsWith("#DT")) {
+        let children = document.getElementById("deletedTableRow").children;
+
+        for (let i = 0; i < children.length - 1; i++) {
+            const newId = i + 1;
+
+            children[i].id = "supTable" + newId;
+
+            children[i].children[0].children[1].id = "numTabSup" + newId;
+
+            children[i].children[1].id = "deleteTable" + newId;
+            children[i].children[2].id = "findTable" + newId;
+        }
     }
 
-    if (document.querySelector(".invalid") === null) {
-        document.querySelector("#walid").disabled = false;
-        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-    }
 
 }
 

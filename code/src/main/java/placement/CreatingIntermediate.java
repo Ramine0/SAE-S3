@@ -39,7 +39,7 @@ public class CreatingIntermediate
     public String findEtu(String id)
     {
         String trouve = d.completeId(id);
-        if (trouve != "")
+        if (!trouve.isEmpty())
         {
             return trouve;
         } else if (id.length() == 8)
@@ -71,7 +71,9 @@ public class CreatingIntermediate
         {
             return -2;
         } else
+        {
             return d.addImp(etu, num);
+        }
     }
 
     public void removeImp(int id)
@@ -82,6 +84,7 @@ public class CreatingIntermediate
     public int findStudentForGroup(String idPartiel, int numGrp)
     {
         String etu = findEtu(idPartiel);
+
         if (etu.equals("le num donné n'existe pas"))
         {
             return -1;
@@ -109,9 +112,10 @@ public class CreatingIntermediate
     public String studentInfo(String num)
     {
         Student student = d.getStudentFromId(num);
-
         if (student == null)
+        {
             return null;
+        }
 
         return student.getName() + " " + student.getFirstName();
     }
@@ -121,17 +125,25 @@ public class CreatingIntermediate
         num = findTable(num) ? num : -1;
         if (num == -1)
         {
-            return -2;
+            return 2;
         } else
         {
-            if (d.removeTable(num) && !d.isDeleted(num))
+            if (d.isDeleted(num))
+                return 2;
+            else if (d.removeTable(num))
             {
-                return 1;
+                return 0;
             } else
             {
-                return 2;
+                return 1;
             }
         }
+    }
+
+    public void unremoveTable(int num)
+    {
+        num = findTable(num) ? num : -1;
+        d.unremoveTable(num);
     }
 
     public boolean setDimensions(int lon, int lar)

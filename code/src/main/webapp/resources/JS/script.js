@@ -87,6 +87,12 @@ function supprimerPlaceImposee(event) {
     document.querySelector("#ajoutImpos").disabled = false;
 
     decreaseId("#i");
+
+    if (document.querySelector(".invalid") === null) {
+        document.querySelector("#walid").disabled = false;
+        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+    }
+
 }
 
 document.getElementById("findTable1").addEventListener("click", validateDeletedTable);
@@ -126,7 +132,6 @@ function removeDeletedTable(event) {
     const contraintId = findId.charAt(11);
     const tableNumber = document.getElementById("numTabSup" + contraintId).value;
 
-    console.log(findId, contraintId);
 
     if (tableNumber !== "") {
         const xhr = new XMLHttpRequest();
@@ -139,6 +144,12 @@ function removeDeletedTable(event) {
 
     document.querySelector("#supTable" + contraintId).remove();
     decreaseId("#DT");
+
+    if (document.querySelector(".invalid") === null) {
+        document.querySelector("#walid").disabled = false;
+        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+    }
+
 }
 
 function moveFile() {
@@ -148,8 +159,6 @@ function moveFile() {
     xhr.open("POST", "file-upload");
 
     xhr.send(data);
-
-    console.log("File uploaded. I guess...")
 
     fileOk = true;
 }
@@ -199,6 +208,11 @@ function createImposed() {
 
     document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
     document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
+
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
 }
 
 function createSuppr() {
@@ -218,6 +232,11 @@ function createSuppr() {
 
     document.querySelector("#findTable" + nbPlacesSuppr).addEventListener("click", validateDeletedTable);
     document.querySelector("#deleteTable" + nbPlacesSuppr).addEventListener("click", removeDeletedTable);
+
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
 }
 
 function createGrp() {
@@ -246,6 +265,10 @@ function createGrp() {
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
     document.querySelector('#ajoutGroup').disabled = true;
 
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
 }
 
 function createEtuGrp() {
@@ -269,6 +292,10 @@ function createEtuGrp() {
 
         document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
+
+        document.querySelector("#walid").disabled = true;
+        document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
     }
 }
 
@@ -342,11 +369,12 @@ function setValid(section) {
         if (section.includes(`G${numGrp}`)) {
             document.querySelector("#ajoutGroup").disabled = false;
         } else {
-            numGrp = section.substring(3);
+            numGrp = section.substring(4);
         }
 
 
         let numEtu = groupes[numGrp - 1].length;
+
         if (numEtu < 9) { document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;}
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
@@ -356,6 +384,7 @@ function setValid(section) {
     if (document.querySelector(".invalid") === null) {
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+
     }
 
 }
@@ -367,10 +396,15 @@ function enleverEtuGrp() {
     if (numEtu == groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
+        if (document.querySelector(".invalid") === null) {
+            document.querySelector("#walid").disabled = false;
+            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+        }
         if (numEtu == 1 && numGrp != 1) {
             document.querySelector(`#Gp${numGrp}`).remove();
             document.querySelector(`#h4${numGrp}`).remove();
             groupes.splice(numGrp - 1, 1);
+
             return;
         }
 
@@ -385,7 +419,13 @@ function enleverEtuGrp() {
 
     }
 
-    groupes[numGrp - 1].splice(numEtu - 1, 1);
+    if (numEtu <= groupes[numGrp.length]) {
+        groupes[numGrp - 1].splice(numEtu - 1, 1);
+        if (document.querySelector(".invalid") === null) {
+            document.querySelector("#walid").disabled = false;
+            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+        }
+    }
 
 }
 
@@ -491,10 +531,6 @@ function decreaseId(idElem) {
         }
     }
 
-    if (document.querySelector(".invalid") === null) {
-        document.querySelector("#walid").disabled = false;
-        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-    }
 
 }
 

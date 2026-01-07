@@ -57,7 +57,7 @@ public class PositioningIntermediate
         //on commence à la table 1
         int table=1;
         //on parcours les tables jusqu'à la dernière ou jusqu'à ce qu'il n'y ait plus d'étu à placer
-        while (table<donnees.getTables().length || donnees.freeStudents().length==0){
+        while (table<=donnees.getTables().length && donnees.freeStudents().length!=0){
             int idStudent=(int)(Math.random()*donnees.freeStudents().length);
             // etu aléatoire parmis les non placés
             if (Utilitaire.in(table, donnees.freeTables())) {

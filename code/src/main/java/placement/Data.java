@@ -71,6 +71,10 @@ public class Data
         tables[table - 1].setStudent(getStudentFromId(idStudent));
     }
 
+    public Table getTable(int num)
+    {
+        return tables[num-1];
+    }
     // liste des fonctions a implementer
     /*
     bool isDeleted(Table/int) FAIT

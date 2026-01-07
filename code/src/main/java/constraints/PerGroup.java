@@ -46,8 +46,19 @@ public class PerGroup extends Constraint
         return true;
     }
 
-    public  boolean haveStu (String id) {
+    public boolean haveStu (String id) {
         return Utilitaire.in(id,studentsConstraints.toArray()) ;
     }
 
+    public int getNbStudent(){
+        int nb=0;
+        while (groupe[nb]!=null){
+            nb++;
+        }
+        return nb;
+    }
+
+    public String getStudent(int index){
+        return groupe[index];
+    }
 }

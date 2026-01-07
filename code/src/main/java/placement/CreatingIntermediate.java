@@ -1,6 +1,8 @@
 package placement;
 
+import constraints.Constraint;
 import org.NeoMalokVector.SAE_S3.Student;
+import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
@@ -57,6 +59,11 @@ public class CreatingIntermediate
         return Utilitaire.in(numTab, d.freeTables());
     }
 
+    public Table getTable(int numTab)
+    {
+        return d.getTable(numTab);
+    }
+
     public int findNumsForImp(String id, int num)
     {
         String etu = findEtu(id);
@@ -66,7 +73,7 @@ public class CreatingIntermediate
             return -1;
         } else if (etu.length() > 8)
         {
-            return 0;
+            return -3;
         } else if (num == -1)
         {
             return -2;
@@ -164,6 +171,18 @@ public class CreatingIntermediate
     public void resetData()
     {
         d.reset();
+    }
+
+    public Student StuFromTable(int num){
+        return d.getStuFromTab(num);
+    }
+
+    public int getNbConstr(){
+        return d.getConstr().length;
+    }
+
+    public Constraint getConstr(int num){
+        return d.getConstr()[num-1];
     }
 
 }

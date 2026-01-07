@@ -2,10 +2,9 @@
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
-let long=0;
-let larg=0;
+export let long=0;
+export let larg=0;
 
-let tables=1;
 
 let fileOk = false;
 
@@ -179,7 +178,6 @@ function moveFile(event) {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
-
     xhr.send(data);
 
     console.log("File uploaded. I guess...")
@@ -325,14 +323,6 @@ function createEtuGrp() {
     }
 }
 
-function createTable(){
-    tables++;
-    let t= `<button id="T${tables}" class="table"> Table ${tables} </button>`;
-    if (tables%larg===0){
-        t+=`<br><p id="endLine${tables/larg+1}">`;
-    }
-    document.querySelector(`#endLine${tables/larg+1}`).insertAdjacentHTML("beforebegin", t);
-}
 
 function displayID() {
     console.log(window.event.target.id);

@@ -38,8 +38,11 @@
     </main>
 
     <aside class="asideCrea">
-        <div clas="topAsside">
+        <div class="topAsside">
             <input type="file" name="importvisu" id="importvisu" accept="text/csv">
+            <label> Format d'export</label>
+            <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
+            <input type="checkbox" name="export" id="Listing" value="Listing"> Listing
             <button id="exporter"> Exporter </button>
         </div>
         <span class="separateur"></span>
@@ -69,5 +72,7 @@
 <footer>
     <div> &copy; Copyright </div>
 </footer>
+<script type="module" src="resources/JS/scriptVisu.js">
+</script>
 </body>
 </html>

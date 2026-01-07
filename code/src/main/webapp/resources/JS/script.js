@@ -393,14 +393,14 @@ function enleverEtuGrp() {
     let idBout = window.event.target.id;
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
-    if (numEtu == groupes[numGrp - 1].length) {
+    if (numEtu === groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
         if (document.querySelector(".invalid") === null) {
             document.querySelector("#walid").disabled = false;
             document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
         }
-        if (numEtu == 1 && numGrp != 1) {
+        if (numEtu === 1 && numGrp !== 1) {
             document.querySelector(`#Gp${numGrp}`).remove();
             document.querySelector(`#h4${numGrp}`).remove();
             groupes.splice(numGrp - 1, 1);
@@ -410,7 +410,7 @@ function enleverEtuGrp() {
 
     }
     document.querySelector(`#E${numEtu}G${numGrp}`).remove();
-    if (numEtu != groupes[numGrp - 1].length) {
+    if (numEtu !== groupes[numGrp - 1].length) {
         for (let g = 1; g <= groupes[numGrp - 1].length; g++) {
             if (g > numEtu) {
                 decreaseId(`#E${g}G${numGrp}`);

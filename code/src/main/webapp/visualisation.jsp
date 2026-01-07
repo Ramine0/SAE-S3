@@ -42,11 +42,25 @@
             <input type="file" name="importvisu" id="importvisu" accept="text/csv">
             <button id="exporter"> Exporter </button>
         </div>
+        <span class="separateur"></span>
         <div class="valuesOfTable">
-            <span>
-                <label for="numTabSup1"> Num Table </label>
-                <input name="idTabSup1" id="numTabSup1" type="number" disabled>
-           </span>
+             <span id="TableNumber" >
+                <label for="numTabVisu"> Numero de Table </label>
+                <input name="idTabVisu" id="numTabVisu" type="number" disabled>
+            </span>
+            <span id="studentInfo">
+
+                <div >
+                    <label for="numEtuVisu"> Numero Etudiant </label>
+                    <input name="numEtuVisu" id="numEtuVisu" type="text" disabled>
+                </div>
+                <div >
+                    <label for="nomEtuVisu"> Nom de l'etudiant </label>
+                    <input name="nomEtuVisu" id="nomEtuVisu" type="text" disabled>
+                </div>
+
+            </span>
+
 
         </div>
 

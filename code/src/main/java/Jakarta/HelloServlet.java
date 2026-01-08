@@ -18,18 +18,10 @@ public class HelloServlet
         crea.setDimensions(3, 3);
         PositioningIntermediate pos;
         pos = salle.getPositioningIntermediate();
-        System.out.println("imposer la place a moi : " + crea.findNumsForImp("12406410", 1));
-        System.out.println("imposer la place a Néo : " + crea.findNumsForImp("p2403367", 3));
-
+        System.out.println("m'ajouter : " + crea.findStudentForGroup("12406410", 1));
+        System.out.println("me re ajouter : " + crea.findStudentForGroup("p2406", 1));
         System.out.println("remove une table : " + crea.supprTable(2));
-        System.out.println("changer le mode : " + salle.positioningMode());
-        crea = null;
-        pos = salle.getPositioningIntermediate();
-        System.out.println("lancer la generation : " + salle.generate());
-        for (String s : pos.getAllInfo())
-        {
-            System.out.println(s);
-        }
+
 
     }
 

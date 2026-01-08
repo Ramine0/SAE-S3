@@ -188,6 +188,7 @@ function validerEtuGrp() {
                 document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[0];
                 if (response.length > 1) {
                     validerSectEtuGrp(idFind);
+                    document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
                 }
             } else {

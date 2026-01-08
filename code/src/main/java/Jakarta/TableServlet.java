@@ -17,14 +17,13 @@ import java.io.PrintWriter;
 
 public class TableServlet extends HttpServlet
 {
-    public static Room salle = null;
-    private CreatingIntermediate crea = null;
+    public static CreatingIntermediate crea = null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        if (salle == null)
+        if (crea == null)
         {
-            salle = new Room(request.getServletContext().getRealPath("/") + "/");
+            Room salle = new Room(request.getServletContext().getRealPath("/") + "/");
             crea = salle.getCrea();
         }
         response.setContentType("text/html");

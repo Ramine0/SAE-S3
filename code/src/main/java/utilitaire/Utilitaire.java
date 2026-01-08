@@ -11,6 +11,17 @@ public class Utilitaire {
         return false;
     }
 
+    public static boolean in (String s, String[] tab) {
+        for (String i : tab) {
+            if (i != null){
+                if (i.equals(s)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static int pos(int nb, int[] tab) {
 
         for (int  i = 0; i < tab.length ; i++ ) {
@@ -29,6 +40,16 @@ public class Utilitaire {
             }
         }
         return false;
+    }
+
+    public static int max (int[] nb ) {
+        int result = nb[0];
+        for (int i : nb ) {
+            if (result < i) {
+                result = i;
+            }
+        }
+        return result ;
     }
 
 }

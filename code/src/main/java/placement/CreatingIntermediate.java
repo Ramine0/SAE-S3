@@ -6,7 +6,7 @@ import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+
 
 public class CreatingIntermediate
 {
@@ -31,11 +31,6 @@ public class CreatingIntermediate
     public int getNumberTables()
     {
         return d.getTables().length;
-    }
-
-    public String afc()
-    {
-        return "as une donnée";
     }
 
     public String findEtu(String id)
@@ -66,12 +61,12 @@ public class CreatingIntermediate
 
     public int findNumsForImp(String id, int num)
     {
-        String etu = findEtu(id);
+        id = findEtu(id);
         num = findTable(num) ? num : -1;
-        if (etu.equals("le num donné n'existe pas"))
+        if (id.equals("le num donné n'existe pas"))
         {
             return -1;
-        } else if (etu.length() > 8)
+        } else if (id.length() > 8)
         {
             return -3;
         } else if (num == -1)
@@ -79,7 +74,7 @@ public class CreatingIntermediate
             return -2;
         } else
         {
-            return d.addImp(etu, num);
+            return d.addImp(id, num);
         }
     }
 
@@ -88,25 +83,15 @@ public class CreatingIntermediate
         d.removeConstraint("I", id - 1);
     }
 
-    public int findStudentForGroup(String idPartiel, int numGrp)
+    public String findStudentForGroup(String idPartiel, int numGrp)
     {
         String etu = findEtu(idPartiel);
 
-        if (etu.equals("le num donné n'existe pas"))
+        if (etu.length()==8)
         {
-            return -1;
-        } else if (etu.length() > 8)
-        {
-            return 0;
-        } else
-        {
-            if (d.addStudentGroupConstraint(etu, numGrp))
-            {
-                return 1;
-            } else
-            {
-                return 2;
-            }
+            return d.addStudentGroupConstraint(etu, numGrp) ;
+        }else {
+            return etu ;
         }
 
     }
@@ -183,6 +168,10 @@ public class CreatingIntermediate
 
     public Constraint getConstr(int num){
         return d.getConstr()[num-1];
+    }
+
+    public PositioningIntermediate generatePos () {
+        return new PositioningIntermediate(d) ;
     }
 
 }

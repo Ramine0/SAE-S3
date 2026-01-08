@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
+
 // la classe va save les données pour les creer via un CreatingIntermediate et les avoir dans le positioning intermediate
 // elle aura plein de fonction utiles comme le lecture du fichier des etus ou le traitement des etus
 
@@ -68,7 +69,7 @@ public class Data
 
     public void placeStudent(int table, String idStudent)
     {
-        tables[table - 1].setStudent(getStudentFromId(idStudent));
+        getTable(table).setStudent(getStudentFromId(idStudent));
     }
 
     public Table getTable(int num)
@@ -120,7 +121,7 @@ public class Data
 
     public Student getStuFromTab(int num)
     {
-        return tables[num].getEtu();
+        return getTable(num).getEtu();
     }
 
     // renvoie les numeros de tables disponibles
@@ -128,7 +129,7 @@ public class Data
     {
         int[] result = new int[tables.length];
         int numRes = 0; // la position dans les resultats
-        for (int i = 0; i < tables.length; i++)
+        for (int i = 0; i <= tables.length; i++)
         {
             // je verifie que ma table soit pas supprimée
             if (!Utilitaire.in(i, deletedTables))
@@ -145,11 +146,12 @@ public class Data
     {
         int[] free = new int[tables.length];
         int numRes = 0;
+
         for (int i = 0; i < tables.length; i++)
         {
-            if (Utilitaire.in(i, existingTables()) && tables[i].getEtu() == null)
+            if (Utilitaire.in(i+1, existingTables()) && tables[i].getEtu() == null)
             {
-                free[numRes] = i;
+                free[numRes] = tables[i].getNum();
                 numRes++;
             }
         }
@@ -175,7 +177,7 @@ public class Data
         {
             if (deletedTables[n] == num)
             {
-                deletedTables[n] = -1;
+                deletedTables[n] = 0;
             }
         }
     }
@@ -202,11 +204,6 @@ public class Data
             lesNums[i] = tables[i].getNum();
         }
         return lesNums;
-    }
-
-    public Student findStudent(String idStudent)
-    {
-        return null;
     }
 
     public Student[] getEtus()
@@ -341,18 +338,11 @@ public class Data
 
     public PerGroup getPerGroup(int id)
     {
-        int cnt = 0;
-        for (int i = 0; i < constraints.length; i++)
+        for (Constraint constraint : constraints)
         {
-            if (constraints[i] instanceof PerGroup)
+            if (constraint instanceof PerGroup)
             {
-                if (cnt == id)
-                {
-                    return (PerGroup) constraints[i];
-                } else
-                {
-                    cnt++;
-                }
+                if (((PerGroup) constraint).getNum()==id){return (PerGroup) constraint ;}
             }
         }
         return null;
@@ -361,13 +351,13 @@ public class Data
     public ImposedPlacement getImposedPlacement(int id)
     {
         int cnt = 0;
-        for (int i = 0; i < constraints.length; i++)
+        for (Constraint c : constraints)
         {
-            if (constraints[i] instanceof ImposedPlacement)
+            if (c instanceof ImposedPlacement)
             {
                 if (cnt == id)
                 {
-                    return (ImposedPlacement) constraints[i];
+                    return (ImposedPlacement) c;
                 } else
                 {
                     cnt++;
@@ -378,18 +368,26 @@ public class Data
     }
 
     /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
-    public boolean addStudentGroupConstraint(String numStudent, int idGp)
+    public String addStudentGroupConstraint(String numStudent, int idGp)
     {
         if (getPerGroup(idGp) != null)
         {
-            if (getPerGroup(idGp).haveStu(numStudent))
-            {
-                return false;
+            if (getPerGroup(idGp).haveStu(numStudent)) {
+                return "Etudiant deja dans le groupe";
+            }else {
+                getPerGroup(idGp).addStudent(numStudent);
+                return numStudent +";"+ getFullName(numStudent);
             }
-            getPerGroup(idGp).addStudent(numStudent);
-            return true;
+        } else
+        {
+            if( addConstraint(numStudent, idGp, 'N') == 0) {
+                return numStudent +";"+getFullName(numStudent);
+            }else {
+                return "Erreur interne lors de la creation de la contrainte";
+            }
+
         }
-        return false;
+
     }
 
     public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)
@@ -460,8 +458,8 @@ public class Data
             return 1;
         } else if (constr == 'N')
         {
-            String[] s = new String[10];
-            constraints[idC] = new PerGroup(s);
+
+            constraints[idC] = new PerGroup(numStudent,numTable);
             idC++;
 
             return 0;
@@ -482,20 +480,20 @@ public class Data
     public String completeId(String incomplet)
     {
         String possib = "";
-        if (incomplet.startsWith("p") && students.get(0).getId().startsWith("1"))
+        if (incomplet.startsWith("p") && students.getFirst().getId().startsWith("1"))
         {
             incomplet = "1" + incomplet.substring(1);
-        } else if (incomplet.startsWith("1") && students.get(0).getId().startsWith("p"))
+        } else if (incomplet.startsWith("1") && students.getFirst().getId().startsWith("p"))
         {
             incomplet = "p" + incomplet.substring(1);
         }
 
         for (Student s : students)
         {
-            if (s.getId() == incomplet)
+            if (s.getId().equals(incomplet))
             {
                 return incomplet;
-            } else if (possib != "" && s.getId().startsWith(incomplet))
+            } else if ((!possib.isEmpty()) && s.getId().startsWith(incomplet))
             {
                 return "";
             } else if (s.getId().startsWith(incomplet))
@@ -506,10 +504,6 @@ public class Data
         return possib;
     }
 
-    public int addGrp()
-    {
-        return addConstraint(null, 0, 'N');
-    }
 
     public int addImp(String id, int num)
     {
@@ -582,5 +576,45 @@ public class Data
         init();
     }
 
+
+    public String getTableInfos(int numTable) {
+        String result = getTable(numTable).description() ;
+        result = result.replace(" ",";") ;
+        return result ;
+    }
+
+    private Table getTable(int num) {
+        for (Table tb : tables) {
+            if (tb.getNum() == num) {
+                return tb;
+            }
+        }
+
+        return null ;
+    }
+
+    public int maxNumTable() {
+        return Utilitaire.max(freeTables());
+    }
+
+    public String getFullName(String id) {
+        Student etu = getStudentFromId(id) ;
+        return etu.getName() +" "+etu.getFirstName() ;
+    }
+
+    public boolean haveStudent(int tab) {
+        return (! isDeleted(tab)) && (getTable(tab).getEtu() != null) ;
+    }
+
+
+    public boolean swap(int numT1, int numT2) {
+        if (getStuFromTab(numT1) != null && getStuFromTab(numT2) != null ) {
+            Student temp = getStuFromTab(numT1) ;
+            getTable(numT1).setStudent(getStuFromTab(numT2));
+            getTable(numT1).setStudent(temp);
+            return true;
+        }
+        return false ;
+    }
 
 }

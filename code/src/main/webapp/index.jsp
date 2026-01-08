@@ -38,10 +38,5 @@
 <footer>
     <div>&copy; Copyright</div>
 </footer>
-<script src="resources/JS/script.js">
-    start();
-    callServlet();
-
-</script>
 </body>
 </html>

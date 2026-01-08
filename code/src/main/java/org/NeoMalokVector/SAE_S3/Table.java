@@ -21,7 +21,7 @@ public class Table
     public String description()
     {
         if (student!=null){
-            return (num+" "+student.getId());
+            return (num+" "+student.descrip(true));
         }else{
             return String.valueOf(num);
         }
@@ -35,13 +35,7 @@ public class Table
         return num;
     }
 
-    /**
-     * getter de l'id maximal attribué à une table
-     * @return id
-     */
-    public int getId(){
-        return id;
-    }
+
     public Student getEtu () {return student ;}
 
 

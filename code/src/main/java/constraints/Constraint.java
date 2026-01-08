@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public abstract class Constraint
 {
     public static ArrayList<String> groupsConstraints = new ArrayList<>();
-    public static ArrayList<Student> studentsConstraints = new ArrayList<>();
+    public static ArrayList<String> studentsConstraints = new ArrayList<>();
 
     public abstract boolean validate(Student student, int table, Student[] etu);
 
-    public static boolean contraint(Student student)
+    public static boolean contraint(String student)
     {
         return Utilitaire.in(student, studentsConstraints.toArray());
     }

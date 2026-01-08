@@ -5,11 +5,13 @@ import org.NeoMalokVector.SAE_S3.Student;
 public class ImposedPlacement extends Constraint
 {
     private int numTable;
-    private String numEtu = "";
+    private String numEtu ;
 
     public ImposedPlacement(int numTable, String numEtu){
         this.numTable = numTable;
         this.numEtu = numEtu;
+
+        studentsConstraints.add(numEtu);
     }
     public void set(int numTable, String numEtu){
         this.numTable = numTable;
@@ -26,8 +28,7 @@ public class ImposedPlacement extends Constraint
      * @return un tableau de string contenant le numéro de la table et le numéro de l'étudiant
      */
     public String[] getPaire() {
-        String [] result =  {Integer.toString(numTable),numEtu} ;
-        return result;
+        return new String[] {Integer.toString(numTable),numEtu} ;
     }
     public int getNumTable() {
         return numTable;

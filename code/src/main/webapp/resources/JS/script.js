@@ -129,8 +129,6 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log(xhr.responseText);
-
                 if (xhr.responseText !== "1" && xhr.responseText !== "2") {
                     setValid(`supTable${contraintId}`);
                     console.log("Deleted table successfully");
@@ -165,6 +163,78 @@ function removeDeletedTable(event) {
     if (document.querySelector(".invalid") === null) {
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+    }
+
+}
+
+function validerEtuGrp() {
+    let idFind = window.event.target.id;
+    let numGrp = idFind.substring(8);
+    let numEtu = idFind.charAt(6);
+
+    const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
+    let valid = true;
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                const response = xhr.responseText.split(";");
+
+                console.log("rep :",response);
+
+                document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[0];
+                if (response.length > 1) {
+                    validerSectEtuGrp(idFind);
+                    document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
+                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
+                }
+            } else {
+                console.error('Error fetching group data');
+                valid = false;
+            }
+        }
+    };
+    xhr.send();
+}
+
+function enleverEtuGrp() {
+    let idBout = window.event.target.id;
+    let numGrp = idBout.substring(8);
+    let numEtu = idBout.charAt(6);
+    if (numEtu === groupes[numGrp - 1].length) {
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+        document.querySelector("#ajoutGroup").disabled = false;
+        if (document.querySelector(".invalid") === null) {
+            document.querySelector("#walid").disabled = false;
+            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+        }
+        if (numEtu === 1 && numGrp !== 1) {
+            document.querySelector(`#Gp${numGrp}`).remove();
+            document.querySelector(`#h4${numGrp}`).remove();
+            groupes.splice(numGrp - 1, 1);
+
+            return;
+        }
+
+    }
+    document.querySelector(`#E${numEtu}G${numGrp}`).remove();
+    if (numEtu !== groupes[numGrp - 1].length) {
+        for (let g = 1; g <= groupes[numGrp - 1].length; g++) {
+            if (g > numEtu) {
+                decreaseId(`#E${g}G${numGrp}`);
+            }
+        }
+
+    }
+
+    if (numEtu <= groupes[numGrp.length]) {
+        groupes[numGrp - 1].splice(numEtu - 1, 1);
+        if (document.querySelector(".invalid") === null) {
+            document.querySelector("#walid").disabled = false;
+            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+        }
     }
 
 }
@@ -299,7 +369,7 @@ function createEtuGrp() {
     let numGrp = window.event.target.id.substring(11);
     groupes[numGrp - 1].push(groupes[numGrp - 1].length);
     let numEtu = groupes[numGrp - 1].length;
-    if (numEtu < 10 ) {
+    if (numEtu < 10) {
         let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
         <span>
             <div>
@@ -395,7 +465,9 @@ function setValid(section) {
 
         let numEtu = groupes[numGrp - 1].length;
 
-        if (numEtu < 9) { document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;}
+        if (numEtu < 9) {
+            document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+        }
         document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
@@ -409,45 +481,6 @@ function setValid(section) {
 
 }
 
-function enleverEtuGrp() {
-    let idBout = window.event.target.id;
-    let numGrp = idBout.substring(8);
-    let numEtu = idBout.charAt(6);
-    if (numEtu === groupes[numGrp - 1].length) {
-        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
-        document.querySelector("#ajoutGroup").disabled = false;
-        if (document.querySelector(".invalid") === null) {
-            document.querySelector("#walid").disabled = false;
-            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-        }
-        if (numEtu === 1 && numGrp !== 1) {
-            document.querySelector(`#Gp${numGrp}`).remove();
-            document.querySelector(`#h4${numGrp}`).remove();
-            groupes.splice(numGrp - 1, 1);
-            return;
-        }
-
-    }
-    document.querySelector(`#E${numEtu}G${numGrp}`).remove();
-    if (numEtu !== groupes[numGrp - 1].length) {
-        for (let g = 1; g <= groupes[numGrp - 1].length; g++) {
-            if (g > numEtu) {
-                decreaseId(`#E${g}G${numGrp}`);
-            }
-        }
-
-    }
-
-    if (numEtu <= groupes[numGrp.length]) {
-        groupes[numGrp - 1].splice(numEtu - 1, 1);
-        if (document.querySelector(".invalid") === null) {
-            document.querySelector("#walid").disabled = false;
-            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-        }
-    }
-
-}
-
 function validerSectEtuGrp(idBout) {
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
@@ -457,48 +490,6 @@ function validerSectEtuGrp(idBout) {
 function validerSectImpose(idBout) {
     let numConstr = idBout.charAt(11);
     setValid(`impose${numConstr}`);
-
-}
-
-function validerEtuGrp() {
-    let idFind = window.event.target.id;
-    let numGrp = idFind.substring(8);
-    let numEtu = idFind.charAt(6);
-
-    const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
-    const studentName = document.getElementById(`nomEtu${numEtu}G${numGrp}`).value;
-    let valid = true;
-    const idRequest = new XMLHttpRequest();
-    idRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("id")}`, true);
-
-    idRequest.onreadystatechange = function () {
-        if (idRequest.readyState === XMLHttpRequest.DONE) {
-            if (idRequest.status === 200) {
-                document.getElementById(`idEtu${numEtu}G${numGrp}`).value = idRequest.responseText;
-            } else {
-                console.error('Error fetching student data');
-                valid = false;
-            }
-        }
-    };
-
-    idRequest.send();
-    const nameRequest = new XMLHttpRequest();
-    nameRequest.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&fieldToFill=${encodeURIComponent("name")}`, true);
-
-    nameRequest.onreadystatechange = function () {
-        if (nameRequest.readyState === XMLHttpRequest.DONE) {
-            if (nameRequest.status === 200) {
-                document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = nameRequest.responseText;
-                if (nameRequest.responseText !== "null") {validerSectEtuGrp(idFind); }
-
-            } else {
-                console.error('Error fetching student data');
-                valid = false;
-            }
-        }
-    };
-    nameRequest.send();
 
 }
 

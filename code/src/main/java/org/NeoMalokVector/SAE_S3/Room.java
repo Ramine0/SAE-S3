@@ -1,6 +1,5 @@
 package org.NeoMalokVector.SAE_S3;
 
-import jdk.jshell.execution.Util;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
@@ -10,12 +9,13 @@ public class Room
 {
 
     private CreatingIntermediate crea ;
-    private PositioningIntermediate positioningIntermediate;
+    private PositioningIntermediate posing;
 
 
     public Room() throws FileNotFoundException
     {
         crea = new CreatingIntermediate();
+        posing = null ;
     }
 
     public Room(String path) throws FileNotFoundException
@@ -27,12 +27,21 @@ public class Room
         return crea;
     }
     public PositioningIntermediate getPositioningIntermediate() {
-        return positioningIntermediate;
-    }
-    private void createRoom() {
-
+        return posing;
     }
 
+    public boolean positioningMode() {
+        posing = crea.generatePos() ;
+        if (posing != null) {
+            crea = null ;
+            return true;
+        }
+        return false ;
+    }
+
+    public boolean generate() {
+        return posing.creerPlacement() ;
+    }
 
 
     /**
@@ -44,7 +53,12 @@ public class Room
      * @param num1 numéro de la première table
      * @param num2 numéro de la deuxième table
      */
-    private void swapPlaces(int num1,  int num2) {}
+    private boolean swapPlaces(int num1,  int num2) {
+        if (posing != null) {
+            return posing.swapPlaces(num1,num2) ;
+        }
+        return false ;
+    }
 
     /**
      * Retire la table num des tables auxquelles un étudiant peut être placé.

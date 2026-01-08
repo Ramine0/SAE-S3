@@ -116,10 +116,9 @@ public class PositioningIntermediate
         int cpt = 0;
         for (int t : donnees.getTables())
         {
-            infos[cpt] = donnees.getTableInfos(t);
 
-            if (donnees.isDeleted(t))
-                infos[cpt] += " - SUPPRIMÉE";
+            if (!donnees.isDeleted(t))
+                infos[cpt] = donnees.getTableInfos(t);
 
             cpt++;
         }
@@ -129,6 +128,25 @@ public class PositioningIntermediate
     public String getAllTable(int numTable)
     {
         return donnees.getTableInfos(numTable);
+    }
+
+    public String getTabInfoForVisu() {
+        String result ="" ;
+        for (String s : getAllInfo()){
+            result += s +":";
+        }
+        return result ;
+    }
+
+    public String getTablesForVisu() {
+        String result ="" ;
+        for (int t : donnees.getTables()) {
+            if (donnees.haveStudent(t)) {
+                result += t+";" ;
+            }
+        }
+
+        return result ;
     }
 
 }

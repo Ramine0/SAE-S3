@@ -455,8 +455,8 @@ public class Data
             return 1;
         } else if (constr == 'N')
         {
-            String[] s = new String[10];
-            constraints[idC] = new PerGroup(s);
+
+            constraints[idC] = new PerGroup(numStudent,numTable);
             idC++;
 
             return 0;
@@ -598,6 +598,13 @@ public class Data
         return Utilitaire.max(freeTables());
     }
 
+    public String getFullName(String id) {
+        Student etu = getStudentFromId(id) ;
+        return etu.getName() +" "+etu.getFirstName() ;
+    }
 
+    public boolean haveStudent(int tab) {
+        return (! isDeleted(tab)) && (getTable(tab).getEtu() != null) ;
+    }
 
 }

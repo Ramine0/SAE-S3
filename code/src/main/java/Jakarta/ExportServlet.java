@@ -1,5 +1,6 @@
 package Jakarta;
 
+import constraints.PerClass;
 import constraints.PerGroup;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -43,8 +44,10 @@ public class ExportServlet extends HttpServlet
                     out.print(";;;;"+type);
                     if (type.equals("PerGroup")){
                         for (int j=0; j<((PerGroup) salle.getCrea().getConstr(i+1)).getNbStudent(); j++){
-                            out.print(";"+salle.getCrea().getConstr(i+1));
+                            out.print(";"+((PerGroup)salle.getCrea().getConstr(i+1)).getStudent(j));
                         }
+                    }else if (type.equals("PerClass")){
+                        out.print(";"+((PerClass)salle.getCrea().getConstr(i+1)).)
                     }
                 }
             }

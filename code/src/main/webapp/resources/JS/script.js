@@ -554,5 +554,30 @@ function decreaseId(idElem) {
 
 }
 
+function enableText () {
+    let code = document.querySelector("#testVal").disabled = false ;
+}
+
+function codeForGeneration (){
+
+    let code = document.querySelector("#testVal");
+    console.log(code.id) ;
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `table?action=${encodeURIComponent("generate")}`, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                code.value = xhr.responseText;
+                code.disabled = true ;
+            }else {
+                console.log("ca ... marche pas ....") ;
+            }
+        }
+    }
+    xhr.send();
+
+}
+
 
 

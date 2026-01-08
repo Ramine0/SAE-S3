@@ -29,7 +29,7 @@
         </div>
     </a>
     <div class="general">
-        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm" onchange="return moveFile()">
+        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
             <label for="studentFile">Deposez votre fichier d'etudiants (CSV) </label>
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
             <label for="mode">Separation des etudiants par Groupes Classes </label>
@@ -91,15 +91,15 @@
         <div id="contraintes_suppr">
 
             <h2> Tables Supprimées </h2>
-            <div class="ligne">
+            <div class="ligne" id="deletedTablesRow">
                 <section id="supTable1" class="invalid">
 
                         <span  class="inputLabel">
                             <label for="numTabSup1"> Num Table </label>
                             <input name="idTabSup1" id="numTabSup1" type="number" disabled>
                         </span>
-                    <button class="remove" id="deleteTable1" onclick="enleverPlaceSuppr()" disabled>remove</button>
-                    <button class="chercher" id="findTable1" onclick="validerPlaceSuppr()" disabled>find</button>
+                    <button class="remove" id="deleteTable1" disabled>remove</button>
+                    <button class="chercher" id="findTable1" disabled>find</button>
                 </section>
 
                 <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled>+</button>

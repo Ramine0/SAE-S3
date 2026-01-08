@@ -1,14 +1,12 @@
 package Jakarta;
 
-import constraints.PerClass;
 import constraints.PerGroup;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.NeoMalokVector.SAE_S3.Room;
-import org.NeoMalokVector.SAE_S3.Table;
+import placement.CreatingIntermediate;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,12 +14,13 @@ import java.io.PrintWriter;
 @WebServlet("/export")
 public class ExportServlet extends HttpServlet
 {
-    private Room salle=null;
+    private CreatingIntermediate crea =null;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        if (salle == null)
+        if (crea == null)
         {
-            salle = TableServlet.salle;
+            crea = TableServlet.crea;
         }
         response.setContentType("text/csv;charset=UTF-8");
         response.setHeader(
@@ -31,23 +30,23 @@ public class ExportServlet extends HttpServlet
 
         PrintWriter out = response.getWriter();
         out.println("id;nom;table");
-        for (int i=0; i<salle.getCrea().getNumberTables(); i++){
-            if (salle.getCrea().getTable(i+1)!=null && salle.getCrea().StuFromTable(i+1)!=null){
-                out.println(salle.getCrea().StuFromTable(i+1).getId()+";"+salle.getCrea().StuFromTable(i+1).getName()+";"+i+1);
+        for (int i = 0; i< crea.getNumberTables(); i++){
+            if (crea.getTable(i+1)!=null && crea.StuFromTable(i+1)!=null){
+                out.println(crea.StuFromTable(i+1).getId()+";"+ crea.StuFromTable(i+1).getName()+";"+i+1);
             }
         }
         if (request.getParameter("format").equals("Excel")){
             out.println(";;;;contrainte;detail");
-            for (int i=0; i<salle.getCrea().getNbConstr(); i++){
-                if (salle.getCrea().getConstr(i+1)!=null){
-                    String type=salle.getCrea().getConstr(i+1).getClass().getTypeName();
+            for (int i = 0; i< crea.getNbConstr(); i++){
+                if (crea.getConstr(i+1)!=null){
+                    String type= crea.getConstr(i+1).getClass().getTypeName();
                     out.print(";;;;"+type);
                     if (type.equals("PerGroup")){
-                        for (int j=0; j<((PerGroup) salle.getCrea().getConstr(i+1)).getNbStudent(); j++){
-                            out.print(";"+((PerGroup)salle.getCrea().getConstr(i+1)).getStudent(j));
+                        for (int j = 0; j<((PerGroup) crea.getConstr(i+1)).getNbStudent(); j++){
+                            out.print(";"+((PerGroup) crea.getConstr(i+1)).getStudent(j));
                         }
                     }else if (type.equals("PerClass")){
-                        out.print(";"+((PerClass)salle.getCrea().getConstr(i+1)).)
+//                        out.print(";"+((PerClass)salle.getCrea().getConstr(i+1)).)
                     }
                 }
             }

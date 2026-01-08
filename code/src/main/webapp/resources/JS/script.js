@@ -2,8 +2,8 @@
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
-export let long=0;
-export let larg=0;
+let long=0;
+let larg=0;
 
 
 let fileOk = false;
@@ -244,6 +244,7 @@ document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 function moveFile(event) {
     if (event.target.id !== "studentFile")
         return;
+
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
@@ -398,11 +399,14 @@ function displayID() {
     console.log(window.event.target.id);
 }
 
+document.getElementById("startConstr").addEventListener("click", enableZone);
 
 function enableZone() {
+        console.log("enablez");
     if (fileOk) {
         setTableNumber();
         changeMode();
+
         //pk le prof pourrait pas modifier après???
         //document.querySelector("#studentFile").disabled = true;
         //document.querySelector("#long").disabled = true;
@@ -527,7 +531,7 @@ function decreaseId(idElem) {
             children[i].children[4].id = "findImposed" + newId;
         }
     } else if (idElem.startsWith("#DT")) {
-        let children = document.getElementById("deletedTableRow").children;
+        let children = document.getElementById("deletedTablesRow").children;
 
         for (let i = 0; i < children.length - 1; i++) {
             const newId = i + 1;

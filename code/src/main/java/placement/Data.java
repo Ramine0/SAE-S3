@@ -71,11 +71,6 @@ public class Data
     {
         getTable(table).setStudent(getStudentFromId(idStudent));
     }
-
-    public Table getTable(int num)
-    {
-        return tables[num-1];
-    }
     // liste des fonctions a implementer
     /*
     bool isDeleted(Table/int) FAIT
@@ -583,7 +578,7 @@ public class Data
         return result ;
     }
 
-    private Table getTable(int num) {
+    public Table getTable(int num) {
         for (Table tb : tables) {
             if (tb.getNum() == num) {
                 return tb;

@@ -35,13 +35,7 @@ public class Table
         return num;
     }
 
-    /**
-     * getter de l'id maximal attribué à une table
-     * @return id
-     */
-    public int getId(){
-        return id;
-    }
+
     public Student getEtu () {return student ;}
 
 

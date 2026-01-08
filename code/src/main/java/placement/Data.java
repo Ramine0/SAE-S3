@@ -12,7 +12,6 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -348,13 +347,13 @@ public class Data
     public ImposedPlacement getImposedPlacement(int id)
     {
         int cnt = 0;
-        for (int i = 0; i < constraints.length; i++)
+        for (Constraint c : constraints)
         {
-            if (constraints[i] instanceof ImposedPlacement)
+            if (c instanceof ImposedPlacement)
             {
                 if (cnt == id)
                 {
-                    return (ImposedPlacement) constraints[i];
+                    return (ImposedPlacement) c;
                 } else
                 {
                     cnt++;
@@ -477,20 +476,20 @@ public class Data
     public String completeId(String incomplet)
     {
         String possib = "";
-        if (incomplet.startsWith("p") && students.get(0).getId().startsWith("1"))
+        if (incomplet.startsWith("p") && students.getFirst().getId().startsWith("1"))
         {
             incomplet = "1" + incomplet.substring(1);
-        } else if (incomplet.startsWith("1") && students.get(0).getId().startsWith("p"))
+        } else if (incomplet.startsWith("1") && students.getFirst().getId().startsWith("p"))
         {
             incomplet = "p" + incomplet.substring(1);
         }
 
         for (Student s : students)
         {
-            if (s.getId() == incomplet)
+            if (s.getId().equals(incomplet))
             {
                 return incomplet;
-            } else if (possib != "" && s.getId().startsWith(incomplet))
+            } else if ((!possib.isEmpty()) && s.getId().startsWith(incomplet))
             {
                 return "";
             } else if (s.getId().startsWith(incomplet))
@@ -501,10 +500,6 @@ public class Data
         return possib;
     }
 
-    public int addGrp()
-    {
-        return addConstraint(null, 0, 'N');
-    }
 
     public int addImp(String id, int num)
     {
@@ -580,7 +575,7 @@ public class Data
 
     public String getTableInfos(int numTable) {
         String result = getTable(numTable).description() ;
-        result.replace(" ",";") ;
+        result = result.replace(" ",";") ;
         return result ;
     }
 
@@ -605,6 +600,17 @@ public class Data
 
     public boolean haveStudent(int tab) {
         return (! isDeleted(tab)) && (getTable(tab).getEtu() != null) ;
+    }
+
+
+    public boolean swap(int numT1, int numT2) {
+        if (getStuFromTab(numT1) != null && getStuFromTab(numT2) != null ) {
+            Student temp = getStuFromTab(numT1) ;
+            getTable(numT1).setStudent(getStuFromTab(numT2));
+            getTable(numT1).setStudent(temp);
+            return true;
+        }
+        return false ;
     }
 
 }

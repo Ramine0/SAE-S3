@@ -1,6 +1,5 @@
 package org.NeoMalokVector.SAE_S3;
 
-import jdk.jshell.execution.Util;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
@@ -54,7 +53,12 @@ public class Room
      * @param num1 numéro de la première table
      * @param num2 numéro de la deuxième table
      */
-    private void swapPlaces(int num1,  int num2) {}
+    private boolean swapPlaces(int num1,  int num2) {
+        if (posing != null) {
+            return posing.swapPlaces(num1,num2) ;
+        }
+        return false ;
+    }
 
     /**
      * Retire la table num des tables auxquelles un étudiant peut être placé.

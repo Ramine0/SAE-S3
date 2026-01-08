@@ -4,9 +4,6 @@ import constraints.Constraint;
 import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
-import java.sql.SQLOutput;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class PositioningIntermediate
 {
@@ -32,10 +29,8 @@ public class PositioningIntermediate
     {
         try
         {
-            donnees = new Data("path", "R");
-        } catch (Exception e)
-        {
-        }
+            donnees = new Data(path, "R");
+        } catch (Exception e) {System.out.println(e.getMessage());}
 
     }
 
@@ -77,9 +72,6 @@ public class PositioningIntermediate
          * compte des contraintes, et si on peut le placer on passe à la table suivante.
          * */
         //on commence à la table 1
-        int table = 1;
-        int temp;
-
 
         return donnees.freeStudents().length == 0;
     }
@@ -133,7 +125,7 @@ public class PositioningIntermediate
     public String getTabInfoForVisu() {
         String result ="" ;
         for (String s : getAllInfo()){
-            result += s +":";
+            result = result.concat( s +":");
         }
         return result ;
     }
@@ -142,11 +134,18 @@ public class PositioningIntermediate
         String result ="" ;
         for (int t : donnees.getTables()) {
             if (donnees.haveStudent(t)) {
-                result += t+";" ;
+                result = result.concat(t+";") ;
             }
         }
 
         return result ;
+    }
+
+    public boolean swapPlaces(int numT1, int numT2) {
+        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2,donnees.existingTables())) {
+            return donnees.swap(numT1,numT2);
+        }
+        return false ;
     }
 
 }

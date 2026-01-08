@@ -4,7 +4,7 @@ import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+
 
 public class CreatingIntermediate
 {

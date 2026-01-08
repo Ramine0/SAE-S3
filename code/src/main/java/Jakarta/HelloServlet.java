@@ -6,7 +6,6 @@ import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 
 public class HelloServlet
 {

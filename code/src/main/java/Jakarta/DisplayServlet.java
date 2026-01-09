@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.NeoMalokVector.SAE_S3.Room;
+import placement.PositioningIntermediate;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,7 +16,8 @@ import java.io.PrintWriter;
 @MultipartConfig
 public class DisplayServlet extends HttpServlet
 {
-    private static Room salle;
+    private static Room salle = null;
+    private PositioningIntermediate pos = null ;
 
 
     @Override
@@ -28,7 +30,59 @@ public class DisplayServlet extends HttpServlet
             if (salle == null) {
                 response.sendRedirect("index.jsp");
             }else {
-                //response.sendRedirect("visualisation.jsp");
+                response.setContentType("text/html");
+                PrintWriter out = response.getWriter() ;
+                out.println("""
+                <!DOCTYPE html>
+                
+                <html lang="fr">
+               
+                <head>
+                   <meta charset="UTF-8">
+                   <meta name="viewport" content="width=device-width, initial-scale=1">
+               
+                   <title>SAE de goat</title>
+                   <link rel="icon" type="image/png" href="resources/img/Logo_DSRoomMaker.png">
+               
+                   <link rel="stylesheet" href="resources/css/styles.css">
+                </head>
+               
+                <body>
+               
+                <header class="headerCentre">
+                   <img class="logoHomePage" src="resources/img/Logo_DSRoomMaker.png" alt="Logo">
+               
+                   <h1>Generation en cours</h1>
+                </header>
+                
+                <main>
+                """) ;
+                if (salle.positioningMode()) {
+                    pos = salle.getPositioningIntermediate() ;
+                    if (salle.generate()) {
+                        out.println("""
+                        <h4> Generation réussie </h4>
+                        <a href="visualisation.jsp">Voir le résultat</a>
+                        """);
+                    }else {
+                        out.println("<p>"+pos.getTablesForVisu()+"</p>") ;
+                        out.println(pos.descripData());
+                        out.println("""
+                        <h4> Erreur de Generation </h4>
+                        <a href="creation.jsp">retour a la page de creation</a>
+                        """);
+                    }
+                }else {
+                    out.println(salle.message);
+                    out.println("""
+                    <h4> erreur lors du changement en visualisation </h4>
+                    <a href="index.jsp">retour a la page d'acceuil</a>
+                    """);
+
+                }
+
+
+
             }
 
         }
@@ -41,8 +95,17 @@ public class DisplayServlet extends HttpServlet
 
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
-        response.setCharacterEncoding("UTF-8");
-        out.println("je tente un truc");
-        out.flush();
+        PrintWriter out = response.getWriter();
+
+        if (salle != null && pos != null ) {
+
+            if (request.getParameter("action").equals("init")) {
+
+                out.print(pos.getTablesForVisu());
+
+            }
+
+        }
+
     }
 }

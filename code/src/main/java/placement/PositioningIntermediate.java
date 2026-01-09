@@ -73,7 +73,10 @@ public class PositioningIntermediate
          * */
         //on commence à la table 1
 
-        return donnees.freeStudents().length == 0;
+        if (donnees.freeTables() != null ) {
+            return donnees.freeStudents().length == 0;
+        }
+        return false;
     }
 
     // valide ou non le placement

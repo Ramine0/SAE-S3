@@ -16,30 +16,34 @@
     <a href="index.jsp">
         <img src="resources/img/Logo_DSRoomMaker.png" alt="Logo" class="logoPageSec">
     </a>
-        <div class="topMenu">
-            <div>
-                <button class="modif">
+    <div class="topMenu">
+        <div>
+            <button class="modif">
                 <img src="resources/img/delete.png" alt="Supprimer">
                 <h2>Supprimer</h2>
-                </button>
-            </div>
+            </button>
+        </div>
 
-            <div>
-                <button class="modif">
+        <div>
+            <button class="modif">
                 <img src="resources/img/swap.png" alt="Échanger">
                 <h2>&Eacute;changer</h2>
-                </button>
-            </div>
+            </button>
         </div>
+    </div>
 </header>
 <div class="reverseLigne" id="content">
     <main>
-        <button class="table"> Table </button>
+        <h4 id="here"> Les tables : </h4>
+        <button class="table" > Table </button>
     </main>
 
     <aside class="asideCrea">
-        <div clas="topAsside">
+        <div class="topAsside">
             <input type="file" name="importvisu" id="importvisu" accept="text/csv">
+            <label> Format d'export</label>
+            <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
+            <input type="checkbox" name="export" id="Listing" value="Listing"> Listing
             <button id="exporter"> Exporter </button>
         </div>
         <span class="separateur"></span>
@@ -69,5 +73,7 @@
 <footer>
     <div> &copy; Copyright </div>
 </footer>
+<script type="module" src="resources/JS/scriptVisu.js">
+</script>
 </body>
 </html>

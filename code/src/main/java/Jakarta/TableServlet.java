@@ -23,10 +23,12 @@ public class TableServlet extends HttpServlet
     private static String secretCode ;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        if (crea == null)
+        if (crea == null && salle == null )
         {
             salle = new Room(request.getServletContext().getRealPath("/") + "/");
             crea = salle.getCrea();
+        }else if (crea == null ){
+            salle = null;
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();

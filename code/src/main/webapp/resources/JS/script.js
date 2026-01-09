@@ -442,6 +442,7 @@ function enableZone() {
         const tableReset = new XMLHttpRequest();
         tableReset.open("GET", `table?action=${encodeURIComponent("delete")}`, true);
         tableReset.send();
+        codeForGeneration() ;
     }
 }
 

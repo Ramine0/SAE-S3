@@ -17,11 +17,6 @@ public class CreationServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        if (TableServlet.crea == null)
-        {
-            Room salle = new Room(request.getServletContext().getRealPath("/") + "/");
-            TableServlet.crea = salle.getCrea();
-        }
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();

@@ -74,6 +74,10 @@ public class CreationServlet extends HttpServlet
             {
                 TableServlet.crea.setMode(2);
             }
+        }else if (request.getParameter("constraint").equals("reset")){
+            if (TableServlet.crea!=null){
+                TableServlet.crea.resetData();
+            }
         }
 
         out.flush();

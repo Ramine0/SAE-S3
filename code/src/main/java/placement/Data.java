@@ -24,7 +24,6 @@ public class Data
     private Constraint[] constraints;
     private Table[] tables;
     private int[] deletedTables;
-    private int nbImposed = 0;
 
     private Map map;
 
@@ -63,7 +62,6 @@ public class Data
 
         constraints = new Constraint[students.size()];
         idC = 0;
-        nbImposed = 0;
     }
 
 
@@ -393,9 +391,6 @@ public class Data
         } else if (constr.charAt(1) == 'G')
         {
             getPerGroup(id).modifStudent(numStudent, index);
-        } else
-        {
-            changeMode(constr.charAt(0));
         }
     }
 
@@ -403,18 +398,27 @@ public class Data
     {
         if (constr.equals("I"))
         {
-            if (id < idC)
+            if (id < idC && constraints[id] instanceof ImposedPlacement)
             {
                 for (int i = id; i < idC; i++)
                 {
                     if (i == idC - 1)
                     {
-                        if (constraints[i] instanceof ImposedPlacement)
-                        {
-                            nbImposed--;
-                        }
                         constraints[i] = null;
-
+                    } else
+                    {
+                        constraints[i] = constraints[i + 1];
+                    }
+                }
+                idC--;
+            }
+        }else if (constr.equals("G")){
+            if (id<idC && constraints[id] instanceof PerGroup){
+                for (int i = id; i < idC; i++)
+                {
+                    if (i == idC - 1)
+                    {
+                        constraints[i] = null;
                     } else
                     {
                         constraints[i] = constraints[i + 1];
@@ -423,6 +427,28 @@ public class Data
                 idC--;
             }
         }
+    }
+
+    public int getNbConstraint(String type){
+        int nb=0;
+        if (type.equals("I")){
+            for (int i=0; i<idC; i++){
+                if (constraints[i] instanceof ImposedPlacement){
+                    nb++;
+                }
+            }
+        }else if (type.equals("G")){
+            for (int i=0; i<idC; i++){
+                if (constraints[i] instanceof PerGroup){
+                    nb++;
+                }
+            }
+        }else if (type.equals("M")){
+            if (constraints[0]!=null){
+                nb++;
+            }
+        }
+        return nb;
     }
 
     public void modifStudentGroupConstraint(String numStudent, int idGp, int idStu)
@@ -442,7 +468,6 @@ public class Data
                 if (!Utilitaire.in(numTable, imposedTables()))
                 {
                     constraints[idC] = new ImposedPlacement(numTable, numStudent);
-                    nbImposed++;
                     idC++;
 
                     return 0;
@@ -536,7 +561,7 @@ public class Data
 
     public String[] imposedStudents()
     {
-        String[] result = new String[nbImposed];
+        String[] result = new String[getNbConstraint("I")];
         int i = 0;
         for (Constraint c : constraints)
         {
@@ -552,7 +577,7 @@ public class Data
 
     public int[] imposedTables()
     {
-        int[] result = new int[nbImposed];
+        int[] result = new int[getNbConstraint("I")];
         int i = 0;
         for (Constraint c : constraints)
         {
@@ -568,6 +593,8 @@ public class Data
 
     public void reset()
     {
+        Table.reset();
+        Constraint.reset();
         init();
     }
 

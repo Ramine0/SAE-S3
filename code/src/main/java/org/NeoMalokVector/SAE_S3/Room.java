@@ -114,6 +114,5 @@ public class Room
         }
         return posing.getTabInfoForVisu() ;
     }
-    public void msg(String s ) {message = s ;}
 
 }

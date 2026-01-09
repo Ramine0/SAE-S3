@@ -152,4 +152,12 @@ public class PositioningIntermediate
         return false ;
     }
 
+    public String descripData() {
+        String result ="";
+        for (String s: donnees.descrip() ){
+            result += s +";";
+        }
+        return result ;
+    }
+
 }

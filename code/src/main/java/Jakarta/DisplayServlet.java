@@ -95,7 +95,6 @@ public class DisplayServlet extends HttpServlet
 
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
 
         if (salle != null && pos != null ) {
 

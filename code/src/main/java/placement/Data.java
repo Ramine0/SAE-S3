@@ -565,6 +565,8 @@ public class Data
 
     public void reset()
     {
+        Table.reset();
+        Constraint.reset();
         init();
     }
 

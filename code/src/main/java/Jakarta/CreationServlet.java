@@ -28,25 +28,27 @@ public class CreationServlet extends HttpServlet
 
             String tableNumber = request.getParameter("tableNumber");
 
-            if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt('+'+tableNumber))) {
+            if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt('+' + tableNumber)))
+            {
                 result += "null;";
             } else
                 result += TableServlet.crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
 
             out.print(result);
+        } else if (request.getParameter("constraint").equals("removeImposedPlace"))
+        {
+            TableServlet.crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")));
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
 
             out.print(TableServlet.crea.supprTable(num));
 
-        }
-        else if (request.getParameter("constraint").equals("removeDeletedTable"))
+        } else if (request.getParameter("constraint").equals("removeDeletedTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
             TableServlet.crea.unremoveTable(num);
-        }
-        else if (request.getParameter("constraint").equals("separeEtu"))
+        } else if (request.getParameter("constraint").equals("separeEtu"))
         {
             String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
 
@@ -56,15 +58,21 @@ public class CreationServlet extends HttpServlet
                 out.print(studentId + ";" + studentInfo);
             else
                 out.print(studentId + ";" + studentInfo.split(";")[1]);
-        } else if (request.getParameter("constraint").equals("removeImposedPlace"))
+        } else if (request.getParameter("constraint").equals("deleteSepareEtu"))
         {
-            TableServlet.crea.removeImp(Integer.parseInt(request.getParameter("id")));
-        }else if (request.getParameter("constraint").equals("mode")){
-            if (request.getParameter("mode").equals("normal")){
+            int constraintId = Integer.parseInt(request.getParameter("constraintId"));
+            TableServlet.crea.removeContrainst("G", constraintId);
+        }
+        else if (request.getParameter("constraint").equals("mode"))
+        {
+            if (request.getParameter("mode").equals("normal"))
+            {
                 TableServlet.crea.setMode(0);
-            }else if (request.getParameter("mode").equals("group")){
+            } else if (request.getParameter("mode").equals("group"))
+            {
                 TableServlet.crea.setMode(1);
-            }else if (request.getParameter("mode").equals("sub-group")){
+            } else if (request.getParameter("mode").equals("sub-group"))
+            {
                 TableServlet.crea.setMode(2);
             }
         }else if (request.getParameter("constraint").equals("reset")){

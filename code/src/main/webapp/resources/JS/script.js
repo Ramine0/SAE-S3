@@ -71,15 +71,16 @@ function validerPlaceImposee(event) {
     };
     xhr.send();
 }
-function changeMode(){
-    const m=document.getElementById("mode").value;
-    const mode=new XMLHttpRequest();
+
+function changeMode() {
+    const m = document.getElementById("mode").value;
+    const mode = new XMLHttpRequest();
     mode.open("GET", `getStudentName?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
-    mode.onreadystatechange= function(){
-        if (mode.readyState===XMLHttpRequest.DONE){
-            if (mode.status===200){
+    mode.onreadystatechange = function () {
+        if (mode.readyState === XMLHttpRequest.DONE) {
+            if (mode.status === 200) {
                 console.log("ça marche à priori");
-            }else{
+            } else {
                 console.log(mode.status);
             }
         }
@@ -169,8 +170,10 @@ function removeDeletedTable(event) {
 
 }
 
-function validerEtuGrp() {
-    let idFind = window.event.target.id;
+document.getElementById("walEtu1G1").addEventListener("click", validerEtuGrp);
+
+function validerEtuGrp(event) {
+    let idFind = event.target.id;
     let numGrp = idFind.substring(8);
     let numEtu = idFind.charAt(6);
 
@@ -203,10 +206,17 @@ function validerEtuGrp() {
     xhr.send();
 }
 
-function enleverEtuGrp() {
-    let idBout = window.event.target.id;
+document.getElementById("supEtu1G1").addEventListener("click", enleverEtuGrp);
+
+function enleverEtuGrp(event) {
+    let idBout = event.target.id;
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent("x ")})`);
+    xhr.send();
+
     if (numEtu === groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
@@ -338,12 +348,11 @@ function createSuppr() {
 
     document.querySelector("#walid").disabled = true;
     document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
-
 }
 
 function createGrp() {
     groupes.push([0]);
+
     let etuGrp = `
     <h4 id="h4${groupes.length}">Mis a distance ${groupes.length} </h4>
     <div class="ligne" id="Gp${groupes.length}">       
@@ -358,15 +367,19 @@ function createGrp() {
                     <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
                 </div>
             </span>
-            <button class="remove" id="supEtu1G${groupes.length}" onclick="enleverEtuGrp()" >remove</button>
-            <button class="chercher" id="walEtu1G${groupes.length}" onclick="validerEtuGrp('waletu1G${groupes.length}')" >find</button>
+            <button class="remove" id="supEtu1G${groupes.length}" >remove</button>
+            <button class="chercher" id="walEtu1G${groupes.length}" >find</button>
         </section>
-        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" onclick="createEtuGrp()"  disabled >+</button>
+        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" disabled >+</button>
         <h4>ajouter un etudiant au groupe</h4>
     </div>`
-
-    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
     document.querySelector('#ajoutGroup').disabled = true;
+    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
+
+    document.querySelector("#walEtu1G" + groupes.length).addEventListener("click", validerEtuGrp);
+    document.querySelector("#supEtu1G" + groupes.length).addEventListener("click", enleverEtuGrp);
+
+    document.querySelector("#ajoutEtuGrp" + groupes.length).addEventListener("click", createEtuGrp);
 
     document.querySelector("#walid").disabled = true;
     document.querySelector("#walid").style.backgroundColor = '#ec400b';
@@ -374,8 +387,10 @@ function createGrp() {
 
 }
 
-function createEtuGrp() {
-    let numGrp = window.event.target.id.substring(11);
+document.getElementById("ajoutEtuGrp1").addEventListener("click", createEtuGrp);
+
+function createEtuGrp(event) {
+    let numGrp = event.target.id.substring(11);
     groupes[numGrp - 1].push(groupes[numGrp - 1].length);
     let numEtu = groupes[numGrp - 1].length;
     if (numEtu < 10) {
@@ -390,23 +405,20 @@ function createEtuGrp() {
                 <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
             </div>
         </span>
-        <button class="remove" id="supEtu${numEtu}G${numGrp}" onclick="enleverEtuGrp()" >remove</button>
-        <button class="chercher" id="walEtu${numEtu}G${numGrp}" onclick="validerEtuGrp('walEtu${numEtu}G${numGrp}')" >find</button>`
+        <button class="remove" id="supEtu${numEtu}G${numGrp}">remove</button>
+        <button class="chercher" id="walEtu${numEtu}G${numGrp}">find</button>`
 
         document.querySelector(`#ajoutEtuGrp${numGrp}`).insertAdjacentHTML("beforebegin", groupEtu);
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = true;
+
+        document.querySelector("#supEtu" + numEtu + "G" + numGrp).addEventListener("click", enleverEtuGrp);
+        document.querySelector("#walEtu" + numEtu + "G" + numGrp).addEventListener("click", validerEtuGrp);
 
         document.querySelector("#walid").disabled = true;
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
 
     }
 }
-
-
-function displayID() {
-    console.log(window.event.target.id);
-}
-
 
 function enableZone() {
     if (fileOk) {
@@ -457,7 +469,7 @@ function setValid(section) {
 
     } else if (section.includes("supTable")) {
         document.querySelector("#ajoutSuppr").disabled = false;
-        document.querySelector(`#numTabSup${nbPlacesSuppr}`).disabled=true;
+        document.querySelector(`#numTabSup${nbPlacesSuppr}`).disabled = true;
         document.querySelector(`#findTable${nbPlacesSuppr}`).disabled = true;
 
     } else {

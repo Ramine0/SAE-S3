@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 
 public class CreatingIntermediate
 {
-    private Data d;
+    private final Data d;
 
     public CreatingIntermediate() throws FileNotFoundException
     {
@@ -79,9 +79,9 @@ public class CreatingIntermediate
         }
     }
 
-    public void removeImp(int id)
+    public void removeContrainst(String constr, int id)
     {
-        d.removeConstraint("I", id - 1);
+        d.removeConstraint(constr, id - 1);
     }
 
     public String findStudentForGroup(String idPartiel, int numGrp)
@@ -95,7 +95,6 @@ public class CreatingIntermediate
         {
             return etu;
         }
-
     }
 
     public String[] descripData()
@@ -141,9 +140,9 @@ public class CreatingIntermediate
         d.unremoveTable(num);
     }
 
-    public boolean setDimensions(int lon, int lar)
+    public void setDimensions(int lon, int lar)
     {
-        return d.setDimensions(lon, lar);
+        d.setDimensions(lon, lar);
     }
 
     public Map getMap()
@@ -176,17 +175,14 @@ public class CreatingIntermediate
         return d.getConstr()[num - 1];
     }
 
-    public boolean setMode(int i){
-        if (i==0){
-            d.getConstr()[0]=null;
-        }else if (i==1){
-            d.getConstr()[0]=new PerClass(false);
-        }else if (i==2){
-            d.getConstr()[0]=new PerClass(true);
-        }else{
-            return false;
-        }
-        return true;
+    public void setMode(int i)
+    {
+        if (i == 0)
+            d.getConstr()[0] = null;
+        else if (i == 1)
+            d.getConstr()[0] = new PerClass(false);
+        else if (i == 2)
+            d.getConstr()[0] = new PerClass(true);
     }
 
 

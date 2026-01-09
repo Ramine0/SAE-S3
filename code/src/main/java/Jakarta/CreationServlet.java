@@ -1,5 +1,6 @@
 package Jakarta;
 
+import constraints.PerClass;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,8 +28,7 @@ public class CreationServlet extends HttpServlet
 
             String tableNumber = request.getParameter("tableNumber");
 
-            if (tableNumber.isEmpty())
-            {
+            if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt('+'+tableNumber))) {
                 result += "null;";
             } else
                 result += TableServlet.crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
@@ -53,6 +53,14 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("removeImposedPlace"))
         {
             TableServlet.crea.removeImp(Integer.parseInt(request.getParameter("id")));
+        }else if (request.getParameter("constraint").equals("mode")){
+            if (request.getParameter("mode").equals("normal")){
+                TableServlet.crea.setMode(0);
+            }else if (request.getParameter("mode").equals("group")){
+                TableServlet.crea.setMode(1);
+            }else if (request.getParameter("mode").equals("sub-group")){
+                TableServlet.crea.setMode(2);
+            }
         }
 
         out.flush();

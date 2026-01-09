@@ -2,6 +2,7 @@ package Jakarta;
 
 import constraints.PerClass;
 import constraints.PerGroup;
+import constraints.ImposedPlacement;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -49,7 +50,9 @@ public class ExportServlet extends HttpServlet
                             out.print(";"+((PerGroup)crea.getConstr(i+1)).getStudent(j));
                         }
                     }else if (type.equals("PerClass")){
-                        out.print(";"); //le type de perclass
+                        out.print(";"+((PerClass) crea.getConstr(i+1)).typePerClass()); //le type de perclass
+                    }else if (type.equals("ImposedPlacement")){
+                        out.print(";"+((ImposedPlacement) crea.getConstr(i+1)).getNumEtu()+";"+((ImposedPlacement) crea.getConstr(i+1)).getNumTable());
                     }
                 }
             }

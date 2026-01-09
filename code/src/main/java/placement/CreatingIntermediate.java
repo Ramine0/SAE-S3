@@ -95,7 +95,6 @@ public class CreatingIntermediate
         {
             return etu;
         }
-
     }
 
     public String[] descripData()
@@ -176,14 +175,19 @@ public class CreatingIntermediate
         return d.getConstr()[num - 1];
     }
 
-    public boolean setMode(int i){
-        if (i==0){
-            d.getConstr()[0]=null;
-        }else if (i==1){
-            d.getConstr()[0]=new PerClass(false);
-        }else if (i==2){
-            d.getConstr()[0]=new PerClass(true);
-        }else{
+    public boolean setMode(int i)
+    {
+        if (i == 0)
+        {
+            d.getConstr()[0] = null;
+        } else if (i == 1)
+        {
+            d.getConstr()[0] = new PerClass(false);
+        } else if (i == 2)
+        {
+            d.getConstr()[0] = new PerClass(true);
+        } else
+        {
             return false;
         }
         return true;

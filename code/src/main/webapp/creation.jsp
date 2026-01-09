@@ -124,21 +124,21 @@
                                     <input name="nomEtu1G1" id="nomEtu1G1" type="text" disabled>
                                 </div>
                             </div>
-                            <button class="remove" id="supEtu1G1" onclick="enleverEtuGrp()" disabled>remove</button>
-                            <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')" disabled>find</button>
+                            <button class="remove" id="supEtu1G1" disabled>remove</button>
+                            <button class="chercher" id="walEtu1G1" disabled>find</button>
                         </section>
 
-                        <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled>+</button>
+                        <button id="ajoutEtuGrp1" class="boutPlus" disabled>+</button>
                         <h4>Ajouter un étudiant au groupe</h4>
 
                     </div>
 
-                    <button id="ajoutGroup" class="boutPlus" onclick="createGrp()" disabled>+</button>
+                    <button id="ajoutGroup" class="boutPlus" disabled>+</button>
                     <h4>Ajouter un groupe</h4>
                 </section>
         </div>
 
-        <button id="hmmm test reussi ?!" value="reussi" onclick="displayID()" disabled></button>
+        <button id="hmmm test reussi ?!" value="reussi" disabled></button>
     </div>
 </main>
 

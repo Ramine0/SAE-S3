@@ -9,10 +9,9 @@ let tables = 1;
 
 let fileOk = false;
 
-if (document.querySelector("#studentFile").files.length !== 0) {
-    fileOk = true;
-    enableZone();
-}
+const reset=new XMLHttpRequest();
+reset.open("GET", `getStudentName?constraint=${encodeURIComponent("reset")}`);
+reset.send();
 
 // dans les fonctions javascript a faire il y a :
 /*

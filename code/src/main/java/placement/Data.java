@@ -71,7 +71,6 @@ public class Data
     {
         getTable(table).setStudent(getStudentFromId(idStudent));
     }
-
     // liste des fonctions a implementer
     /*
     bool isDeleted(Table/int) FAIT
@@ -145,7 +144,7 @@ public class Data
 
         for (int i = 0; i < tables.length; i++)
         {
-            if (Utilitaire.in(i+1, existingTables()) && tables[i].getEtu() == null)
+            if (Utilitaire.in(i + 1, existingTables()) && tables[i].getEtu() == null)
             {
                 free[numRes] = tables[i].getNum();
                 numRes++;
@@ -369,7 +368,7 @@ public class Data
         if (getPerGroup(idGp) != null)
         {
             if (getPerGroup(idGp).haveStu(numStudent)) {
-                return "Etudiant deja dans le groupe";
+                return "2";
             }else {
                 getPerGroup(idGp).addStudent(numStudent);
                 return numStudent +";"+ getFullName(numStudent);
@@ -379,7 +378,7 @@ public class Data
             if( addConstraint(numStudent, idGp, 'N') == 0) {
                 return numStudent +";"+getFullName(numStudent);
             }else {
-                return "Erreur interne lors de la creation de la contrainte";
+                return "1";
             }
 
         }
@@ -579,7 +578,7 @@ public class Data
         return result ;
     }
 
-    private Table getTable(int num) {
+    public Table getTable(int num) {
         for (Table tb : tables) {
             if (tb.getNum() == num) {
                 return tb;

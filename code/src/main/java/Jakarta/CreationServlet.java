@@ -1,11 +1,10 @@
 package Jakarta;
 
+import constraints.PerClass;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.NeoMalokVector.SAE_S3.Room;
-
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -30,25 +29,39 @@ public class CreationServlet extends HttpServlet
 
             String tableNumber = request.getParameter("tableNumber");
 
-            if (tableNumber.isEmpty())
-            {
+            if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt('+'+tableNumber))) {
                 result += "null;";
             } else
                 result += TableServlet.crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
 
             out.print(result);
-        } else if (request.getParameter("constraint").equals("supprimeTable"))
+        } else if (request.getParameter("constraint").equals("deleteTable"))
         {
-            String num = request.getParameter("table");
-            if (request.getParameter("fieldToFill").equals("table"))
-                out.print(num);
+            int num = Integer.parseInt(request.getParameter("tableNumber"));
+
+            out.print(TableServlet.crea.supprTable(num));
+
         } else if (request.getParameter("constraint").equals("separeEtu"))
         {
-            String result = TableServlet.crea.findStudentForGroup(request.getParameter("id"), Integer.parseInt(request.getParameter("numGrp")))  ;
-            out.print(result);
+            String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
+
+            String studentInfo = TableServlet.crea.findStudentForGroup(request.getParameter("studentId"), Integer.parseInt(request.getParameter("numGrp")));
+
+            if (studentInfo.length() == 1)
+                out.print(studentId + ";" + studentInfo);
+            else
+                out.print(studentId + ";" + studentInfo.split(";")[1]);
         } else if (request.getParameter("constraint").equals("removeImposedPlace"))
         {
             TableServlet.crea.removeImp(Integer.parseInt(request.getParameter("id")));
+        }else if (request.getParameter("constraint").equals("mode")){
+            if (request.getParameter("mode").equals("normal")){
+                TableServlet.crea.setMode(0);
+            }else if (request.getParameter("mode").equals("group")){
+                TableServlet.crea.setMode(1);
+            }else if (request.getParameter("mode").equals("sub-group")){
+                TableServlet.crea.setMode(2);
+            }
         }
 
         out.flush();

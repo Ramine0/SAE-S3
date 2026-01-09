@@ -1,6 +1,8 @@
 package placement;
 
+import constraints.Constraint;
 import org.NeoMalokVector.SAE_S3.Student;
+import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
@@ -42,7 +44,7 @@ public class CreatingIntermediate
             return "le num donné n'existe pas";
         } else
         {
-            return "etudiant non trouvé";
+            return "1";
         }
 
     }
@@ -50,6 +52,11 @@ public class CreatingIntermediate
     public boolean findTable(int numTab)
     {
         return Utilitaire.in(numTab, d.freeTables());
+    }
+
+    public Table getTable(int numTab)
+    {
+        return d.getTable(numTab);
     }
 
     public int findNumsForImp(String id, int num)
@@ -80,11 +87,12 @@ public class CreatingIntermediate
     {
         String etu = findEtu(idPartiel);
 
-        if (etu.length()==8)
+        if (etu.length() == 8)
         {
-            return d.addStudentGroupConstraint(etu, numGrp) ;
-        }else {
-            return etu ;
+            return d.addStudentGroupConstraint(etu, numGrp);
+        } else
+        {
+            return etu;
         }
 
     }
@@ -115,6 +123,7 @@ public class CreatingIntermediate
         {
             if (d.isDeleted(num))
                 return 2;
+
             else if (d.removeTable(num))
             {
                 return 0;
@@ -149,10 +158,27 @@ public class CreatingIntermediate
     public void resetData()
     {
         d.reset();
+        Table.reset();
     }
 
-    public PositioningIntermediate generatePos () {
-        return new PositioningIntermediate(d) ;
+    public Student StuFromTable(int num)
+    {
+        return d.getStuFromTab(num);
+    }
+
+    public int getNbConstr()
+    {
+        return d.getConstr().length;
+    }
+
+    public Constraint getConstr(int num)
+    {
+        return d.getConstr()[num - 1];
+    }
+
+    public PositioningIntermediate generatePos()
+    {
+        return new PositioningIntermediate(d);
     }
 
 }

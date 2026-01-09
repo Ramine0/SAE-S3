@@ -4,6 +4,7 @@ import constraints.Constraint;
 import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
+import java.util.ArrayList;
 
 public class PositioningIntermediate
 {

@@ -64,10 +64,6 @@ public class TableServlet extends HttpServlet
             {
                 out.print("table introuvable");
             }
-        } else if (request.getParameter("action").equals("delete"))
-        {
-            crea.createTables(lon, lar);
-            crea.resetData();
         }else if (request.getParameter("action").equals("generate")) {
             String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
             Random random = new Random();

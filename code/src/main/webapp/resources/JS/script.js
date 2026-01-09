@@ -349,7 +349,6 @@ function createSuppr() {
 
 function createGrp() {
     groupes.push([0]);
-    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
 
     let etuGrp = `
     <h4 id="h4${groupes.length}">Mis a distance ${groupes.length} </h4>
@@ -372,6 +371,7 @@ function createGrp() {
         <h4>ajouter un etudiant au groupe</h4>
     </div>`
     document.querySelector('#ajoutGroup').disabled = true;
+    document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
 
     document.querySelector("#walEtu1G" + groupes.length).addEventListener("click", validerEtuGrp);
     document.querySelector("#supEtu1G" + groupes.length).addEventListener("click", enleverEtuGrp);

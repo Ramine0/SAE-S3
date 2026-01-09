@@ -59,7 +59,7 @@ public class CreationServlet extends HttpServlet
                 out.print(studentId + ";" + studentInfo.split(";")[1]);
         } else if (request.getParameter("constraint").equals("deleteSepareEtu"))
         {
-            String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
+//            String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
 //            TableServlet.crea.remov
         }
         else if (request.getParameter("constraint").equals("mode"))

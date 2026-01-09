@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
 
 public class CreatingIntermediate
 {
-    private Data d;
+    private final Data d;
 
     public CreatingIntermediate() throws FileNotFoundException
     {
@@ -140,9 +140,9 @@ public class CreatingIntermediate
         d.unremoveTable(num);
     }
 
-    public boolean setDimensions(int lon, int lar)
+    public void setDimensions(int lon, int lar)
     {
-        return d.setDimensions(lon, lar);
+        d.setDimensions(lon, lar);
     }
 
     public Map getMap()
@@ -175,22 +175,14 @@ public class CreatingIntermediate
         return d.getConstr()[num - 1];
     }
 
-    public boolean setMode(int i)
+    public void setMode(int i)
     {
         if (i == 0)
-        {
             d.getConstr()[0] = null;
-        } else if (i == 1)
-        {
+        else if (i == 1)
             d.getConstr()[0] = new PerClass(false);
-        } else if (i == 2)
-        {
+        else if (i == 2)
             d.getConstr()[0] = new PerClass(true);
-        } else
-        {
-            return false;
-        }
-        return true;
     }
 
 

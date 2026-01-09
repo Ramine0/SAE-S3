@@ -32,5 +32,12 @@ public class PerClass extends Constraint
 
     }
 
+    public String typePerClass(){
+        if (subGroup){
+            return "sub-group";
+        }
+        return "group";
+    }
+
 
 }

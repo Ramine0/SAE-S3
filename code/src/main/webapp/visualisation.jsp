@@ -66,7 +66,7 @@
             </span>
         </div>
 
-        <button class="modif" type="button" onclick="activateSwap('none')">
+        <button class="modif" type="button" id="swapForm" >
             <img src="resources/img/swap.png" alt="Échanger">
             <h2>&Eacute;changer</h2>
         </button>

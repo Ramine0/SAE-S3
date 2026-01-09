@@ -147,8 +147,7 @@ public class PositioningIntermediate
 
     public boolean swapPlaces(int numT1, int numT2) {
         if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2,donnees.existingTables())) {
-            return donnees.swap(numT1,numT2);
-        }
+            return donnees.swap(numT1,numT2);}
         return false ;
     }
 

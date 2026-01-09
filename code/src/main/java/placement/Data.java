@@ -123,12 +123,13 @@ public class Data
         int numRes = 0; // la position dans les resultats
         for (int i = 0; i < tables.length; i++)
         {
-            // je verifie que ma table soit pas supprimée
-            if (!Utilitaire.in(tables[i].getNum(), deletedTables))
-            {
-                // si c ok je l'ajoute a la liste
-                result[numRes] = tables[i].getNum();
-                numRes++;
+            if (tables[i] != null) {
+                // je verifie que ma table soit pas supprimée
+                if (!Utilitaire.in(tables[i].getNum(), deletedTables)) {
+                    // si c ok je l'ajoute a la liste
+                    result[numRes] = tables[i].getNum();
+                    numRes++;
+                }
             }
         }
         return result;
@@ -600,10 +601,10 @@ public class Data
 
 
     public boolean swap(int numT1, int numT2) {
-        if (getStuFromTab(numT1) != null && getStuFromTab(numT2) != null ) {
+        if (getStuFromTab(numT1) != null || getStuFromTab(numT2) != null ) {
             Student temp = getStuFromTab(numT1) ;
             getTable(numT1).setStudent(getStuFromTab(numT2));
-            getTable(numT1).setStudent(temp);
+            getTable(numT2).setStudent(temp);
             return true;
         }
         return false ;

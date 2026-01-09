@@ -47,12 +47,13 @@ function init(){
     };
     initReq.send() ;
 }
-
+document.querySelector("#swapForm").addEventListener("click",modeSwap) ;
 init() ;
 
 function getInfosTable(event) {
 
     if(swap) {
+        console.log("AHA") ;
         activateSwap(event.target.id) ;
     }
 
@@ -114,27 +115,35 @@ function exportFile(){
 
 }
 
+
+function modeSwap() {
+    activateSwap('none') ;
+}
+
+
 function activateSwap(button) {
 
-    if (!swap) {
+    console.log("swap: ",swap) ;
+    if (button === "none" && active != null) {
+        swap = !swap;
+        console.log("nouveau swap : ", swap) ;
+    }else if (!swap) {
         swap = true ;
-        document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,176,55,0.82)" ;
-    }else if (button === "none") {
-        swap = false ;
+        document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,176,55,0.82)";
+
     }else if (document.querySelector(`#${button}`)!= null){
 
-        const swap=new XMLHttpRequest();
-        swap.open("GET", `Display?action=${encodeURIComponent("swap")}&number1=${active}&number2=${button.substring(1)}`);
-        swap.onreadystatechange=function (){
-            if (swap.readyState===XMLHttpRequest.DONE){
-                if (swap.status===200){
-
-
-
+        const swapReq=new XMLHttpRequest();
+        swapReq.open("GET", `Display?action=${encodeURIComponent("swap")}&number1=${active}&number2=${button.substring(1)}`);
+        swapReq.onreadystatechange=function (){
+            if (swapReq.readyState===XMLHttpRequest.DONE){
+                if (swapReq.status===200){
+                    console.log(swapReq.responseText) ;
+                    swap = false ;
                 }
             }
         }
-        swap.send() ;
+        swapReq.send() ;
     }
 
 }

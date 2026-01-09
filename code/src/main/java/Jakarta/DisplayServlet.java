@@ -105,7 +105,12 @@ public class DisplayServlet extends HttpServlet
             }else if (request.getParameter("action").equals("infos")) {
                 out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
             }else if (request.getParameter("action").equals("swap")) {
-                salle.swapPlaces(1,2) ;
+
+                if (salle.swapPlaces(Integer.parseInt(request.getParameter("number1")),Integer.parseInt(request.getParameter("number2"))) ){
+                    out.println("0");
+                }else {
+                    out.println("1") ;
+                }
             }
 
         }

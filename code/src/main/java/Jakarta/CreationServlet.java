@@ -40,7 +40,13 @@ public class CreationServlet extends HttpServlet
 
             out.print(TableServlet.crea.supprTable(num));
 
-        } else if (request.getParameter("constraint").equals("separeEtu"))
+        }
+        else if (request.getParameter("constraint").equals("removeDeletedTable"))
+        {
+            int num = Integer.parseInt(request.getParameter("tableNumber"));
+            TableServlet.crea.unremoveTable(num);
+        }
+        else if (request.getParameter("constraint").equals("separeEtu"))
         {
             String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
 

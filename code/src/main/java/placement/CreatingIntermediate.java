@@ -1,6 +1,7 @@
 package placement;
 
 import constraints.Constraint;
+import constraints.PerClass;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -168,6 +169,19 @@ public class CreatingIntermediate
 
     public Constraint getConstr(int num){
         return d.getConstr()[num-1];
+    }
+
+    public boolean setMode(int i){
+        if (i==0){
+            d.getConstr()[0]=null;
+        }else if (i==1){
+            d.getConstr()[0]=new PerClass(false);
+        }else if (i==2){
+            d.getConstr()[0]=new PerClass(true);
+        }else{
+            return false;
+        }
+        return true;
     }
 
     public PositioningIntermediate generatePos () {

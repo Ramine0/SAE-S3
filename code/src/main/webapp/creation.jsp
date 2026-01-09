@@ -29,7 +29,7 @@
         </div>
     </a>
     <div class="general">
-        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm" onchange="return moveFile()">
+        <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
             <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
             <label for="mode">Séparation des étudiants par groupes classes </label>

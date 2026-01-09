@@ -56,7 +56,7 @@ function validerPlaceImposee(event) {
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table valide";
                 else if (response[2] === "1")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
                 else if (response[2] === "2")
@@ -75,13 +75,13 @@ function validerPlaceImposee(event) {
 function changeMode(){
     const m=document.getElementById("mode").value;
     const mode=new XMLHttpRequest();
-    mode.open("GET", `getStudentName?constraints=mode&mode=${encodeURIComponent(m)}`, true);
+    mode.open("GET", `getStudentName?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
     mode.onreadystatechange= function(){
         if (mode.readyState===XMLHttpRequest.DONE){
-            if (mode.state===200){
+            if (mode.status===200){
                 console.log("ça marche à priori");
             }else{
-                console.log("Oh helllll naaah");
+                console.log(mode.status);
             }
         }
     };
@@ -245,6 +245,7 @@ function enleverEtuGrp() {
 document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 
 function moveFile(event) {
+    console.log(event.target.id);
     if (event.target.id !== "studentFile")
         return;
     const data = new FormData(document.getElementById("fileUploadForm"));
@@ -463,7 +464,7 @@ function setValid(section) {
 
     } else if (section.includes("supTable")) {
         document.querySelector("#ajoutSuppr").disabled = false;
-
+        document.querySelector(`#numTabSup${nbPlacesSuppr}`).disabled=true;
         document.querySelector(`#findTable${nbPlacesSuppr}`).disabled = true;
 
     } else {

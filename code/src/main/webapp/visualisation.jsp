@@ -43,7 +43,7 @@
             <label> Format d'export</label>
             <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
             <input type="checkbox" name="export" id="Listing" value="Listing"> Listing
-            <button id="exporter"> Exporter </button>
+            <button id="exporter" onclick="expOrt()"> Exporter </button>
         </div>
         <span class="separateur"></span>
         <div class="valuesOfTable">

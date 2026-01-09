@@ -133,12 +133,10 @@
 
                     </div>
 
-                    <button id="ajoutGroup" class="boutPlus" disabled>+</button>
+                    <button id="ajoutGroup" class="boutPlus" onclick="createGrp()" disabled>+</button>
                     <h4>Ajouter un groupe</h4>
                 </section>
         </div>
-
-        <button id="hmmm test reussi ?!" value="reussi" disabled></button>
     </div>
 </main>
 

@@ -383,17 +383,6 @@ public class Data
 
     }
 
-    public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)
-    {
-        if (constr.equals("PI"))
-        {
-            getImposedPlacement(id).set(numTable, numStudent);
-        } else if (constr.charAt(1) == 'G')
-        {
-            getPerGroup(id).modifStudent(numStudent, index);
-        }
-    }
-
     public void removeConstraint(String constr, int id)
     {
         if (constr.equals("I"))

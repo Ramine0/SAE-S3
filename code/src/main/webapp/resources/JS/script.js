@@ -212,6 +212,11 @@ function enleverEtuGrp(event) {
     let idBout = event.target.id;
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent("x ")})`);
+    xhr.send();
+
     if (numEtu === groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
@@ -342,8 +347,6 @@ function createSuppr() {
 
     document.querySelector("#walid").disabled = true;
     document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
-
 }
 
 function createGrp() {

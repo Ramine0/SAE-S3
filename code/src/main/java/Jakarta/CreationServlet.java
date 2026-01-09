@@ -36,7 +36,7 @@ public class CreationServlet extends HttpServlet
             out.print(result);
         } else if (request.getParameter("constraint").equals("removeImposedPlace"))
         {
-            TableServlet.crea.removeImp(Integer.parseInt(request.getParameter("id")));
+            TableServlet.crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")));
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
@@ -59,8 +59,8 @@ public class CreationServlet extends HttpServlet
                 out.print(studentId + ";" + studentInfo.split(";")[1]);
         } else if (request.getParameter("constraint").equals("deleteSepareEtu"))
         {
-//            String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
-//            TableServlet.crea.remov
+            int constraintId = Integer.parseInt(request.getParameter("constraintId"));
+            TableServlet.crea.removeContrainst("G", constraintId);
         }
         else if (request.getParameter("constraint").equals("mode"))
         {

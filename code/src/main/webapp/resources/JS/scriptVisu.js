@@ -7,7 +7,7 @@ function createTable(){
     let table ;
     for (let i = 0; i < tables.length; i++ ){
         table = tables[i] ;
-        t+=`<button id="T${table}" class="table"> Table ${table} </button>`;
+        t+=`<button id="T${table}" class="table" > Table ${table} </button>`;
     }
     document.querySelector("#here").insertAdjacentHTML("afterend",t);
 }
@@ -23,7 +23,9 @@ function init(){
                 const numbers = initReq.responseText.split(";");
                 console.log("reponse : "+ numbers) ;
                 for (let i =  0; i < numbers.length ; i ++ ) {
-                    tables.push(numbers[i]) ;
+                    if (numbers[i].length < 1) {
+                        tables.push(numbers[i]);
+                    }
                 }
 
             }else {

@@ -72,17 +72,16 @@ function validerPlaceImposee(event) {
     };
     xhr.send();
 }
-
-function changeMode() {
-    const m = document.getElementById("mode").value;
-    const mode = new XMLHttpRequest();
-    mode.open("GET", `getStudentName?constraint=mode&mode=${encodeURIComponent(m)}`, true);
-    mode.onreadystatechange = function () {
-        if (mode.readyState === XMLHttpRequest.DONE) {
-            if (mode.state === 200) {
+function changeMode(){
+    const m=document.getElementById("mode").value;
+    const mode=new XMLHttpRequest();
+    mode.open("GET", `getStudentName?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
+    mode.onreadystatechange= function(){
+        if (mode.readyState===XMLHttpRequest.DONE){
+            if (mode.status===200){
                 console.log("ça marche à priori");
-            } else {
-                console.log("Oh helllll naaah");
+            }else{
+                console.log(mode.status);
             }
         }
     };
@@ -94,6 +93,8 @@ document.getElementById("deleteImposed1").addEventListener("click", supprimerPla
 function supprimerPlaceImposee(event) {
     let idRemove = event.target.id;
     let numConstr = idRemove.charAt(13);
+
+    console.log(idRemove, numConstr);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
@@ -246,6 +247,7 @@ function enleverEtuGrp() {
 document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 
 function moveFile(event) {
+    console.log(event.target.id);
     if (event.target.id !== "studentFile")
         return;
     const data = new FormData(document.getElementById("fileUploadForm"));
@@ -398,14 +400,6 @@ function createEtuGrp() {
     }
 }
 
-function createTable() {
-    tables++;
-    let t = `<button id="T${tables}" class="table"> Table ${tables} </button>`;
-    if (tables % larg === 0) {
-        t += `<br><p id="endLine${tables / larg + 1}">`;
-    }
-    document.querySelector(`#endLine${tables / larg + 1}`).insertAdjacentHTML("beforebegin", t);
-}
 
 function displayID() {
     console.log(window.event.target.id);
@@ -461,7 +455,7 @@ function setValid(section) {
 
     } else if (section.includes("supTable")) {
         document.querySelector("#ajoutSuppr").disabled = false;
-
+        document.querySelector(`#numTabSup${nbPlacesSuppr}`).disabled=true;
         document.querySelector(`#findTable${nbPlacesSuppr}`).disabled = true;
 
     } else {

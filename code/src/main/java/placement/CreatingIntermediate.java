@@ -1,6 +1,7 @@
 package placement;
 
 import constraints.Constraint;
+import constraints.PerClass;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -123,7 +124,6 @@ public class CreatingIntermediate
         {
             if (d.isDeleted(num))
                 return 2;
-
             else if (d.removeTable(num))
             {
                 return 0;
@@ -158,7 +158,6 @@ public class CreatingIntermediate
     public void resetData()
     {
         d.reset();
-        Table.reset();
     }
 
     public Student StuFromTable(int num)
@@ -175,6 +174,20 @@ public class CreatingIntermediate
     {
         return d.getConstr()[num - 1];
     }
+
+    public boolean setMode(int i){
+        if (i==0){
+            d.getConstr()[0]=null;
+        }else if (i==1){
+            d.getConstr()[0]=new PerClass(false);
+        }else if (i==2){
+            d.getConstr()[0]=new PerClass(true);
+        }else{
+            return false;
+        }
+        return true;
+    }
+
 
     public PositioningIntermediate generatePos()
     {

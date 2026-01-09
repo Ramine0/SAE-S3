@@ -2,10 +2,9 @@
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
-let long = 0;
-let larg = 0;
+let long=0;
+let larg=0;
 
-let tables = 1;
 
 let fileOk = false;
 
@@ -72,16 +71,15 @@ function validerPlaceImposee(event) {
     };
     xhr.send();
 }
-
-function changeMode() {
-    const m = document.getElementById("mode").value;
-    const mode = new XMLHttpRequest();
-    mode.open("GET", `getStudentName?constraint=mode&mode=${encodeURIComponent(m)}`, true);
-    mode.onreadystatechange = function () {
-        if (mode.readyState === XMLHttpRequest.DONE) {
-            if (mode.state === 200) {
+function changeMode(){
+    const m=document.getElementById("mode").value;
+    const mode=new XMLHttpRequest();
+    mode.open("GET", `getStudentName?constraints=mode&mode=${encodeURIComponent(m)}`, true);
+    mode.onreadystatechange= function(){
+        if (mode.readyState===XMLHttpRequest.DONE){
+            if (mode.state===200){
                 console.log("ça marche à priori");
-            } else {
+            }else{
                 console.log("Oh helllll naaah");
             }
         }
@@ -94,6 +92,8 @@ document.getElementById("deleteImposed1").addEventListener("click", supprimerPla
 function supprimerPlaceImposee(event) {
     let idRemove = event.target.id;
     let numConstr = idRemove.charAt(13);
+
+    console.log(idRemove, numConstr);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
@@ -175,22 +175,20 @@ function validerEtuGrp() {
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     let valid = true;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&studentId=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
-                if (response[1] === "1")
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
-                else if (response[1] === "2")
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
-                else {
-                    validerSectEtuGrp(idFind);
+                console.log("rep :",response);
 
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
+                document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[0];
+                if (response.length > 1) {
+                    validerSectEtuGrp(idFind);
                     document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
+                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
                 }
             } else {
                 console.error('Error fetching group data');
@@ -229,8 +227,6 @@ function enleverEtuGrp() {
             }
         }
 
-        document.getElementById("ajoutEtuGrp" + numGrp).disabled = false;
-
     }
 
     if (numEtu <= groupes[numGrp.length]) {
@@ -248,11 +244,11 @@ document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 function moveFile(event) {
     if (event.target.id !== "studentFile")
         return;
+
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
-
     xhr.send(data);
 
     console.log("File uploaded. I guess...")
@@ -271,8 +267,8 @@ function setTableNumber() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log("tables saved");
-                long = lon;
-                larg = lar;
+                long=lon;
+                larg=lar;
             } else {
                 console.log("error number tables")
             }
@@ -398,24 +394,19 @@ function createEtuGrp() {
     }
 }
 
-function createTable() {
-    tables++;
-    let t = `<button id="T${tables}" class="table"> Table ${tables} </button>`;
-    if (tables % larg === 0) {
-        t += `<br><p id="endLine${tables / larg + 1}">`;
-    }
-    document.querySelector(`#endLine${tables / larg + 1}`).insertAdjacentHTML("beforebegin", t);
-}
 
 function displayID() {
     console.log(window.event.target.id);
 }
 
+document.getElementById("startConstr").addEventListener("click", enableZone);
 
 function enableZone() {
+        console.log("enablez");
     if (fileOk) {
         setTableNumber();
         changeMode();
+
         //pk le prof pourrait pas modifier après???
         //document.querySelector("#studentFile").disabled = true;
         //document.querySelector("#long").disabled = true;
@@ -441,6 +432,10 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+        const tableReset = new XMLHttpRequest();
+        tableReset.open("GET", `table?action=${encodeURIComponent("delete")}`, true);
+        tableReset.send();
     }
 }
 

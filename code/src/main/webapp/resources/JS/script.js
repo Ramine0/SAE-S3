@@ -2,9 +2,10 @@
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
-export let long=0;
-export let larg=0;
+let long=0;
+let larg=0;
 
+let tables=1;
 
 let fileOk = false;
 
@@ -182,13 +183,15 @@ function validerEtuGrp() {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
-                console.log("rep :",response);
+                console.log(response[2]);
 
-                document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[0];
-                if (response.length > 1) {
+                if (response[2] === "2")
+                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
+                else {
                     validerSectEtuGrp(idFind);
-                    document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
+
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
+                    document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
                 }
             } else {
                 console.error('Error fetching group data');
@@ -248,6 +251,7 @@ function moveFile(event) {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
+
     xhr.send(data);
 
     console.log("File uploaded. I guess...")
@@ -393,6 +397,14 @@ function createEtuGrp() {
     }
 }
 
+function createTable(){
+    tables++;
+    let t= `<button id="T${tables}" class="table"> Table ${tables} </button>`;
+    if (tables%larg===0){
+        t+=`<br><p id="endLine${tables/larg+1}">`;
+    }
+    document.querySelector(`#endLine${tables/larg+1}`).insertAdjacentHTML("beforebegin", t);
+}
 
 function displayID() {
     console.log(window.event.target.id);
@@ -527,7 +539,7 @@ function decreaseId(idElem) {
             children[i].children[4].id = "findImposed" + newId;
         }
     } else if (idElem.startsWith("#DT")) {
-        let children = document.getElementById("deletedTableRow").children;
+        let children = document.getElementById("deletedTablesRow").children;
 
         for (let i = 0; i < children.length - 1; i++) {
             const newId = i + 1;

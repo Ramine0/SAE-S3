@@ -22,7 +22,7 @@ public class FileUpload extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        String uploadPath = request.getServletContext().getRealPath("/") + getServletContext().getInitParameter("upload.path");
+        String uploadPath = request.getServletContext().getRealPath("/") + "/" + getServletContext().getInitParameter("upload.path");
 
         // Retrieve the file part from the request
         Part filePart = request.getPart("studentFile");

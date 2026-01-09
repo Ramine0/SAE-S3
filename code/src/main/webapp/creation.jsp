@@ -25,28 +25,28 @@
     <a href="index.jsp">
         <div class="logo">
             <img class="logoPageSec" src="resources/img/Logo_DSRoomMaker.png" alt="Logo">
-            <h1>DSRoomMaker Creation</h1>
+            <h1>DSRoomMaker Création</h1>
         </div>
     </a>
     <div class="general">
         <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm" onchange="return moveFile()">
-            <label for="studentFile">Deposez votre fichier d'etudiants (CSV) </label>
+            <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
             <input type="file" name="studentFile" id="studentFile" accept="text/csv">
-            <label for="mode">Separation des etudiants par Groupes Classes </label>
+            <label for="mode">Séparation des étudiants par groupes classes </label>
             <select id="mode" name="mode">
-                <option value="normal" selected> Placement basique</option>
-                <option value="group"> Par groupe</option>
-                <option value="sub-group"> Par sous-groupe</option>
+                <option value="normal" selected>Placement basique</option>
+                <option value="group">Par groupe</option>
+                <option value="sub-group">Par sous-groupe</option>
             </select>
             <span class="ligne">
-                    <h4><label for="long">Nombre de tables par colonnes</label></h4>
+                    <label for="long">Nombre de tables par colonne</label>
                     <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
                 </span>
             <span class="ligne">
-                    <label for="larg"><h4>Nombre de tables par lignes</h4></label>
+                    <label for="larg">Nombre de tables par ligne</label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
-            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
+            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()">Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
             <button type="submit" id="walid" class="boutWalider" onclick="" disabled> Générer</button>
         </form>
 
@@ -60,17 +60,17 @@
     <div class="le_Form">
         <div id="contraintes_impose">
 
-            <h2> Places imposées </h2>
+            <h2>Places imposées</h2>
             <div class="ligne" id="ligneImposed">
 
                 <section id="impose1" class="invalid">
                     <div  class="inputLabel">
-                        <label for="imposedStudentId1"> id Etudiant </label>
+                        <label for="imposedStudentId1">Numéro étudiant</label>
                         <input name="imposedStudentId1" id="imposedStudentId1" type="text" disabled>
                     </div>
 
                     <div  class="inputLabel" >
-                        <label for="imposedTableId1"> Num Table </label>
+                        <label for="imposedTableId1">Numéro table</label>
                         <input name="imposedTableId" id="imposedTableId1" type="number" disabled>
                     </div>
 
@@ -90,16 +90,16 @@
 
         <div id="contraintes_suppr">
 
-            <h2> Tables Supprimées </h2>
-            <div class="ligne">
+            <h2>Tables supprimées</h2>
+            <div class="ligne" id="deletedTablesRow">
                 <section id="supTable1" class="invalid">
 
                         <span  class="inputLabel">
-                            <label for="numTabSup1"> Num Table </label>
+                            <label for="numTabSup1">Numéro table</label>
                             <input name="idTabSup1" id="numTabSup1" type="number" disabled>
                         </span>
-                    <button class="remove" id="deleteTable1" onclick="enleverPlaceSuppr()" disabled>remove</button>
-                    <button class="chercher" id="findTable1" onclick="validerPlaceSuppr()" disabled>find</button>
+                    <button class="remove" id="deleteTable1" disabled>remove</button>
+                    <button class="chercher" id="findTable1" disabled>find</button>
                 </section>
 
                 <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled>+</button>
@@ -109,33 +109,33 @@
 
         <div id="EtuDist">
 
-            <h2> Eleves mis a distance </h2>
-            <span>
+            <h2>Etudiants mis à distance</h2>
+            <section>
                     <div class="ligne" id="Gp1">
                         <section id="E1G1" class="invalid">
 
-                            <span>
+                            <div>
                                 <div  class="inputLabel">
-                                    <label for="idEtu1G1"> Num Etudiant </label>
+                                    <label for="idEtu1G1">Numéro étudiant</label>
                                     <input name="idEtu1G1" id="idEtu1G1" type="text" disabled>
                                 </div>
                                 <div  class="inputLabel">
-                                    <label for="nomEtu1G1"> Nom de l'étudiant </label>
+                                    <label for="nomEtu1G1">Nom de l'étudiant</label>
                                     <input name="nomEtu1G1" id="nomEtu1G1" type="text" disabled>
                                 </div>
-                            </span>
+                            </div>
                             <button class="remove" id="supEtu1G1" onclick="enleverEtuGrp()" disabled>remove</button>
                             <button class="chercher" id="walEtu1G1" onclick="validerEtuGrp('walEtu1G1')" disabled>find</button>
                         </section>
 
                         <button id="ajoutEtuGrp1" class="boutPlus" onclick="createEtuGrp()" disabled>+</button>
-                        <h4>ajouter un etudiant au groupe</h4>
+                        <h4>Ajouter un étudiant au groupe</h4>
 
                     </div>
 
                     <button id="ajoutGroup" class="boutPlus" onclick="createGrp()" disabled>+</button>
-                    <h4>ajouter un groupe</h4>
-                </span>
+                    <h4>Ajouter un groupe</h4>
+                </section>
         </div>
 
         <button id="hmmm test reussi ?!" value="reussi" onclick="displayID()" disabled></button>

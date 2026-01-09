@@ -47,7 +47,7 @@ public class PositioningIntermediate
             {
                 tableNumber++;
 
-                if (tableNumber > donnees.existingTables().length)
+                if (tableNumber > donnees.maxTableID())
                     break;
             }
 

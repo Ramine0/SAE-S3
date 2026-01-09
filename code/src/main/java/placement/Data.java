@@ -67,10 +67,7 @@ public class Data
     }
 
 
-    public void placeStudent(int table, String idStudent)
-    {
-        getTable(table).setStudent(getStudentFromId(idStudent));
-    }
+    public void placeStudent(int table, String idStudent) {getTable(table).setStudent(getStudentFromId(idStudent));}
     // liste des fonctions a implementer
     /*
     bool isDeleted(Table/int) FAIT
@@ -124,13 +121,13 @@ public class Data
     {
         int[] result = new int[tables.length];
         int numRes = 0; // la position dans les resultats
-        for (int i = 0; i <= tables.length; i++)
+        for (int i = 0; i < tables.length; i++)
         {
             // je verifie que ma table soit pas supprimée
-            if (!Utilitaire.in(i, deletedTables))
+            if (!Utilitaire.in(tables[i].getNum(), deletedTables))
             {
                 // si c ok je l'ajoute a la liste
-                result[numRes] = i;
+                result[numRes] = tables[i].getNum();
                 numRes++;
             }
         }
@@ -144,7 +141,7 @@ public class Data
 
         for (int i = 0; i < tables.length; i++)
         {
-            if (Utilitaire.in(i + 1, existingTables()) && tables[i].getEtu() == null)
+            if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null)
             {
                 free[numRes] = tables[i].getNum();
                 numRes++;
@@ -610,6 +607,16 @@ public class Data
             return true;
         }
         return false ;
+    }
+
+    public int maxTableID() {
+        int max = 0;
+        for (Table t : tables) {
+            if (t.getNum() > max) {
+                max = t.getNum();
+            }
+        }
+        return max ;
     }
 
 }

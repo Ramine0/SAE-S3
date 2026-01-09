@@ -60,10 +60,6 @@ public class TableServlet extends HttpServlet
             {
                 out.print("table introuvable");
             }
-        } else if (request.getParameter("action").equals("delete"))
-        {
-            crea.createTables(lon, lar);
-            crea.resetData();
         }
 
         out.flush();

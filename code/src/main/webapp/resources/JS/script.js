@@ -2,10 +2,10 @@
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
-let long=0;
-let larg=0;
+let long = 0;
+let larg = 0;
 
-let tables=1;
+let tables = 1;
 
 let fileOk = false;
 
@@ -56,7 +56,7 @@ function validerPlaceImposee(event) {
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table valide";
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
                 else if (response[2] === "1")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
                 else if (response[2] === "2")
@@ -176,16 +176,16 @@ function validerEtuGrp() {
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     let valid = true;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&id=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&studentId=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
-                console.log(response[2]);
-
-                if (response[2] === "2")
+                if (response[1] === "1")
+                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
+                else if (response[1] === "2")
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
                 else {
                     validerSectEtuGrp(idFind);
@@ -230,6 +230,8 @@ function enleverEtuGrp() {
             }
         }
 
+        document.getElementById("ajoutEtuGrp" + numGrp).disabled = false;
+
     }
 
     if (numEtu <= groupes[numGrp.length]) {
@@ -271,8 +273,8 @@ function setTableNumber() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log("tables saved");
-                long=lon;
-                larg=lar;
+                long = lon;
+                larg = lar;
             } else {
                 console.log("error number tables")
             }
@@ -398,13 +400,13 @@ function createEtuGrp() {
     }
 }
 
-function createTable(){
+function createTable() {
     tables++;
-    let t= `<button id="T${tables}" class="table"> Table ${tables} </button>`;
-    if (tables%larg===0){
-        t+=`<br><p id="endLine${tables/larg+1}">`;
+    let t = `<button id="T${tables}" class="table"> Table ${tables} </button>`;
+    if (tables % larg === 0) {
+        t += `<br><p id="endLine${tables / larg + 1}">`;
     }
-    document.querySelector(`#endLine${tables/larg+1}`).insertAdjacentHTML("beforebegin", t);
+    document.querySelector(`#endLine${tables / larg + 1}`).insertAdjacentHTML("beforebegin", t);
 }
 
 function displayID() {
@@ -441,10 +443,6 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
-        const tableReset = new XMLHttpRequest();
-        tableReset.open("GET", `table?action=${encodeURIComponent("delete")}`, true);
-        tableReset.send();
     }
 }
 

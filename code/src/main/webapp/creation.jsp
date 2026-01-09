@@ -115,7 +115,7 @@
                         <section id="E1G1" class="invalid">
 
                             <div>
-                                <div  class="inputLabel">
+                                <div class="inputLabel">
                                     <label for="idEtu1G1">Numéro étudiant</label>
                                     <input name="idEtu1G1" id="idEtu1G1" type="text" disabled>
                                 </div>

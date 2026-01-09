@@ -45,7 +45,7 @@ public class CreatingIntermediate
             return "le num donné n'existe pas";
         } else
         {
-            return "etudiant non trouvé";
+            return "1";
         }
 
     }
@@ -88,11 +88,12 @@ public class CreatingIntermediate
     {
         String etu = findEtu(idPartiel);
 
-        if (etu.length()==8)
+        if (etu.length() == 8)
         {
-            return d.addStudentGroupConstraint(etu, numGrp) ;
-        }else {
-            return etu ;
+            return d.addStudentGroupConstraint(etu, numGrp);
+        } else
+        {
+            return etu;
         }
 
     }
@@ -159,16 +160,19 @@ public class CreatingIntermediate
         d.reset();
     }
 
-    public Student StuFromTable(int num){
+    public Student StuFromTable(int num)
+    {
         return d.getStuFromTab(num);
     }
 
-    public int getNbConstr(){
+    public int getNbConstr()
+    {
         return d.getConstr().length;
     }
 
-    public Constraint getConstr(int num){
-        return d.getConstr()[num-1];
+    public Constraint getConstr(int num)
+    {
+        return d.getConstr()[num - 1];
     }
 
     public boolean setMode(int i){
@@ -184,8 +188,10 @@ public class CreatingIntermediate
         return true;
     }
 
-    public PositioningIntermediate generatePos () {
-        return new PositioningIntermediate(d) ;
+
+    public PositioningIntermediate generatePos()
+    {
+        return new PositioningIntermediate(d);
     }
 
 }

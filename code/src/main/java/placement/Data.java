@@ -340,6 +340,22 @@ public class Data
         }
         return null;
     }
+    public int getIndexConstraint(String type, int id){
+        if (type.equals("I") && getImposedPlacement(id)!=null){
+            for (int i=0; i<idC; i++){
+                if (constraints[i]==getImposedPlacement(id)){
+                    return i;
+                }
+            }
+        }else if (type.equals("G") && getPerGroup(id)!=null){
+            for (int i=0; i<idC; i++){
+                if (constraints[i]==getPerGroup(id)){
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
 
     public ImposedPlacement getImposedPlacement(int id)
     {
@@ -398,9 +414,9 @@ public class Data
     {
         if (constr.equals("I"))
         {
-            if (id < idC && constraints[id] instanceof ImposedPlacement)
+            if (id>=0 && id < idC && getImposedPlacement(id)!=null)
             {
-                for (int i = id; i < idC; i++)
+                for (int i = getIndexConstraint(constr, id); i < idC; i++)
                 {
                     if (i == idC - 1)
                     {
@@ -413,8 +429,8 @@ public class Data
                 idC--;
             }
         }else if (constr.equals("G")){
-            if (id<idC && constraints[id] instanceof PerGroup){
-                for (int i = id; i < idC; i++)
+            if (id<idC && getPerGroup(id)!=null){
+                for (int i = getIndexConstraint(constr, id); i < idC; i++)
                 {
                     if (i == idC - 1)
                     {
@@ -425,6 +441,11 @@ public class Data
                     }
                 }
                 idC--;
+            }
+        }else{
+            if (id>=0 && id < idC && getPerGroup(id)!=null)
+            {
+                getPerGroup(id).removeStudent(Integer.parseInt(constr));
             }
         }
     }
@@ -467,10 +488,13 @@ public class Data
             {
                 if (!Utilitaire.in(numTable, imposedTables()))
                 {
-                    constraints[idC] = new ImposedPlacement(numTable, numStudent);
-                    idC++;
+                    if (idC!=0){
+                        constraints[idC] = new ImposedPlacement(numTable, numStudent);
+                        idC++;
 
-                    return 0;
+                        return 0;
+                    }
+
                 } else
                     return 2;
             }
@@ -478,11 +502,11 @@ public class Data
             return 1;
         } else if (constr == 'N')
         {
-
-            constraints[idC] = new PerGroup(numStudent,numTable);
-            idC++;
-
-            return 0;
+            if (idC!=0){
+                constraints[idC] = new PerGroup(numStudent,numTable);
+                idC++;
+                return 0;
+            }
         }
 
         return 1;

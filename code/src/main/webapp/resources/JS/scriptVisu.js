@@ -29,25 +29,11 @@ function expOrt(){
     if (excel==="Excel"){
         const excelRequest=new XMLHttpRequest();
         excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
-        excelRequest.onreadystatechange=function (){
-            if (excelRequest.readyState===XMLHttpRequest.DONE){
-                if (excelRequest.status===200){
-
-                }
-            }
-        }
         excelRequest.send();
     }
     if (list==="Listing"){
         const listRequest=new XMLHttpRequest();
         listRequest.open("GET", `export?format=${encodeURIComponent(list)}`);
-        listRequest.onreadystatechange=function (){
-            if (listRequest.readyState===XMLHttpRequest.DONE){
-                if (listRequest.status===200){
-
-                }
-            }
-        }
+        listRequest.send();
     }
-
 }

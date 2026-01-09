@@ -400,14 +400,6 @@ function createEtuGrp() {
     }
 }
 
-function createTable() {
-    tables++;
-    let t = `<button id="T${tables}" class="table"> Table ${tables} </button>`;
-    if (tables % larg === 0) {
-        t += `<br><p id="endLine${tables / larg + 1}">`;
-    }
-    document.querySelector(`#endLine${tables / larg + 1}`).insertAdjacentHTML("beforebegin", t);
-}
 
 function displayID() {
     console.log(window.event.target.id);

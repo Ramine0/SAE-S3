@@ -144,7 +144,7 @@ public class Data
 
         for (int i = 0; i < tables.length; i++)
         {
-            if (Utilitaire.in(i + 1, existingTables()) && tables[i].getEtu() == null)
+            if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null)
             {
                 free[numRes] = tables[i].getNum();
                 numRes++;

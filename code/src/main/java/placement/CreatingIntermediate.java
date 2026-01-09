@@ -117,6 +117,7 @@ public class CreatingIntermediate
     public int supprTable(int num)
     {
         num = findTable(num) ? num : -1;
+
         if (num == -1)
         {
             return 2;
@@ -124,6 +125,7 @@ public class CreatingIntermediate
         {
             if (d.isDeleted(num))
                 return 2;
+
             else if (d.removeTable(num))
             {
                 return 0;
@@ -136,7 +138,6 @@ public class CreatingIntermediate
 
     public void unremoveTable(int num)
     {
-        num = findTable(num) ? num : -1;
         d.unremoveTable(num);
     }
 

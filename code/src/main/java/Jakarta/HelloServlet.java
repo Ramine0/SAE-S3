@@ -18,10 +18,9 @@ public class HelloServlet
         crea.setDimensions(3, 3);
         PositioningIntermediate pos;
         pos = salle.getPositioningIntermediate();
-        System.out.println("m'ajouter : " + crea.findStudentForGroup("12406410", 1));
-        System.out.println("me re ajouter : " + crea.findStudentForGroup("p2406", 1));
-        System.out.println("remove une table : " + crea.supprTable(2));
 
+        System.out.println(crea.supprTable(1));
+        System.out.println(crea.supprTable(1));
 
     }
 

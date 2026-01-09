@@ -42,4 +42,9 @@ public class Table
 
     public void setStudent(Student student) {this.student = student;}
 
+    public static void reset()
+    {
+        id = 0;
+    }
+
 }

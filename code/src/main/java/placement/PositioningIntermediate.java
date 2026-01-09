@@ -126,7 +126,7 @@ public class PositioningIntermediate
         return donnees.getTableInfos(numTable);
     }
 
-    public String getTabInfoForVisu() {
+    public String getTablesInfoForVisu() {
         String result ="" ;
         for (String s : getAllInfo()){
             result = result.concat( s +":");
@@ -159,5 +159,10 @@ public class PositioningIntermediate
         }
         return result ;
     }
+
+    public String tabInfoForVisu(int nb) {
+        return donnees.getInfosForVisu(nb) ;
+    }
+
 
 }

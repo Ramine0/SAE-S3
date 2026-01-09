@@ -1,5 +1,7 @@
 let tables=[];
 console.log(tables) ;
+let active ;
+let swap = false ;
 //import {long, larg} from "./script.js";
 
 function createTable(){
@@ -7,9 +9,19 @@ function createTable(){
     let table ;
     for (let i = 0; i < tables.length; i++ ){
         table = tables[i] ;
-        t+=`<button id="T${table}" class="table" > Table ${table} </button>`;
+        t += `<button type="button" id="T${table}" class="table" > Table ${table} </button>`;
     }
-    document.querySelector("#here").insertAdjacentHTML("afterend",t);
+    if (t != "") {
+        document.querySelector("#here").insertAdjacentHTML("afterend", t);
+        if (document.querySelector("#tableExp")!= null ) {
+            document.querySelector("#tableExp").remove();
+        }
+
+        for (let i = 0; i < tables.length; i++) {
+            document.querySelector(`#T${tables[i]}`).addEventListener("click", getInfosTable);
+        }
+    }
+
 }
 
 
@@ -22,10 +34,9 @@ function init(){
             if (initReq.status===200){
                 const numbers = initReq.responseText.split(";");
                 console.log("reponse : "+ numbers) ;
-                for (let i =  0; i < numbers.length ; i ++ ) {
-                    if (numbers[i].length < 1) {
-                        tables.push(numbers[i]);
-                    }
+                for (let i =  0; i < numbers.length-1 ; i ++ ) {
+                    tables.push(numbers[i]);
+
                 }
 
             }else {
@@ -39,7 +50,40 @@ function init(){
 
 init() ;
 
-/*
+function getInfosTable(event) {
+
+    if(swap) {
+        activateSwap(event.target.id) ;
+    }
+
+    let numTab = event.target.id.substring(1) ;
+    let reqInfo = new XMLHttpRequest() ;
+    reqInfo.open("GET", `Display?action=${encodeURIComponent("infos")}&number=${encodeURIComponent(numTab)}`, true);
+    reqInfo.onreadystatechange = function (){
+        if (reqInfo.readyState===XMLHttpRequest.DONE){
+            if (reqInfo.status===200){
+                const values = reqInfo.responseText.split(";");
+                console.log("infos : "+ values) ;
+                if (values.length = 3) {
+                    document.querySelector("#idTabVisu").value = values[0];
+                    document.querySelector("#numEtuVisu").value = values[1];
+                    document.querySelector("#nomEtuVisu").value = values[2];
+
+                    if (active != null ) {document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";}
+                    document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B" ;
+                    active = values[0] ;
+
+                }
+
+            }
+
+        }
+    };
+    reqInfo.send() ;
+}
+
+
+
 function exportFile(){
     const excel=document.getElementById("Excel").value;
     const list=document.getElementById("Listing").value;
@@ -65,11 +109,37 @@ function exportFile(){
                 }
             }
         }
+        listRequest.send() ;
     }
 
 }
 
- */
+function activateSwap(button) {
+
+    if (!swap) {
+        swap = true ;
+        document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,176,55,0.82)" ;
+    }else if (button === "none") {
+        swap = false ;
+    }else if (document.querySelector(`#${button}`)!= null){
+
+        const swap=new XMLHttpRequest();
+        swap.open("GET", `Display?action=${encodeURIComponent("swap")}&number1=${active}&number2=${button.substring(1)}`);
+        swap.onreadystatechange=function (){
+            if (swap.readyState===XMLHttpRequest.DONE){
+                if (swap.status===200){
+
+
+
+                }
+            }
+        }
+        swap.send() ;
+    }
+
+}
+
+
 
 
 

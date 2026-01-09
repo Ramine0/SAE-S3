@@ -102,9 +102,14 @@ public class DisplayServlet extends HttpServlet
 
                 out.print(pos.getTablesForVisu());
 
+            }else if (request.getParameter("action").equals("infos")) {
+                out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
+            }else if (request.getParameter("action").equals("swap")) {
+                salle.swapPlaces(1,2) ;
             }
 
         }
+        out.flush();
 
     }
 }

@@ -276,6 +276,7 @@ function setTableNumber() {
                 console.log("tables saved");
                 long = lon;
                 larg = lar;
+
             } else {
                 console.log("error number tables")
             }
@@ -573,6 +574,5 @@ function codeForGeneration (){
     xhr.send();
 
 }
-
 
 

@@ -58,7 +58,7 @@ public class Room
      * @param num1 numéro de la première table
      * @param num2 numéro de la deuxième table
      */
-    private boolean swapPlaces(int num1,  int num2) {
+    public boolean swapPlaces(int num1,  int num2) {
         if (posing != null) {
             return posing.swapPlaces(num1,num2) ;
         }
@@ -112,7 +112,7 @@ public class Room
         if (posing == null) {
             return "posing null" ;
         }
-        return posing.getTabInfoForVisu() ;
+        return posing.getTablesInfoForVisu() ;
     }
 
 }

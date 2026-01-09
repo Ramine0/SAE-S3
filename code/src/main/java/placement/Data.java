@@ -572,9 +572,7 @@ public class Data
 
 
     public String getTableInfos(int numTable) {
-        String result = getTable(numTable).description() ;
-        result = result.replace(" ",";") ;
-        return result ;
+        return getTable(numTable).description() ;
     }
 
     public Table getTable(int num) {
@@ -619,6 +617,10 @@ public class Data
             }
         }
         return max ;
+    }
+    public String getInfosForVisu(int num) {
+        Student etu = getStuFromTab(num) ;
+        return num +";"+ etu.getId()+";"+etu.getName()+" "+etu.getFirstName() ;
     }
 
 }

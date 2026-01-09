@@ -35,7 +35,7 @@
 <div class="reverseLigne" id="content">
     <main>
         <h4 id="here"> Les tables : </h4>
-        <button class="table" > Table </button>
+        <button id="tableExp" class="table" > Table </button>
     </main>
 
     <aside class="asideCrea">
@@ -49,8 +49,8 @@
         <span class="separateur"></span>
         <div class="valuesOfTable">
              <span id="TableNumber" >
-                <label for="numTabVisu"> Numero de Table </label>
-                <input name="idTabVisu" id="numTabVisu" type="number" disabled>
+                <label for="idTabVisu"> Numero de Table </label>
+                <input name="idTabVisu" id="idTabVisu" type="number" disabled>
             </span>
             <span id="studentInfo">
 
@@ -64,9 +64,12 @@
                 </div>
 
             </span>
-
-
         </div>
+
+        <button class="modif" type="button" onclick="activateSwap('none')">
+            <img src="resources/img/swap.png" alt="Échanger">
+            <h2>&Eacute;changer</h2>
+        </button>
 
     </aside>
 </div>

@@ -71,7 +71,7 @@
 
                     <div  class="inputLabel" >
                         <label for="imposedTableId1">Numéro table</label>
-                        <input name="imposedTableId" id="imposedTableId1" type="number" disabled>
+                        <input name="imposedTableId" id="imposedTableId1" type="number" min="1" disabled>
                     </div>
 
                     <div  class="inputLabel">
@@ -96,7 +96,7 @@
 
                         <span  class="inputLabel">
                             <label for="numTabSup1">Numéro table</label>
-                            <input name="idTabSup1" id="numTabSup1" type="number" disabled>
+                            <input name="idTabSup1" id="numTabSup1" type="number" min="1" disabled>
                         </span>
                     <button class="remove" id="deleteTable1" disabled>remove</button>
                     <button class="chercher" id="findTable1" disabled>find</button>

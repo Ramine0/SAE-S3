@@ -178,7 +178,7 @@ public class CreatingIntermediate
     public void setMode(int i)
     {
         if (i == 0)
-            d.getConstr()[0] = null;
+            d.changeMode('N');
         else if (i == 1)
             d.getConstr()[0] = new PerClass(false);
         else if (i == 2)

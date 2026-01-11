@@ -269,9 +269,8 @@ function moveFile(event) {
 }
 
 function setTableNumber() {
-    const lon = document.getElementById("long").value;
-    const lar = document.getElementById("larg").value;
-
+    let lon = document.getElementById("long").value;
+    let lar = document.getElementById("larg").value;
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
     console.log(xhr.responseText);
@@ -281,6 +280,8 @@ function setTableNumber() {
                 console.log("tables saved");
                 long = lon;
                 larg = lar;
+                document.getElementById("imposedTableId1").max=lon*lar;
+                document.getElementById("numTabSup1").max=lon*lar;
             } else {
                 console.log("error number tables")
             }
@@ -288,7 +289,6 @@ function setTableNumber() {
     };
     xhr.send();
 }
-
 
 function createImposed() {
     nbImposedPlace++;
@@ -300,7 +300,7 @@ function createImposed() {
 </span>
 <span>
     <label for="imposedTableId${nbImposedPlace}"> Num Table </label>
-    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
+    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" min="1" max="${long*larg}" type="number">
 </span>
 <span>
     <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
@@ -328,7 +328,7 @@ function createSuppr() {
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
 <span>
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
-    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" type="number">
+    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" min="1" max="${larg*long}" type="number">
 </span>
 <button class="remove" id="deleteTable${nbPlacesSuppr}">remove</button>
 <button class="chercher" id="findTable${nbPlacesSuppr}">find</button>

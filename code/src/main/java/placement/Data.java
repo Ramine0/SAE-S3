@@ -65,10 +65,7 @@ public class Data
     }
 
 
-    public void placeStudent(int table, String idStudent)
-    {
-        getTable(table).setStudent(getStudentFromId(idStudent));
-    }
+    public void placeStudent(int table, String idStudent) {getTable(table).setStudent(getStudentFromId(idStudent));}
     // liste des fonctions a implementer
     /*
     bool isDeleted(Table/int) FAIT
@@ -122,14 +119,15 @@ public class Data
     {
         int[] result = new int[tables.length];
         int numRes = 0; // la position dans les resultats
-        for (int i = 0; i <= tables.length; i++)
+        for (int i = 0; i < tables.length; i++)
         {
-            // je verifie que ma table soit pas supprimée
-            if (!Utilitaire.in(i, deletedTables))
-            {
-                // si c ok je l'ajoute a la liste
-                result[numRes] = i;
-                numRes++;
+            if (tables[i] != null) {
+                // je verifie que ma table soit pas supprimée
+                if (!Utilitaire.in(tables[i].getNum(), deletedTables)) {
+                    // si c ok je l'ajoute a la liste
+                    result[numRes] = tables[i].getNum();
+                    numRes++;
+                }
             }
         }
         return result;
@@ -399,17 +397,6 @@ public class Data
 
     }
 
-    public void modifConstraint(String numStudent, int numTable, String constr, int id, int index)
-    {
-        if (constr.equals("PI"))
-        {
-            getImposedPlacement(id).set(numTable, numStudent);
-        } else if (constr.charAt(1) == 'G')
-        {
-            getPerGroup(id).modifStudent(numStudent, index);
-        }
-    }
-
     public void removeConstraint(String constr, int id)
     {
         if (constr.equals("I"))
@@ -624,9 +611,7 @@ public class Data
 
 
     public String getTableInfos(int numTable) {
-        String result = getTable(numTable).description() ;
-        result = result.replace(" ",";") ;
-        return result ;
+        return getTable(numTable).description() ;
     }
 
     public Table getTable(int num) {
@@ -654,13 +639,27 @@ public class Data
 
 
     public boolean swap(int numT1, int numT2) {
-        if (getStuFromTab(numT1) != null && getStuFromTab(numT2) != null ) {
+        if (getStuFromTab(numT1) != null || getStuFromTab(numT2) != null ) {
             Student temp = getStuFromTab(numT1) ;
             getTable(numT1).setStudent(getStuFromTab(numT2));
-            getTable(numT1).setStudent(temp);
+            getTable(numT2).setStudent(temp);
             return true;
         }
         return false ;
+    }
+
+    public int maxTableID() {
+        int max = 0;
+        for (Table t : tables) {
+            if (t.getNum() > max) {
+                max = t.getNum();
+            }
+        }
+        return max ;
+    }
+    public String getInfosForVisu(int num) {
+        Student etu = getStuFromTab(num) ;
+        return num +";"+ etu.getId()+";"+etu.getName()+" "+etu.getFirstName() ;
     }
 
 }

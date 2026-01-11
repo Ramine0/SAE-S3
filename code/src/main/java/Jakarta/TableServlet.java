@@ -11,6 +11,7 @@ import placement.RectangularMap;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
 
 @WebServlet("/table")
 @MultipartConfig
@@ -18,13 +19,16 @@ import java.io.PrintWriter;
 public class TableServlet extends HttpServlet
 {
     public static CreatingIntermediate crea = null;
-
+    private static Room salle = null;
+    private static String secretCode ;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        if (crea == null)
+        if (crea == null && salle == null )
         {
-            Room salle = new Room(request.getServletContext().getRealPath("/") + "/");
+            salle = new Room(request.getServletContext().getRealPath("/") + "/");
             crea = salle.getCrea();
+        }else if (crea == null ){
+            salle = null;
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -60,8 +64,27 @@ public class TableServlet extends HttpServlet
             {
                 out.print("table introuvable");
             }
+        }else if (request.getParameter("action").equals("generate")) {
+            String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            Random random = new Random();
+            StringBuilder result = new StringBuilder();
+            int length = 10;
+            for (int i = 0; i < length; i++) {
+                int index = random.nextInt(characters.length());
+                result.append(characters.charAt(index));
+            }
+            secretCode = result.toString();
+            out.print(secretCode);
         }
 
         out.flush();
+    }
+
+    public static Room getSalle (String code) {
+        if (code.equals(secretCode)) {
+            return salle;
+        }else {
+            return null;
+        }
     }
 }

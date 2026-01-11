@@ -47,7 +47,7 @@ public class PositioningIntermediate
             {
                 tableNumber++;
 
-                if (tableNumber > donnees.existingTables().length)
+                if (tableNumber > donnees.maxTableID())
                     break;
             }
 
@@ -74,7 +74,10 @@ public class PositioningIntermediate
          * */
         //on commence à la table 1
 
-        return donnees.freeStudents().length == 0;
+        if (donnees.freeTables() != null ) {
+            return donnees.freeStudents().length == 0;
+        }
+        return false;
     }
 
     // valide ou non le placement
@@ -123,7 +126,7 @@ public class PositioningIntermediate
         return donnees.getTableInfos(numTable);
     }
 
-    public String getTabInfoForVisu() {
+    public String getTablesInfoForVisu() {
         String result ="" ;
         for (String s : getAllInfo()){
             result = result.concat( s +":");
@@ -144,9 +147,21 @@ public class PositioningIntermediate
 
     public boolean swapPlaces(int numT1, int numT2) {
         if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2,donnees.existingTables())) {
-            return donnees.swap(numT1,numT2);
-        }
+            return donnees.swap(numT1,numT2);}
         return false ;
     }
+
+    public String descripData() {
+        String result ="";
+        for (String s: donnees.descrip() ){
+            result += s +";";
+        }
+        return result ;
+    }
+
+    public String tabInfoForVisu(int nb) {
+        return donnees.getInfosForVisu(nb) ;
+    }
+
 
 }

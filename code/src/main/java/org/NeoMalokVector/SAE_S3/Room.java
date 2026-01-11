@@ -10,6 +10,7 @@ public class Room
 
     private CreatingIntermediate crea ;
     private PositioningIntermediate posing;
+    public String message ;
 
 
     public Room() throws FileNotFoundException
@@ -31,10 +32,14 @@ public class Room
     }
 
     public boolean positioningMode() {
-        posing = crea.generatePos() ;
-        if (posing != null) {
-            crea = null ;
-            return true;
+        if (crea != null) {
+            posing = crea.generatePos();
+            if (posing != null) {
+                crea = null;
+                return true;
+            }
+        }else if (posing != null) {
+            return true ;
         }
         return false ;
     }
@@ -53,7 +58,7 @@ public class Room
      * @param num1 numéro de la première table
      * @param num2 numéro de la deuxième table
      */
-    private boolean swapPlaces(int num1,  int num2) {
+    public boolean swapPlaces(int num1,  int num2) {
         if (posing != null) {
             return posing.swapPlaces(num1,num2) ;
         }
@@ -95,4 +100,19 @@ public class Room
             }
         }
     }
+
+    public String describeData () {
+        if (posing == null) {
+            return "posing null" ;
+        }
+        return posing.descripData() ;
+    }
+
+    public String descripPlaces() {
+        if (posing == null) {
+            return "posing null" ;
+        }
+        return posing.getTablesInfoForVisu() ;
+    }
+
 }

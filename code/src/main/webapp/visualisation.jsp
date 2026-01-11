@@ -16,25 +16,26 @@
     <a href="index.jsp">
         <img src="resources/img/Logo_DSRoomMaker.png" alt="Logo" class="logoPageSec">
     </a>
-        <div class="topMenu">
-            <div>
-                <button class="modif">
+    <div class="topMenu">
+        <div>
+            <button class="modif">
                 <img src="resources/img/delete.png" alt="Supprimer">
                 <h2>Supprimer</h2>
-                </button>
-            </div>
+            </button>
+        </div>
 
-            <div>
-                <button class="modif">
+        <div>
+            <button class="modif">
                 <img src="resources/img/swap.png" alt="Échanger">
                 <h2>&Eacute;changer</h2>
-                </button>
-            </div>
+            </button>
         </div>
+    </div>
 </header>
 <div class="reverseLigne" id="content">
     <main>
-        <button class="table"> Table </button>
+        <h4 id="here"> Les tables : </h4>
+        <button id="tableExp" class="table" > Table </button>
     </main>
 
     <aside class="asideCrea">
@@ -48,8 +49,8 @@
         <span class="separateur"></span>
         <div class="valuesOfTable">
              <span id="TableNumber" >
-                <label for="numTabVisu"> Numero de Table </label>
-                <input name="idTabVisu" id="numTabVisu" type="number" disabled>
+                <label for="idTabVisu"> Numero de Table </label>
+                <input name="idTabVisu" id="idTabVisu" type="number" disabled>
             </span>
             <span id="studentInfo">
 
@@ -63,9 +64,12 @@
                 </div>
 
             </span>
-
-
         </div>
+
+        <button class="modif" type="button" id="swapForm" >
+            <img src="resources/img/swap.png" alt="Échanger">
+            <h2>&Eacute;changer</h2>
+        </button>
 
     </aside>
 </div>

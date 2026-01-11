@@ -46,8 +46,12 @@
                     <label for="larg">Nombre de tables par ligne</label>
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </span>
-            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()">Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
-            <button type="submit" id="walid" class="boutWalider" onclick="" disabled> Générer</button>
+            <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
+
+        </form>
+        <form method="POST" action="Display">
+            <input type="text" name="testVal" id="testVal" >
+            <button type="submit" id="walid" class="boutWalider" onclick="enableText()" disabled> Générer</button>
         </form>
 
     </div>
@@ -133,12 +137,10 @@
 
                     </div>
 
-                    <button id="ajoutGroup" class="boutPlus" disabled>+</button>
+                    <button id="ajoutGroup" class="boutPlus" onclick="createGrp()" disabled>+</button>
                     <h4>Ajouter un groupe</h4>
                 </section>
         </div>
-
-        <button id="hmmm test reussi ?!" value="reussi" disabled></button>
     </div>
 </main>
 

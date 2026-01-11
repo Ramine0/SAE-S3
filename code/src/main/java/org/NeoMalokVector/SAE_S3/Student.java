@@ -21,9 +21,9 @@ public class Student
     public String descrip(boolean inline)
     {
         String result = "L'étudiant d'id " + id;
-        result += inline ? "\n" : " ";
+        result += inline ? "\n" : ";";
         result += "est " + name + " " + firstName;
-        result += inline ? "\n" : " ";
+        result += inline ? "\n" : ";";
         result += "du groupe " + (group == -1 ? "grosse merde" : group) + "." + (subGroup == -1 ? "grosse merde" : subGroup);
 
         return result;

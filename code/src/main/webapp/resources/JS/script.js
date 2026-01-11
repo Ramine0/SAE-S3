@@ -212,6 +212,11 @@ function enleverEtuGrp(event) {
     let idBout = event.target.id;
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent("x ")})`);
+    xhr.send();
+
     if (numEtu === groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
@@ -280,6 +285,7 @@ function setTableNumber() {
                 console.log("tables saved");
                 long = lon;
                 larg = lar;
+
                 document.getElementById("imposedTableId1").max=lon*lar;
                 document.getElementById("numTabSup1").max=lon*lar;
             } else {
@@ -300,7 +306,7 @@ function createImposed() {
 </span>
 <span>
     <label for="imposedTableId${nbImposedPlace}"> Num Table </label>
-    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" min="1" max="${long*larg}" type="number">
+    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
 </span>
 <span>
     <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
@@ -342,8 +348,6 @@ function createSuppr() {
 
     document.querySelector("#walid").disabled = true;
     document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
-
 }
 
 function createGrp() {
@@ -445,6 +449,7 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
+        codeForGeneration() ;
     }
 }
 
@@ -557,5 +562,29 @@ function decreaseId(idElem) {
 
 }
 
+function enableText () {
+    let code = document.querySelector("#testVal").disabled = false ;
+}
+
+function codeForGeneration (){
+
+    let code = document.querySelector("#testVal");
+    console.log(code.id) ;
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `table?action=${encodeURIComponent("generate")}`, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                code.value = xhr.responseText;
+                code.disabled = true ;
+            }else {
+                console.log("ca ... marche pas ....") ;
+            }
+        }
+    }
+    xhr.send();
+
+}
 
 

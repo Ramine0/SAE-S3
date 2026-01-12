@@ -65,7 +65,7 @@ public class CreationServlet extends HttpServlet
         {
             String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
 
-            String studentInfo = TableServlet.crea.findStudentForGroup(request.getParameter("studentId"), Integer.parseInt(request.getParameter("numGrp")));
+            String studentInfo = TableServlet.crea.findStudentForGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
 
             if (studentInfo.length() == 1)
                 out.print(studentId + ";" + studentInfo);
@@ -74,16 +74,7 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteSepareEtu"))
         {
             int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
-            PerGroup constr = ((PerGroup) TableServlet.crea.getConstr("G", constraintId));
-            if (constr.getNbStudent() <= 1)
-            {
-                String studentId = request.getParameter("constraintId").charAt(0) + "";
-                TableServlet.crea.removeContrainst(studentId, constraintId);
-            } else
-            {
-                TableServlet.crea.removeContrainst("G", constraintId);
-            }
-
+            TableServlet.crea.removeContrainst("G", constraintId);
         } else if (request.getParameter("constraint").equals("mode"))
         {
             if (TableServlet.crea != null)

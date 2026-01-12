@@ -59,6 +59,12 @@ public class Data
 
     private void init()
     {
+        deletedTables = new int[students.size()];
+
+        if (constraints != null)
+            for (int i = 0; i < constraints.length; i++)
+                if (constraints[i] != null && constraints[i] instanceof PerGroup)
+                    ((PerGroup) constraints[i]).removeStudent(i);
 
         constraints = new Constraint[students.size()];
         idC = 0;
@@ -314,10 +320,6 @@ public class Data
 
     public void setNumberTables(int num)
     {
-        if (tables != null)
-        {
-            tables = null; //jsp si on delete comme ça, en gros si le prof veut changer les dimensions, faut delete ce qu'il y avait avant
-        }
         if (deletedTables != null)
         {
             deletedTables = null;
@@ -524,26 +526,24 @@ public class Data
             {
                 if (!Utilitaire.in(numTable, imposedTables()))
                 {
-                    if (!Utilitaire.in(numTable, deletedTables)){
-                        if (idC!=0){
-                            constraints[idC] = new ImposedPlacement(numTable, numStudent);
-                            idC++;
+                    if (idC!=0){
+                        constraints[idC] = new ImposedPlacement(numTable, numStudent);
+                        idC++;
 
-                            return 0;
-                        }
-                    } else {
-                        return 2;
+                        return 0;
                     }
                 } else {
                     return 2;
                 }
             }
 
+
             return 1;
         } else if (constr == 'N')
         {
-            if (idC!=0){
-                constraints[idC] = new PerGroup(numStudent,getPerGroupIndex());
+            if (idC != 0)
+            {
+                constraints[idC] = new PerGroup(numStudent, numTable);
                 idC++;
                 return 0;
             }

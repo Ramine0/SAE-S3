@@ -98,10 +98,10 @@
             <div class="ligne" id="deletedTablesRow">
                 <section id="supTable1" class="invalid">
 
-                        <span  class="inputLabel">
+                        <section  class="inputLabel">
                             <label for="numTabSup1">Numéro table</label>
                             <input name="idTabSup1" id="numTabSup1" type="number" min="1" disabled>
-                        </span>
+                        </section>
                     <button class="remove" id="deleteTable1" disabled>remove</button>
                     <button class="chercher" id="findTable1" disabled>find</button>
                 </section>

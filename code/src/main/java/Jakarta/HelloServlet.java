@@ -20,15 +20,6 @@ public class HelloServlet
         pos = salle.getPositioningIntermediate();
 
         crea.setMode(0);
-
-        crea.findNumsForImp("p12", 3);
-
-        crea.generatePos().creerPlacement();
-
-        for (int i = 0; i < crea.getNumberTables(); i++)
-            if (crea.getTable(i) != null && crea.getTable(i).getEtu() != null)
-            System.out.println(i + " " + crea.getTable(i).getEtu().getFirstName());
-
     }
 
 

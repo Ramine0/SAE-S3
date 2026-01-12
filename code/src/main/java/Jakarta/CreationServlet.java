@@ -20,6 +20,8 @@ public class CreationServlet extends HttpServlet
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
+        TableServlet.crea.setMode(0);
+
         if (request.getParameter("constraint").equals("imposePlace"))
         {
             String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
@@ -28,19 +30,14 @@ public class CreationServlet extends HttpServlet
             result += TableServlet.crea.studentInfo(studentId) + ";";
 
             String tableNumber = request.getParameter("tableNumber");
-            if (!tableNumber.isEmpty()){
-                int number=Integer.parseInt(tableNumber);
-                if (number<TableServlet.crea.minTable()){
-                    number=TableServlet.crea.minTable();
-                }else if (number>TableServlet.crea.maxTable()){
-                    number=TableServlet.crea.maxTable();
-                }
-                tableNumber=number+"";
-            }
-            if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt(tableNumber)))
+
+            if (Integer.parseInt(tableNumber) < 0 || Integer.parseInt(tableNumber) > TableServlet.crea.maxTable())
+                result += "3;";
+            else if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt(tableNumber)))
             {
                 result += "null;";
-            } else {
+            } else
+            {
                 result += TableServlet.crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
             }
 
@@ -51,11 +48,9 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
-            if (num<TableServlet.crea.minTable()){
-                num=TableServlet.crea.minTable();
-            }else if (num>TableServlet.crea.maxTable()){
-                num=TableServlet.crea.maxTable();
-            }
+            if (num < 0 ||num > TableServlet.crea.maxTable())
+             out.print("-5");
+            else
             out.print(TableServlet.crea.supprTable(num));
 
         } else if (request.getParameter("constraint").equals("removeDeletedTable"))
@@ -75,18 +70,20 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteSepareEtu"))
         {
             int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
-            PerGroup constr=((PerGroup) TableServlet.crea.getConstr("G", constraintId));
-            if (constr.getNbStudent()<=1){
-                String studentId = request.getParameter("constraintId").charAt(0)+"";
+            PerGroup constr = ((PerGroup) TableServlet.crea.getConstr("G", constraintId));
+            if (constr.getNbStudent() <= 1)
+            {
+                String studentId = request.getParameter("constraintId").charAt(0) + "";
                 TableServlet.crea.removeContrainst(studentId, constraintId);
-            }else{
+            } else
+            {
                 TableServlet.crea.removeContrainst("G", constraintId);
             }
 
-        }
-        else if (request.getParameter("constraint").equals("mode"))
+        } else if (request.getParameter("constraint").equals("mode"))
         {
-            if (TableServlet.crea!=null){
+            if (TableServlet.crea != null)
+            {
                 if (request.getParameter("mode").equals("normal"))
                 {
                     TableServlet.crea.setMode(0);
@@ -97,11 +94,14 @@ public class CreationServlet extends HttpServlet
                 {
                     TableServlet.crea.setMode(2);
                 }
-            }else{
+            } else
+            {
                 out.println("erreur");
             }
-        }else if (request.getParameter("constraint").equals("reset")){
-            if (TableServlet.crea!=null){
+        } else if (request.getParameter("constraint").equals("reset"))
+        {
+            if (TableServlet.crea != null)
+            {
                 TableServlet.crea.resetData();
             }
         }

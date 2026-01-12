@@ -59,6 +59,8 @@ function validerPlaceImposee(event) {
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
                 else if (response[2] === "2")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                else if (response[2] === "3")
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Pas possible connard";
                 else {
                     validerSectImpose(idFind);
 
@@ -136,8 +138,10 @@ function validateDeletedTable(event) {
                     document.getElementById("numTabSup"+constraintId).value="Table introuvable";
                 }else if (rep === "-3"){
                     document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
-                }else if (rep === "-4"){
-                    document.getElementById("numTabSup"+constraintId).value="Table imposée";
+                }else if (rep === "-4") {
+                    document.getElementById("numTabSup" + constraintId).value = "Table imposée";
+                }else if (rep === "-5") {
+                    document.getElementById("numTabSup" + constraintId).value = "Pas possible connard";
                 }else{
                     setValid(`supTable${constraintId}`);
                     document.getElementById("numTabSup"+constraintId).value=rep;

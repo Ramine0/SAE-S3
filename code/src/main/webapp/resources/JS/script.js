@@ -51,9 +51,6 @@ function validerPlaceImposee(event) {
         if (xhr.readyState === XMLHttpRequest.DONE)
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
-
-                console.log(response[2]);
-
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")
@@ -84,7 +81,6 @@ function changeMode() {
                 if (mode.responseText==="error"){
                     console.log("table nulle");
                 }else{
-                    console.log("Table ... pas nulle?");
                 }
 
             } else {
@@ -101,7 +97,6 @@ function supprimerPlaceImposee(event) {
     let idRemove = event.target.id;
     let numConstr = idRemove.charAt(13);
 
-    console.log(idRemove, numConstr);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
@@ -122,7 +117,7 @@ document.getElementById("findTable1").addEventListener("click", validateDeletedT
 function validateDeletedTable(event) {
     const findId = event.target.id;
     const constraintId = findId.charAt(9);
-    const tableNumber = document.getElementById("numTabSup" + contraintId).value;
+    const tableNumber = document.getElementById("numTabSup" + constraintId).value;
 
 
     if (tableNumber === "")
@@ -134,7 +129,6 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log(xhr.responseText);
                 let rep = xhr.responseText ;
                 if (rep === "-1"){
                     document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
@@ -147,7 +141,6 @@ function validateDeletedTable(event) {
                 }else{
                     setValid(`supTable${constraintId}`);
                     document.getElementById("numTabSup"+constraintId).value=rep;
-                    console.log("Deleted table successfully");
                 }
             } else
                 console.error("Error deleting table");
@@ -264,7 +257,6 @@ function enleverEtuGrp(event) {
 document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 
 function moveFile(event) {
-    console.log(event.target.id);
     if (event.target.id !== "studentFile")
         return;
     const data = new FormData(document.getElementById("fileUploadForm"));
@@ -273,8 +265,6 @@ function moveFile(event) {
     xhr.open("POST", "file-upload");
 
     xhr.send(data);
-
-    console.log("File uploaded. I guess...")
 
     fileOk = true;
 }
@@ -286,11 +276,9 @@ function setTableNumber() {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
 
-    console.log(xhr.responseText);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log("tables saved");
                 if (xhr.responseText!=="-1" || xhr.responseText!=="0"){
                     let l=xhr.responseText.split(";");
                     long=l[0];
@@ -582,7 +570,6 @@ function enableText() {
 function codeForGeneration() {
 
     let code = document.querySelector("#testVal");
-    console.log(code.id);
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("generate")}`, true);
 
@@ -592,7 +579,6 @@ function codeForGeneration() {
                 code.value = xhr.responseText;
                 code.disabled = true;
             } else {
-                console.log("ca ... marche pas ....");
             }
         }
     }

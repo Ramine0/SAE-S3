@@ -1,5 +1,4 @@
 let tables=[];
-console.log(tables) ;
 let active ;
 let swap = false ;
 //import {long, larg} from "./script.js";
@@ -33,7 +32,6 @@ function init(){
         if (initReq.readyState===XMLHttpRequest.DONE){
             if (initReq.status===200){
                 const numbers = initReq.responseText.split(";");
-                console.log("reponse : "+ numbers) ;
                 for (let i =  0; i < numbers.length-1 ; i ++ ) {
                     tables.push(numbers[i]);
 
@@ -53,7 +51,6 @@ init() ;
 function getInfosTable(event) {
 
     if(swap) {
-        console.log("AHA") ;
         activateSwap(event.target.id) ;
     }
 
@@ -64,7 +61,6 @@ function getInfosTable(event) {
         if (reqInfo.readyState===XMLHttpRequest.DONE){
             if (reqInfo.status===200){
                 const values = reqInfo.responseText.split(";");
-                console.log("infos : "+ values) ;
                 if (values.length === 4) {
                     document.querySelector("#idTabVisu").value = values[0];
                     document.querySelector("#numEtuVisu").value = values[1];
@@ -125,10 +121,8 @@ function modeSwap() {
 
 function activateSwap(button) {
 
-    console.log("swap: ",swap) ;
     if (button === "none" && active != null) {
         swap = !swap;
-        console.log("nouveau swap : ", swap) ;
         document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
     }else if (document.querySelector(`#${button}`)!= null){
 
@@ -137,7 +131,6 @@ function activateSwap(button) {
         swapReq.onreadystatechange=function (){
             if (swapReq.readyState===XMLHttpRequest.DONE){
                 if (swapReq.status===200){
-                    console.log(swapReq.responseText) ;
                     swap = false ;
                 }
             }

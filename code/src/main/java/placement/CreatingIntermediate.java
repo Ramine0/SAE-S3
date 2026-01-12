@@ -177,9 +177,9 @@ public class CreatingIntermediate
         if (i == 0)
             d.changeMode('N');
         else if (i == 1)
-            d.getConstr()[0] = new PerClass(false);
+            d.changeMode('G');
         else if (i == 2)
-            d.getConstr()[0] = new PerClass(true);
+            d.changeMode('S');
     }
 
 

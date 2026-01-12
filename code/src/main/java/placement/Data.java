@@ -59,6 +59,8 @@ public class Data
 
     private void init()
     {
+        deletedTables = new int[students.size()];
+
         if (constraints != null)
             for (int i = 0; i < constraints.length; i++)
                 if (constraints[i] != null && constraints[i] instanceof PerGroup)
@@ -331,10 +333,6 @@ public class Data
 
     public void setNumberTables(int num)
     {
-        if (tables != null)
-        {
-            tables = null; //jsp si on delete comme ça, en gros si le prof veut changer les dimensions, faut delete ce qu'il y avait avant
-        }
         if (deletedTables != null)
         {
             deletedTables = null;

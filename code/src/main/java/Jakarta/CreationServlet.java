@@ -45,10 +45,10 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
-            if (num < 0 ||num > TableServlet.crea.maxTable())
-             out.print("-5");
+            if (num < 0 || num > TableServlet.crea.maxTable())
+                out.print("-5");
             else
-            out.print(TableServlet.crea.supprTable(num));
+                out.print(TableServlet.crea.supprTable(num));
 
         } else if (request.getParameter("constraint").equals("removeDeletedTable"))
         {

@@ -314,18 +314,18 @@ function createImposed() {
     nbImposedPlace++;
     let imposedPlace =
         `<section id="impose${nbImposedPlace}" class="invalid">
-<span>
-    <label for="imposedStudentId${nbImposedPlace}"> id Etudiant </label>
+<section>
+    <label for="imposedStudentId${nbImposedPlace}">Numéro étudiant</label>
     <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
-</span>
-<span>
-    <label for="imposedTableId${nbImposedPlace}"> Num Table </label>
+</section>
+<section>
+    <label for="imposedTableId${nbImposedPlace}">Numéro table</label>
     <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
-</span>
-<span>
-    <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
+</section>
+<section>
+    <label for="imposedStudentName${nbImposedPlace}">Nom de l'étudiant</label>
     <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
-</span>
+</section>
 <button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
 <button class="chercher" id="findImposed${nbImposedPlace}">find</button>
 </section>`;
@@ -346,10 +346,10 @@ function createSuppr() {
     nbPlacesSuppr++;
     let placesSuppr =
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
-<span>
-    <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
+<section>
+    <label for="numTabSup${nbPlacesSuppr}">Numéro table</label>
     <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" min="1" max="${larg * long}" type="number">
-</span>
+</section>
 <button class="remove" id="deleteTable${nbPlacesSuppr}">remove</button>
 <button class="chercher" id="findTable${nbPlacesSuppr}">find</button>
 </section>`;
@@ -371,7 +371,7 @@ function createGrp() {
     <h4 id="h4${groupes.length}">Mis à distance ${groupes.length} </h4>
     <div class="ligne" id="Gp${groupes.length}">       
         <section id="E1G${groupes.length}" class = "invalid">
-            <span>
+            <section>
                 <div>
                     <label for="idEtu1G${groupes.length}">Numéro étudiant</label>
                     <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
@@ -380,7 +380,7 @@ function createGrp() {
                     <label for="nomEtu1G${groupes.length}">Nom de l'étudiant</label>
                     <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
                 </div>
-            </span>
+            </section>
             <button class="remove" id="supEtu1G${groupes.length}" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" >find</button>
         </section>

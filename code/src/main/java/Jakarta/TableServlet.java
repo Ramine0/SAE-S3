@@ -21,9 +21,10 @@ public class TableServlet extends HttpServlet
     public static CreatingIntermediate crea = null;
     private static Room salle = null;
     private static String secretCode ;
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        if (crea == null)
+        if (crea == null || (request.getParameter("action").equals("define") && crea != null))
         {
             salle = new Room(request.getServletContext().getRealPath("/") + "/");
             crea = salle.getCrea();

@@ -214,8 +214,9 @@ function enleverEtuGrp(event) {
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
 
+
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent(numEtu+"G"+numGrp)})`);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu+"G"+numGrp)}`);
     xhr.send();
 
     if (numEtu === groupes[numGrp - 1].length) {

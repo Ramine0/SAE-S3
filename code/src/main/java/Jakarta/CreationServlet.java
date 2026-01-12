@@ -59,7 +59,7 @@ public class CreationServlet extends HttpServlet
         {
             String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));
 
-            String studentInfo = TableServlet.crea.findStudentForGroup(request.getParameter("studentId"), Integer.parseInt(request.getParameter("numGrp")));
+            String studentInfo = TableServlet.crea.findStudentForGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
 
             if (studentInfo.length() == 1)
                 out.print(studentId + ";" + studentInfo);

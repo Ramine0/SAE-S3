@@ -539,7 +539,7 @@ public class Data
         } else if (constr == 'N')
         {
             if (idC!=0){
-                constraints[idC] = new PerGroup(numStudent,getPerGroupIndex());
+                constraints[idC] = new PerGroup(numStudent,numTable);
                 idC++;
                 return 0;
             }

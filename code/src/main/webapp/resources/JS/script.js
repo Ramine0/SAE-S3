@@ -292,7 +292,7 @@ function createImposed() {
     let imposedPlace =
         `<section id="impose${nbImposedPlace}" class="invalid">
 <span>
-    <label for="studentImposedId${nbImposedPlace}"> id Etudiant </label>
+    <label for="imposedStudentId${nbImposedPlace}"> id Etudiant </label>
     <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
 </span>
 <span>
@@ -524,6 +524,11 @@ function decreaseId(idElem) {
 
             children[i].id = "impose" + newId;
 
+            children[i].children[0].children[0].for = "imposedStudentId" + newId;
+            children[i].children[1].children[0].for = "imposedTableId" + newId;
+            children[i].children[2].children[0].for = "imposedStudentName" + newId;
+
+
             children[i].children[0].children[1].id = "imposedStudentId" + newId;
             children[i].children[1].children[1].id = "imposedTableId" + newId;
             children[i].children[2].children[1].id = "imposedStudentName" + newId;
@@ -575,7 +580,7 @@ function codeForGeneration() {
 }
 
 function genererWalid() {
-    if (document.getElementsByClassName(".invalid").length === 0) {
+    if (document.getElementsByClassName("invalid").length === 0) {
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
     }

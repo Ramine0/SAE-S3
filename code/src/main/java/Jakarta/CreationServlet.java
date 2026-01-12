@@ -40,7 +40,7 @@ public class CreationServlet extends HttpServlet
             if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt(tableNumber)))
             {
                 result += "null;";
-            } else if (!tableNumber.isEmpty()) {
+            } else {
                 result += TableServlet.crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
             }
 
@@ -77,7 +77,7 @@ public class CreationServlet extends HttpServlet
             int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
             PerGroup constr=((PerGroup) TableServlet.crea.getConstr("G", constraintId));
             if (constr.getNbStudent()<=1){
-                String studentId = request.getParameter("constraintId").substring(0,1);
+                String studentId = request.getParameter("constraintId").charAt(0)+"";
                 TableServlet.crea.removeContrainst(studentId, constraintId);
             }else{
                 TableServlet.crea.removeContrainst("G", constraintId);

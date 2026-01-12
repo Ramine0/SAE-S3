@@ -125,14 +125,14 @@ public class CreatingIntermediate
 
         if (num == -1)
         {
-            return 2;
+            return -2;
         } else
         {
             if (d.isDeleted(num))
-                return 3;
+                return -3;
 
             else if (d.isImposed(num)){
-                return 4;
+                return -4;
             }else {
                 return d.removeTable(num) ;
             }

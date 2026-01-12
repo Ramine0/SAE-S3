@@ -16,9 +16,20 @@ public class HelloServlet
         CreatingIntermediate crea = salle.getCrea();
         crea.createTables(3, 3);
         crea.setDimensions(3, 3);
-        crea.setMode(0);
-        System.out.println(crea.findNumsForImp("p2406",1));
+        PositioningIntermediate pos;
+        pos = salle.getPositioningIntermediate();
+
+        crea.setMode(2);
+
+        crea.findNumsForImp("p12", 1);
+
+        crea.generatePos().creerPlacement();
+
+        for (int i = 0; i < crea.getNumberTables(); i++)
+            if (crea.getTable(i) != null && crea.getTable(i).getEtu() != null)
+            System.out.println(i + " " + crea.getTable(i).getEtu().getFirstName());
 
     }
+
 
 }

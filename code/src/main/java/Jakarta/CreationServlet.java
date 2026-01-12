@@ -28,11 +28,19 @@ public class CreationServlet extends HttpServlet
             result += TableServlet.crea.studentInfo(studentId) + ";";
 
             String tableNumber = request.getParameter("tableNumber");
-
-            if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt('+' + tableNumber)))
+            if (!tableNumber.isEmpty()){
+                int number=Integer.parseInt(tableNumber);
+                if (number<TableServlet.crea.minTable()){
+                    number=TableServlet.crea.minTable();
+                }else if (number>TableServlet.crea.maxTable()){
+                    number=TableServlet.crea.maxTable();
+                }
+                tableNumber=number+"";
+            }
+            if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt(tableNumber)))
             {
                 result += "null;";
-            } else if (! tableNumber.isEmpty()) {
+            } else if (!tableNumber.isEmpty()) {
                 result += TableServlet.crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
             }
 
@@ -43,7 +51,11 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
-
+            if (num<TableServlet.crea.minTable()){
+                num=TableServlet.crea.minTable();
+            }else if (num>TableServlet.crea.maxTable()){
+                num=TableServlet.crea.maxTable();
+            }
             out.print(TableServlet.crea.supprTable(num));
 
         } else if (request.getParameter("constraint").equals("removeDeletedTable"))

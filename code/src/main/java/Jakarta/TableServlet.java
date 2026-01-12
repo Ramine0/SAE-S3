@@ -38,19 +38,29 @@ public class TableServlet extends HttpServlet
         {
             lon = Integer.parseInt(request.getParameter("long"));
             lar = Integer.parseInt(request.getParameter("larg"));
+            if (lon<4){
+                lon=4;
+            }else if (lon>20){
+                lon=20;
+            }
+            if (lar<4){
+                lar=4;
+            }else if (lar>8){
+                lar=8;
+            }
 
             crea.createTables(lon, lar);
             crea.setDimensions(lon, lar);
 
             if (crea.getNumberTables() == 0)
             {
-                out.print("Table nulle");
+                out.print(0);
             } else if (crea.getNumberTables() == lon * lar && ((RectangularMap) crea.getMap()).getHeight() == lon && ((RectangularMap) crea.getMap()).getWidth() == lar)
             {
-                out.print("Table construite comme il faut");
+                out.print(lon+";"+lar);
             } else
             {
-                out.print("Mauvaises valeurs");
+                out.print(-1);
             }
         } else if (request.getParameter("action").equals("present"))
         {

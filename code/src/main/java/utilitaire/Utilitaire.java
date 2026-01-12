@@ -42,6 +42,16 @@ public class Utilitaire {
         return false;
     }
 
+    public static int min (int[] nb){
+        int result=nb[0];
+        for (int i:nb){
+            if (result>i){
+                result=i;
+            }
+        }
+        return result;
+    }
+
     public static int max (int[] nb ) {
         int result = nb[0];
         for (int i : nb ) {

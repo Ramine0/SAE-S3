@@ -119,7 +119,7 @@ document.getElementById("findTable1").addEventListener("click", validateDeletedT
 
 function validateDeletedTable(event) {
     const findId = event.target.id;
-    const contraintId = findId.charAt(9);
+    const constraintId = findId.charAt(9);
     const tableNumber = document.getElementById("numTabSup" + contraintId).value;
 
 
@@ -134,11 +134,18 @@ function validateDeletedTable(event) {
             if (xhr.status === 200) {
                 console.log(xhr.responseText);
                 let rep = xhr.responseText ;
-                if (rep === "0") {
-                    setValid(`supTable${contraintId}`);
+                if (rep === "-1"){
+                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
+                }else if (rep === "-2"){
+                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
+                }else if (rep === "-3"){
+                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
+                }else if (rep === "-4"){
+                    document.getElementById("numTabSup"+constraintId).value="Table imposée";
+                }else{
+                    setValid(`supTable${constraintId}`);
+                    document.getElementById("numTabSup"+constraintId).value=rep;
                     console.log("Deleted table successfully");
-                }else {
-                    console.log("table non supprimée code : ",rep) ;
                 }
             } else
                 console.error("Error deleting table");
@@ -215,7 +222,7 @@ function enleverEtuGrp(event) {
     let numEtu = idBout.charAt(6);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent(numEtu+"G"+numGrp)})`);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu+"G"+numGrp)}`);
     xhr.send();
 
     if (numEtu === groupes[numGrp - 1].length) {

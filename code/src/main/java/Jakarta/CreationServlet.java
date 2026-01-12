@@ -20,6 +20,8 @@ public class CreationServlet extends HttpServlet
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
+        TableServlet.crea.setMode(0);
+
         if (request.getParameter("constraint").equals("imposePlace"))
         {
             String studentId = TableServlet.crea.findEtu(request.getParameter("studentId"));

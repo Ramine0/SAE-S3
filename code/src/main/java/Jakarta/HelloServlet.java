@@ -19,9 +19,9 @@ public class HelloServlet
         PositioningIntermediate pos;
         pos = salle.getPositioningIntermediate();
 
-        crea.setMode(2);
+        crea.setMode(0);
 
-        crea.findNumsForImp("p12", 1);
+        crea.findNumsForImp("p12", 3);
 
         crea.generatePos().creerPlacement();
 

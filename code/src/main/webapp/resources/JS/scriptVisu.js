@@ -11,7 +11,7 @@ function createTable(){
         table = tables[i] ;
         t += `<button type="button" id="T${table}" class="table" > Table ${table} </button>`;
     }
-    if (t != "") {
+    if (t !== "") {
         document.querySelector("#here").insertAdjacentHTML("afterend", t);
         if (document.querySelector("#tableExp")!= null ) {
             document.querySelector("#tableExp").remove();

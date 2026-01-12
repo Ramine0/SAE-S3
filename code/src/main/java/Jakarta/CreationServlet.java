@@ -29,7 +29,7 @@ public class CreationServlet extends HttpServlet
 
             String tableNumber = request.getParameter("tableNumber");
 
-            if (Integer.parseInt(tableNumber) < 0 || Integer.parseInt(tableNumber) > TableServlet.crea.maxTable())
+            if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > TableServlet.crea.maxTable())
                 result += "3;";
             else if (tableNumber.isEmpty())
             {
@@ -46,11 +46,17 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
-            if (num < 0 ||num > TableServlet.crea.maxTable())
-             out.print("-5");
-            else
-            out.print(TableServlet.crea.supprTable(num));
-
+            if (num<TableServlet.crea.minTable()) {
+                out.print("-5;"+TableServlet.crea.minTable());
+                num=TableServlet.crea.minTable();
+                TableServlet.crea.supprTable(num);
+            }else if (num>TableServlet.crea.maxTable()){
+                out.print("-6;"+TableServlet.crea.maxTable());
+                num=TableServlet.crea.maxTable();
+                TableServlet.crea.supprTable(num);
+            }else{
+                out.print(TableServlet.crea.supprTable(num)+";");
+            }
         } else if (request.getParameter("constraint").equals("removeDeletedTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));

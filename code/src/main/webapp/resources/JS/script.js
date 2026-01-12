@@ -47,7 +47,6 @@ function validerPlaceImposee(event) {
         if (xhr.readyState === XMLHttpRequest.DONE)
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
-
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")
@@ -57,7 +56,7 @@ function validerPlaceImposee(event) {
                 else if (response[2] === "2")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
                 else if (response[2] === "3")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Pas possible connard";
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
                 else {
                     validerSectImpose(idFind);
 
@@ -128,20 +127,15 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let rep = xhr.responseText ;
-                if (rep === "-1"){
-                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
-                }else if (rep === "-2"){
-                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
-                }else if (rep === "-3"){
-                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
-                }else if (rep === "-4") {
-                    document.getElementById("numTabSup" + constraintId).value = "Table imposée";
-                }else if (rep === "-5") {
-                    document.getElementById("numTabSup" + constraintId).value = "Pas possible connard";
+                let rep = xhr.responseText.split(";") ;
+                console.log(rep[0], rep[1]);
+                if (rep[0] === "-1" || rep[0] === "-2" || rep[0] === "-3" || rep[0] === "-4"){
+                    document.getElementById("numTabSup"+constraintId).value="";
+                }else if (rep[0] === "-5" || rep[0] === "-6") {
+                    document.getElementById("numTabSup" + constraintId).value = rep[1];
                 }else{
+
                     setValid(`supTable${constraintId}`);
-                    document.getElementById("numTabSup"+constraintId).value=rep;
                 }
             } else
                 console.error("Error deleting table");

@@ -524,15 +524,19 @@ public class Data
             {
                 if (!Utilitaire.in(numTable, imposedTables()))
                 {
-                    if (idC!=0){
-                        constraints[idC] = new ImposedPlacement(numTable, numStudent);
-                        idC++;
+                    if (!Utilitaire.in(numTable, deletedTables)){
+                        if (idC!=0){
+                            constraints[idC] = new ImposedPlacement(numTable, numStudent);
+                            idC++;
 
-                        return 0;
+                            return 0;
+                        }
+                    } else {
+                        return 2;
                     }
-
-                } else
+                } else {
                     return 2;
+                }
             }
 
             return 1;

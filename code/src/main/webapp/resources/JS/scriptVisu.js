@@ -6,9 +6,14 @@ let swap = false ;
 function createTable(){
     let t = "" ;
     let table ;
+    let vals ;
+    let name ;
     for (let i = 0; i < tables.length; i++ ){
-        table = tables[i] ;
-        t += `<button type="button" id="T${table}" class="table" > Table ${table} </button>`;
+        vals = tables[i].split("!") ;
+        table = vals[0] ;
+        name = vals[1] ;
+        t += `<button type="button" id="T${table}" class="table" > Table ${table} <br> <p>${name}</p></button>`;
+        tables[i] = table ;
     }
     if (t != "") {
         document.querySelector("#here").insertAdjacentHTML("afterend", t);
@@ -31,14 +36,11 @@ function init(){
     initReq.onreadystatechange = function (){
         if (initReq.readyState===XMLHttpRequest.DONE){
             if (initReq.status===200){
-                const numbers = initReq.responseText.split(";");
+                const numbers = initReq.responseText.split(";") ;
                 for (let i =  0; i < numbers.length-1 ; i ++ ) {
                     tables.push(numbers[i]);
-
                 }
-
             }else {
-
             }
             createTable() ;
         }

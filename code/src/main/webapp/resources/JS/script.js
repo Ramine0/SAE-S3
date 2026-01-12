@@ -62,7 +62,7 @@ function validerPlaceImposee(event) {
                 else if (response[2] === "2")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
                 else if (response[2] === "3")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Pas possible connard";
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
                 else {
                     validerSectImpose(idFind);
 
@@ -82,9 +82,9 @@ function changeMode() {
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
-                if (mode.responseText === "error") {
+                if (mode.responseText==="error"){
                     console.log("table nulle");
-                } else {
+                }else{
                 }
 
             } else {
@@ -133,20 +133,20 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let rep = xhr.responseText;
-                if (rep === "-1") {
-                    document.getElementById("numTabSup" + constraintId).value = "Aucune table restante";
-                } else if (rep === "-2") {
-                    document.getElementById("numTabSup" + constraintId).value = "Table introuvable";
-                } else if (rep === "-3") {
-                    document.getElementById("numTabSup" + constraintId).value = "Table déjà supprimée";
-                } else if (rep === "-4") {
+                let rep = xhr.responseText ;
+                if (rep === "-1"){
+                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
+                }else if (rep === "-2"){
+                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
+                }else if (rep === "-3"){
+                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
+                }else if (rep === "-4") {
                     document.getElementById("numTabSup" + constraintId).value = "Table imposée";
-                } else if (rep === "-5") {
+                }else if (rep === "-5") {
                     document.getElementById("numTabSup" + constraintId).value = "Pas possible connard";
-                } else {
+                }else{
                     setValid(`supTable${constraintId}`);
-                    document.getElementById("numTabSup" + constraintId).value = rep;
+                    document.getElementById("numTabSup"+constraintId).value=rep;
                 }
             } else
                 console.error("Error deleting table");
@@ -264,7 +264,7 @@ function enleverEtuGrp(event) {
     if (numEtu <= groupes[numGrp.length]) {
         groupes[numGrp - 1].splice(numEtu - 1, 1);
     }
-    genererWalid();
+        genererWalid();
 
 }
 
@@ -293,12 +293,12 @@ function setTableNumber() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
-                    let l = xhr.responseText.split(";");
-                    long = l[0];
-                    document.getElementById("long").value = l[0];
-                    larg = l[1];
-                    document.getElementById("larg").value = l[1];
+                if (xhr.responseText!=="-1" || xhr.responseText!=="0"){
+                    let l=xhr.responseText.split(";");
+                    long=l[0];
+                    document.getElementById("long").value=l[0];
+                    larg=l[1];
+                    document.getElementById("larg").value=l[1];
                 }
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;

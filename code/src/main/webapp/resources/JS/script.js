@@ -9,6 +9,11 @@ let tables = 1;
 
 let fileOk = false;
 
+if (document.getElementById("studentFile").files.length !== 0) {
+    fileOk = true;
+    enableZone();
+}
+
 // dans les fonctions javascript a faire il y a :
 /*
     generer() ; genere le placement !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
@@ -48,6 +53,7 @@ function validerPlaceImposee(event) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
                 console.log(response[0],response[1],response[2]);
+
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")
@@ -130,15 +136,20 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let rep = xhr.responseText.split(";") ;
-                console.log(rep[0], rep[1]);
-                if (rep[0] === "-1" || rep[0] === "-2" || rep[0] === "-3" || rep[0] === "-4"){
-                    document.getElementById("numTabSup"+constraintId).value="";
-                }else if (rep[0] === "-5" || rep[0] === "-6") {
-                    document.getElementById("numTabSup" + constraintId).value = rep[1];
+                let rep = xhr.responseText ;
+                if (rep === "-1"){
+                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
+                }else if (rep === "-2"){
+                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
+                }else if (rep === "-3"){
+                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
+                }else if (rep === "-4") {
+                    document.getElementById("numTabSup" + constraintId).value = "Table imposée";
+                }else if (rep === "-5") {
+                    document.getElementById("numTabSup" + constraintId).value = "Pas possible connard";
                 }else{
-
                     setValid(`supTable${constraintId}`);
+                    document.getElementById("numTabSup"+constraintId).value=rep;
                 }
             } else
                 console.error("Error deleting table");
@@ -177,7 +188,6 @@ function validerEtuGrp(event) {
     let idFind = event.target.id;
     let numGrp = idFind.substring(8);
     let numEtu = idFind.charAt(6);
-    console.log(numGrp+numEtu);
 
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     let valid = true;
@@ -188,7 +198,6 @@ function validerEtuGrp(event) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
-                console.log(response[1]);
 
                 if (response[1] === "1")
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
@@ -201,7 +210,7 @@ function validerEtuGrp(event) {
                     document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
                 }
             } else {
-                console.log(xhr.status);
+                console.error('Error fetching group data');
                 valid = false;
             }
         }
@@ -218,7 +227,15 @@ function enleverEtuGrp(event) {
     console.log(numGrp+numEtu);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu+"G"+numGrp)}`);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status !== 200)
+                console.log("error deleting etu group");
+        }
+    };
+
     xhr.send();
 
     if (numEtu === groupes[numGrp - 1].length) {
@@ -300,18 +317,18 @@ function createImposed() {
     nbImposedPlace++;
     let imposedPlace =
         `<section id="impose${nbImposedPlace}" class="invalid">
-<span>
-    <label for="imposedStudentId${nbImposedPlace}"> Numéro étudiant </label>
+<section>
+    <label for="imposedStudentId${nbImposedPlace}">Numéro étudiant</label>
     <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
-</span>
-<span>
-    <label for="imposedTableId${nbImposedPlace}"> Numéro table </label>
+</section>
+<section>
+    <label for="imposedTableId${nbImposedPlace}">Numéro table</label>
     <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
-</span>
-<span>
-    <label for="imposedStudentName${nbImposedPlace}"> Nom de l'étudiant </label>
+</section>
+<section>
+    <label for="imposedStudentName${nbImposedPlace}">Nom de l'étudiant</label>
     <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
-</span>
+</section>
 <button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
 <button class="chercher" id="findImposed${nbImposedPlace}">find</button>
 </section>`;
@@ -332,10 +349,10 @@ function createSuppr() {
     nbPlacesSuppr++;
     let placesSuppr =
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
-<span>
-    <label for="numTabSup${nbPlacesSuppr}"> Numéro table </label>
+<section>
+    <label for="numTabSup${nbPlacesSuppr}">Numéro table</label>
     <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" min="1" max="${larg * long}" type="number">
-</span>
+</section>
 <button class="remove" id="deleteTable${nbPlacesSuppr}">remove</button>
 <button class="chercher" id="findTable${nbPlacesSuppr}">find</button>
 </section>`;
@@ -357,7 +374,7 @@ function createGrp() {
     <h4 id="h4${groupes.length}">Mis à distance ${groupes.length} </h4>
     <div class="ligne" id="Gp${groupes.length}">       
         <section id="E1G${groupes.length}" class = "invalid">
-            <span>
+            <section>
                 <div>
                     <label for="idEtu1G${groupes.length}">Numéro étudiant</label>
                     <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
@@ -366,7 +383,7 @@ function createGrp() {
                     <label for="nomEtu1G${groupes.length}">Nom de l'étudiant</label>
                     <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
                 </div>
-            </span>
+            </section>
             <button class="remove" id="supEtu1G${groupes.length}" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" >find</button>
         </section>
@@ -395,16 +412,16 @@ function createEtuGrp(event) {
     let numEtu = groupes[numGrp - 1].length;
     if (numEtu < 10) {
         let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
-        <span>
+        <section>
             <div>
-                <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Numéro étudiant </label>
+                <label for="idEtu${numEtu}G${numGrp}">Numéro étudiant</label>
                 <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
             </div>
             <div>
-                <label for="nomEtu${numEtu}G${numGrp}" id="labelnomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
+                <label for="nomEtu${numEtu}G${numGrp}">Nom de l'étudiant</label>
                 <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
             </div>
-        </span>
+        </section>
         <button class="remove" id="supEtu${numEtu}G${numGrp}">remove</button>
         <button class="chercher" id="walEtu${numEtu}G${numGrp}">find</button>`
 
@@ -510,20 +527,24 @@ function validerSectImpose(idBout) {
 function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
         let numGrp = idElem.substring(4);
-        let numEtu = idElem.charAt(2);
-        let newNumEtu = numEtu - 1;
+        let numEtu = idElem.charAt(2) - 1;
 
-        document.querySelector(idElem).id = idElem.charAt(1).concat((idElem.charAt(2) - 1).toString(), idElem.substring(3));
+        let children = document.getElementById("Gp1").children;
 
-        document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).for = `idEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).for = `nomEtu${newNumEtu}G${numGrp}`;
+        for (let i = 0; i < children.length - 2; i++) {
+            children[i].id = "E" + numEtu + "G" + numGrp;
 
-        document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).id = `labelidEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).id = `labelnomEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#idEtu${numEtu}G${numGrp}`).id = `idEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `nomEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `walEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#supEtu${numEtu}G${numGrp}`).id = `supEtu${newNumEtu}G${numGrp}`;
+            children[i].children[0].children[0].children[0].for = "idEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[0].children[1].id = "idEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[0].children[1].name = "idEtu" + numEtu + "G" + numGrp;
+
+            children[i].children[0].children[1].children[0].for = "nomEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[1].children[1].id = "nomEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[1].children[1].name = "nomEtu" + numEtu + "G" + numGrp;
+
+            children[i].children[0].children[2].id = "supEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
+        }
 
     } else if (idElem.startsWith("#i")) {
         let children = document.getElementById("ligneImposed").children;

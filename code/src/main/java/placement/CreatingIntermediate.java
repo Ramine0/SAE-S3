@@ -87,7 +87,7 @@ public class CreatingIntermediate
     }
     public void removeContrainst(String constr, int id)
     {
-        d.removeConstraint(constr, id - 1);
+        d.removeConstraint(constr, id);
     }
 
     public String findStudentForGroup(String idPartiel, int numGrp)

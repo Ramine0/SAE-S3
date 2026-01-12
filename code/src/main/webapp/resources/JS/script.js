@@ -47,6 +47,7 @@ function validerPlaceImposee(event) {
         if (xhr.readyState === XMLHttpRequest.DONE)
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
+                console.log(response[0],response[1],response[2]);
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")
@@ -57,6 +58,8 @@ function validerPlaceImposee(event) {
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
                 else if (response[2] === "3")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
+                else if (response[2]==="-1")
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
                 else {
                     validerSectImpose(idFind);
 

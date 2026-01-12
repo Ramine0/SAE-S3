@@ -9,6 +9,11 @@ let tables = 1;
 
 let fileOk = false;
 
+if (document.getElementById("studentFile").files.length !== 0) {
+    fileOk = true;
+    enableZone();
+}
+
 // dans les fonctions javascript a faire il y a :
 /*
     generer() ; genere le placement !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
@@ -77,9 +82,9 @@ function changeMode() {
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
-                if (mode.responseText==="error"){
+                if (mode.responseText === "error") {
                     console.log("table nulle");
-                }else{
+                } else {
                 }
 
             } else {
@@ -128,20 +133,20 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let rep = xhr.responseText ;
-                if (rep === "-1"){
-                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
-                }else if (rep === "-2"){
-                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
-                }else if (rep === "-3"){
-                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
-                }else if (rep === "-4") {
+                let rep = xhr.responseText;
+                if (rep === "-1") {
+                    document.getElementById("numTabSup" + constraintId).value = "Aucune table restante";
+                } else if (rep === "-2") {
+                    document.getElementById("numTabSup" + constraintId).value = "Table introuvable";
+                } else if (rep === "-3") {
+                    document.getElementById("numTabSup" + constraintId).value = "Table déjà supprimée";
+                } else if (rep === "-4") {
                     document.getElementById("numTabSup" + constraintId).value = "Table imposée";
-                }else if (rep === "-5") {
+                } else if (rep === "-5") {
                     document.getElementById("numTabSup" + constraintId).value = "Pas possible connard";
-                }else{
+                } else {
                     setValid(`supTable${constraintId}`);
-                    document.getElementById("numTabSup"+constraintId).value=rep;
+                    document.getElementById("numTabSup" + constraintId).value = rep;
                 }
             } else
                 console.error("Error deleting table");
@@ -219,7 +224,15 @@ function enleverEtuGrp(event) {
 
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu+"G"+numGrp)}`);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status !== 200)
+                console.log("error deleting etu group");
+        }
+    };
+
     xhr.send();
 
     if (numEtu === groupes[numGrp - 1].length) {
@@ -251,7 +264,7 @@ function enleverEtuGrp(event) {
     if (numEtu <= groupes[numGrp.length]) {
         groupes[numGrp - 1].splice(numEtu - 1, 1);
     }
-        genererWalid();
+    genererWalid();
 
 }
 
@@ -280,12 +293,12 @@ function setTableNumber() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                if (xhr.responseText!=="-1" || xhr.responseText!=="0"){
-                    let l=xhr.responseText.split(";");
-                    long=l[0];
-                    document.getElementById("long").value=l[0];
-                    larg=l[1];
-                    document.getElementById("larg").value=l[1];
+                if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
+                    let l = xhr.responseText.split(";");
+                    long = l[0];
+                    document.getElementById("long").value = l[0];
+                    larg = l[1];
+                    document.getElementById("larg").value = l[1];
                 }
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;
@@ -396,16 +409,16 @@ function createEtuGrp(event) {
     let numEtu = groupes[numGrp - 1].length;
     if (numEtu < 10) {
         let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
-        <span>
+        <section>
             <div>
-                <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Num Etudiant </label>
+                <label for="idEtu${numEtu}G${numGrp}">Numéro étudiant</label>
                 <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
             </div>
             <div>
-                <label for="nomEtu${numEtu}G${numGrp}" id="labelnomEtu${numEtu}G${numGrp}"> Nom de l'étudiant </label>
+                <label for="nomEtu${numEtu}G${numGrp}">Nom de l'étudiant</label>
                 <input name="nomEtu${numEtu}G${numGrp}" id="nomEtu${numEtu}G${numGrp}" type="text" >
             </div>
-        </span>
+        </section>
         <button class="remove" id="supEtu${numEtu}G${numGrp}">remove</button>
         <button class="chercher" id="walEtu${numEtu}G${numGrp}">find</button>`
 
@@ -511,20 +524,24 @@ function validerSectImpose(idBout) {
 function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
         let numGrp = idElem.substring(4);
-        let numEtu = idElem.charAt(2);
-        let newNumEtu = numEtu - 1;
+        let numEtu = idElem.charAt(2) - 1;
 
-        document.querySelector(idElem).id = idElem.charAt(1).concat((idElem.charAt(2) - 1).toString(), idElem.substring(3));
+        let children = document.getElementById("Gp1").children;
 
-        document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).for = `idEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).for = `nomEtu${newNumEtu}G${numGrp}`;
+        for (let i = 0; i < children.length - 2; i++) {
+            children[i].id = "E" + numEtu + "G" + numGrp;
 
-        document.querySelector(`#labelidEtu${numEtu}G${numGrp}`).id = `labelidEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#labelnomEtu${numEtu}G${numGrp}`).id = `labelnomEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#idEtu${numEtu}G${numGrp}`).id = `idEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).id = `nomEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#walEtu${numEtu}G${numGrp}`).id = `walEtu${newNumEtu}G${numGrp}`;
-        document.querySelector(`#supEtu${numEtu}G${numGrp}`).id = `supEtu${newNumEtu}G${numGrp}`;
+            children[i].children[0].children[0].children[0].for = "idEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[0].children[1].id = "idEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[0].children[1].name = "idEtu" + numEtu + "G" + numGrp;
+
+            children[i].children[0].children[1].children[0].for = "nomEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[1].children[1].id = "nomEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[1].children[1].name = "nomEtu" + numEtu + "G" + numGrp;
+
+            children[i].children[0].children[2].id = "supEtu" + numEtu + "G" + numGrp;
+            children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
+        }
 
     } else if (idElem.startsWith("#i")) {
         let children = document.getElementById("ligneImposed").children;

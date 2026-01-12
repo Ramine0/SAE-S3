@@ -1,6 +1,5 @@
 package Jakarta;
 
-import constraints.PerGroup;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -68,16 +67,7 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteSepareEtu"))
         {
             int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
-            PerGroup constr = ((PerGroup) TableServlet.crea.getConstr("G", constraintId));
-            if (constr.getNbStudent() <= 1)
-            {
-                String studentId = request.getParameter("constraintId").charAt(0) + "";
-                TableServlet.crea.removeContrainst(studentId, constraintId);
-            } else
-            {
-                TableServlet.crea.removeContrainst("G", constraintId);
-            }
-
+            TableServlet.crea.removeContrainst("G", constraintId);
         } else if (request.getParameter("constraint").equals("mode"))
         {
             if (TableServlet.crea != null)

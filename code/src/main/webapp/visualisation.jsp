@@ -64,6 +64,10 @@
                     <label for="nomEtuVisu"> Nom de l'etudiant </label>
                     <input name="nomEtuVisu" id="nomEtuVisu" type="text" disabled>
                 </div>
+                <div >
+                    <label for="grpEtuVisu"> Groupe classe l'etudiant </label>
+                    <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
+                </div>
 
             </span>
         </div>

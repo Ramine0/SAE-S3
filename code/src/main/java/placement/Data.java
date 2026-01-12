@@ -666,7 +666,7 @@ public class Data
     }
     public String getInfosForVisu(int num) {
         Student etu = getStuFromTab(num) ;
-        return num +";"+ etu.getId()+";"+etu.getName()+" "+etu.getFirstName() ;
+        return num+";"+etu.textVisu() ;
     }
 
     public boolean isImposed(int numTab){

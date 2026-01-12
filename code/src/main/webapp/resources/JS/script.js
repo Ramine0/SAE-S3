@@ -9,10 +9,6 @@ let tables = 1;
 
 let fileOk = false;
 
-const reset = new XMLHttpRequest();
-reset.open("GET", `getStudentName?constraint=${encodeURIComponent("reset")}`);
-reset.send();
-
 // dans les fonctions javascript a faire il y a :
 /*
     generer() ; genere le placement !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
@@ -51,6 +47,7 @@ function validerPlaceImposee(event) {
         if (xhr.readyState === XMLHttpRequest.DONE)
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
+
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")

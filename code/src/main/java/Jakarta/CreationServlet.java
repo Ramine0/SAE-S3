@@ -31,7 +31,7 @@ public class CreationServlet extends HttpServlet
 
             if (Integer.parseInt(tableNumber) < 0 || Integer.parseInt(tableNumber) > TableServlet.crea.maxTable())
                 result += "3;";
-            else if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt(tableNumber)))
+            else if (tableNumber.isEmpty())
             {
                 result += "null;";
             } else
@@ -98,11 +98,6 @@ public class CreationServlet extends HttpServlet
             }
         } else if (request.getParameter("constraint").equals("reset"))
         {
-            if (TableServlet.crea != null)
-            {
-                TableServlet.crea.resetData();
-                TableServlet.crea.setMode(0);
-            }
         }
 
         out.flush();

@@ -528,14 +528,14 @@ public class Data
                         constraints[idC] = new ImposedPlacement(numTable, numStudent);
                         idC++;
 
-                        return numTable;
+                        return 0;
                     }
 
                 } else
-                    return 0;
+                    return 2;
             }
 
-            return 0;
+            return 1;
         } else if (constr == 'N')
         {
             if (idC!=0){

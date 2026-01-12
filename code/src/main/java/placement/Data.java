@@ -711,8 +711,12 @@ public class Data
         return max ;
     }
     public String getInfosForVisu(int num) {
-        Student etu = getStuFromTab(num) ;
-        return num+";"+etu.textVisu() ;
+        if (getTable(num) != null && getStuFromTab(num) != null) {
+            Student etu = getStuFromTab(num);
+            return num + ";" + etu.textVisu();
+        }else {
+            return num+";null;null;null" ;
+        }
     }
 
     public boolean isImposed(int numTab){

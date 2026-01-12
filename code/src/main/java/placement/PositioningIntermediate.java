@@ -152,7 +152,7 @@ public class PositioningIntermediate
 
     public String getTablesForVisu() {
         String result ="" ;
-        for (int t : donnees.getTables()) {
+        for (int t : donnees.existingTables()) {
             result = result.concat(t+";") ;
         }
 

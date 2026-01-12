@@ -28,6 +28,8 @@ public class FileUpload extends HttpServlet
         Part filePart = request.getPart("studentFile");
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
+        fileName = "etudiants.csv";
+
         // Save the file to the server
         InputStream inputStream = filePart.getInputStream();
         Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);

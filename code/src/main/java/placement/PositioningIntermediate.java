@@ -4,8 +4,6 @@ import constraints.Constraint;
 import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
-import java.util.ArrayList;
-
 public class PositioningIntermediate
 {
 
@@ -57,7 +55,25 @@ public class PositioningIntermediate
             }
 
             tableNumber++;
+
         }
+
+        // j'ai trop la flemme de lire tout ce que Malik a écrit parce que c'est d'la merde et je sais même pas si c'est vraiment utile
+        // comme si Malik était utile
+        // lol
+        // cet arabe là
+        // psychopathe en plus
+        // mais ça c'est une bonne chose
+        // surtout pour faire chier Vector
+        // il a rien fait le pauvre
+
+
+
+
+
+
+
+
 
         // le reste du la fonction (placer les etu aleatoirement en tenant compte du validateç
         /*

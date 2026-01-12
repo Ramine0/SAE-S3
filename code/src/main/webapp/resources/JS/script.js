@@ -52,6 +52,8 @@ function validerPlaceImposee(event) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
+                console.log(response[2]);
+
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")
@@ -119,7 +121,7 @@ document.getElementById("findTable1").addEventListener("click", validateDeletedT
 
 function validateDeletedTable(event) {
     const findId = event.target.id;
-    const contraintId = findId.charAt(9);
+    const constraintId = findId.charAt(9);
     const tableNumber = document.getElementById("numTabSup" + contraintId).value;
 
 
@@ -134,11 +136,18 @@ function validateDeletedTable(event) {
             if (xhr.status === 200) {
                 console.log(xhr.responseText);
                 let rep = xhr.responseText ;
-                if (rep === "0") {
-                    setValid(`supTable${contraintId}`);
+                if (rep === "-1"){
+                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
+                }else if (rep === "-2"){
+                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
+                }else if (rep === "-3"){
+                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
+                }else if (rep === "-4"){
+                    document.getElementById("numTabSup"+constraintId).value="Table imposée";
+                }else{
+                    setValid(`supTable${constraintId}`);
+                    document.getElementById("numTabSup"+constraintId).value=rep;
                     console.log("Deleted table successfully");
-                }else {
-                    console.log("table non supprimée code : ",rep) ;
                 }
             } else
                 console.error("Error deleting table");

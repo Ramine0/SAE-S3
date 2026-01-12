@@ -6,7 +6,6 @@ import utilitaire.Utilitaire;
 public class PerGroup extends Constraint
 {
     private String[] groupe;
-    private int id;
     private int num ;
 
     public int getNum() {return num ;}
@@ -15,13 +14,17 @@ public class PerGroup extends Constraint
     {
         num =  numGrp;
         groupe = new String[9] ;
-        id=0;
         addStudent(etu);
 
     }
     public void addStudent(String numetu){
+        int id=-1;
+        for (int i=0; i<groupe.length; i++){
+            if (groupe[i]==null && id==-1){
+                id=i;
+            }
+        }
         groupe[id]=numetu;
-        id++;
 
         studentsConstraints.add(numetu);
     }
@@ -29,13 +32,7 @@ public class PerGroup extends Constraint
         groupe[index]=numetu;
     }
     public void removeStudent(int index){
-        for (int i=index; i<groupe.length; i++){
-            if (i==groupe.length-1){
-                groupe[i]=null;
-            }else{
-                groupe[i]=groupe[i+1];
-            }
-        }
+        groupe[index]=null;
     }
 
     @Override

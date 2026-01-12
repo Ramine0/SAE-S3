@@ -1,5 +1,6 @@
 package Jakarta;
 
+import constraints.PerGroup;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -60,20 +61,31 @@ public class CreationServlet extends HttpServlet
                 out.print(studentId + ";" + studentInfo.split(";")[1]);
         } else if (request.getParameter("constraint").equals("deleteSepareEtu"))
         {
-            int constraintId = Integer.parseInt(request.getParameter("constraintId"));
-            TableServlet.crea.removeContrainst("G", constraintId);
+            int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
+            PerGroup constr=((PerGroup) TableServlet.crea.getConstr("G", constraintId));
+            if (constr.getNbStudent()<=1){
+                String studentId = request.getParameter("constraintId").substring(0,1);
+                TableServlet.crea.removeContrainst(studentId, constraintId);
+            }else{
+                TableServlet.crea.removeContrainst("G", constraintId);
+            }
+
         }
         else if (request.getParameter("constraint").equals("mode"))
         {
-            if (request.getParameter("mode").equals("normal"))
-            {
-                TableServlet.crea.setMode(0);
-            } else if (request.getParameter("mode").equals("group"))
-            {
-                TableServlet.crea.setMode(1);
-            } else if (request.getParameter("mode").equals("sub-group"))
-            {
-                TableServlet.crea.setMode(2);
+            if (TableServlet.crea!=null){
+                if (request.getParameter("mode").equals("normal"))
+                {
+                    TableServlet.crea.setMode(0);
+                } else if (request.getParameter("mode").equals("group"))
+                {
+                    TableServlet.crea.setMode(1);
+                } else if (request.getParameter("mode").equals("sub-group"))
+                {
+                    TableServlet.crea.setMode(2);
+                }
+            }else{
+                out.println("erreur");
             }
         }else if (request.getParameter("constraint").equals("reset")){
             if (TableServlet.crea!=null){

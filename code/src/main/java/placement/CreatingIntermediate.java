@@ -77,7 +77,6 @@ public class CreatingIntermediate
             return d.addImp(id, num);
         }
     }
-
     public void removeContrainst(String constr, int id)
     {
         d.removeConstraint(constr, id - 1);
@@ -172,6 +171,16 @@ public class CreatingIntermediate
     public Constraint getConstr(int num)
     {
         return d.getConstr()[num - 1];
+    }
+
+    public Constraint getConstr(String type, int num){
+        if (type.equals("I")){
+            return d.getImposedPlacement(num);
+        }else if (type.equals("G")){
+            return d.getPerGroup(num);
+        }else{
+            return d.getConstr()[0];
+        }
     }
 
     public void setMode(int i)

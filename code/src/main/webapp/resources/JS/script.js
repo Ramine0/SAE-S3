@@ -79,7 +79,12 @@ function changeMode() {
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
-                console.log("ça marche à priori");
+                if (mode.responseText==="error"){
+                    console.log("table nulle");
+                }else{
+                    console.log("Table ... pas nulle?");
+                }
+
             } else {
                 console.log(mode.status);
             }
@@ -208,7 +213,7 @@ function enleverEtuGrp(event) {
     let numEtu = idBout.charAt(6);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent("x ")})`);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent(numEtu+"G"+numGrp)})`);
     xhr.send();
 
     if (numEtu === groupes[numGrp - 1].length) {

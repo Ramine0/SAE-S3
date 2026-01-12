@@ -21,8 +21,13 @@ public class HelloServlet
 
         crea.setMode(2);
 
-        System.out.println(crea.findNumsForImp("p24033", 1));
-        System.out.println(crea.findNumsForImp("p24033", 2));
+        crea.findNumsForImp("p12", 1);
+
+        crea.generatePos().creerPlacement();
+
+        for (int i = 0; i < crea.getNumberTables(); i++)
+            if (crea.getTable(i) != null && crea.getTable(i).getEtu() != null)
+            System.out.println(i + " " + crea.getTable(i).getEtu().getFirstName());
 
     }
 

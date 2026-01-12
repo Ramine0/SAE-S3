@@ -38,9 +38,7 @@ public class Room
                 crea = null;
                 return true;
             }
-        }else if (posing != null) {
-            return true ;
-        }
+        }else return posing != null;
         return false ;
     }
 

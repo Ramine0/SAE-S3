@@ -65,15 +65,15 @@ function getInfosTable(event) {
             if (reqInfo.status===200){
                 const values = reqInfo.responseText.split(";");
                 console.log("infos : "+ values) ;
-                if (values.length = 3) {
+                if (values.length === 4) {
                     document.querySelector("#idTabVisu").value = values[0];
                     document.querySelector("#numEtuVisu").value = values[1];
                     document.querySelector("#nomEtuVisu").value = values[2];
+                    document.querySelector("#grpEtuVisu").value = values[3];
 
-                    if (active != null ) {document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";}
-                    if(!swap) {
-                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
-                    }
+                    if (active != null && !swap) {document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";}
+                    document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
+
                     active = values[0] ;
 
                 }
@@ -129,10 +129,7 @@ function activateSwap(button) {
     if (button === "none" && active != null) {
         swap = !swap;
         console.log("nouveau swap : ", swap) ;
-    }else if (!swap) {
-        swap = true ;
-        document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,176,55,0.82)";
-
+        document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
     }else if (document.querySelector(`#${button}`)!= null){
 
         const swapReq=new XMLHttpRequest();

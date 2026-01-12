@@ -57,6 +57,13 @@ public class Student
         return etu.group == this.group;
     }
 
+    public String textVisu() {
+        if (group  != -1 ) {
+            return getId() + ";" + getName() + " " + getFirstName() + ";"+(group + "." + subGroup);
+        }else {
+            return getId() + ";" + getName() + " " + getFirstName() + ";"+"null" ;
+        }
+    }
 
 
 }

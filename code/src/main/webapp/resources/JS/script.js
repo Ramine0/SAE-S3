@@ -81,7 +81,12 @@ function changeMode() {
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
-                console.log("ça marche à priori");
+                if (mode.responseText==="error"){
+                    console.log("table nulle");
+                }else{
+                    console.log("Table ... pas nulle?");
+                }
+
             } else {
                 console.log(mode.status);
             }
@@ -212,7 +217,7 @@ function enleverEtuGrp(event) {
     let numEtu = idBout.charAt(6);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent("x ")})`);
+    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&contraintId=${encodeURIComponent(numEtu+"G"+numGrp)})`);
     xhr.send();
 
     if (numEtu === groupes[numGrp - 1].length) {
@@ -294,7 +299,7 @@ function createImposed() {
     let imposedPlace =
         `<section id="impose${nbImposedPlace}" class="invalid">
 <span>
-    <label for="studentImposedId${nbImposedPlace}"> id Etudiant </label>
+    <label for="imposedStudentId${nbImposedPlace}"> id Etudiant </label>
     <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
 </span>
 <span>
@@ -526,6 +531,11 @@ function decreaseId(idElem) {
 
             children[i].id = "impose" + newId;
 
+            children[i].children[0].children[0].for = "imposedStudentId" + newId;
+            children[i].children[1].children[0].for = "imposedTableId" + newId;
+            children[i].children[2].children[0].for = "imposedStudentName" + newId;
+
+
             children[i].children[0].children[1].id = "imposedStudentId" + newId;
             children[i].children[1].children[1].id = "imposedTableId" + newId;
             children[i].children[2].children[1].id = "imposedStudentName" + newId;
@@ -577,7 +587,7 @@ function codeForGeneration() {
 }
 
 function genererWalid() {
-    if (document.getElementsByClassName(".invalid").length === 0) {
+    if (document.getElementsByClassName("invalid").length === 0) {
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
     }

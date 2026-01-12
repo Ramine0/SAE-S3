@@ -128,10 +128,12 @@ function validateDeletedTable(event) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log(xhr.responseText);
-
-                if (xhr.responseText !== "1" && xhr.responseText !== "2") {
+                let rep = xhr.responseText ;
+                if (rep === "0") {
                     setValid(`supTable${contraintId}`);
                     console.log("Deleted table successfully");
+                }else {
+                    console.log("table non supprimée code : ",rep) ;
                 }
             } else
                 console.error("Error deleting table");

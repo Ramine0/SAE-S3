@@ -149,17 +149,17 @@ public class Data
         return free;
     }
 
-    public boolean removeTable(int num)
+    public int removeTable(int num)
     {
         for (int i : deletedTables)
         {
             if (deletedTables[i] == 0)
             {
                 deletedTables[i] = num;
-                return true;
+                return 0;
             }
         }
-        return false;
+        return 1;
     }
 
     public void unremoveTable(int num)
@@ -663,6 +663,10 @@ public class Data
     public String getInfosForVisu(int num) {
         Student etu = getStuFromTab(num) ;
         return num +";"+ etu.getId()+";"+etu.getName()+" "+etu.getFirstName() ;
+    }
+
+    public boolean isImposed(int numTab){
+        return Utilitaire.in(numTab,imposedTables()) ;
     }
 
 }

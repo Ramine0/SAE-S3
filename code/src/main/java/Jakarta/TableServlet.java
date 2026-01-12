@@ -31,10 +31,9 @@ public class TableServlet extends HttpServlet
                 salle = new Room(request.getServletContext().getRealPath("/") + "/");
                 crea = salle.getCrea();
             } else
-            {
                 crea.resetData();
-                crea.setMode(0);
-            }
+
+            crea.setMode(0);
         }
 
         response.setContentType("text/html");

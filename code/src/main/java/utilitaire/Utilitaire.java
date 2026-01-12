@@ -1,20 +1,28 @@
 package utilitaire;
 
-public class Utilitaire {
+public class Utilitaire
+{
 
-    public static boolean in(Object o, Object[] O){
-        for (Object i : O){
-            if (i==o) {
+    public static boolean in(Object o, Object[] O)
+    {
+        for (Object i : O)
+        {
+            if (i == o)
+            {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean in (String s, String[] tab) {
-        for (String i : tab) {
-            if (i != null){
-                if (i.equals(s)) {
+    public static boolean in(String s, String[] tab)
+    {
+        for (String i : tab)
+        {
+            if (i != null)
+            {
+                if (i.equals(s))
+                {
                     return true;
                 }
             }
@@ -22,10 +30,13 @@ public class Utilitaire {
         return false;
     }
 
-    public static int pos(int nb, int[] tab) {
+    public static int pos(int nb, int[] tab)
+    {
 
-        for (int  i = 0; i < tab.length ; i++ ) {
-            if (tab[i] == nb) {
+        for (int i = 0; i < tab.length; i++)
+        {
+            if (tab[i] == nb)
+            {
                 return i;
             }
         }
@@ -33,33 +44,42 @@ public class Utilitaire {
         return -1;
     }
 
-    public static boolean in(int o, int[] O) {
-        for (int i : O) {
-            if (i == o) {
+    public static boolean in(int o, int[] O)
+    {
+        for (int i : O)
+        {
+            if (i == o)
+            {
                 return true;
             }
         }
         return false;
     }
 
-    public static int min (int[] nb){
-        int result=nb[0];
-        for (int i:nb){
-            if (result>i){
-                result=i;
+    public static int min(int[] nb)
+    {
+        int result = max(nb);
+        for (int i : nb)
+        {
+            if (result > i)
+            {
+                result = i;
             }
         }
         return result;
     }
 
-    public static int max (int[] nb ) {
+    public static int max(int[] nb)
+    {
         int result = nb[0];
-        for (int i : nb ) {
-            if (result < i) {
+        for (int i : nb)
+        {
+            if (result < i)
+            {
                 result = i;
             }
         }
-        return result ;
+        return result;
     }
 
 }

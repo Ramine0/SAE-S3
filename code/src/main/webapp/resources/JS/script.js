@@ -45,37 +45,44 @@ function validerPlaceImposee(event) {
     const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
     const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
 
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+    if (studentId === "")
+        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
+    else if (tableNumber === "")
+        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+    else {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
 
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE)
-            if (xhr.status === 200) {
-                const response = xhr.responseText.split(";");
-                console.log(response[0],response[1],response[2]);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE)
+                if (xhr.status === 200) {
+                    const response = xhr.responseText.split(";");
+                    console.log(response[0], response[1], response[2]);
 
-                if (response[1] === "null")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-                else if (response[2] === "null")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-                else if (response[2] === "1")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
-                else if (response[2] === "2")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
-                else if (response[2] === "3")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
-                else if (response[2]==="-1")
-                    document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
-                else {
-                    validerSectImpose(idFind);
+                    if (response[1] === "null")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
+                    else if (response[2] === "null")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+                    else if (response[2] === "1")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
+                    else if (response[2] === "2")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                    else if (response[2] === "3")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
+                    else if (response[2] === "-1")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
+                    else {
+                        validerSectImpose(idFind);
 
-                    document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
-                    document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
-                }
-            } else
-                console.error("Error fetching student data");
-    };
-    xhr.send();
+                        document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
+                        document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
+                    }
+                } else
+                    console.error("Error fetching student data");
+        }
+
+        xhr.send();
+    }
 }
 
 function changeMode() {
@@ -85,9 +92,9 @@ function changeMode() {
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
-                if (mode.responseText==="error"){
+                if (mode.responseText === "error") {
                     console.log("table nulle");
-                }else{
+                } else {
                 }
 
             } else {
@@ -136,20 +143,20 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let rep = xhr.responseText ;
-                if (rep === "-1"){
-                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
-                }else if (rep === "-2"){
-                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
-                }else if (rep === "-3"){
-                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
-                }else if (rep === "-4") {
+                let rep = xhr.responseText;
+                if (rep === "-1") {
+                    document.getElementById("numTabSup" + constraintId).value = "Aucune table restante";
+                } else if (rep === "-2") {
+                    document.getElementById("numTabSup" + constraintId).value = "Table introuvable";
+                } else if (rep === "-3") {
+                    document.getElementById("numTabSup" + constraintId).value = "Table déjà supprimée";
+                } else if (rep === "-4") {
                     document.getElementById("numTabSup" + constraintId).value = "Table imposée";
-                }else if (rep === "-5") {
-                    document.getElementById("numTabSup" + constraintId).value = "Pas possible connard";
-                }else{
+                } else if (rep === "-5") {
+                    document.getElementById("numTabSup" + constraintId).value = "Table non existante";
+                } else {
                     setValid(`supTable${constraintId}`);
-                    document.getElementById("numTabSup"+constraintId).value=rep;
+                    document.getElementById("numTabSup" + constraintId).value = rep;
                 }
             } else
                 console.error("Error deleting table");
@@ -224,7 +231,7 @@ function enleverEtuGrp(event) {
     let idBout = event.target.id;
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
-    console.log(numGrp+numEtu);
+    console.log(numGrp + numEtu);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);
@@ -267,7 +274,7 @@ function enleverEtuGrp(event) {
     if (numEtu <= groupes[numGrp.length]) {
         groupes[numGrp - 1].splice(numEtu - 1, 1);
     }
-        genererWalid();
+    genererWalid();
 
 }
 
@@ -296,12 +303,12 @@ function setTableNumber() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                if (xhr.responseText!=="-1" || xhr.responseText!=="0"){
-                    let l=xhr.responseText.split(";");
-                    long=l[0];
-                    document.getElementById("long").value=l[0];
-                    larg=l[1];
-                    document.getElementById("larg").value=l[1];
+                if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
+                    let l = xhr.responseText.split(";");
+                    long = l[0];
+                    document.getElementById("long").value = l[0];
+                    larg = l[1];
+                    document.getElementById("larg").value = l[1];
                 }
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;

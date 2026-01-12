@@ -32,6 +32,14 @@ public class CreatingIntermediate
         return d.getTables().length;
     }
 
+    public int minTable(){
+        return d.minNumTable();
+    }
+
+    public int maxTable(){
+        return d.maxNumTable();
+    }
+
     public String findEtu(String id)
     {
         String trouve = d.completeId(id);

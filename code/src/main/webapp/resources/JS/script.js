@@ -274,16 +274,22 @@ function moveFile(event) {
 function setTableNumber() {
     let lon = document.getElementById("long").value;
     let lar = document.getElementById("larg").value;
+
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
+
     console.log(xhr.responseText);
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log("tables saved");
-                long = lon;
-                larg = lar;
-
+                if (xhr.responseText!=="-1" || xhr.responseText!=="0"){
+                    let l=xhr.responseText.split(";");
+                    long=l[0];
+                    document.getElementById("long").value=l[0];
+                    larg=l[1];
+                    document.getElementById("larg").value=l[1];
+                }
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;
             } else {

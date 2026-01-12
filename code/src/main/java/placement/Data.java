@@ -627,6 +627,10 @@ public class Data
         return null ;
     }
 
+    public int minNumTable(){
+        return Utilitaire.min(freeTables());
+    }
+
     public int maxNumTable() {
         return Utilitaire.max(freeTables());
     }

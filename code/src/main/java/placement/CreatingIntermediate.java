@@ -121,14 +121,12 @@ public class CreatingIntermediate
         } else
         {
             if (d.isDeleted(num))
-                return 2;
+                return 3;
 
-            else if (d.removeTable(num))
-            {
-                return 0;
-            } else
-            {
-                return 1;
+            else if (d.isImposed(num)){
+                return 4;
+            }else {
+                return d.removeTable(num) ;
             }
         }
     }

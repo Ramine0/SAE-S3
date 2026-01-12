@@ -71,7 +71,9 @@ function getInfosTable(event) {
                     document.querySelector("#nomEtuVisu").value = values[2];
 
                     if (active != null ) {document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";}
-                    document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B" ;
+                    if(!swap) {
+                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
+                    }
                     active = values[0] ;
 
                 }

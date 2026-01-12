@@ -32,8 +32,9 @@ public class CreationServlet extends HttpServlet
             if (tableNumber.isEmpty() || !TableServlet.crea.findTable(Integer.parseInt('+' + tableNumber)))
             {
                 result += "null;";
-            } else
+            } else if (! tableNumber.isEmpty()) {
                 result += TableServlet.crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
+            }
 
             out.print(result);
         } else if (request.getParameter("constraint").equals("removeImposedPlace"))

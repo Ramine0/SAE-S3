@@ -239,8 +239,8 @@ function enleverEtuGrp(event) {
 
     if (numEtu <= groupes[numGrp.length]) {
         groupes[numGrp - 1].splice(numEtu - 1, 1);
-        genererWalid();
     }
+        genererWalid();
 
 }
 
@@ -343,16 +343,16 @@ function createGrp() {
     groupes.push([0]);
 
     let etuGrp = `
-    <h4 id="h4${groupes.length}">Mis a distance ${groupes.length} </h4>
+    <h4 id="h4${groupes.length}">Mis à distance ${groupes.length} </h4>
     <div class="ligne" id="Gp${groupes.length}">       
         <section id="E1G${groupes.length}" class = "invalid">
             <span>
                 <div>
-                    <label for="idEtu1G${groupes.length}"> Num Etudiant </label>
+                    <label for="idEtu1G${groupes.length}">Numéro étudiant</label>
                     <input name="idEtu1G${groupes.length}" id="idEtu1G${groupes.length}" type="text">
                 </div>
                 <div>
-                    <label for="nomEtu1G${groupes.length}"> Nom de l'étudiant </label>
+                    <label for="nomEtu1G${groupes.length}">Nom de l'étudiant</label>
                     <input name="nomEtu1G${groupes.length}" id="nomEtu1G${groupes.length}" type="text" >
                 </div>
             </span>
@@ -360,7 +360,7 @@ function createGrp() {
             <button class="chercher" id="walEtu1G${groupes.length}" >find</button>
         </section>
         <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" disabled >+</button>
-        <h4>ajouter un etudiant au groupe</h4>
+        <h4>Ajouter un étudiant au groupe</h4>
     </div>`
     document.querySelector('#ajoutGroup').disabled = true;
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);

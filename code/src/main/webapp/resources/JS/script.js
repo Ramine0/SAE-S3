@@ -9,7 +9,7 @@ let tables = 1;
 
 let fileOk = false;
 
-const reset=new XMLHttpRequest();
+const reset = new XMLHttpRequest();
 reset.open("GET", `getStudentName?constraint=${encodeURIComponent("reset")}`);
 reset.send();
 
@@ -106,10 +106,7 @@ function supprimerPlaceImposee(event) {
 
     decreaseId("#i");
 
-    if (document.querySelector(".invalid") === null) {
-        document.querySelector("#walid").disabled = false;
-        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-    }
+    genererWalid();
 
 }
 
@@ -163,10 +160,7 @@ function removeDeletedTable(event) {
     document.querySelector("#supTable" + contraintId).remove();
     decreaseId("#DT");
 
-    if (document.querySelector(".invalid") === null) {
-        document.querySelector("#walid").disabled = false;
-        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-    }
+    genererWalid();
 
 }
 
@@ -220,10 +214,8 @@ function enleverEtuGrp(event) {
     if (numEtu === groupes[numGrp - 1].length) {
         document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         document.querySelector("#ajoutGroup").disabled = false;
-        if (document.querySelector(".invalid") === null) {
-            document.querySelector("#walid").disabled = false;
-            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-        }
+        genererWalid();
+
         if (numEtu === 1 && numGrp !== 1) {
             document.querySelector(`#Gp${numGrp}`).remove();
             document.querySelector(`#h4${numGrp}`).remove();
@@ -247,10 +239,7 @@ function enleverEtuGrp(event) {
 
     if (numEtu <= groupes[numGrp.length]) {
         groupes[numGrp - 1].splice(numEtu - 1, 1);
-        if (document.querySelector(".invalid") === null) {
-            document.querySelector("#walid").disabled = false;
-            document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-        }
+        genererWalid();
     }
 
 }
@@ -286,8 +275,8 @@ function setTableNumber() {
                 long = lon;
                 larg = lar;
 
-                document.getElementById("imposedTableId1").max=lon*lar;
-                document.getElementById("numTabSup1").max=lon*lar;
+                document.getElementById("imposedTableId1").max = lon * lar;
+                document.getElementById("numTabSup1").max = lon * lar;
             } else {
                 console.log("error number tables")
             }
@@ -334,7 +323,7 @@ function createSuppr() {
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
 <span>
     <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
-    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" min="1" max="${larg*long}" type="number">
+    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" min="1" max="${larg * long}" type="number">
 </span>
 <button class="remove" id="deleteTable${nbPlacesSuppr}">remove</button>
 <button class="chercher" id="findTable${nbPlacesSuppr}">find</button>
@@ -449,7 +438,7 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-        codeForGeneration() ;
+        codeForGeneration();
     }
 }
 
@@ -491,11 +480,7 @@ function setValid(section) {
         document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
     }
 
-    if (document.querySelector(".invalid") === null) {
-        document.querySelector("#walid").disabled = false;
-        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
-
-    }
+    genererWalid();
 
 }
 
@@ -562,14 +547,14 @@ function decreaseId(idElem) {
 
 }
 
-function enableText () {
-    let code = document.querySelector("#testVal").disabled = false ;
+function enableText() {
+    let code = document.querySelector("#testVal").disabled = false;
 }
 
-function codeForGeneration (){
+function codeForGeneration() {
 
     let code = document.querySelector("#testVal");
-    console.log(code.id) ;
+    console.log(code.id);
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `table?action=${encodeURIComponent("generate")}`, true);
 
@@ -577,9 +562,9 @@ function codeForGeneration (){
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-                code.disabled = true ;
-            }else {
-                console.log("ca ... marche pas ....") ;
+                code.disabled = true;
+            } else {
+                console.log("ca ... marche pas ....");
             }
         }
     }
@@ -587,4 +572,9 @@ function codeForGeneration (){
 
 }
 
-
+function genererWalid() {
+    if (document.getElementsByClassName(".invalid").length === 0) {
+        document.querySelector("#walid").disabled = false;
+        document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
+    }
+}

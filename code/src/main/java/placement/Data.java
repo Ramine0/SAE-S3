@@ -483,10 +483,10 @@ public class Data
                     }
 
                 } else
-                    return 2;
+                    return 1;
             }
 
-            return 1;
+            return 0;
         } else if (constr == 'N')
         {
             if (idC!=0){

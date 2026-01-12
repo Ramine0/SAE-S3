@@ -315,6 +315,9 @@ public class Data
 
     public void changeMode(char mode)
     {
+        if (idC==0){
+            idC=1;
+        }
         if (mode == 'G')
         {
             constraints[0] = new PerClass(false);

@@ -52,6 +52,8 @@ function validerPlaceImposee(event) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
+                console.log(response[2]);
+
                 if (response[1] === "null")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                 else if (response[2] === "null")

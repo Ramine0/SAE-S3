@@ -1,7 +1,6 @@
 package placement;
 
 import constraints.Constraint;
-import constraints.PerClass;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -63,15 +62,16 @@ public class CreatingIntermediate
     {
         id = findEtu(id);
         num = findTable(num) ? num : -1;
+
         if (id.equals("le num donné n'existe pas"))
         {
             return -1;
         } else if (id.length() > 8)
         {
-            return -3;
+            return -1;
         } else if (num == -1)
         {
-            return -2;
+            return -1;
         } else
         {
             return d.addImp(id, num);
@@ -179,9 +179,9 @@ public class CreatingIntermediate
         if (i == 0)
             d.changeMode('N');
         else if (i == 1)
-            d.getConstr()[0] = new PerClass(false);
+            d.changeMode('G');
         else if (i == 2)
-            d.getConstr()[0] = new PerClass(true);
+            d.changeMode('S');
     }
 
 

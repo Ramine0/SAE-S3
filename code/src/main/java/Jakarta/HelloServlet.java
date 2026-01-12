@@ -19,8 +19,10 @@ public class HelloServlet
         PositioningIntermediate pos;
         pos = salle.getPositioningIntermediate();
 
-        System.out.println(crea.supprTable(1));
-        System.out.println(crea.supprTable(1));
+        crea.setMode(2);
+
+        System.out.println(crea.findNumsForImp("p24033", 1));
+        System.out.println(crea.findNumsForImp("p24033", 2));
 
     }
 

@@ -9,10 +9,6 @@ let tables = 1;
 
 let fileOk = false;
 
-const reset = new XMLHttpRequest();
-reset.open("GET", `getStudentName?constraint=${encodeURIComponent("reset")}`);
-reset.send();
-
 // dans les fonctions javascript a faire il y a :
 /*
     generer() ; genere le placement !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
@@ -59,6 +55,8 @@ function validerPlaceImposee(event) {
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
                 else if (response[2] === "2")
                     document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                else if (response[2] === "3")
+                    document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
                 else {
                     validerSectImpose(idFind);
 
@@ -129,18 +127,15 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let rep = xhr.responseText ;
-                if (rep === "-1"){
-                    document.getElementById("numTabSup"+constraintId).value="Aucune table restante";
-                }else if (rep === "-2"){
-                    document.getElementById("numTabSup"+constraintId).value="Table introuvable";
-                }else if (rep === "-3"){
-                    document.getElementById("numTabSup"+constraintId).value="Table déjà supprimée";
-                }else if (rep === "-4"){
-                    document.getElementById("numTabSup"+constraintId).value="Table imposée";
+                let rep = xhr.responseText.split(";") ;
+                console.log(rep[0], rep[1]);
+                if (rep[0] === "-1" || rep[0] === "-2" || rep[0] === "-3" || rep[0] === "-4"){
+                    document.getElementById("numTabSup"+constraintId).value="";
+                }else if (rep[0] === "-5" || rep[0] === "-6") {
+                    document.getElementById("numTabSup" + constraintId).value = rep[1];
                 }else{
+
                     setValid(`supTable${constraintId}`);
-                    document.getElementById("numTabSup"+constraintId).value=rep;
                 }
             } else
                 console.error("Error deleting table");
@@ -179,6 +174,7 @@ function validerEtuGrp(event) {
     let idFind = event.target.id;
     let numGrp = idFind.substring(8);
     let numEtu = idFind.charAt(6);
+    console.log(numGrp+numEtu);
 
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     let valid = true;
@@ -189,6 +185,7 @@ function validerEtuGrp(event) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
+                console.log(response[1]);
 
                 if (response[1] === "1")
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
@@ -201,7 +198,7 @@ function validerEtuGrp(event) {
                     document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
                 }
             } else {
-                console.error('Error fetching group data');
+                console.log(xhr.status);
                 valid = false;
             }
         }
@@ -215,7 +212,7 @@ function enleverEtuGrp(event) {
     let idBout = event.target.id;
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
-
+    console.log(numGrp+numEtu);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu+"G"+numGrp)}`);
@@ -301,11 +298,11 @@ function createImposed() {
     let imposedPlace =
         `<section id="impose${nbImposedPlace}" class="invalid">
 <span>
-    <label for="imposedStudentId${nbImposedPlace}"> id Etudiant </label>
+    <label for="imposedStudentId${nbImposedPlace}"> Numéro étudiant </label>
     <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
 </span>
 <span>
-    <label for="imposedTableId${nbImposedPlace}"> Num Table </label>
+    <label for="imposedTableId${nbImposedPlace}"> Numéro table </label>
     <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
 </span>
 <span>
@@ -333,7 +330,7 @@ function createSuppr() {
     let placesSuppr =
         `<section id="supTable${nbPlacesSuppr}" class = "invalid">
 <span>
-    <label for="numTabSup${nbPlacesSuppr}"> Num Table </label>
+    <label for="numTabSup${nbPlacesSuppr}"> Numéro table </label>
     <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" min="1" max="${larg * long}" type="number">
 </span>
 <button class="remove" id="deleteTable${nbPlacesSuppr}">remove</button>
@@ -397,7 +394,7 @@ function createEtuGrp(event) {
         let groupEtu = `<section id="E${numEtu}G${numGrp}" class = "invalid" >
         <span>
             <div>
-                <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Num Etudiant </label>
+                <label for="idEtu${numEtu}G${numGrp}" id="labelidEtu${numEtu}G${numGrp}"> Numéro étudiant </label>
                 <input name="idEtu${numEtu}G${numGrp}" id="idEtu${numEtu}G${numGrp}" type="text" >
             </div>
             <div>

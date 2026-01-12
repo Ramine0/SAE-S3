@@ -27,6 +27,9 @@ public class TableServlet extends HttpServlet
         {
             salle = new Room(request.getServletContext().getRealPath("/") + "/");
             crea = salle.getCrea();
+
+            crea.resetData();
+            crea.setMode(0);
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();

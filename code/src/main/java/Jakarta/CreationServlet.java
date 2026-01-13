@@ -47,14 +47,12 @@ public class CreationServlet extends HttpServlet
             int num = Integer.parseInt(request.getParameter("tableNumber"));
             if (num < TableServlet.crea.minTable())
             {
-                out.print("-5");
+                num=TableServlet.crea.minTable();
             } else if (num > TableServlet.crea.maxTable())
             {
-                out.print("-6");
-            } else
-            {
-                out.print(TableServlet.crea.supprTable(num));
+                num=TableServlet.crea.maxTable();
             }
+            out.print(TableServlet.crea.supprTable(num)+";"+num);
         } else if (request.getParameter("constraint").equals("removeDeletedTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));

@@ -58,7 +58,7 @@ public class Utilitaire
 
     public static int min(int[] nb)
     {
-        int result = max(nb);
+        int result = nb[0];
         for (int i : nb)
         {
             if (result > i)

@@ -143,20 +143,10 @@ function validateDeletedTable(event) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                let rep = xhr.responseText;
-                if (rep === "-1") {
-                    document.getElementById("numTabSup" + constraintId).value = "Aucune table restante";
-                } else if (rep === "-2") {
-                    document.getElementById("numTabSup" + constraintId).value = "Table introuvable";
-                } else if (rep === "-3") {
-                    document.getElementById("numTabSup" + constraintId).value = "Table déjà supprimée";
-                } else if (rep === "-4") {
-                    document.getElementById("numTabSup" + constraintId).value = "Table imposée";
-                } else if (rep === "-5") {
-                    document.getElementById("numTabSup" + constraintId).value = "Table non existante";
-                } else {
+                let rep = xhr.responseText.split(";");
+                if (rep[0]===rep[1]){
                     setValid(`supTable${constraintId}`);
-                    document.getElementById("numTabSup" + constraintId).value = rep;
+                    document.getElementById("numTabSup" + constraintId).value = rep[1];
                 }
             } else
                 console.error("Error deleting table");

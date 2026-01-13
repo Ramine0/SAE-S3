@@ -1,6 +1,5 @@
 package Jakarta;
 
-import constraints.PerGroup;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -46,16 +45,15 @@ public class CreationServlet extends HttpServlet
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));
-            if (num<TableServlet.crea.minTable()) {
-                out.print("-5;"+TableServlet.crea.minTable());
-                num=TableServlet.crea.minTable();
-                TableServlet.crea.supprTable(num);
-            }else if (num>TableServlet.crea.maxTable()){
-                out.print("-6;"+TableServlet.crea.maxTable());
-                num=TableServlet.crea.maxTable();
-                TableServlet.crea.supprTable(num);
-            }else{
-                out.print(TableServlet.crea.supprTable(num)+";");
+            if (num < TableServlet.crea.minTable())
+            {
+                out.print("-5");
+            } else if (num > TableServlet.crea.maxTable())
+            {
+                out.print("-6");
+            } else
+            {
+                out.print(TableServlet.crea.supprTable(num));
             }
         } else if (request.getParameter("constraint").equals("removeDeletedTable"))
         {

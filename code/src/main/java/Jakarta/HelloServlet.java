@@ -20,6 +20,11 @@ public class HelloServlet
         pos = salle.getPositioningIntermediate();
 
         crea.setMode(0);
+
+        crea.findNumsForImp("p24033", 1);
+        crea.findNumsForImp("p24039", 2);
+        crea.findNumsForImp("p2406", 3);
+        crea.findNumsForImp("p12", 4);
     }
 
 

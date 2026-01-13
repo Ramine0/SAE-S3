@@ -66,7 +66,8 @@ public class Data
                 if (constraints[i] != null && constraints[i] instanceof PerGroup)
                     ((PerGroup) constraints[i]).removeStudent(i);
 
-        constraints = new Constraint[students.size()];
+        constraints = new Constraint[students.size()+1];
+
         idC = 0;
     }
 
@@ -243,6 +244,8 @@ public class Data
     // le chargement du fichier exel donné par le/la prof
     private void chargerFichier(String path) throws FileNotFoundException
     {
+        students.clear();
+
         Scanner sc = new Scanner(new FileReader(path + "resources/etudiants.csv"));
         String[] line;
 

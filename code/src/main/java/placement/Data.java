@@ -199,7 +199,7 @@ public class Data
 
     public void unremoveTable(int num)
     {
-        for (int n : deletedTables)
+        for (int n=0; n<deletedTables.length; n++)
         {
             if (deletedTables[n] == num)
             {

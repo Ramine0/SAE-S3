@@ -1,4 +1,5 @@
-let tables=[];
+let tables=[]
+let noms = []
 let active ;
 let swap = false ;
 //import {long, larg} from "./script.js";
@@ -14,6 +15,7 @@ function createTable(){
         name = vals[1] ;
         t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
         tables[i] = table ;
+        noms[i] = name ;
     }
     if (t !== "") {
         document.querySelector("#here").insertAdjacentHTML("afterend", t);
@@ -122,6 +124,7 @@ function modeSwap() {
 
 function activateSwap(button) {
 
+    let numt2 = active ;
     if (button === "none" && active != null) {
         swap = !swap;
         document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
@@ -132,6 +135,22 @@ function activateSwap(button) {
         swapReq.onreadystatechange=function (){
             if (swapReq.readyState===XMLHttpRequest.DONE){
                 if (swapReq.status===200){
+                    console.log(numt2)
+                    console.log(button)
+                    let numt1 = button.substring(1) ;
+                    let nomt1 = noms[tables.indexOf(numt1)] ;
+                    let nomt2 = noms[tables.indexOf(numt2)] ;
+
+                    let content = ` Table ${numt1} <br>${nomt2}`
+                    console.log(document.querySelector(`#T${numt1}`).innerHTML)
+                    document.querySelector(`#T${numt1}`).innerHTML = content ;
+
+                    console.log(document.querySelector(`#T${numt2}`).innerHTML)
+                    content = ` Table ${numt2} <br>${nomt1}`
+                    document.querySelector(`#T${numt2}`).innerHTML = content ;
+
+                    noms[tables.indexOf(numt1)] = nomt2 ;
+                    noms[tables.indexOf(numt2)] = nomt1 ;
                     swap = false ;
                 }
             }

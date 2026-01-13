@@ -538,7 +538,7 @@ function decreaseId(idElem) {
             children[i].children[0].children[1].children[0].for = "nomEtu" + numEtu + "G" + numGrp;
             children[i].children[0].children[1].children[1].id = "nomEtu" + numEtu + "G" + numGrp;
             children[i].children[0].children[1].children[1].name = "nomEtu" + numEtu + "G" + numGrp;
-
+            console.log(children[i].children[0].children[2]);
             children[i].children[0].children[2].id = "supEtu" + numEtu + "G" + numGrp;
             children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
         }

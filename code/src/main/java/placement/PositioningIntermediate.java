@@ -153,7 +153,15 @@ public class PositioningIntermediate
     public String getTablesForVisu() {
         String result ="" ;
         for (int t : donnees.existingTables()) {
-            result = result.concat(t+";") ;
+            result += t+"!" ;
+            if (t != 0) {
+                if (donnees.haveStudent(t)) {
+                    result += donnees.getFullName(donnees.getStuFromTab(t).getId())+";";
+                }else {
+                    result += "aucun etu;" ;
+                }
+
+            }
         }
 
         return result ;

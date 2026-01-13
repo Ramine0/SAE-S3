@@ -12,7 +12,7 @@ function createTable(){
         vals = tables[i].split("!") ;
         table = vals[0] ;
         name = vals[1] ;
-        t += `<button type="button" id="T${table}" class="table" > Table ${table} <br> <p>${name}</p></button>`;
+        t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
         tables[i] = table ;
     }
     if (t !== "") {
@@ -55,7 +55,6 @@ function getInfosTable(event) {
     if(swap) {
         activateSwap(event.target.id) ;
     }
-
     let numTab = event.target.id.substring(1) ;
     let reqInfo = new XMLHttpRequest() ;
     reqInfo.open("GET", `Display?action=${encodeURIComponent("infos")}&number=${encodeURIComponent(numTab)}`, true);

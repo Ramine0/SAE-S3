@@ -21,10 +21,19 @@ public class HelloServlet
 
         crea.setMode(0);
 
-        crea.findNumsForImp("p24033", 1);
-        crea.findNumsForImp("p24039", 2);
-        crea.findNumsForImp("p2406", 3);
-        crea.findNumsForImp("p12", 4);
+        crea.findNumsForImp("p2406", 1);
+        crea.findNumsForImp("p12", 2);
+        crea.findNumsForImp("p24039", 3);
+
+        crea.findStudentForGroup("p24033", 1);
+
+        crea.generatePos().creerPlacement();
+
+        for (int i = 0; i < crea.getNumberTables(); i++)
+        {
+            if (crea.getTable(i) != null && crea.getTable(i).getEtu() != null)
+                System.out.println(i + " " + crea.getTable(i).getEtu().getFirstName());
+        }
     }
 
 

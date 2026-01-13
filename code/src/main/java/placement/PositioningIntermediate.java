@@ -4,6 +4,8 @@ import constraints.Constraint;
 import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
+import java.util.Random;
+
 public class PositioningIntermediate
 {
 
@@ -11,6 +13,7 @@ public class PositioningIntermediate
     // on passe par donnees pour acceder au données (etus et tables)
     // on manipule pas directement les tables on a juste leur numeros question d'optimisation et de securité
     private Data donnees;
+    private Random random = new Random();
     // on fait ce qu'on veux des contraintes c plus simple et + pratique
 
     // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
@@ -29,7 +32,10 @@ public class PositioningIntermediate
         try
         {
             donnees = new Data(path, "R");
-        } catch (Exception e) {System.out.println(e.getMessage());}
+        } catch (Exception e)
+        {
+            System.out.println(e.getMessage());
+        }
 
     }
 
@@ -37,10 +43,12 @@ public class PositioningIntermediate
     {
         donnees.placerImposes();
 
-        int tableNumber = 1;
+        int tableNumber = 0;
 
-        for (String studentId : donnees.freeStudents())
+        while (donnees.freeStudents().length != 0)
         {
+            String studentId = donnees.freeStudents()[random.nextInt(donnees.freeStudents().length)];
+
             while (!Utilitaire.in(tableNumber, donnees.freeTables()))
             {
                 tableNumber++;
@@ -49,10 +57,17 @@ public class PositioningIntermediate
                     break;
             }
 
-            if (walid(donnees.getStudentFromId(studentId), tableNumber))
+            if (donnees.freeStudents().length == 1)
             {
-                donnees.placeStudent(tableNumber, studentId);
+                donnees.placeStudent(tableNumber, donnees.freeStudents()[0]);
+                break;
             }
+
+            while (!walid(donnees.getStudentFromId(studentId), tableNumber))
+            {
+                studentId = donnees.freeStudents()[random.nextInt(donnees.freeStudents().length)];
+            }
+            donnees.placeStudent(tableNumber, studentId);
 
             tableNumber++;
 
@@ -66,13 +81,6 @@ public class PositioningIntermediate
         // mais ça c'est une bonne chose
         // surtout pour faire chier Vector
         // il a rien fait le pauvre
-
-
-
-
-
-
-
 
 
         // le reste du la fonction (placer les etu aleatoirement en tenant compte du validateç
@@ -90,7 +98,8 @@ public class PositioningIntermediate
          * */
         //on commence à la table 1
 
-        if (donnees.freeTables() != null ) {
+        if (donnees.freeTables() != null)
+        {
             return donnees.freeStudents().length == 0;
         }
         return false;
@@ -108,18 +117,23 @@ public class PositioningIntermediate
 
             // on prends les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
+
             for (Constraint c : donnees.getConstr())
             {
                 // si ca bloque
-                if (!c.validate(s, t, voisins))
+                if (c != null)
                 {
-                    return false; // ca bloque
+                    if (!c.validate(s, t, voisins))
+                    {
+                        return false; // ca bloque
+                    }
                 }
             }
-
         }
         // sinon tout est ok à moins que la place soit déjà prise
+
         return true;
+
     }
 
     public String[] getAllInfo()
@@ -142,47 +156,60 @@ public class PositioningIntermediate
         return donnees.getTableInfos(numTable);
     }
 
-    public String getTablesInfoForVisu() {
-        String result ="" ;
-        for (String s : getAllInfo()){
-            result = result.concat( s +":");
+    public String getTablesInfoForVisu()
+    {
+        String result = "";
+        for (String s : getAllInfo())
+        {
+            result = result.concat(s + ":");
         }
-        return result ;
+        return result;
     }
 
-    public String getTablesForVisu() {
-        String result ="" ;
-        for (int t : donnees.existingTables()) {
-            result += t+"!" ;
-            if (t != 0) {
-                if (donnees.haveStudent(t)) {
-                    result += donnees.getFullName(donnees.getStuFromTab(t).getId())+";";
-                }else {
-                    result += "aucun etu;" ;
+    public String getTablesForVisu()
+    {
+        String result = "";
+        for (int t : donnees.existingTables())
+        {
+            result += t + "!";
+            if (t != 0)
+            {
+                if (donnees.haveStudent(t))
+                {
+                    result += donnees.getFullName(donnees.getStuFromTab(t).getId()) + ";";
+                } else
+                {
+                    result += "aucun etu;";
                 }
 
             }
         }
 
-        return result ;
+        return result;
     }
 
-    public boolean swapPlaces(int numT1, int numT2) {
-        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2,donnees.existingTables())) {
-            return donnees.swap(numT1,numT2);}
-        return false ;
-    }
-
-    public String descripData() {
-        String result ="";
-        for (String s: donnees.descrip() ){
-            result += s +";";
+    public boolean swapPlaces(int numT1, int numT2)
+    {
+        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2, donnees.existingTables()))
+        {
+            return donnees.swap(numT1, numT2);
         }
-        return result ;
+        return false;
     }
 
-    public String tabInfoForVisu(int nb) {
-        return donnees.getInfosForVisu(nb) ;
+    public String descripData()
+    {
+        String result = "";
+        for (String s : donnees.descrip())
+        {
+            result += s + ";";
+        }
+        return result;
+    }
+
+    public String tabInfoForVisu(int nb)
+    {
+        return donnees.getInfosForVisu(nb);
     }
 
 

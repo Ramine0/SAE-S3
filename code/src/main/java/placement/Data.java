@@ -122,9 +122,19 @@ public class Data
     }
 
     // renvoie les numeros de tables disponibles
+    public int nbDeletedTables(){
+        int num=0;
+        for (int i=0;i<deletedTables.length;i++){
+            if (deletedTables[i]!=0){
+                num++;
+            }
+        }
+        return num;
+    }
+
     public int[] existingTables()
     {
-        int[] result = new int[tables.length];
+        int[] result = new int[tables.length-nbDeletedTables()];
         int numRes = 0; // la position dans les resultats
         for (int i = 0; i < tables.length; i++)
         {
@@ -142,14 +152,22 @@ public class Data
 
     public int[] freeTables()
     {
-        int[] free = new int[tables.length];
+        int[] free;
+        int length = 0;
         int numRes = 0;
 
         for (int i = 0; i < tables.length; i++)
         {
             if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null)
             {
-                free[numRes] = tables[i].getNum();
+                length++;
+            }
+        }
+        free = new int[length];
+        for (int i = 0; i < tables.length; i++){
+            if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null)
+            {
+                free[numRes]=tables[i].getNum();
                 numRes++;
             }
         }
@@ -158,7 +176,7 @@ public class Data
 
     public int removeTable(int num)
     {
-        for (int i : deletedTables)
+        for (int i=0;i<deletedTables.length;i++)
         {
             if (deletedTables[i] == 0)
             {
@@ -171,7 +189,7 @@ public class Data
 
     public void unremoveTable(int num)
     {
-        for (int n : deletedTables)
+        for (int n=0; n<deletedTables.length; n++)
         {
             if (deletedTables[n] == num)
             {

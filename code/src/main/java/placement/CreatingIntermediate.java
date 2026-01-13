@@ -139,6 +139,15 @@ public class CreatingIntermediate
         }
     }
 
+    public int[] free(){
+        return d.freeTables();
+    }
+    public int[] del(){
+        return d.getDeletedTables();
+    }
+    public int[] existing(){
+        return d.existingTables();
+    }
     public void unremoveTable(int num)
     {
         d.unremoveTable(num);

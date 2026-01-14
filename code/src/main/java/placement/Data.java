@@ -687,10 +687,14 @@ public class Data
             if (i != -1)
             {
                 if (getTable(i) != null)
+                {
                     voisins.add(getStuFromTab(i));
+                }
             }
 
         }
+
+        System.out.println();
 
         return voisins.toArray(new Student[0]);
     }

@@ -43,6 +43,7 @@ public class PositioningIntermediate
     {
         donnees.placerImposes();
 
+        int loopCount;
         int tableNumber = 0;
 
         while (donnees.freeStudents().length != 0)
@@ -63,9 +64,14 @@ public class PositioningIntermediate
                 break;
             }
 
+            loopCount = 0;
             while (!walid(donnees.getStudentFromId(studentId), tableNumber))
             {
                 studentId = donnees.freeStudents()[random.nextInt(donnees.freeStudents().length)];
+
+                loopCount++;
+                if (loopCount > donnees.freeStudents().length / 2)
+                    tableNumber++;
             }
             donnees.placeStudent(tableNumber, studentId);
 
@@ -114,7 +120,6 @@ public class PositioningIntermediate
         // si on sait que l'etu as des contraintes
         if (Constraint.contraint(s.getId()))
         {
-
             // on prends les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
 

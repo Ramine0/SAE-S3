@@ -23,7 +23,6 @@ public class PerClass extends Constraint
         {
             if (s != null && student.sameGroup(s, subGroup))
             {
-                System.out.println("Per class false : "+student.getName()+" et "+ s.getName());
                 return false;
             }
         }

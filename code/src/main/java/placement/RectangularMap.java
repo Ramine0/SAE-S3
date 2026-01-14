@@ -44,6 +44,9 @@ public class RectangularMap extends Map
                 validNeighbors.add(dispo[neighborIndex]); // Store the neighbor value
             }
         }
+        for (Object n :validNeighbors.toArray()) {
+            System.out.println("voisin : "+n);
+        }
 
         // Convert List to an array and return
         return validNeighbors.stream().mapToInt(Integer::intValue).toArray();
@@ -51,7 +54,10 @@ public class RectangularMap extends Map
 
     private int getNeighbour(int index, int xOffset, int yOffset) {
         int newIndex = index + xOffset + yOffset * width; // Calculate new index
-
+        // pas de retour ligne
+        if (index %width == 0 && xOffset == -1) {return -1 ;}
+        //encore
+        if (index %width == width-1 && xOffset == 1) {return -1 ;}
         // Return -1 if out of bounds
         if (newIndex < 0 || newIndex >= width * height) {
             return -1;

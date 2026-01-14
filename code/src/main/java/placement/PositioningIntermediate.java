@@ -119,7 +119,6 @@ public class PositioningIntermediate
 
                     if (!c.validate(s, t, voisins))
                     {
-                        System.out.println(c.getClass());
                         return false; // ca bloque
                     }
                 }

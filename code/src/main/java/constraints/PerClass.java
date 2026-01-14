@@ -16,18 +16,18 @@ public class PerClass extends Constraint
     public boolean validate(Student student, int table, Student[] etu)
     {
 
-        if (Utilitaire.in(student.getClass(), groupsConstraints.toArray()))
+
+        // on cherche a savoir si les tables voisines de l'etu on la meme classe
+        // donc on parcoure les voisins
+        for (Student s : etu)
         {
-            // on cherche a savoir si les tables voisines de l'etu on la meme classe
-            // donc on parcoure les voisins
-            for (Student s : etu)
+            if (s != null && student.sameGroup(s, subGroup))
             {
-                if (student.sameGroup(s, subGroup))
-                {
-                    return false;
-                }
+                System.out.println("Per class false : "+student.getName()+" et "+ s.getName());
+                return false;
             }
         }
+
         return true;
 
     }

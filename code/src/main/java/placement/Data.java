@@ -826,4 +826,8 @@ public class Data
         return Utilitaire.in(numTab, imposedTables());
     }
 
+    public boolean hasMode() {
+        return constraints[0]  != null ;
+    }
+
 }

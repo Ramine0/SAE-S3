@@ -7,12 +7,10 @@ import java.util.ArrayList;
 
 public abstract class Constraint
 {
-    public static ArrayList<String> groupsConstraints = new ArrayList<>();
     public static ArrayList<String> studentsConstraints = new ArrayList<>();
 
     public abstract boolean validate(Student student, int table, Student[] etu);
     public static void reset(){
-        groupsConstraints.clear();
         studentsConstraints.clear();
     }
 

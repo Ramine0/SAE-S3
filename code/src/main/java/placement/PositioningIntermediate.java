@@ -58,12 +58,6 @@ public class PositioningIntermediate
                     break;
             }
 
-            if (donnees.freeStudents().length == 1)
-            {
-                donnees.placeStudent(tableNumber, donnees.freeStudents()[0]);
-                break;
-            }
-
             loopCount = 0;
             while (!walid(donnees.getStudentFromId(studentId), tableNumber))
             {
@@ -72,6 +66,9 @@ public class PositioningIntermediate
                 loopCount++;
                 if (loopCount > donnees.freeStudents().length / 2)
                     tableNumber++;
+                if (tableNumber > donnees.maxTableID()) {
+                    return false ;
+                }
             }
             donnees.placeStudent(tableNumber, studentId);
 
@@ -95,14 +92,6 @@ public class PositioningIntermediate
         Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
          */
 
-        /*
-         * Bon dcp on va faire autrement pour insérer l'aléatoire plus facilement:
-         * Grosso modo on parcours les tables dans l'ordre croissant jusque soit qu'il y en ait plus, soit qu'il y ait
-         * plus d'etu a placer. Pour l'aléatoire, on prend un étu aléatoire parmi les étudiants pas placés. Si la table
-         * est pas dans les places libres, on passe à la suivante, sinon on essaye de placer l'étudiant, en prenant
-         * compte des contraintes, et si on peut le placer on passe à la table suivante.
-         * */
-        //on commence à la table 1
 
         if (donnees.freeTables() != null)
         {
@@ -118,16 +107,16 @@ public class PositioningIntermediate
             return false;
 
         // si on sait que l'etu as des contraintes
-        if (Constraint.contraint(s.getId()))
+        if (Constraint.contraint(s.getId()) || donnees.hasMode())
         {
             // on prends les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
-
             for (Constraint c : donnees.getConstr())
             {
                 // si ca bloque
                 if (c != null)
                 {
+
                     if (!c.validate(s, t, voisins))
                     {
                         return false; // ca bloque

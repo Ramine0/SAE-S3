@@ -21,8 +21,6 @@ public class RectangularMap extends Map
         // Get the position of the table number (1-9) in the 1D array (0-8)
         int pos = Utilitaire.pos(table, dispo);
 
-        System.out.println("Table number: " + table);
-
         // Define neighbor offsets
         int[][] offsets = {
                 {0, -1},    // Above middle
@@ -44,9 +42,7 @@ public class RectangularMap extends Map
                 validNeighbors.add(dispo[neighborIndex]); // Store the neighbor value
             }
         }
-        for (Object n :validNeighbors.toArray()) {
-            System.out.println("voisin : "+n);
-        }
+
 
         // Convert List to an array and return
         return validNeighbors.stream().mapToInt(Integer::intValue).toArray();

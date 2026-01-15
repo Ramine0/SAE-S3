@@ -57,8 +57,6 @@ function validerPlaceImposee(event) {
             if (xhr.readyState === XMLHttpRequest.DONE)
                 if (xhr.status === 200) {
                     const response = xhr.responseText.split(";");
-                    console.log(response[0], response[1], response[2]);
-
                     if (response[1] === "null")
                         document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
                     else if (response[2] === "null")
@@ -111,9 +109,9 @@ function supprimerPlaceImposee(event) {
     let idRemove = event.target.id;
     let numConstr = idRemove.charAt(13);
 
-
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
+    xhr.send();
 
     document.querySelector("#impose" + numConstr).remove();
 
@@ -221,7 +219,6 @@ function enleverEtuGrp(event) {
     let idBout = event.target.id;
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
-    console.log(numGrp + numEtu);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);

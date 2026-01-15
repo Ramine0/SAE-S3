@@ -199,7 +199,7 @@ public class Data
 
     public void unremoveTable(int num)
     {
-        for (int n=0; n<deletedTables.length; n++)
+        for (int n = 0; n < deletedTables.length; n++)
         {
             if (deletedTables[n] == num)
             {
@@ -464,7 +464,7 @@ public class Data
 
     public ImposedPlacement getImposedPlacement(int id)
     {
-        int cnt = 0;
+        int cnt = 1;
         for (Constraint c : constraints)
         {
             if (c instanceof ImposedPlacement)
@@ -826,8 +826,9 @@ public class Data
         return Utilitaire.in(numTab, imposedTables());
     }
 
-    public boolean hasMode() {
-        return constraints[0]  != null ;
+    public boolean hasMode()
+    {
+        return constraints[0] != null;
     }
 
 }

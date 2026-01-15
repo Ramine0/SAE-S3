@@ -39,7 +39,7 @@ public class RectangularMap extends Map
         List<Integer> validNeighbors = new ArrayList<>();
 
         for (int[] offset : offsets) {
-            int neighborIndex = getNeighbour(pos, offset[0], offset[1]);
+            int neighborIndex = getNeighbour(pos, offset[0], offset[1],dispo.length);
             if (neighborIndex != -1) {
                 validNeighbors.add(dispo[neighborIndex]); // Store the neighbor value
             }
@@ -52,14 +52,14 @@ public class RectangularMap extends Map
         return validNeighbors.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    private int getNeighbour(int index, int xOffset, int yOffset) {
+    private int getNeighbour(int index, int xOffset, int yOffset,int maxIndex) {
         int newIndex = index + xOffset + yOffset * width; // Calculate new index
         // pas de retour ligne
         if (index %width == 0 && xOffset == -1) {return -1 ;}
         //encore
         if (index %width == width-1 && xOffset == 1) {return -1 ;}
         // Return -1 if out of bounds
-        if (newIndex < 0 || newIndex >= width * height) {
+        if (newIndex < 0 || newIndex >= maxIndex ) {
             return -1;
         }
 

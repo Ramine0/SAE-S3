@@ -11,6 +11,7 @@ header, aside {
     margin : 0px ;
 }
 
+
 body {margin : 0px ;height: 100%;}
 .table{
     margin: 15px;
@@ -182,6 +183,13 @@ hr {
     padding: 3px;
     font-size: medium;
 
+}
+
+.topAsside {
+    background-color: #cccccc;
+    border: 3px solid #5271ff;
+
+    border-radius: 20px;
 }
 
 .pageCrea {

@@ -23,7 +23,7 @@
         <label> Format d'export</label>
         <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
         <input type="checkbox" name="export" id="Listing" value="Listing"> Listing
-        <button id="exporter" onclick="expOrt()"> Exporter </button>
+        <button id="exporter"> Exporter </button>
     </div>
 </header>
 <div class="reverseLigne" id="content">

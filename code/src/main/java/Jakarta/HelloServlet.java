@@ -24,17 +24,10 @@ public class HelloServlet
         crea.findStudentForGroup("p2406", 1);
         crea.findStudentForGroup("p24033", 1);
         crea.findStudentForGroup("p24039", 1);
+        salle.positioningMode() ;
+        System.out.println(salle.generate());
+        System.out.println(salle.getPositioningIntermediate().getTablesForVisu());
 
-        crea.generatePos().creerPlacement();
-
-        for (int i = 0; i < crea.getNumberTables(); i++)
-        {
-            if (crea.getTable(i) != null)
-                if (crea.getTable(i).getEtu() != null)
-                    System.out.println(crea.getTable(i).getNum() + " " + crea.getTable(i).getEtu().getFirstName());
-                else
-                    System.out.println(crea.getTable(i).getNum() + " null");
-        }
     }
 
 

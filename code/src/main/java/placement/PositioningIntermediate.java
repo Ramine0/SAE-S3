@@ -35,28 +35,29 @@ public class PositioningIntermediate
 
     public boolean creerPlacement()
     {
-        donnees.placerImposes();
+        donnees.placerImposes(); // je place les etus imposés
 
-        int tableNumber = 1;
+        int tableNumber = 1; // je commence à la première table
 
-        for (String studentId : donnees.freeStudents())
+        for (String studentId : donnees.freeStudents()) // je parcours touts les étudiants
         {
-            while (!Utilitaire.in(tableNumber, donnees.freeTables()))
+            while (!Utilitaire.in(tableNumber, donnees.freeTables())) // tant que la table n'est pas dans les tables disponibles
             {
-                tableNumber++;
+                tableNumber++; // je l'incrémente
 
-                if (tableNumber > donnees.maxTableID())
+                if (tableNumber > donnees.maxTableID()) //jusqu'à ce qu'elle soit trop grande
                     break;
             }
 
-            if (walid(donnees.getStudentFromId(studentId), tableNumber))
+            if (walid(donnees.getStudentFromId(studentId), tableNumber)) // si l'étudiant peut être placé
             {
-                donnees.placeStudent(tableNumber, studentId);
+                donnees.placeStudent(tableNumber, studentId); // on le place
             }
 
-            tableNumber++;
+            tableNumber++; // et on incrémente... mais quand est-ce on fait comment si l'étudiant pouvait pas être placé?
 
         }
+
 
         // j'ai trop la flemme de lire tout ce que Malik a écrit parce que c'est d'la merde et je sais même pas si c'est vraiment utile
         // comme si Malik était utile
@@ -96,6 +97,10 @@ public class PositioningIntermediate
         return false;
     }
 
+    public Map getMap(){
+        return donnees.getMap();
+    }
+
     // valide ou non le placement
     private boolean walid(Student s, int t)
     {
@@ -108,6 +113,9 @@ public class PositioningIntermediate
 
             // on prends les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
+            if (!donnees.getConstr()[0].validate(s, t, voisins)){
+                return false;
+            }
             for (Constraint c : donnees.getConstr())
             {
                 // si ca bloque

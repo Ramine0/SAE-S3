@@ -2,29 +2,34 @@ let tables=[]
 let noms = []
 let active ;
 let swap = false ;
-//import {long, larg} from "./script.js";
-
+let lon;
+let lar;
 function createTable(){
-    let t = "" ;
+    let t = "<span>" ;
     let table ;
     let vals ;
     let name ;
+    let l=0;
     for (let i = 0; i < tables.length; i++ ){
+        l++;
         vals = tables[i].split("!") ;
         table = vals[0] ;
         name = vals[1] ;
         t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
         tables[i] = table ;
         noms[i] = name ;
+        if (lar===l){
+            l=0;
+            t+="</span> <span>";
+        }
     }
     if (t !== "") {
-        document.querySelector("#here").insertAdjacentHTML("afterend", t);
-        if (document.querySelector("#tableExp")!= null ) {
-            document.querySelector("#tableExp").remove();
-        }
-
+        document.querySelector("#tableExp").insertAdjacentHTML("beforebegin", t);
         for (let i = 0; i < tables.length; i++) {
             document.querySelector(`#T${tables[i]}`).addEventListener("click", getInfosTable);
+        }
+        if (document.querySelector("#tableExp")!= null ) {
+            document.querySelector("#tableExp").remove();
         }
     }
 
@@ -32,6 +37,18 @@ function createTable(){
 
 
 function init(){
+    const dim=new XMLHttpRequest();
+    dim.open("GET", `table?action=${encodeURIComponent("getDim")}`);
+    dim.onreadystatechange=function(){
+        if (dim.readyState===XMLHttpRequest.DONE){
+            if (initReq.status===200){
+                let rep=dim.responseText.split(";");
+                lon=rep[0];
+                lar=rep[1];
+                console.log(rep[0]+" "+rep[1]);
+            }
+        }
+    }
 
     const initReq=new XMLHttpRequest();
     initReq.open("GET", `Display?action=${encodeURIComponent("init")}`, true);

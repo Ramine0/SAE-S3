@@ -41,7 +41,7 @@ public class CreationServlet extends HttpServlet
             out.print(result);
         } else if (request.getParameter("constraint").equals("removeImposedPlace"))
         {
-            TableServlet.crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")));
+            TableServlet.crea.removeContrainst("I", Integer.parseInt(request.getParameter("id"))-1);
         } else if (request.getParameter("constraint").equals("deleteTable"))
         {
             int num = Integer.parseInt(request.getParameter("tableNumber"));

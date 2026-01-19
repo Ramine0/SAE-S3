@@ -1,7 +1,6 @@
 package Jakarta;
 
 
-import constraints.ImposedPlacement;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
@@ -15,14 +14,20 @@ public class HelloServlet
     {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
-        crea.createTables(10, 4);
-        crea.setDimensions(10, 4);
+        crea.createTables(3, 3);
+        crea.setDimensions(3, 3);
         PositioningIntermediate pos;
-        pos = crea.generatePos();;
+        pos = salle.getPositioningIntermediate();
 
-        crea.setMode(1);
-        pos.creerPlacement();
-        System.out.println(pos.getTablesForVisu());
+        crea.setMode(0);
+
+        crea.findStudentForGroup("p2406", 1);
+        crea.findStudentForGroup("p24033", 1);
+        crea.findStudentForGroup("p24039", 1);
+        salle.positioningMode() ;
+        System.out.println(salle.generate());
+        System.out.println(salle.getPositioningIntermediate().getTablesForVisu());
+
     }
 
 

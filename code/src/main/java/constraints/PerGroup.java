@@ -38,12 +38,13 @@ public class PerGroup extends Constraint
     @Override
     public boolean validate(Student student, int table, Student[] etu)
     {
-        if (Utilitaire.in(student, studentsConstraints.toArray()))
+        if (Utilitaire.in(student.getId(), groupe))
         {
             for (Student s : etu)
             {
-                if (Utilitaire.in(s, studentsConstraints.toArray()))
+                if (s != null && Utilitaire.in(s.getId(), groupe))
                 {
+
                     return false;
                 }
             }

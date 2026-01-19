@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SAE de goat</title>
+    <title>DSRoomMaker</title>
     <link rel="icon" type="image/png" href="resources/img/Logo_DSRoomMaker.png">
 
     <link rel="stylesheet" href="resources/css/styles.css">
@@ -32,7 +32,6 @@
     <div id="tutorial">
         <a href="resources/tuto.pdf">Télécharger le tutoriel</a>
     </div>
-    <button id="boutest" onclick=""></button>
 </main>
 
 <footer>

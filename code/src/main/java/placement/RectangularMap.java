@@ -2,10 +2,14 @@ package placement;
 
 import utilitaire.Utilitaire;
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class RectangularMap extends Map
 {
     private int width, height;
+
+    private int[] dispo;
 
     // a revoir car on ne prends pas en compte les tables supprimées et les L et l
     // je v m'en charger
@@ -13,71 +17,64 @@ public class RectangularMap extends Map
     @Override
     public int[] neighbours(int table, int[] dispo)
     {
-        // on manipule seulement des numeros
-        // l'odre est le suivant :
-        // les 3 en haut
-        // les cotés
-        // les 3 en bas
-        int[] neighboursId = {0,0,0,0,0,0,0,0};
+        this.dispo = dispo;
+        // Get the position of the table number (1-9) in the 1D array (0-8)
+        int pos = Utilitaire.pos(table, dispo);
 
-        // je v jouer sur les positions des tables dispo par rapport a la taille de la salle
-        // je v supprimer tout ce que je sais imposible comme voisin et le reste je le maj
+        // Define neighbor offsets
+        int[][] offsets = {
+                {0, -1},    // Above middle
+                {1, -1},    // Top right
+                {1, 0},     // Right
+                {1, 1},     // Bottom right
+                {0, 1},     // Below middle
+                {-1, 1},    // Bottom left
+                {-1, 0},    // Left
+                {-1, -1}    // Top left
+        };
 
-        // si on est tout en haut
-        if (Utilitaire.pos(table, dispo) <= width ) {
-            neighboursId[0] = -1 ;
-            neighboursId[1] = -1 ;
-            neighboursId[2] = -1 ; }
+        // Use a List to collect valid neighbor numbers
+        List<Integer> validNeighbors = new ArrayList<>();
 
-        // si on est tout en bas
-        if (Utilitaire.pos(table, dispo) >= dispo.length - width) {
-            neighboursId[5] = -1 ;
-            neighboursId[6] = -1 ;
-            neighboursId[7] = -1 ; }
+        for (int[] offset : offsets) {
+            int neighborIndex = getNeighbour(pos, offset[0], offset[1],dispo.length);
+            if (neighborIndex != -1) {
+                validNeighbors.add(dispo[neighborIndex]); // Store the neighbor value
+            }
+        }
 
-        // si on est tout a gauche
-        if (Utilitaire.pos(table, dispo)% width == 0 ) {
-            neighboursId[0] = -1 ;
-            neighboursId[3] = -1 ;
-            neighboursId[5] = -1 ; }
 
-        // si on est a droite
-        if (Utilitaire.pos(table, dispo)% width == width-1 ) {
-            neighboursId[2] = -1 ;
-            neighboursId[4] = -1 ;
-            neighboursId[7] = -1 ; }
-
-        // mtn on met tout ce qu'on peut
-
-        if (neighboursId[0] != -1 ) {
-            neighboursId[0] = dispo[table-width-1] ; }
-        if (neighboursId[1] != -1 ) {
-            neighboursId[1] = dispo[table-width] ; }
-        if (neighboursId[2] != -1 ) {
-            neighboursId[2] = dispo[table-width+1] ; }
-        if (neighboursId[3] != -1 ) {
-            neighboursId[3] = dispo[table-1] ; }
-        if (neighboursId[4] != -1 ) {
-            neighboursId[4] = dispo[table+1] ; }
-        if (neighboursId[5] != -1 ) {
-            neighboursId[5] = dispo[table+width-1] ; }
-        if (neighboursId[6] != -1 ) {
-            neighboursId[6] = dispo[table+width] ; }
-        if (neighboursId[7] != -1 ) {
-            neighboursId[7] = dispo[table+width+1] ; }
-
-        return neighboursId ;
-
+        // Convert List to an array and return
+        return validNeighbors.stream().mapToInt(Integer::intValue).toArray();
     }
 
-    public RectangularMap(int longu, int larg) {
-        width = larg ;
+    private int getNeighbour(int index, int xOffset, int yOffset,int maxIndex) {
+        int newIndex = index + xOffset + yOffset * width; // Calculate new index
+        // pas de retour ligne
+        if (index %width == 0 && xOffset == -1) {return -1 ;}
+        //encore
+        if (index %width == width-1 && xOffset == 1) {return -1 ;}
+        // Return -1 if out of bounds
+        if (newIndex < 0 || newIndex >= maxIndex ) {
+            return -1;
+        }
+
+        return newIndex; // Return valid index
+    }
+
+    public RectangularMap(int longu, int larg)
+    {
+        width = larg;
         height = longu;
     }
-    public int getWidth(){
+
+    public int getWidth()
+    {
         return width;
     }
-    public int getHeight(){
+
+    public int getHeight()
+    {
         return height;
     }
 

@@ -21,11 +21,12 @@ public class PerClass extends Constraint
         // donc on parcoure les voisins
         for (Student s : etu)
         {
-            if (student.sameGroup(s, subGroup))
+            if (s != null && student.sameGroup(s, subGroup))
             {
                 return false;
             }
         }
+
         return true;
 
     }

@@ -18,20 +18,12 @@
     <a href="index.jsp">
         <img src="resources/img/Logo_DSRoomMaker.png" alt="Logo" class="logoPageSec">
     </a>
-    <div class="topMenu">
-        <div>
-            <button class="modif">
-                <img src="resources/img/delete.png" alt="Supprimer">
-                <h2>Supprimer</h2>
-            </button>
-        </div>
-
-        <div>
-            <button class="modif">
-                <img src="resources/img/swap.png" alt="Échanger">
-                <h2>&Eacute;changer</h2>
-            </button>
-        </div>
+    <div class="topAsside">
+        <input type="file" name="importvisu" id="importvisu" accept="text/csv">
+        <label> Format d'export</label>
+        <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
+        <input type="checkbox" name="export" id="Listing" value="Listing"> Listing
+        <button id="exporter"> Exporter </button>
     </div>
 </header>
 <div class="reverseLigne" id="content">
@@ -41,13 +33,7 @@
     </main>
 
     <aside class="asideCrea">
-        <div class="topAsside">
-            <input type="file" name="importvisu" id="importvisu" accept="text/csv">
-            <label> Format d'export</label>
-            <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
-            <input type="checkbox" name="export" id="Listing" value="Listing"> Listing
-            <button id="exporter" onclick="expOrt()"> Exporter </button>
-        </div>
+
         <span class="separateur"></span>
         <div class="valuesOfTable">
              <span id="TableNumber" >

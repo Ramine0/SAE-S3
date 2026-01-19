@@ -69,6 +69,8 @@ function init(){
 document.querySelector("#swapForm").addEventListener("click",modeSwap) ;
 init() ;
 
+document.querySelector("#exporter").addEventListener("click",exportFile) ;
+
 function getInfosTable(event) {
 
     if(swap) {
@@ -106,6 +108,7 @@ function getInfosTable(event) {
 function exportFile(){
     const excel=document.getElementById("Excel").value;
     const list=document.getElementById("Listing").value;
+    console.log(list) ;
     if (excel==="Excel"){
         const excelRequest=new XMLHttpRequest();
         excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);

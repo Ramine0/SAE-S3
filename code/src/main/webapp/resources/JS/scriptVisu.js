@@ -107,32 +107,21 @@ function getInfosTable(event) {
 
 function exportFile(){
     const excel=document.getElementById("Excel").value;
-    const list=document.getElementById("Listing").value;
-    console.log(list) ;
-    if (excel==="Excel"){
-        const excelRequest=new XMLHttpRequest();
-        excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
-        excelRequest.onreadystatechange=function (){
-            if (excelRequest.readyState===XMLHttpRequest.DONE){
-                if (excelRequest.status===200){
-
-                }
-            }
+    const excelRequest=new XMLHttpRequest();
+    excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
+    excelRequest.responseType="blob";
+    //excelRequest.onreadystatechange=function (){
+    excelRequest.onload=function (){
+        if (excelRequest.status===200){
+            const url = window.URL.createObjectURL(excelRequest.response);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "students.csv";
+            a.click();
+            window.URL.revokeObjectURL(url);
         }
-        excelRequest.send();
     }
-    if (list==="Listing"){
-        const listRequest=new XMLHttpRequest();
-        listRequest.open("GET", `export?format=${encodeURIComponent(list)}`);
-        listRequest.onreadystatechange=function (){
-            if (listRequest.readyState===XMLHttpRequest.DONE){
-                if (listRequest.status===200){
-
-                }
-            }
-        }
-        listRequest.send() ;
-    }
+    excelRequest.send();
 
 }
 

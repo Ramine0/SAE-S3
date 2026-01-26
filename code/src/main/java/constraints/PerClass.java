@@ -37,6 +37,4 @@ public class PerClass extends Constraint
         }
         return "group";
     }
-
-
 }

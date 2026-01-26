@@ -98,7 +98,7 @@ public class TableServlet extends HttpServlet
             secretCode = result.toString();
             out.print(secretCode);
         }else if (request.getParameter("action").equals("getDim")){
-            out.print(((RectangularMap)salle.getPositioningIntermediate().getMap()).getHeight()+";"+((RectangularMap)salle.getPositioningIntermediate().getMap()).getWidth());
+            out.print(((RectangularMap)salle.getCrea().getMap()).getHeight()+";"+((RectangularMap)salle.getCrea().getMap()).getWidth());
         }
 
         out.flush();

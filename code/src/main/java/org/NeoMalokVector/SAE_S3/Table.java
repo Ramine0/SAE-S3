@@ -5,6 +5,7 @@ public class Table
     private static int id=0;
     private int num;
     private Student student;
+    private int coordX, coordY ;
 
     /**
      * Constructeur par défaut de table, crée une table à la suite de la dernière table
@@ -12,8 +13,16 @@ public class Table
     public Table(){
         id++;
         num=id;
+        coordX = -1;
+        coordY = -1;
     }
 
+    public Table(int  x, int y) {
+        coordX = x ;
+        coordY = y;
+        id++ ;
+        num = id ;
+    }
     /**
      * Fonction qui permettra d'afficher les informations des tables dans le plan
      * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant
@@ -47,4 +56,7 @@ public class Table
         id = 0;
     }
 
+    public int[] getCoord () {
+        return new int[]{coordX,coordY} ;
+    }
 }

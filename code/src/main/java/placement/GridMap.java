@@ -1,0 +1,84 @@
+package placement;
+
+import org.NeoMalokVector.SAE_S3.Table;
+
+import java.io.File;
+import java.util.Scanner;
+
+public class GridMap extends Map {
+
+    private int [][] matriceAdj ;
+
+    public GridMap(Table[] tables) {
+        init(tables) ;
+    }
+
+    private boolean  init(Table[]tables) {
+        matriceAdj = new int[tables.length+1][tables.length+1];
+        if (tables[0].getCoord()[0] != -1) {
+
+            for (Table t : tables) {
+                int x = t.getCoord()[0];
+                int y = t.getCoord()[1];
+                for (Table vois : tables) {
+                    if (vois.getNum() > t.getNum()) {
+
+                        int xVois = vois.getCoord()[0];
+                        int yVois = vois.getCoord()[1];
+
+                        // l'idée ici c'est de dire que si les deux ont une distance de 1 alors ils sont voisins
+                        // plutot que de faire une abs() pour les -1 j'ai fait un carré car évite d'importer la librairie et tt
+                        if (((x - xVois) * (x - xVois) == 1)&& y == yVois  || ((y - yVois) * (y - yVois) == 1)&& x==xVois) {
+                            matriceAdj[t.getNum()][vois.getNum()] = 1;
+                            matriceAdj[vois.getNum()][t.getNum()] = 1;
+                        }
+                    }
+
+                }
+            }
+            return true ;
+        }
+        return false ;
+    }
+
+    public GridMap () {}
+
+    private Table[] chargerPlanDefaut (){
+        Table[] lesTables ;
+        try {
+            Scanner scan = new Scanner(new File("src/main/webapp/resources/planDefaut.csv"));
+            lesTables = new Table[scan.nextInt()];
+            String[] line ;
+            int cpt = 0;
+            while (scan.hasNextLine()) {
+                line = scan.nextLine().split(";");
+                if (line[0] != "") {
+                    lesTables[cpt] = new Table(Integer.parseInt(line[0]), Integer.parseInt(line[1]));
+                    cpt++;
+                }
+            }
+            return lesTables ;
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            return null ;
+        }
+
+    }
+
+    @Override
+    public int[] neighbours(int table, int[] dispo) {
+        return new int[0];
+    }
+
+
+    public int[][] getMatriceAdj() {return matriceAdj;}
+
+    public Table[] loadMap () {
+        Table[] tables = chargerPlanDefaut() ;
+        if (tables != null) {
+            init(tables);
+        }
+        return tables ;
+    }
+
+}

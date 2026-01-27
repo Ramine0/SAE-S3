@@ -42,10 +42,11 @@ public class Data
     {
         chargerFichier(path);
 
-        if (mapType.charAt(0) == 'R')
-        {
+        if (mapType.charAt(0) == 'R') {
             // plan rectangulaire
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
+        }else if (mapType.charAt(0) == 'G') {
+
         }
 
         init();
@@ -367,13 +368,16 @@ public class Data
             tables = new Table[num];
             for (int i = 0; i < tables.length; i++)
                 tables[i] = new Table();
+
             deletedTables = new int[num];
         } else
         {
             tables = new Table[students.size()];
             for (int i = 0; i < tables.length; i++)
             {
+
                 tables[i] = new Table();
+
             }
             deletedTables = new int[students.size()];
         }
@@ -830,5 +834,7 @@ public class Data
     {
         return constraints[0] != null;
     }
+
+
 
 }

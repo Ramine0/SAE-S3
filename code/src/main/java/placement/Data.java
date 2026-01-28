@@ -315,15 +315,10 @@ public class Data
                     nom = line[inom];
                     prenom = line[iprenom];
                     if (isubgroup == -1) {
-                        if (line[igroup].contains("TP") && line[igroup].length()==4){
-                            group=line[igroup].charAt(0)+"";
-                            subGroup=line[igroup].substring(1);
-                        }else{
-                            String[] groupInfo = line[igroup].split(".");
-                            group = groupInfo[0];
-                            if (groupInfo.length > 1) {
-                                subGroup = groupInfo[1];
-                            }
+                        String[] groupInfo = line[igroup].replace(".", ";").split(";");
+                        group = groupInfo[0];
+                        if (groupInfo.length > 1) {
+                            subGroup = groupInfo[1];
                         }
                     }else{
                         group=line[igroup];

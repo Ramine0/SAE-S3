@@ -2,6 +2,7 @@ package Jakarta;
 
 
 import org.NeoMalokVector.SAE_S3.Room;
+import org.NeoMalokVector.SAE_S3.Table;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
@@ -24,9 +25,20 @@ public class HelloServlet
         crea.findStudentForGroup("p2406", 1);
         crea.findStudentForGroup("p24033", 1);
         crea.findStudentForGroup("p24039", 1);
-        salle.positioningMode() ;
-        System.out.println(salle.generate());
-        System.out.println(salle.getPositioningIntermediate().getTablesForVisu());
+        salle.positioningMode();
+
+        System.out.println("Génération réussi : " + salle.generate());
+        System.out.println();
+
+        for (int i = 0; i < crea.getNumberTables(); i++)
+        {
+            Table table = crea.getTable(i);
+
+            if (table == null)
+                continue;
+
+            System.out.println(table.getNum() + ". " + (table.getEtu() != null ? table.getEtu().getFirstName() : "aucun étu"));
+        }
 
     }
 

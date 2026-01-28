@@ -19,12 +19,12 @@ public class CreatingIntermediate
 
     public CreatingIntermediate(String path) throws FileNotFoundException
     {
-        d = new Data(path, "R11");
+        d = new Data(path, "D");
     }
 
-    public void createTables(int lon, int lar)
+    public boolean createTables(int lon, int lar)
     {
-        d.setNumberTables(lon * lar);
+        return d.setNumberTables(lon * lar);
     }
 
     public int getNumberTables()
@@ -142,15 +142,10 @@ public class CreatingIntermediate
         }
     }
 
-    public int[] free(){
-        return d.freeTables();
-    }
-    public int[] del(){
-        return d.getDeletedTables();
-    }
-    public int[] existing(){
-        return d.existingTables();
-    }
+    public int[] free(){return d.freeTables();}
+    public int[] del(){return d.getDeletedTables();}
+    public int[] existing(){return d.existingTables();}
+
     public void unremoveTable(int num)
     {
         d.unremoveTable(num);
@@ -217,5 +212,12 @@ public class CreatingIntermediate
         return new PositioningIntermediate(d);
     }
 
+    public boolean loadplanDefault() {
+        return d.loadPlanDefault();
+    }
+
+    public boolean changePlanMode(char newOne) {
+        return d.changePlanMode(newOne);
+    }
 
 }

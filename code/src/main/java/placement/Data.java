@@ -46,8 +46,12 @@ public class Data
             // plan rectangulaire
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
         }else if (mapType.charAt(0) == 'G') {
-
+            // plan grille
+            //map = new GridMap() ;
+        }else if (mapType.charAt(0) == 'D') {
+            map = new GridMap() ;
         }
+
 
         init();
     }
@@ -394,31 +398,33 @@ public class Data
         }
     }
 
-    public void setNumberTables(int num)
+    public boolean setNumberTables(int num)
     {
-        if (deletedTables != null)
-        {
-            deletedTables = null;
-        }
-        if (num >= students.size())
-        {
-            tables = new Table[num];
-            for (int i = 0; i < tables.length; i++)
-                tables[i] = new Table();
-
-            deletedTables = new int[num];
-        } else
-        {
-            tables = new Table[students.size()];
-            for (int i = 0; i < tables.length; i++)
-            {
-
-                tables[i] = new Table();
-
+        // il faut que ca soit une rectangular map
+        if (map instanceof RectangularMap) {
+            if (deletedTables != null) {
+                deletedTables = null;
             }
-            deletedTables = new int[students.size()];
-        }
+            if (num >= students.size()) {
+                tables = new Table[num];
+                for (int i = 0; i < tables.length; i++)
+                    tables[i] = new Table();
 
+                deletedTables = new int[num];
+
+            } else {
+                tables = new Table[students.size()];
+                for (int i = 0; i < tables.length; i++) {
+
+                    tables[i] = new Table();
+
+                }
+                deletedTables = new int[students.size()];
+            }
+            return true ;
+
+        }
+        return false ;
     }
 
     public void changeMode(char mode)
@@ -872,6 +878,33 @@ public class Data
         return constraints[0] != null;
     }
 
+    public boolean loadPlanDefault() {
+        tables  = ((GridMap) map).loadMap() ;
+        return tables == null ;
+    }
 
+    public boolean changePlanMode(char newMode) {
+        if (newMode == 'R') {
+            if (map instanceof GridMap) {
+                map = new RectangularMap(4,4);
+                return true ;
+            }else {
+                return false ;
+            }
+        }else if (newMode == 'G') {
+            if (map instanceof RectangularMap) {
+                map = new GridMap(tables);
+                return true ;
+            }else {
+                return false ;
+            }
+        }else if (newMode == 'D') {
+            map = new GridMap();
+            tables = ((GridMap)map).loadMap() ;
+            return true ;
+        }else {
+            return false ;
+        }
+    }
 
 }

@@ -7,36 +7,47 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.RectangularMap;
+import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Random;
+import java.util.HashMap;
 
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet
 {
-    public static CreatingIntermediate crea = null;
-    private static Room salle = null;
-    private static String secretCode;
+    private static HashMap<String, Room> rooms;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (rooms == null) {
+            rooms = new HashMap<>();
+        }
+        String user = request.getSession().getId();
+        if (!userExists(user)){
+            rooms.put(user, new Room(request.getServletContext().getRealPath("/") + "/"));
+        }
+        Room salle= rooms.get(user);
+
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
         if (request.getParameter("action") != null)
-            tableRequests(request, out);
+            tableRequests(request, out,salle);
 
         if (request.getParameter("constraint") != null)
-            constraintRequests(request, out);
+            constraintRequests(request, out,salle);
 
         out.flush();
     }
 
-    private void constraintRequests(HttpServletRequest request, PrintWriter out)
+    private void constraintRequests(HttpServletRequest request, PrintWriter out,Room salle)
     {
+
+        CreatingIntermediate crea = salle.getCrea() ;
+        if (crea == null) {out.println("heheheheh"); return ;}
         switch (request.getParameter("constraint"))
         {
             case "imposePlace" ->
@@ -114,21 +125,16 @@ public class CreationServlet extends HttpServlet
         }
     }
 
-    private static void tableRequests(HttpServletRequest request, PrintWriter out) throws FileNotFoundException
+    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) throws FileNotFoundException
     {
         int lon = 0;
         int lar = 0;
+        CreatingIntermediate crea = salle.getCrea() ;
 
         switch (request.getParameter("action"))
         {
             case "define" ->
             {
-                if (crea == null)
-                {
-                    salle = new Room(request.getServletContext().getRealPath("/") + "/");
-                    crea = salle.getCrea();
-                } else
-                    crea.resetData();
 
                 crea.setMode(0);
 
@@ -167,21 +173,8 @@ public class CreationServlet extends HttpServlet
             }
 
             case "generate" ->
-            {
-                String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                Random random = new Random();
-                StringBuilder result = new StringBuilder();
-                int length = 10;
+                out.print(request.getSession().getId());
 
-                for (int i = 0; i < length; i++)
-                {
-                    int index = random.nextInt(characters.length());
-                    result.append(characters.charAt(index));
-                }
-
-                secretCode = result.toString();
-                out.print(secretCode);
-            }
 
             case "getDim" ->
                     out.print(((RectangularMap) salle.getCrea().getMap()).getHeight() + ";" + ((RectangularMap) salle.getCrea().getMap()).getWidth());
@@ -190,10 +183,15 @@ public class CreationServlet extends HttpServlet
 
     public static Room getSalle(String code)
     {
-        if (code.equals(secretCode))
-            return salle;
+        if (userExists(code))
+            return rooms.get(code);
         else
             return null;
     }
+
+    private static boolean userExists(String user) {
+        return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
+    }
+
 
 }

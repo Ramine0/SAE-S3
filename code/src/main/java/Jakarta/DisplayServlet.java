@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.PositioningIntermediate;
 
@@ -23,10 +24,7 @@ public class DisplayServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         String code = request.getParameter("testVal");
-
-        if (code.isEmpty())
-            return;
-
+        if (CreationServlet.getSalle(code) == null){code = request.getParameter("testVal");}
         salle = CreationServlet.getSalle(code);
 
         if (salle == null)

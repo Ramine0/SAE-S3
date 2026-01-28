@@ -8,6 +8,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 
 import java.io.IOException;
@@ -20,10 +21,8 @@ public class ExportServlet extends HttpServlet
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        if (crea == null)
-        {
-            crea = CreationServlet.crea;
-        }
+        Room salle = CreationServlet.getSalle(request.getSession().getId());
+        CreatingIntermediate crea = salle.getCrea();
         response.setContentType("text/csv;charset=UTF-8");
         response.setHeader(
                 "Content-Disposition",

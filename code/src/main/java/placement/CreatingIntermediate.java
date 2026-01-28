@@ -151,11 +151,7 @@ public class CreatingIntermediate
         d.unremoveTable(num);
     }
 
-    public void setDimensions(int lon, int lar)
-    {
-        d.setDimensions(lon, lar);
-    }
-
+    public void setDimensions(int lon, int lar) {d.setDimensions(lon, lar);}
     public Map getMap()
     {
         return d.getMap();

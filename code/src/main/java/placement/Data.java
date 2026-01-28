@@ -329,8 +329,11 @@ public class Data
                         group=line[igroup];
                         subGroup=line[isubgroup];
                     }
-                    students.add(new Student(id, nom, prenom, group, subGroup));
                 }
+            }
+            if (id!=null && nom!=null && prenom!=null && group!=null && subGroup!=null) {
+                System.out.println("J'ajoute "+ nom);
+                students.add(new Student(group, subGroup, nom, prenom, id));
             }
         }
     }

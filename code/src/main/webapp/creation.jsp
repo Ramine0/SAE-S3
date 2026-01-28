@@ -49,7 +49,7 @@
             <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le nombre de places</button> <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
 
         </form>
-        <form method="POST" action="Display">
+        <form method="post" action="Display">
             <input type="text" name="testVal" id="testVal" >
             <button type="submit" id="walid" class="boutWalider" onclick="enableText()" disabled> Générer</button>
         </form>

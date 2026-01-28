@@ -327,7 +327,6 @@ public class Data
                 }
             }
             if (id!=null && nom!=null && prenom!=null && group!=null && subGroup!=null) {
-                System.out.println("J'ajoute "+ nom);
                 students.add(new Student(group, subGroup, nom, prenom, id));
             }
         }

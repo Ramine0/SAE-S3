@@ -107,6 +107,7 @@ function getInfosTable(event) {
 
 function exportFile(){
     const excel=document.getElementById("Excel").value;
+    console.log(excel);
     const excelRequest=new XMLHttpRequest();
     excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
     excelRequest.responseType="blob";

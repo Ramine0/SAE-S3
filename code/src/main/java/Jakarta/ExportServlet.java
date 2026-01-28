@@ -34,7 +34,7 @@ public class ExportServlet extends HttpServlet
         out.println("id;nom;table");
         for (int i = 0; i< crea.getNumberTables(); i++){
             if (crea.getTable(i+1)!=null && crea.StuFromTable(i+1)!=null){
-                out.println(crea.StuFromTable(i+1).getId()+";"+ crea.StuFromTable(i+1).getName()+";"+i+1);
+                out.println(crea.StuFromTable(i+1).getId()+";"+ crea.StuFromTable(i+1).getName()+";"+(i+1));
             }
         }
         if (request.getParameter("format").equals("Excel")){

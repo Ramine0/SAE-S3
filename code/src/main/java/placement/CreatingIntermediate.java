@@ -194,12 +194,12 @@ public class CreatingIntermediate
 
     public void setMode(int i)
     {
-        if (i == 0)
-            d.changeMode('N');
-        else if (i == 1)
-            d.changeMode('G');
-        else if (i == 2)
-            d.changeMode('S');
+        switch (i)
+        {
+            case 0 -> d.changeMode('N');
+            case 1 -> d.changeMode('G');
+            case 2 -> d.changeMode('S');
+        }
     }
 
 
@@ -208,12 +208,12 @@ public class CreatingIntermediate
         return new PositioningIntermediate(d);
     }
 
-    public boolean loadplanDefault() {
-        return d.loadPlanDefault();
+    public boolean loadPlanDefault(String path) {
+        return d.loadPlanDefault(path);
     }
 
-    public boolean changePlanMode(char newOne) {
-        return d.changePlanMode(newOne);
+    public boolean changePlanMode(char newOne, String path) {
+        return d.changePlanMode(newOne, path);
     }
 
 }

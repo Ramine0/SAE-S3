@@ -116,8 +116,7 @@ public class CreationServlet extends HttpServlet
 
     private static void tableRequests(HttpServletRequest request, PrintWriter out) throws FileNotFoundException
     {
-        int lon = 0;
-        int lar = 0;
+        int lon, lar;
 
         switch (request.getParameter("action"))
         {
@@ -132,28 +131,34 @@ public class CreationServlet extends HttpServlet
 
                 crea.setMode(0);
 
-                lon = Integer.parseInt(request.getParameter("long"));
-                lar = Integer.parseInt(request.getParameter("larg"));
+                if (request.getParameter("planType").equals("defaultPlan"))
+                {
+                    out.print(crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/"));
+                } else
+                {
+                    lon = Integer.parseInt(request.getParameter("long"));
+                    lar = Integer.parseInt(request.getParameter("larg"));
 
-                if (lon < 4)
-                    lon = 4;
-                else if (lon > 20)
-                    lon = 20;
+                    if (lon < 4)
+                        lon = 4;
+                    else if (lon > 20)
+                        lon = 20;
 
-                if (lar < 4)
-                    lar = 4;
-                else if (lar > 8)
-                    lar = 8;
+                    if (lar < 4)
+                        lar = 4;
+                    else if (lar > 8)
+                        lar = 8;
 
-                crea.createTables(lon, lar);
-                crea.setDimensions(lon, lar);
+                    crea.createTables(lon, lar);
+                    crea.setDimensions(lon, lar);
 
-                if (crea.getNumberTables() == 0)
-                    out.print(0);
-                else if (crea.getNumberTables() == lon * lar && ((RectangularMap) crea.getMap()).getHeight() == lon && ((RectangularMap) crea.getMap()).getWidth() == lar)
-                    out.print(lon + ";" + lar);
-                else
-                    out.print(-1);
+                    if (crea.getNumberTables() == 0)
+                        out.print(0);
+                    else if (crea.getNumberTables() == lon * lar && ((RectangularMap) crea.getMap()).getHeight() == lon && ((RectangularMap) crea.getMap()).getWidth() == lar)
+                        out.print(lon + ";" + lar);
+                    else
+                        out.print(-1);
+                }
             }
 
             case "present" ->

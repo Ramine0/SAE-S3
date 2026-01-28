@@ -12,7 +12,6 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -875,16 +874,16 @@ public class Data
         return constraints[0] != null;
     }
 
-    public boolean loadPlanDefault() {
+    public boolean loadPlanDefault(String path) {
         if (map instanceof GridMap) {
-            tables = ((GridMap) map).loadMap();
+            tables = ((GridMap) map).loadMap(path);
             return tables == null;
         }else {
             return false;
         }
     }
 
-    public boolean changePlanMode(char newMode) {
+    public boolean changePlanMode(char newMode, String path) {
 
         if (newMode == 'R') {
             if (map instanceof GridMap) {
@@ -902,7 +901,7 @@ public class Data
             }
         }else if (newMode == 'D') {
             map = new GridMap();
-            tables = ((GridMap)map).loadMap() ;
+            tables = ((GridMap)map).loadMap(path) ;
             return true ;
         }else {
             return false ;

@@ -332,7 +332,6 @@ public class Data
                 }
             }
             if (id!=null && nom!=null && prenom!=null && group!=null && subGroup!=null) {
-                System.out.println("J'ajoute "+ nom);
                 students.add(new Student(group, subGroup, nom, prenom, id));
             }
         }
@@ -877,11 +876,16 @@ public class Data
     }
 
     public boolean loadPlanDefault() {
-        tables  = ((GridMap) map).loadMap() ;
-        return tables == null ;
+        if (map instanceof GridMap) {
+            tables = ((GridMap) map).loadMap();
+            return tables == null;
+        }else {
+            return false;
+        }
     }
 
     public boolean changePlanMode(char newMode) {
+
         if (newMode == 'R') {
             if (map instanceof GridMap) {
                 map = new RectangularMap(4,4);

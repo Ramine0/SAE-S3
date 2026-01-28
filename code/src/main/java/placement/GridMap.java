@@ -1,6 +1,7 @@
 package placement;
 
 import org.NeoMalokVector.SAE_S3.Table;
+import utilitaire.Utilitaire;
 
 import java.io.File;
 import java.util.Scanner;
@@ -18,22 +19,26 @@ public class GridMap extends Map {
         if (tables[0].getCoord()[0] != -1) {
 
             for (Table t : tables) {
-                int x = t.getCoord()[0];
-                int y = t.getCoord()[1];
-                for (Table vois : tables) {
-                    if (vois.getNum() > t.getNum()) {
+                if (t != null ) {
+                    int x = t.getCoord()[0];
+                    int y = t.getCoord()[1];
+                    for (Table vois : tables) {
+                        if (vois != null) {
+                            if (vois.getNum() > t.getNum()) {
 
-                        int xVois = vois.getCoord()[0];
-                        int yVois = vois.getCoord()[1];
+                                int xVois = vois.getCoord()[0];
+                                int yVois = vois.getCoord()[1];
 
-                        // l'idée ici c'est de dire que si les deux ont une distance de 1 alors ils sont voisins
-                        // plutot que de faire une abs() pour les -1 j'ai fait un carré car évite d'importer la librairie et tt
-                        if (((x - xVois) * (x - xVois) == 1)&& y == yVois  || ((y - yVois) * (y - yVois) == 1)&& x==xVois) {
-                            matriceAdj[t.getNum()][vois.getNum()] = 1;
-                            matriceAdj[vois.getNum()][t.getNum()] = 1;
+                                // l'idée ici c'est de dire que si les deux ont une distance de 1 alors ils sont voisins
+                                // plutot que de faire une abs() pour les -1 j'ai fait un carré car évite d'importer la librairie et tt
+                                if (((x - xVois) * (x - xVois) == 1) && y == yVois || ((y - yVois) * (y - yVois) == 1) && x == xVois) {
+                                    matriceAdj[t.getNum()][vois.getNum()] = 1;
+                                    matriceAdj[vois.getNum()][t.getNum()] = 1;
+                                }
+                            }
                         }
-                    }
 
+                    }
                 }
             }
             return true ;
@@ -44,6 +49,7 @@ public class GridMap extends Map {
     public GridMap () {}
 
     private Table[] chargerPlanDefaut (){
+        Table.reset();
         Table[] lesTables ;
         try {
             Scanner scan = new Scanner(new File("src/main/webapp/resources/planDefaut.csv"));
@@ -66,8 +72,17 @@ public class GridMap extends Map {
     }
 
     @Override
-    public int[] neighbours(int table, int[] dispo) {
-        return new int[0];
+    public int[] neighbours(int numTable, int[] dispo) {
+
+        int[] voisins = new int[9] ;
+        int cpt = 0;
+        for (int i : matriceAdj[numTable]) {
+            if (matriceAdj[numTable][i] == 1 && Utilitaire.in(i,dispo)) {
+                voisins[cpt] = i ;
+                cpt ++ ;
+            }
+        }
+        return voisins ;
     }
 
 

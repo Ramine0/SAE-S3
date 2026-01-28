@@ -142,7 +142,7 @@ function validateDeletedTable(event) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 let rep = xhr.responseText.split(";");
-                if (rep[0]===rep[1]){
+                if (rep[0] === rep[1]) {
                     setValid(`supTable${constraintId}`);
                     document.getElementById("numTabSup" + constraintId).value = rep[1];
                 }
@@ -284,13 +284,17 @@ function setTableNumber() {
     let lon = document.getElementById("long").value;
     let lar = document.getElementById("larg").value;
 
+    let planType = document.getElementById("planType").value;
+
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
+    xhr.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
+                if (planType === "defaultPlan")
+                    console.log("Default plan generated : " + xhr.responseText);
+                else if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
                     let l = xhr.responseText.split(";");
                     long = l[0];
                     document.getElementById("long").value = l[0];

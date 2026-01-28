@@ -107,6 +107,7 @@ function getInfosTable(event) {
 
 function exportFile(){
     const excel=document.getElementById("Excel").value;
+    console.log(excel);
     const excelRequest=new XMLHttpRequest();
     excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
     excelRequest.responseType="blob";
@@ -116,7 +117,7 @@ function exportFile(){
             const url = window.URL.createObjectURL(excelRequest.response);
             const a = document.createElement("a");
             a.href = url;
-            a.download = "students.csv";
+            a.download = "listing.csv";
             a.click();
             window.URL.revokeObjectURL(url);
         }

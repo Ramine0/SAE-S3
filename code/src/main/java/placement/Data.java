@@ -277,55 +277,90 @@ public class Data
     }
 
     // le chargement du fichier exel donné par le/la prof
-    private void chargerFichier(String path) throws FileNotFoundException
-    {
+    private void chargerFichier(String path) throws FileNotFoundException {
         students.clear();
 
         Scanner sc = new Scanner(new FileReader(path + "resources/etudiants.csv"));
         String[] line;
 
-        String id, nom, prenom;
-        int group, subGroup;
+        String id, nom, prenom, group, subGroup;
+        int iid, inom, iprenom, igroup, isubgroup;
+        iid = -1;
+        inom = -1;
+        iprenom = -1;
+        igroup = -1;
+        isubgroup=-1;
 
-        while (sc.hasNextLine())
-        {
+        while (sc.hasNextLine()) {
             line = sc.nextLine().split(";");
 
             id = null;
             nom = null;
             prenom = null;
-            group = -1;
-            subGroup = -1;
-
-            for (String s : line)
-            {
-                if (!Objects.equals(s, ""))
-                {
-                    int numericValue = Character.getNumericValue(s.charAt(s.length() - 1));
-
-                    if (Character.isDigit(s.charAt(1)) && s.length() == 8)
-                        id = s;
-                    else if ((s.contains("1") || s.contains("2") || s.contains("3")) && group == -1)
-                    {
-                        if (s.contains("."))
-                        {
-                            group = Character.getNumericValue(s.charAt(s.length() - 3));
-                            subGroup = numericValue;
-                        } else
-                            group = numericValue;
-                    } else if (s.contains("1") || s.contains("2") && group != -1 && subGroup == -1)
-                        subGroup = numericValue;
-                    else if (nom == null && !s.contains("@"))
-                        nom = s;
-                    else if (nom != null && prenom == null && !s.contains("@"))
-                        prenom = s;
+            group = null;
+            subGroup = null;
+            for (int i = 0; i < line.length; i++) {
+                if (line[i].equals("numero")) {
+                    iid = i;
+                } else if (line[i].equals("nom")) {
+                    inom = i;
+                } else if (line[i].equals("prenom")) {
+                    iprenom = i;
+                } else if (line[i].equals("groupe")) {
+                    igroup = i;
+                }else if (line[i].equals("sous-groupe")) {
+                    isubgroup=i;
+                } else if (iid != -1 && inom != -1 && iprenom != -1 && igroup != -1) {
+                    id = line[iid];
+                    nom = line[inom];
+                    prenom = line[iprenom];
+                    if (isubgroup == -1) {
+                        String[] groupInfo = line[igroup].replace(".", ";").split(";");
+                        group = groupInfo[0];
+                        if (groupInfo.length > 1) {
+                            subGroup = groupInfo[1];
+                        }
+                    }else{
+                        group=line[igroup];
+                        subGroup=line[isubgroup];
+                    }
                 }
             }
-
-            if (id != null)
+            if (id!=null && nom!=null && prenom!=null && group!=null && subGroup!=null) {
+                System.out.println("J'ajoute "+ nom);
                 students.add(new Student(group, subGroup, nom, prenom, id));
+            }
         }
     }
+//            }
+//            for (String s : line)
+//            {
+//                if (!Objects.equals(s, ""))
+//                {
+//                    int numericValue = Character.getNumericValue(s.charAt(s.length() - 1));
+//
+//                    if (Character.isDigit(s.charAt(1)) && s.length() == 8)
+//                        id = s;
+//                    else if ((s.contains("1") || s.contains("2") || s.contains("3")) && group == -1)
+//                    {
+//                        if (s.contains("."))
+//                        {
+//                            group = Character.getNumericValue(s.charAt(s.length() - 3));
+//                            subGroup = numericValue;
+//                        } else
+//                            group = numericValue;
+//                    } else if (s.contains("1") || s.contains("2") && group != -1 && subGroup == -1)
+//                        subGroup = numericValue;
+//                    else if (nom == null && !s.contains("@"))
+//                        nom = s;
+//                    else if (nom != null && prenom == null && !s.contains("@"))
+//                        prenom = s;
+//                }
+//            }
+//
+//            if (id != null)
+//                students.add(new Student(group, subGroup, nom, prenom, id));
+//        }
 
     public String[] descrip()
     {

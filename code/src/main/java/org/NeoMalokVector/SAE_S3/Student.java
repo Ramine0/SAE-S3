@@ -2,10 +2,9 @@ package org.NeoMalokVector.SAE_S3;
 
 public class Student
 {
-    private int group, subGroup;
-    private String name, firstName, id;
+    private String name, firstName, id, group, subGroup;
 
-    public Student(int group, int subGroup, String name, String firstName, String id)
+    public Student(String group, String subGroup, String name, String firstName, String id)
     {
 
         this.group = group;
@@ -24,7 +23,7 @@ public class Student
         result += inline ? "\n" : ";";
         result += "est " + name + " " + firstName;
         result += inline ? "\n" : ";";
-        result += "du groupe " + (group == -1 ? "grosse merde" : group) + "." + (subGroup == -1 ? "grosse merde" : subGroup);
+        result += "du groupe " + (group == null ? "groupe introuvable" : group) + "." + (subGroup == null ? "groupe introuvable" : subGroup);
 
         return result;
 
@@ -47,18 +46,19 @@ public class Student
 
     public boolean sameGroup(Student etu, boolean sub)
     {
-        if (etu.group == this.group)
+        if (etu.group.equals(this.group))
         {
             if (sub)
             {
-                return subGroup == etu.subGroup;
+                return subGroup.equals(etu.subGroup);
             }
+            return true;
         }
-        return etu.group == this.group;
+        return false;
     }
 
     public String textVisu() {
-        if (group  != -1 ) {
+        if (group  != null ) {
             return getId() + ";" + getName() + " " + getFirstName() + ";"+(group + "." + subGroup);
         }else {
             return getId() + ";" + getName() + " " + getFirstName() + ";"+"null" ;

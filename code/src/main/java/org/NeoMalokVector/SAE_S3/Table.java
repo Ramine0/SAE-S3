@@ -4,6 +4,8 @@ public class Table
 {
     private static int id=0;
     private int num;
+    private int x;
+    private int y;
     private Student student;
 
     /**
@@ -33,6 +35,9 @@ public class Table
      */
     public int getNum() {
         return num;
+    }
+    public void setNum(int num){
+        this.num=num;
     }
 
 

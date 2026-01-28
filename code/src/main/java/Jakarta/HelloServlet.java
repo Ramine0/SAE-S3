@@ -2,7 +2,6 @@ package Jakarta;
 
 
 import org.NeoMalokVector.SAE_S3.Room;
-import org.NeoMalokVector.SAE_S3.Table;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
@@ -30,15 +29,31 @@ public class HelloServlet
         System.out.println("Génération réussi : " + salle.generate());
         System.out.println();
 
-        for (int i = 0; i < crea.getNumberTables(); i++)
-        {
-            Table table = crea.getTable(i);
+        String studentId = crea.findEtu("p24033");
 
-            if (table == null)
-                continue;
+        String result = studentId + ";";
+        result += crea.studentInfo(studentId) + ";";
 
-            System.out.println(table.getNum() + ". " + (table.getEtu() != null ? table.getEtu().getFirstName() : "aucun étu"));
-        }
+        String tableNumber = "1";
+
+        if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > crea.maxTable())
+            result += "3;";
+        else if (tableNumber.isEmpty())
+            result += "null;";
+        else
+            result += crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
+
+        System.out.println(result);
+
+//        for (int i = 0; i < crea.getNumberTables(); i++)
+//        {
+//            Table table = crea.getTable(i);
+//
+//            if (table == null)
+//                continue;
+//
+//            System.out.println(table.getNum() + ". " + (table.getEtu() != null ? table.getEtu().getFirstName() : "aucun étu"));
+//        }
 
     }
 

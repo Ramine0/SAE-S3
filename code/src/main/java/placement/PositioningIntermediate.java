@@ -66,8 +66,9 @@ public class PositioningIntermediate
                 loopCount++;
                 if (loopCount > donnees.freeStudents().length / 2)
                     tableNumber++;
-                if (tableNumber > donnees.maxTableID()) {
-                    return false ;
+                if (tableNumber > donnees.maxTableID())
+                {
+                    return false;
                 }
             }
             donnees.placeStudent(tableNumber, studentId);

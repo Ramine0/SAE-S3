@@ -51,7 +51,7 @@ function validerPlaceImposee(event) {
         document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
     else {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+        xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE)
@@ -86,7 +86,7 @@ function validerPlaceImposee(event) {
 function changeMode() {
     const m = document.getElementById("mode").value;
     const mode = new XMLHttpRequest();
-    mode.open("GET", `getStudentName?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
+    mode.open("GET", `creation?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
@@ -110,7 +110,7 @@ function supprimerPlaceImposee(event) {
     let numConstr = idRemove.charAt(13);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
+    xhr.open("GET", `creation?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
     xhr.send();
 
     document.querySelector("#impose" + numConstr).remove();
@@ -136,7 +136,7 @@ function validateDeletedTable(event) {
         return;
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+    xhr.open("GET", `creation?constraint=${encodeURIComponent("deleteTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -163,7 +163,7 @@ function removeDeletedTable(event) {
 
     if (tableNumber !== "") {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+        xhr.open("GET", `creation?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
         xhr.send();
     }
 
@@ -187,7 +187,7 @@ function validerEtuGrp(event) {
     const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
     let valid = true;
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("separeEtu")}&studentId=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
+    xhr.open("GET", `creation?constraint=${encodeURIComponent("separeEtu")}&studentId=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -221,7 +221,7 @@ function enleverEtuGrp(event) {
     let numEtu = idBout.charAt(6);
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `getStudentName?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);
+    xhr.open("GET", `creation?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -285,7 +285,7 @@ function setTableNumber() {
     let lar = document.getElementById("larg").value;
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `table?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
+    xhr.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -586,7 +586,7 @@ function codeForGeneration() {
 
     let code = document.querySelector("#testVal");
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `table?action=${encodeURIComponent("generate")}`, true);
+    xhr.open("GET", `creation?action=${encodeURIComponent("generate")}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {

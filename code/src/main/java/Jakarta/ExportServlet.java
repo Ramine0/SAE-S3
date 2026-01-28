@@ -22,7 +22,7 @@ public class ExportServlet extends HttpServlet
     {
         if (crea == null)
         {
-            crea = TableServlet.crea;
+            crea = CreationServlet.crea;
         }
         response.setContentType("text/csv;charset=UTF-8");
         response.setHeader(

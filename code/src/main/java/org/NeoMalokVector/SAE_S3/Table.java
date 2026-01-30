@@ -31,8 +31,10 @@ public class Table
     {
         if (student!=null){
             return (num+";"+student.descrip(true));
-        }else{
+        }else if (coordX == -1){
             return String.valueOf(num);
+        }else {
+            return coordX+"!"+coordY+"!"+num;
         }
     }
 

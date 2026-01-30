@@ -931,7 +931,13 @@ public class Data
     }
 
     public String getPlanSize() {
-        return "" ;
+        if (map instanceof GridMap) {
+            return maxTableX()+";"+maxTableY() ;
+        }else if (map instanceof RectangularMap) {
+            return ((RectangularMap)map).getSize();
+        }else {
+            return "";
+        }
     }
 
 

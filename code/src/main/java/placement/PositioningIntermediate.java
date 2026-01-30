@@ -164,7 +164,7 @@ public class PositioningIntermediate
 
     public String getTablesForVisu()
     {
-        String result = "";
+        String result = donnees.getPlanSize()+"/";
         for (int t : donnees.existingTables())
         {
             result += t + "!";

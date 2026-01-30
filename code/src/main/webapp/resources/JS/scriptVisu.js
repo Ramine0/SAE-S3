@@ -2,26 +2,31 @@ let tables=[]
 let noms = []
 let active ;
 let swap = false ;
-let lon;
-let lar;
+let size ;
 function createTable(){
-    let t = "<span>" ;
-    let table ;
-    let vals ;
-    let name ;
-    let l=0;
-    for (let i = 0; i < tables.length; i++ ){
-        l++;
-        vals = tables[i].split("!") ;
-        table = vals[0] ;
-        name = vals[1] ;
-        t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
-        tables[i] = table ;
-        noms[i] = name ;
-        if (lar===l){
-            l=0;
-            t+="</span> <span>";
+    let t = "<span>"
+    let table
+    let vals
+    let name
+    let i = 0 ;
+    for (let hei= 0; hei < size[1]; hei++){
+        t+="<span>"
+        for (let wid = 0; wid < size[0]; wid++) {
+            vals = tables[i].split("!");
+            if (vals.length == 4){
+                if (vals[0] != wid || vals[1] != hei) {
+                    t = `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
+                }
+            }else {
+                table = vals[0];
+                nam = vals[1];
+                t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
+                tables[i] = table;
+                noms[i] = name;
+                i++;
+            }
         }
+        t += "</span>"
     }
     if (t !== "") {
         document.querySelector("#tableExp").insertAdjacentHTML("beforebegin", t);
@@ -82,18 +87,24 @@ function getInfosTable(event) {
     reqInfo.onreadystatechange = function (){
         if (reqInfo.readyState===XMLHttpRequest.DONE){
             if (reqInfo.status===200){
-                const values = reqInfo.responseText.split(";");
-                if (values.length === 4) {
-                    document.querySelector("#idTabVisu").value = values[0];
-                    document.querySelector("#numEtuVisu").value = values[1];
-                    document.querySelector("#nomEtuVisu").value = values[2];
-                    document.querySelector("#grpEtuVisu").value = values[3];
+                if (reqInfo.responseText !== "null") {
+                    size =reqInfo.responseText.split("/")[0].split(";");
 
-                    if (active != null && !swap) {document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";}
-                    document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
+                    const values = reqInfo.responseText.split(";");
+                    if (values.length === 4) {
+                        document.querySelector("#idTabVisu").value = values[0];
+                        document.querySelector("#numEtuVisu").value = values[1];
+                        document.querySelector("#nomEtuVisu").value = values[2];
+                        document.querySelector("#grpEtuVisu").value = values[3];
 
-                    active = values[0] ;
+                        if (active != null && !swap) {
+                            document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";
+                        }
+                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
 
+                        active = values[0];
+
+                    }
                 }
 
             }

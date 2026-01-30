@@ -108,7 +108,11 @@ public class DisplayServlet extends HttpServlet
             {
                 case "init" -> out.print(pos.getTablesForVisu());
 
-                case "infos" -> out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
+                case "infos" -> {
+                    try {
+                    out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
+                    }catch(Exception e) {out.print("null");}
+                }
 
                 case "swap" ->
                 {

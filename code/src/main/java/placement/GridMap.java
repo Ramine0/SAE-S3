@@ -79,6 +79,8 @@ public class GridMap extends Map
                     cpt++;
                 }
             }
+
+            scan.close();
             return lesTables;
         } catch (Exception e)
         {

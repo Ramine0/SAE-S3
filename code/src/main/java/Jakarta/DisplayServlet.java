@@ -5,7 +5,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.PositioningIntermediate;
 
@@ -22,7 +21,10 @@ public class DisplayServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         String code = request.getParameter("testVal");
-        if (CreationServlet.getSalle(code) == null){code = request.getSession().getId();}
+        if (CreationServlet.getSalle(code) == null)
+        {
+            code = request.getSession().getId();
+        }
         Room salle = CreationServlet.getSalle(code);
 
         if (salle == null)
@@ -60,6 +62,9 @@ public class DisplayServlet extends HttpServlet
             if (salle.positioningMode())
             {
                 PositioningIntermediate pos = salle.getPositioningIntermediate();
+
+                salle.message = "j'aime les patates sautées";
+                out.println(salle.message);
 
                 if (salle.generate())
                     out.println("""

@@ -20,34 +20,99 @@ public class CreationServlet extends HttpServlet
     private static HashMap<String, Room> rooms;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (rooms == null) {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        if (rooms == null)
+        {
             rooms = new HashMap<>();
         }
         String user = request.getSession().getId();
-        if (!userExists(user)){
+        if (!userExists(user))
+        {
             rooms.put(user, new Room(request.getServletContext().getRealPath("/") + "/"));
         }
-        Room salle= rooms.get(user);
+        Room salle = rooms.get(user);
 
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
         if (request.getParameter("action") != null)
-            tableRequests(request, out,salle);
+            tableRequests(request, out, salle);
 
         if (request.getParameter("constraint") != null)
-            constraintRequests(request, out,salle);
+            constraintRequests(request, out, salle);
 
         out.flush();
     }
 
-    private void constraintRequests(HttpServletRequest request, PrintWriter out,Room salle)
+    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) throws FileNotFoundException
     {
+        CreatingIntermediate crea = salle.getCrea();
+        int lon, lar;
 
-        CreatingIntermediate crea = salle.getCrea() ;
-        if (crea == null) {out.println("heheheheh"); return ;}
+        switch (request.getParameter("action"))
+        {
+            case "define" ->
+            {
+                crea.setMode(0);
+
+                if (request.getParameter("planType").equals("defaultPlan"))
+                {
+                    out.print(crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/"));
+                } else
+                {
+                    lon = Integer.parseInt(request.getParameter("long"));
+                    lar = Integer.parseInt(request.getParameter("larg"));
+
+                    if (lon < 4)
+                        lon = 4;
+                    else if (lon > 20)
+                        lon = 20;
+
+                    if (lar < 4)
+                        lar = 4;
+                    else if (lar > 8)
+                        lar = 8;
+
+                    crea.createTables(lon, lar);
+                    crea.setDimensions(lon, lar);
+
+                    if (crea.getNumberTables() == 0)
+                        out.print(0);
+                    else if (crea.getNumberTables() == lon * lar && ((RectangularMap) crea.getMap()).getHeight() == lon && ((RectangularMap) crea.getMap()).getWidth() == lar)
+                        out.print(lon + ";" + lar);
+                    else
+                        out.print(-1);
+                }
+            }
+
+            case "present" ->
+            {
+                int num = Integer.parseInt(request.getParameter("num"));
+
+                if (crea.findTable(num))
+                    out.print("valide");
+                else
+                    out.print("table introuvable");
+            }
+
+            case "generate" -> out.print(request.getSession().getId());
+
+
+            case "getDim" ->
+                    out.print(((RectangularMap) salle.getCrea().getMap()).getHeight() + ";" + ((RectangularMap) salle.getCrea().getMap()).getWidth());
+        }
+    }
+
+    private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle)
+    {
+        CreatingIntermediate crea = salle.getCrea();
+        if (crea == null)
+        {
+            out.println("heheheheh");
+            return;
+        }
         switch (request.getParameter("constraint"))
         {
             case "imposePlace" ->
@@ -109,80 +174,15 @@ public class CreationServlet extends HttpServlet
 
             case "mode" ->
             {
-                if (crea != null)
-                {
-                    if (request.getParameter("mode").equals("normal"))
-                        crea.setMode(0);
+                if (request.getParameter("mode").equals("normal"))
+                    crea.setMode(0);
 
-                    else if (request.getParameter("mode").equals("group"))
-                        crea.setMode(1);
+                else if (request.getParameter("mode").equals("group"))
+                    crea.setMode(1);
 
-                    else if (request.getParameter("mode").equals("sub-group"))
-                        crea.setMode(2);
-                } else
-                    out.println("erreur");
+                else if (request.getParameter("mode").equals("sub-group"))
+                    crea.setMode(2);
             }
-        }
-    }
-
-    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) throws FileNotFoundException
-    {
-        CreatingIntermediate crea = salle.getCrea() ;
-        int lon, lar;
-
-        switch (request.getParameter("action"))
-        {
-            case "define" ->
-            {
-
-                crea.setMode(0);
-
-                if (request.getParameter("planType").equals("defaultPlan"))
-                {
-                    out.print(crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/"));
-                } else
-                {
-                    lon = Integer.parseInt(request.getParameter("long"));
-                    lar = Integer.parseInt(request.getParameter("larg"));
-
-                    if (lon < 4)
-                        lon = 4;
-                    else if (lon > 20)
-                        lon = 20;
-
-                    if (lar < 4)
-                        lar = 4;
-                    else if (lar > 8)
-                        lar = 8;
-
-                    crea.createTables(lon, lar);
-                    crea.setDimensions(lon, lar);
-
-                    if (crea.getNumberTables() == 0)
-                        out.print(0);
-                    else if (crea.getNumberTables() == lon * lar && ((RectangularMap) crea.getMap()).getHeight() == lon && ((RectangularMap) crea.getMap()).getWidth() == lar)
-                        out.print(lon + ";" + lar);
-                    else
-                        out.print(-1);
-                }
-            }
-
-            case "present" ->
-            {
-                int num = Integer.parseInt(request.getParameter("num"));
-
-                if (crea.findTable(num))
-                    out.print("valide");
-                else
-                    out.print("table introuvable");
-            }
-
-            case "generate" ->
-                out.print(request.getSession().getId());
-
-
-            case "getDim" ->
-                    out.print(((RectangularMap) salle.getCrea().getMap()).getHeight() + ";" + ((RectangularMap) salle.getCrea().getMap()).getWidth());
         }
     }
 
@@ -194,7 +194,8 @@ public class CreationServlet extends HttpServlet
             return null;
     }
 
-    private static boolean userExists(String user) {
+    private static boolean userExists(String user)
+    {
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 

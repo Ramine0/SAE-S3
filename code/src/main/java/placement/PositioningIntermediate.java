@@ -135,6 +135,7 @@ public class PositioningIntermediate
     {
         String[] infos = new String[donnees.getTables().length];
         int cpt = 0;
+
         for (int t : donnees.getTables())
         {
 

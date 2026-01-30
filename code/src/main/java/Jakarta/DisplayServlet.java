@@ -16,16 +16,14 @@ import java.io.PrintWriter;
 @MultipartConfig
 public class DisplayServlet extends HttpServlet
 {
-    private static Room salle = null;
-    private PositioningIntermediate pos = null;
 
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         String code = request.getParameter("testVal");
-        if (CreationServlet.getSalle(code) == null){code = request.getParameter("testVal");}
-        salle = CreationServlet.getSalle(code);
+        if (CreationServlet.getSalle(code) == null){code = request.getSession().getId();}
+        Room salle = CreationServlet.getSalle(code);
 
         if (salle == null)
             response.sendRedirect("index.jsp");
@@ -61,7 +59,7 @@ public class DisplayServlet extends HttpServlet
                     """);
             if (salle.positioningMode())
             {
-                pos = salle.getPositioningIntermediate();
+                PositioningIntermediate pos = salle.getPositioningIntermediate();
 
                 if (salle.generate())
                     out.println("""
@@ -94,6 +92,9 @@ public class DisplayServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        Room salle = CreationServlet.getSalle(request.getSession().getId());
+        PositioningIntermediate pos = salle.getPositioningIntermediate();
+
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 

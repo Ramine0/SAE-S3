@@ -908,4 +908,31 @@ public class Data
         }
     }
 
+    public int maxTableX()
+    {
+        int[] coords = new  int[tables.length];
+        int cpt =0 ;
+        for (Table tb : tables) {
+            coords[cpt] = tb.getCoord()[0] ;
+            cpt++ ;
+        }
+        return Utilitaire.max(coords);
+    }
+
+    public int maxTableY()
+    {
+        int[] coords = new  int[tables.length];
+        int cpt =0 ;
+        for (Table tb : tables) {
+            coords[cpt] = tb.getCoord()[1] ;
+            cpt++ ;
+        }
+        return Utilitaire.max(coords);
+    }
+
+    public String getPlanSize() {
+        return "" ;
+    }
+
+
 }

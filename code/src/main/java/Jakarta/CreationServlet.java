@@ -48,7 +48,9 @@ public class CreationServlet extends HttpServlet
 
     private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) throws FileNotFoundException
     {
+        salle.creatingMode();
         CreatingIntermediate crea = salle.getCrea();
+
         int lon, lar;
 
         switch (request.getParameter("action"))

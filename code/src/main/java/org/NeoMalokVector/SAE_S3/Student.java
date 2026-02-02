@@ -2,7 +2,11 @@ package org.NeoMalokVector.SAE_S3;
 
 public class Student
 {
-    private String name, firstName, id, group, subGroup;
+    private final String name;
+    private final String firstName;
+    private final String id;
+    private final String group;
+    private final String subGroup;
 
     public Student(String group, String subGroup, String name, String firstName, String id)
     {

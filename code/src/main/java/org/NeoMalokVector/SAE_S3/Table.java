@@ -5,7 +5,8 @@ public class Table
     private static int id=0;
     private int num;
     private Student student;
-    private int coordX, coordY ;
+    private final int coordX;
+    private final int coordY ;
 
     /**
      * Constructeur par défaut de table, crée une table à la suite de la dernière table

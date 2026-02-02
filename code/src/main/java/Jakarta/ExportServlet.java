@@ -17,7 +17,7 @@ import java.io.PrintWriter;
 @WebServlet("/export")
 public class ExportServlet extends HttpServlet
 {
-    private CreatingIntermediate crea =null;
+    private final CreatingIntermediate crea =null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {

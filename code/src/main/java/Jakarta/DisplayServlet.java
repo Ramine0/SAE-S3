@@ -95,12 +95,14 @@ public class DisplayServlet extends HttpServlet
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         Room salle = CreationServlet.getSalle(request.getSession().getId());
+        assert salle != null;
+
         PositioningIntermediate pos = salle.getPositioningIntermediate();
 
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
-        if (salle != null && pos != null)
+        if (pos != null)
             switch (request.getParameter("action"))
             {
                 case "init" -> out.print(pos.getTablesForVisu());

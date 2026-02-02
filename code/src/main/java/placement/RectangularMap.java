@@ -6,7 +6,8 @@ import java.util.List;
 
 public class RectangularMap extends Map
 {
-    private int width, height;
+    private final int width;
+    private final int height;
 
     private int[] dispo;
 

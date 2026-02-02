@@ -13,7 +13,7 @@ public class PositioningIntermediate
     // on passe par donnees pour acceder au données (etus et tables)
     // on manipule pas directement les tables on a juste leur numeros question d'optimisation et de securité
     private Data donnees;
-    private Random random = new Random();
+    private final Random random = new Random();
     // on fait ce qu'on veux des contraintes c plus simple et + pratique
 
     // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
@@ -157,24 +157,24 @@ public class PositioningIntermediate
 
     public String getTablesForVisu()
     {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int t : donnees.existingTables())
         {
-            result += t + "!";
+            result.append(t).append("!");
             if (t != 0)
             {
                 if (donnees.haveStudent(t))
                 {
-                    result += donnees.getFullName(donnees.getStuFromTab(t).getId()) + ";";
+                    result.append(donnees.getFullName(donnees.getStuFromTab(t).getId())).append(";");
                 } else
                 {
-                    result += "aucun etu;";
+                    result.append("aucun etu;");
                 }
 
             }
         }
 
-        return result;
+        return result.toString();
     }
 
     public boolean swapPlaces(int numT1, int numT2)
@@ -188,12 +188,12 @@ public class PositioningIntermediate
 
     public String descripData()
     {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (String s : donnees.descrip())
         {
-            result += s + ";";
+            result.append(s).append(";");
         }
-        return result;
+        return result.toString();
     }
 
     public String tabInfoForVisu(int nb)

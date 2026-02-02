@@ -5,8 +5,8 @@ import utilitaire.Utilitaire;
 
 public class PerGroup extends Constraint
 {
-    private String[] groupe;
-    private int num ;
+    private final String[] groupe;
+    private final int num ;
 
     public int getNum() {return num ;}
 

@@ -50,7 +50,7 @@ public class Room
         return false;
     }
 
-    public void creatingMode() throws FileNotFoundException
+    public void creatingMode()
     {
         if (crea == null)
         {
@@ -82,71 +82,6 @@ public class Room
             return posing.swapPlaces(num1, num2);
         }
         return false;
-    }
-
-    /**
-     * Retire la table num des tables auxquelles un étudiant peut être placé.
-     *
-     * @param num numéro de la table retirée
-     */
-    private void deleteTable(int num)
-    {
-
-    }
-
-    /**
-     * Exporte le placement sous les différents formats demandés.
-     * !!! Il faudra rajouter un moyen de choisir les différents formats d'export (3 booléens ou un string) !!!
-     */
-    private void export(String opt)
-    {
-        if (opt.length() == 3)
-        {
-            //on exporte l'excel, le plan et le listing
-        } else if (opt.length() == 2)
-        {
-            if (opt.equals("EP"))
-            {
-                // on exporte l'excel et le plan
-            } else if (opt.equals("EL"))
-            {
-                // on exporte l'excel et le listing
-            } else
-            {
-                //on exporte le plan et le listing
-            }
-
-        } else if (opt.length() == 1)
-        {
-            if (opt.equals("E"))
-            {
-                // on exporte l'excel
-            } else if (opt.equals("P"))
-            {
-                // on exporte le plan
-            } else
-            {
-                // on exporte le listing
-            }
-        }
-    }
-
-    public String describeData()
-    {
-        if (posing == null)
-        {
-            return "posing null";
-        }
-        return posing.descripData();
-    }
-
-    public String descripPlaces()
-    {
-        if (posing == null)
-        {
-            return "posing null";
-        }
-        return posing.getTablesInfoForVisu();
     }
 
 }

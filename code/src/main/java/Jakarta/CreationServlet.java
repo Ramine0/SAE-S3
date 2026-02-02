@@ -198,6 +198,7 @@ public class CreationServlet extends HttpServlet
 
     private static boolean userExists(String user)
     {
+        if (rooms == null) {return false;}
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 

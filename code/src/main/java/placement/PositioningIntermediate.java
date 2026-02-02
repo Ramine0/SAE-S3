@@ -167,20 +167,10 @@ public class PositioningIntermediate
         String result = donnees.getPlanSize()+"/";
         for (int t : donnees.existingTables())
         {
-            result += t + "!";
-            if (t != 0)
-            {
-                if (donnees.haveStudent(t))
-                {
-                    result += donnees.getFullName(donnees.getStuFromTab(t).getId()) + ";";
-                } else
-                {
-                    result += "aucun etu;";
-                }
-
+            if (! donnees.isDeleted(t)) {
+                result += donnees.getTableInfos(t)+";";
             }
         }
-
         return result;
     }
 

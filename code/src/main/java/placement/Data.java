@@ -57,6 +57,7 @@ public class Data
 
     public Data() throws FileNotFoundException
     {
+        map = new GridMap() ;
         chargerFichier();
         init();
     }
@@ -101,6 +102,7 @@ public class Data
 
     public String[] freeStudents()
     {
+
         String[] place = new String[students.size()];
         int numPla = 0;
 

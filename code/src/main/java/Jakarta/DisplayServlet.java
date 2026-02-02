@@ -26,7 +26,6 @@ public class DisplayServlet extends HttpServlet
             code = request.getSession().getId();
         }
         Room salle = CreationServlet.getSalle(code);
-
         if (salle == null)
             response.sendRedirect("index.jsp");
         else
@@ -95,33 +94,39 @@ public class DisplayServlet extends HttpServlet
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        Room salle = CreationServlet.getSalle(request.getSession().getId());
-        PositioningIntermediate pos = salle.getPositioningIntermediate();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        Room salle = CreationServlet.getSalle(request.getSession().getId());
+        PositioningIntermediate pos = null;
+        if (salle != null) {
+            pos = salle.getPositioningIntermediate();
+        }
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
-        if (salle != null && pos != null)
-            switch (request.getParameter("action"))
-            {
+        if (salle != null && pos != null) {
+            switch (request.getParameter("action")) {
                 case "init" -> out.print(pos.getTablesForVisu());
 
                 case "infos" -> {
                     try {
-                    out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
-                    }catch(Exception e) {out.print("null");}
+                        out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
+                    } catch (Exception e) {
+                        out.print("null");
+                    }
                 }
 
-                case "swap" ->
-                {
+                case "swap" -> {
                     if (salle.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
                         out.println("0");
                     else
                         out.println("1");
                 }
             }
+
+        }else {
+            out.print("rien");
+        }
 
         out.flush();
     }

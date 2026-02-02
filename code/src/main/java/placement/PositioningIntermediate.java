@@ -46,35 +46,27 @@ public class PositioningIntermediate
         int loopCount;
         int tableNumber = 0;
 
-        while (donnees.freeStudents().length != 0)
+        while (donnees.freeStudents().length != 0 && tableNumber <= donnees.maxTableID())
         {
-            String studentId = donnees.freeStudents()[random.nextInt(donnees.freeStudents().length)];
+            tableNumber++;
 
-            while (!Utilitaire.in(tableNumber, donnees.freeTables()))
-            {
-                tableNumber++;
+            if (!Utilitaire.in(tableNumber, donnees.freeTables()))
+                continue;
 
-                if (tableNumber > donnees.maxTableID())
-                    break;
-            }
+            String[] freeStudents = donnees.freeStudents();
+            String studentId = freeStudents[random.nextInt(freeStudents.length)];
 
             loopCount = 0;
             while (!walid(donnees.getStudentFromId(studentId), tableNumber))
             {
-                studentId = donnees.freeStudents()[random.nextInt(donnees.freeStudents().length)];
+                studentId = freeStudents[random.nextInt(freeStudents.length)];
 
                 loopCount++;
-                if (loopCount > donnees.freeStudents().length / 2)
+                if (loopCount > freeStudents.length / 2)
                     tableNumber++;
-                if (tableNumber > donnees.maxTableID())
-                {
-                    return false;
-                }
             }
+
             donnees.placeStudent(tableNumber, studentId);
-
-            tableNumber++;
-
         }
 
         // j'ai trop la flemme de lire tout ce que Malik a écrit parce que c'est d'la merde et je sais même pas si c'est vraiment utile
@@ -112,6 +104,7 @@ public class PositioningIntermediate
         {
             // on prends les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
+
             for (Constraint c : donnees.getConstr())
             {
                 // si ca bloque

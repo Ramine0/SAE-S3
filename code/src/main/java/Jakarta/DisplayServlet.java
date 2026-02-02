@@ -63,9 +63,6 @@ public class DisplayServlet extends HttpServlet
             {
                 PositioningIntermediate pos = salle.getPositioningIntermediate();
 
-                salle.message = "j'aime les patates sautées";
-                out.println(salle.message);
-
                 if (salle.generate())
                     out.println("""
                             <h4> Génération réussie </h4>

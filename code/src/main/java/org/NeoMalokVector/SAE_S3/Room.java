@@ -8,15 +8,15 @@ import java.io.FileNotFoundException;
 public class Room
 {
 
-    private CreatingIntermediate crea, oldCrea ;
+    private CreatingIntermediate crea, oldCrea;
     private PositioningIntermediate posing;
-    public String message ;
+    public String message;
 
 
     public Room() throws FileNotFoundException
     {
         crea = new CreatingIntermediate();
-        posing = null ;
+        posing = null;
     }
 
     public Room(String path) throws FileNotFoundException
@@ -24,33 +24,44 @@ public class Room
         crea = new CreatingIntermediate(path);
 
     }
-    public CreatingIntermediate getCrea() {
+
+    public CreatingIntermediate getCrea()
+    {
         return crea;
     }
-    public PositioningIntermediate getPositioningIntermediate() {
+
+    public PositioningIntermediate getPositioningIntermediate()
+    {
         return posing;
     }
 
-    public boolean positioningMode() {
-        if (crea != null) {
+    public boolean positioningMode()
+    {
+        if (crea != null)
+        {
             posing = crea.generatePos();
-            if (posing != null) {
+            if (posing != null)
+            {
                 oldCrea = crea;
                 crea = null;
                 return true;
             }
-        }else return posing != null;
-        return false ;
+        } else return posing != null;
+        return false;
     }
 
     public void creatingMode() throws FileNotFoundException
     {
         if (crea == null)
+        {
             crea = oldCrea;
+
+        }
     }
 
-    public boolean generate() {
-        return posing.creerPlacement() ;
+    public boolean generate()
+    {
+        return posing.creerPlacement();
     }
 
 
@@ -60,21 +71,26 @@ public class Room
      * Il faudrait peut-être voir si on la déplace pas dans PositioningIntermediate, vu que c'est
      * ce qui est censé permettre de placer les élèves et que la fonction de création de placement est dans PositioningIntermediate.
      * PositioningIntermediate a pas d'accès à swapPlaces au passage.
+     *
      * @param num1 numéro de la première table
      * @param num2 numéro de la deuxième table
      */
-    public boolean swapPlaces(int num1,  int num2) {
-        if (posing != null) {
-            return posing.swapPlaces(num1,num2) ;
+    public boolean swapPlaces(int num1, int num2)
+    {
+        if (posing != null)
+        {
+            return posing.swapPlaces(num1, num2);
         }
-        return false ;
+        return false;
     }
 
     /**
      * Retire la table num des tables auxquelles un étudiant peut être placé.
+     *
      * @param num numéro de la table retirée
      */
-    private void deleteTable(int num) {
+    private void deleteTable(int num)
+    {
 
     }
 
@@ -84,40 +100,53 @@ public class Room
      */
     private void export(String opt)
     {
-        if (opt.length()==3){
+        if (opt.length() == 3)
+        {
             //on exporte l'excel, le plan et le listing
-        }else if  (opt.length()==2){
-            if (opt.equals("EP")){
-            // on exporte l'excel et le plan
-            }else if (opt.equals("EL")){
-            // on exporte l'excel et le listing
-            }else{
-            //on exporte le plan et le listing
+        } else if (opt.length() == 2)
+        {
+            if (opt.equals("EP"))
+            {
+                // on exporte l'excel et le plan
+            } else if (opt.equals("EL"))
+            {
+                // on exporte l'excel et le listing
+            } else
+            {
+                //on exporte le plan et le listing
             }
 
-        }else if (opt.length()==1){
-            if (opt.equals("E")){
-            // on exporte l'excel
-            }else if (opt.equals("P")){
-            // on exporte le plan
-            }else{
-            // on exporte le listing
+        } else if (opt.length() == 1)
+        {
+            if (opt.equals("E"))
+            {
+                // on exporte l'excel
+            } else if (opt.equals("P"))
+            {
+                // on exporte le plan
+            } else
+            {
+                // on exporte le listing
             }
         }
     }
 
-    public String describeData () {
-        if (posing == null) {
-            return "posing null" ;
+    public String describeData()
+    {
+        if (posing == null)
+        {
+            return "posing null";
         }
-        return posing.descripData() ;
+        return posing.descripData();
     }
 
-    public String descripPlaces() {
-        if (posing == null) {
-            return "posing null" ;
+    public String descripPlaces()
+    {
+        if (posing == null)
+        {
+            return "posing null";
         }
-        return posing.getTablesInfoForVisu() ;
+        return posing.getTablesInfoForVisu();
     }
 
 }

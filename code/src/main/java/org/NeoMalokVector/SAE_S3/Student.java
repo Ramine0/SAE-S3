@@ -48,6 +48,11 @@ public class Student
         return firstName;
     }
 
+    public String getFullName()
+    {
+        return name + " " + firstName;
+    }
+
     public boolean sameGroup(Student etu, boolean sub)
     {
         if (etu.group.equals(this.group))

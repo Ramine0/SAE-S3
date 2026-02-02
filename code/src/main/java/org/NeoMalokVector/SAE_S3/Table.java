@@ -35,9 +35,9 @@ public class Table
             result +=  coordX+"!"+coordY+"!";
         }
         if (student!=null){
-           result += student.descrip(true) ;
+           result += student.getFullName();
         }else {
-            result += "aucun etu2";
+            result += "aucun etu";
         }
         return result ;
     }

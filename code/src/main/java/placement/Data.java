@@ -820,7 +820,7 @@ public class Data
     public String getFullName(String id)
     {
         Student etu = getStudentFromId(id);
-        return etu.getName() + " " + etu.getFirstName();
+        return etu.getFullName();
     }
 
     public boolean haveStudent(int tab)

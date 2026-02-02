@@ -14,8 +14,8 @@ function createTable(){
         t+="<span>"
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
-            if (vals.length == 4){
-                if (vals[1] != wid || vals[2] != hei) {
+            if (vals.length === 4){
+                if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
                     t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
                 }else {
                     table = vals[0];
@@ -26,7 +26,7 @@ function createTable(){
                     i++;
 
                 }
-            }else if (vals.length == 2){
+            }else if (vals.length === 2){
                 table = vals[0];
                 name = vals[1];
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;

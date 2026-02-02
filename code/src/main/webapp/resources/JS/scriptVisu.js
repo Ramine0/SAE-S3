@@ -14,15 +14,10 @@ function createTable(){
         t+="<span>"
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
-            console.log("i : ",i)
-            console.log("val", vals)
             if (vals.length == 4){
-                console.log("etape 1")
                 if (vals[1] != wid || vals[2] != hei) {
-                    console.log("car ",vals[1],vals[2],"differents de ",wid,hei)
                     t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
                 }else {
-                    console.log("etape 2")
                     table = vals[0];
                     name = vals[3];
                     t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
@@ -32,7 +27,6 @@ function createTable(){
 
                 }
             }else if (vals.length == 2){
-                console.log("situation 3")
                 table = vals[0];
                 name = vals[1];
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;

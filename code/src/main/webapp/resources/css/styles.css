@@ -13,7 +13,7 @@ header, aside {
 
 
 body {margin : 0px ;height: 100%;}
-.table{
+.table, .pasTable{
     margin: 15px;
     padding: 10px;
     background-color: #cccccc;
@@ -260,7 +260,7 @@ section span {
     margin: 10px 5px;
 }
 
-
+.pasTable {visibility: hidden;}
 
 
 

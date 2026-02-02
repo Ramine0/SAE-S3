@@ -28,7 +28,9 @@
 <div class="reverseLigne" id="content">
     <main>
         <h4 id="here"> Les tables : </h4>
-        <button id="tableExp" class="table" > Table </button>
+        <section class = "lesTables">
+            <button id="tableExp" class="table" > Table </button>
+        </section>
     </main>
 
     <aside class="asideCrea">

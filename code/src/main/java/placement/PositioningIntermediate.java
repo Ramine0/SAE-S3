@@ -157,23 +157,13 @@ public class PositioningIntermediate
 
     public String getTablesForVisu()
     {
-        StringBuilder result = new StringBuilder();
+        StringBuilder result = new StringBuilder(donnees.getPlanSize() + "/");
         for (int t : donnees.existingTables())
         {
-            result.append(t).append("!");
-            if (t != 0)
-            {
-                if (donnees.haveStudent(t))
-                {
-                    result.append(donnees.getFullName(donnees.getStuFromTab(t).getId())).append(";");
-                } else
-                {
-                    result.append("aucun etu;");
-                }
-
+            if (! donnees.isDeleted(t)) {
+                result.append(donnees.getTableInfos(t)).append(";");
             }
         }
-
         return result.toString();
     }
 

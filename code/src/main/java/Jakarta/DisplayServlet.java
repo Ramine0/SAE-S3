@@ -92,31 +92,40 @@ public class DisplayServlet extends HttpServlet
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         Room salle = CreationServlet.getSalle(request.getSession().getId());
-        assert salle != null;
-
-        PositioningIntermediate pos = salle.getPositioningIntermediate();
-
+        PositioningIntermediate pos = null;
+        if (salle != null) {
+            pos = salle.getPositioningIntermediate();
+        }
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
-        if (pos != null)
+        if (pos != null) {
             switch (request.getParameter("action"))
             {
                 case "init" -> out.print(pos.getTablesForVisu());
 
-                case "infos" -> out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
+                case "infos" -> {
+                    try {
+                        out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
+                    } catch (Exception e) {
+                        out.print("null");
+                    }
+                }
 
-                case "swap" ->
-                {
+                case "swap" -> {
                     if (salle.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
                         out.println("0");
                     else
                         out.println("1");
                 }
             }
+
+        }else {
+            out.print("rien");
+        }
 
         out.flush();
     }

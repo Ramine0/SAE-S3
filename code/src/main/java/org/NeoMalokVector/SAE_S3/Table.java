@@ -30,11 +30,16 @@ public class Table
      */
     public String description()
     {
-        if (student!=null){
-            return (num+";"+student.descrip(true));
-        }else{
-            return String.valueOf(num);
+        String result =num+"!";
+        if (coordX != -1) {
+            result +=  coordX+"!"+coordY+"!";
         }
+        if (student!=null){
+           result += student.descrip(true) ;
+        }else {
+            result += "aucun etu";
+        }
+        return result ;
     }
 
     /**

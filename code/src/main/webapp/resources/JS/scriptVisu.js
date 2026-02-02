@@ -2,31 +2,61 @@ let tables=[]
 let noms = []
 let active ;
 let swap = false ;
-let lon;
-let lar;
+let size ;
+
 function createTable(){
-    let t = "<span>" ;
-    let table ;
-    let vals ;
-    let name ;
-    let l=0;
-    for (let i = 0; i < tables.length; i++ ){
-        l++;
-        vals = tables[i].split("!") ;
-        table = vals[0] ;
-        name = vals[1] ;
-        t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
-        tables[i] = table ;
-        noms[i] = name ;
-        if (lar===l){
-            l=0;
-            t+="</span> <span>";
+    let t = ""
+    let table
+    let vals
+    let name
+    let i = 0 ;
+    for (let hei= 1; hei <= size[1]; hei++){
+        t+="<span>"
+        for (let wid = 1; wid <= size[0]; wid++) {
+            vals = tables[i]
+            console.log("i : ",i)
+            console.log("val", vals)
+            if (vals.length == 4){
+                console.log("etape 1")
+                if (vals[1] != wid || vals[2] != hei) {
+                    console.log("car ",vals[1],vals[2],"differents de ",wid,hei)
+                    t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
+                }else {
+                    console.log("etape 2")
+                    table = vals[0];
+                    name = vals[3];
+                    t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
+                    tables[i] = table;
+                    noms[i] = name;
+                    i++;
+
+                }
+            }else if (vals.length == 2){
+                console.log("situation 3")
+                table = vals[0];
+                name = vals[1];
+                t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
+                tables[i] = table;
+                noms[i] = name;
+                i++;
+
+            }
+            if (i >= tables.length) {
+                break ;
+            }
+
+        }
+        t += "</span>"
+        if (i >= tables.length) {
+            break ;
         }
     }
     if (t !== "") {
         document.querySelector("#tableExp").insertAdjacentHTML("beforebegin", t);
         for (let i = 0; i < tables.length; i++) {
-            document.querySelector(`#T${tables[i]}`).addEventListener("click", getInfosTable);
+            if (tables[i] !== "") {
+                document.querySelector(`#T${tables[i]}`).addEventListener("click", getInfosTable);
+            }
         }
         if (document.querySelector("#tableExp")!= null ) {
             document.querySelector("#tableExp").remove();
@@ -36,36 +66,35 @@ function createTable(){
 }
 
 
-function init(){
-    const dim=new XMLHttpRequest();
-    dim.open("GET", `table?action=${encodeURIComponent("getDim")}`);
-    dim.onreadystatechange=function(){
-        if (dim.readyState===XMLHttpRequest.DONE){
-            if (initReq.status===200){
-                let rep=dim.responseText.split(";");
-                lon=rep[0];
-                lar=rep[1];
-                console.log(rep[0]+" "+rep[1]);
-            }
-        }
-    }
+function init() {
 
-    const initReq=new XMLHttpRequest();
+    const initReq = new XMLHttpRequest();
     initReq.open("GET", `Display?action=${encodeURIComponent("init")}`, true);
-    initReq.onreadystatechange = function (){
-        if (initReq.readyState===XMLHttpRequest.DONE){
-            if (initReq.status===200){
-                const numbers = initReq.responseText.split(";") ;
-                for (let i =  0; i < numbers.length-1 ; i ++ ) {
-                    tables.push(numbers[i]);
+    initReq.onreadystatechange = function () {
+        if (initReq.readyState === XMLHttpRequest.DONE) {
+            if (initReq.status === 200) {
+                if (initReq.responseText !== "rien") {
+
+                    let elem = initReq.responseText.split("/")
+                    size = elem[0].split(";");
+                    console.log(elem[1].split(";"));
+                    const numbers = elem[1].split(";");
+                    for (let i = 0; i < numbers.length - 1; i++) {
+                        tables.push(numbers[i].split("!"));
+                    }
+                    createTable()
                 }
-            }else {
             }
-            createTable() ;
+
         }
     };
-    initReq.send() ;
+
+    initReq.send();
+
+
+
 }
+
 document.querySelector("#swapForm").addEventListener("click",modeSwap) ;
 init() ;
 
@@ -82,18 +111,22 @@ function getInfosTable(event) {
     reqInfo.onreadystatechange = function (){
         if (reqInfo.readyState===XMLHttpRequest.DONE){
             if (reqInfo.status===200){
-                const values = reqInfo.responseText.split(";");
-                if (values.length === 4) {
-                    document.querySelector("#idTabVisu").value = values[0];
-                    document.querySelector("#numEtuVisu").value = values[1];
-                    document.querySelector("#nomEtuVisu").value = values[2];
-                    document.querySelector("#grpEtuVisu").value = values[3];
+                if (reqInfo.responseText !== "null") {
+                    const values = reqInfo.responseText.split(";");
+                    if (values.length === 4) {
+                        document.querySelector("#idTabVisu").value = values[0];
+                        document.querySelector("#numEtuVisu").value = values[1];
+                        document.querySelector("#nomEtuVisu").value = values[2];
+                        document.querySelector("#grpEtuVisu").value = values[3];
 
-                    if (active != null && !swap) {document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";}
-                    document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
+                        if (active != null && !swap) {
+                            document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";
+                        }
+                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
 
-                    active = values[0] ;
+                        active = values[0];
 
+                    }
                 }
 
             }

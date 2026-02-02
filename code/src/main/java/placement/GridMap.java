@@ -66,6 +66,7 @@ public class GridMap extends Map
         Table[] lesTables;
         try
         {
+            System.out.println(path+"resources/planDefaut.csv");
             Scanner scan = new Scanner(new FileReader(path + "resources/planDefaut.csv"));
             lesTables = new Table[scan.nextInt()];
             String[] line;
@@ -84,6 +85,7 @@ public class GridMap extends Map
             return lesTables;
         } catch (Exception e)
         {
+            System.out.println(path+"resources/planDefaut.csv");
             System.out.println(e.getMessage());
             return null;
         }

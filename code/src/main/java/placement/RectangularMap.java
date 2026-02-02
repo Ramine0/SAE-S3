@@ -68,6 +68,8 @@ public class RectangularMap extends Map
         height = longu;
     }
 
+    public String getSize() {return ""+width+""+ height ;}
+
     public int getWidth()
     {
         return width;

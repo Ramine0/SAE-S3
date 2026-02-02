@@ -37,7 +37,7 @@ public class Table
         if (student!=null){
            result += student.descrip(true) ;
         }else {
-            result += "aucun etu";
+            result += "aucun etu2";
         }
         return result ;
     }

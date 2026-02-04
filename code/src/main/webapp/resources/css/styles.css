@@ -134,6 +134,7 @@ hr {
     display : flex ;
     flex-direction: column;
     margin-right: 20px;
+    width: 35%;
 
 }
 
@@ -262,5 +263,9 @@ section span {
 
 .pasTable {visibility: hidden;}
 
+.double {
+    display : flex ;
+    flex-direction: row;
+}
 
 

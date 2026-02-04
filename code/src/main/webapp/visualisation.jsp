@@ -33,7 +33,7 @@
         </section>
     </main>
 
-    <aside class="asideCrea">
+    <aside class="asideVisu">
 
         <span class="separateur"></span>
         <div class="valuesOfTable">

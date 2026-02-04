@@ -14,13 +14,37 @@ if (document.getElementById("studentFile").files.length !== 0) {
     enableZone();
 }
 
+// dans les fonctions javascript a faire il y a :
+/*
+    generer() ; genere le placement !!!! nessecite les contraintes OK et le fichier OK !!!!!!!!!
+    sinon message en rouge "Generation Impossible un numero ne correspond a aucun etudiant " par exemple
 
-// TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    les fonction walider vont etre appelée par les fonctions qui vont valider dans les sections
+    string validerEtu(String idPartiel) ; renvoie l'id de l'etu si il existe (on peu donner un id incomplet et le completer si unique
+    boolean validerTable() ; dit si la table existe et est pas supprimée
+
+    boolean validerEtuGroup() ; utilise valider Etu pour valider le group
+    void validerPlaceImposee() ; utiliser validerEtu et table pour valider la contrainte de place imposee
+
+    (dans l'ideal la section est rouge mais deviens vert si on trouve !!!! pas important c'est apres quand tout marche)
+
+
+    addToGroup() ; ajoute au groupe l'etudiant trouvé
+    setClassMode() ; change le mode de contrainte par classe
+
+    importFichier() ; enregistre le fichier etudiants.csv
+
+*/
+
+document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+
 function validerPlaceImposee(event) {
     let idFind = event.target.id;
     let numConstr = idFind.charAt(11);
 
-    //TO MODIFY  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
+    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
+
     if (studentId === "")
         document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
     else if (tableNumber === "")
@@ -32,7 +56,25 @@ function validerPlaceImposee(event) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE)
                 if (xhr.status === 200) {
-                        // TO MODIFY
+                    const response = xhr.responseText.split(";");
+                    if (response[1] === "null")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
+                    else if (response[2] === "null")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+                    else if (response[2] === "1")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
+                    else if (response[2] === "2")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                    else if (response[2] === "3")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
+                    else if (response[2] === "-1")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
+                    else {
+                        validerSectImpose(idFind);
+
+                        document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
+                        document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
+                    }
                 } else
                     console.error("Error fetching student data");
         }
@@ -61,6 +103,79 @@ function changeMode() {
     mode.send();
 }
 
+document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
+
+function supprimerPlaceImposee(event) {
+    let idRemove = event.target.id;
+    let numConstr = idRemove.charAt(13);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `creation?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
+    xhr.send();
+
+    document.querySelector("#impose" + numConstr).remove();
+
+    nbImposedPlace--;
+    document.querySelector("#ajoutImpos").disabled = false;
+
+    decreaseId("#i");
+
+    genererWalid();
+
+}
+
+document.getElementById("findTable1").addEventListener("click", validateDeletedTable);
+
+function validateDeletedTable(event) {
+    const findId = event.target.id;
+    const constraintId = findId.charAt(9);
+    const tableNumber = document.getElementById("numTabSup" + constraintId).value;
+
+
+    if (tableNumber === "")
+        return;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `creation?constraint=${encodeURIComponent("deleteTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                let rep = xhr.responseText.split(";");
+                if (rep[0] === rep[1]) {
+                    setValid(`supTable${constraintId}`);
+                    document.getElementById("numTabSup" + constraintId).value = rep[1];
+                }
+            } else
+                console.error("Error deleting table");
+        }
+    }
+    xhr.send();
+}
+
+document.getElementById("deleteTable1").addEventListener("click", removeDeletedTable);
+
+function removeDeletedTable(event) {
+    const findId = event.target.id;
+    const contraintId = findId.charAt(11);
+    const tableNumber = document.getElementById("numTabSup" + contraintId).value;
+
+
+    if (tableNumber !== "") {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `creation?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+        xhr.send();
+    }
+
+    nbPlacesSuppr--;
+    document.querySelector("#ajoutSuppr").disabled = false;
+
+    document.querySelector("#supTable" + contraintId).remove();
+    decreaseId("#DT");
+
+    genererWalid();
+
+}
 
 document.getElementById("walEtu1G1").addEventListener("click", validerEtuGrp);
 
@@ -196,6 +311,59 @@ function setTableNumber() {
     xhr.send();
 }
 
+function createImposed() {
+    nbImposedPlace++;
+    let imposedPlace =
+        `<section id="impose${nbImposedPlace}" class="invalid">
+<section>
+    <label for="imposedStudentId${nbImposedPlace}">Numéro étudiant</label>
+    <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
+</section>
+<section>
+    <label for="imposedTableId${nbImposedPlace}">Numéro table</label>
+    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
+</section>
+<section>
+    <label for="imposedStudentName${nbImposedPlace}">Nom de l'étudiant</label>
+    <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
+</section>
+<button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
+<button class="chercher" id="findImposed${nbImposedPlace}">find</button>
+</section>`;
+
+    document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
+    document.querySelector("#ajoutImpos").disabled = true;
+
+    document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
+    document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
+
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
+}
+
+function createSuppr() {
+    nbPlacesSuppr++;
+    let placesSuppr =
+        `<section id="supTable${nbPlacesSuppr}" class = "invalid">
+<section>
+    <label for="numTabSup${nbPlacesSuppr}">Numéro table</label>
+    <input name="idTabSup${nbPlacesSuppr}" id="numTabSup${nbPlacesSuppr}" min="1" max="${larg * long}" type="number">
+</section>
+<button class="remove" id="deleteTable${nbPlacesSuppr}">remove</button>
+<button class="chercher" id="findTable${nbPlacesSuppr}">find</button>
+</section>`;
+
+    document.querySelector("#ajoutSuppr").disabled = true;
+    document.querySelector('#ajoutSuppr').insertAdjacentHTML("beforebegin", placesSuppr);
+
+    document.querySelector("#findTable" + nbPlacesSuppr).addEventListener("click", validateDeletedTable);
+    document.querySelector("#deleteTable" + nbPlacesSuppr).addEventListener("click", removeDeletedTable);
+
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+}
 
 function createGrp() {
     groupes.push([0]);
@@ -374,6 +542,40 @@ function decreaseId(idElem) {
             console.log(children[i].children[0].children[2]);
             children[i].children[0].children[2].id = "supEtu" + numEtu + "G" + numGrp;
             children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
+        }
+
+    } else if (idElem.startsWith("#i")) {
+        let children = document.getElementById("ligneImposed").children;
+
+        for (let i = 0; i < children.length - 1; i++) {
+            const newId = i + 1;
+
+            children[i].id = "impose" + newId;
+
+            children[i].children[0].children[0].for = "imposedStudentId" + newId;
+            children[i].children[1].children[0].for = "imposedTableId" + newId;
+            children[i].children[2].children[0].for = "imposedStudentName" + newId;
+
+
+            children[i].children[0].children[1].id = "imposedStudentId" + newId;
+            children[i].children[1].children[1].id = "imposedTableId" + newId;
+            children[i].children[2].children[1].id = "imposedStudentName" + newId;
+
+            children[i].children[3].id = "deleteImposed" + newId;
+            children[i].children[4].id = "findImposed" + newId;
+        }
+    } else if (idElem.startsWith("#DT")) {
+        let children = document.getElementById("deletedTablesRow").children;
+
+        for (let i = 0; i < children.length - 1; i++) {
+            const newId = i + 1;
+
+            children[i].id = "supTable" + newId;
+
+            children[i].children[0].children[1].id = "numTabSup" + newId;
+
+            children[i].children[1].id = "deleteTable" + newId;
+            children[i].children[2].id = "findTable" + newId;
         }
     }
 

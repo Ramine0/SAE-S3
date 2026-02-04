@@ -15,11 +15,15 @@ if (document.getElementById("studentFile").files.length !== 0) {
     enableZone();
 }
 
+document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
 // TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function validerPlaceImposee(event) {
     let idFind = event.target.id;
     let numConstr = idFind.charAt(11);
+
+    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
+    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
 
     //TO MODIFY  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (studentId === "")
@@ -33,13 +37,86 @@ function validerPlaceImposee(event) {
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE)
                 if (xhr.status === 200) {
-                    // TO MODIFY
+                    const response = xhr.responseText.split(";");
+                    if (response[1] === "null")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
+                    else if (response[2] === "null")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+                    else if (response[2] === "1")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
+                    else if (response[2] === "2")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                    else if (response[2] === "3")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
+                    else if (response[2] === "-1")
+                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
+                    else {
+                        validerSectImpose(idFind);
+
+                        document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
+                        document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
+                    }
                 } else
                     console.error("Error fetching student data");
         }
 
         xhr.send();
     }
+}
+
+
+document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
+
+function supprimerPlaceImposee(event) {
+    let idRemove = event.target.id;
+    let numConstr = idRemove.charAt(13);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `creation?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
+    xhr.send();
+
+    document.querySelector("#impose" + numConstr).remove();
+
+    nbImposedPlace--;
+    document.querySelector("#ajoutImpos").disabled = false;
+
+    decreaseId("#i");
+
+    genererWalid();
+
+}
+
+
+function createImposed() {
+    nbImposedPlace++;
+    let imposedPlace =
+        `<section id="impose${nbImposedPlace}" class="invalid">
+<section>
+    <label for="imposedStudentId${nbImposedPlace}">Numéro étudiant</label>
+    <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
+</section>
+<section>
+    <label for="imposedTableId${nbImposedPlace}">Numéro table</label>
+    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
+</section>
+<section>
+    <label for="imposedStudentName${nbImposedPlace}">Nom de l'étudiant</label>
+    <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
+</section>
+<button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
+<button class="chercher" id="findImposed${nbImposedPlace}">find</button>
+</section>`;
+
+    document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
+    document.querySelector("#ajoutImpos").disabled = true;
+
+    document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
+    document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
+
+    document.querySelector("#walid").disabled = true;
+    document.querySelector("#walid").style.backgroundColor = '#ec400b';
+
+
 }
 
 function changeMode() {
@@ -270,7 +347,25 @@ function createEtuGrp(event) {
 
 function enableZone() {
     if (fileOk) {
+        // les tables
         document.getElementById("visuofDouble").style.visibility = "visible";
+
+        // places imposées
+        document.querySelector("#imposedStudentId1").disabled = false;
+        document.querySelector("#imposedTableId1").disabled = false;
+        document.querySelector("#findImposed1").disabled = false;
+        document.querySelector("#imposedStudentName1").disabled = false;
+        document.querySelector("#deleteImposed1").disabled = false;
+
+        // les groupes
+        document.querySelector("#idEtu1G1").disabled = false;
+        document.querySelector("#nomEtu1G1").disabled = false;
+        document.querySelector("#supEtu1G1").disabled = false;
+        document.querySelector("#walEtu1G1").disabled = false;
+
+        //le bout generer
+        document.querySelector("#walid").style.backgroundColor = '#ec400b';
+        codeForGeneration();
 
         init()
     }

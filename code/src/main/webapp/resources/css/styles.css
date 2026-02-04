@@ -263,7 +263,7 @@ section span {
 
 .pasTable {visibility: hidden;}
 
-.double {
+#doubleContent {
     display : flex ;
     flex-direction: row;
 }

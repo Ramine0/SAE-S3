@@ -34,15 +34,6 @@ public class CreationServlet extends HttpServlet
             rooms.put(user, new Room(request.getServletContext().getRealPath("/") + "/"));
         }
         Room salle = rooms.get(user);
-        if (salle != null) {
-            if (salle.getCrea() !=  null) {
-                for (String s : salle.getCrea().descripData()) {
-                    out.println(s);
-                }
-            }
-        }else {
-            out.println("comment ca mon reuf") ;
-        }
 
 
 
@@ -70,8 +61,9 @@ public class CreationServlet extends HttpServlet
 
                 if (request.getParameter("planType").equals("defaultPlan"))
                 {
-                    out.println(crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/"));
+                    crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
+                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
                 } else
                 {
                     lon = Integer.parseInt(request.getParameter("long"));

@@ -69,7 +69,7 @@
 <footer>
     <div> &copy; Copyright </div>
 </footer>
-<script type="module" src="resources/JS/scriptVisu.js">
+<script type="module" src="resources/JS/oldScriptVisu.js">
 </script>
 </body>
 </html>

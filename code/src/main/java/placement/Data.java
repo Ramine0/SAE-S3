@@ -331,7 +331,7 @@ public class Data
                     }
                 }
             }
-            if (id!=null && nom!=null && group!=null) {
+            if (id!=null && nom!=null && group!=null && prenom != null) {
                 students.add(new Student(group, subGroup, nom, prenom, id));
             }
         }

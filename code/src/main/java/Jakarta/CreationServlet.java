@@ -34,6 +34,17 @@ public class CreationServlet extends HttpServlet
             rooms.put(user, new Room(request.getServletContext().getRealPath("/") + "/"));
         }
         Room salle = rooms.get(user);
+        if (salle != null) {
+            if (salle.getCrea() !=  null) {
+                for (String s : salle.getCrea().descripData()) {
+                    out.println(s);
+                }
+            }
+        }else {
+            out.println("comment ca mon reuf") ;
+        }
+
+
 
         if (request.getParameter("action") != null)
             tableRequests(request, out, salle);

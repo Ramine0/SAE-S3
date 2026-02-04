@@ -14,46 +14,11 @@ public class HelloServlet
     {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
-        crea.createTables(3, 3);
-        crea.setDimensions(3, 3);
-        PositioningIntermediate pos;
-        pos = salle.getPositioningIntermediate();
 
-        crea.setMode(0);
-
-        crea.findStudentForGroup("p2406", 1);
-        crea.findStudentForGroup("p24033", 1);
-        crea.findStudentForGroup("p24039", 1);
-        salle.positioningMode();
-
-        System.out.println("Génération réussi : " + salle.generate());
-        System.out.println();
-
-        String studentId = crea.findEtu("p24033");
-
-        String result = studentId + ";";
-        result += crea.studentInfo(studentId) + ";";
-
-        String tableNumber = "1";
-
-        if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > crea.maxTable())
-            result += "3;";
-        else if (tableNumber.isEmpty())
-            result += "null;";
-        else
-            result += crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
-
-        System.out.println(result);
-
-//        for (int i = 0; i < crea.getNumberTables(); i++)
-//        {
-//            Table table = crea.getTable(i);
-//
-//            if (table == null)
-//                continue;
-//
-//            System.out.println(table.getNum() + ". " + (table.getEtu() != null ? table.getEtu().getFirstName() : "aucun étu"));
-//        }
+        for (String s:  crea.descripData())
+        {
+            System.out.println(s);
+        }
 
     }
 

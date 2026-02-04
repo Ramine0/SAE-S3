@@ -92,8 +92,6 @@ function changeMode() {
             if (mode.status === 200) {
                 if (mode.responseText === "error") {
                     console.log("table nulle");
-                } else {
-                    console.log(mode.responseText)
                 }
 
             } else {

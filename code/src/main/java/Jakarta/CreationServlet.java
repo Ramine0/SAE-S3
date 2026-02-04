@@ -60,7 +60,9 @@ public class CreationServlet extends HttpServlet
 
                 if (request.getParameter("planType").equals("defaultPlan"))
                 {
-                    out.print(crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/"));
+                    crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
+                    
+                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
                 } else
                 {
                     lon = Integer.parseInt(request.getParameter("long"));

@@ -16,13 +16,13 @@ public class Room
     public Room() throws FileNotFoundException
     {
         crea = new CreatingIntermediate();
-        posing = null;
+        positioningMode();
     }
 
     public Room(String path) throws FileNotFoundException
     {
         crea = new CreatingIntermediate(path);
-
+        positioningMode();
     }
 
     public CreatingIntermediate getCrea()
@@ -40,14 +40,8 @@ public class Room
         if (crea != null)
         {
             posing = crea.generatePos();
-            if (posing != null)
-            {
-                oldCrea = crea;
-                crea = null;
-                return true;
-            }
-        } else return posing != null;
-        return false;
+        }
+        return posing != null;
     }
 
     public void creatingMode()

@@ -21,6 +21,9 @@ public class CreationServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
         if (rooms == null)
         {
             rooms = new HashMap<>();
@@ -31,10 +34,6 @@ public class CreationServlet extends HttpServlet
             rooms.put(user, new Room(request.getServletContext().getRealPath("/") + "/"));
         }
         Room salle = rooms.get(user);
-
-
-        response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
 
         if (request.getParameter("action") != null)
             tableRequests(request, out, salle);
@@ -60,7 +59,8 @@ public class CreationServlet extends HttpServlet
 
                 if (request.getParameter("planType").equals("defaultPlan"))
                 {
-                    out.print(crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/"));
+                    out.println(crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/"));
+
                 } else
                 {
                     lon = Integer.parseInt(request.getParameter("long"));

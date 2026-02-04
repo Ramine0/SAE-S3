@@ -299,7 +299,6 @@ public class Data
 
         while (sc.hasNextLine()) {
             line = sc.nextLine().split(";");
-
             id = null;
             nom = null;
             prenom = null;
@@ -332,40 +331,13 @@ public class Data
                     }
                 }
             }
-            if (id!=null && nom!=null && prenom!=null && group!=null && subGroup!=null) {
+            if (id!=null && nom!=null && group!=null) {
                 students.add(new Student(group, subGroup, nom, prenom, id));
             }
         }
+        sc.close();
     }
-//            }
-//            for (String s : line)
-//            {
-//                if (!Objects.equals(s, ""))
-//                {
-//                    int numericValue = Character.getNumericValue(s.charAt(s.length() - 1));
-//
-//                    if (Character.isDigit(s.charAt(1)) && s.length() == 8)
-//                        id = s;
-//                    else if ((s.contains("1") || s.contains("2") || s.contains("3")) && group == -1)
-//                    {
-//                        if (s.contains("."))
-//                        {
-//                            group = Character.getNumericValue(s.charAt(s.length() - 3));
-//                            subGroup = numericValue;
-//                        } else
-//                            group = numericValue;
-//                    } else if (s.contains("1") || s.contains("2") && group != -1 && subGroup == -1)
-//                        subGroup = numericValue;
-//                    else if (nom == null && !s.contains("@"))
-//                        nom = s;
-//                    else if (nom != null && prenom == null && !s.contains("@"))
-//                        prenom = s;
-//                }
-//            }
-//
-//            if (id != null)
-//                students.add(new Student(group, subGroup, nom, prenom, id));
-//        }
+
 
     public String[] descrip()
     {

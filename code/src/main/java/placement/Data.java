@@ -879,7 +879,7 @@ public class Data
     public boolean loadPlanDefault(String path) {
         if (map instanceof GridMap) {
             tables = ((GridMap) map).loadMap(path);
-            return tables == null;
+            return tables != null;
         }else {
             return false;
         }

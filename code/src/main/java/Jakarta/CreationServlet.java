@@ -9,7 +9,6 @@ import placement.CreatingIntermediate;
 import placement.RectangularMap;
 import utilitaire.Utilitaire;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -46,7 +45,7 @@ public class CreationServlet extends HttpServlet
         out.flush();
     }
 
-    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) throws FileNotFoundException
+    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle)
     {
         salle.creatingMode();
         CreatingIntermediate crea = salle.getCrea();

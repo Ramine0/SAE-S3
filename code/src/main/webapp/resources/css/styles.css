@@ -8,17 +8,69 @@ header, aside {
     border: 3px solid #5271ff;
     background-color: #cccccc;
     width: 50%;
-    margin : 0px ;
+    margin: 0;
 }
 
 
-body {margin : 0px ;height: 100%;}
-.table, .pasTable{
+body {
+    margin: 0;
+    height: 100%;
+}
+
+.table, .pasTable {
     margin: 15px;
-    padding: 10px;
+    padding: 15px;
     background-color: #cccccc;
-    border-radius: 5px;
+    border-radius: 20px;
     border: 3px solid #5271ff;
+}
+
+#lesTables span {
+    display: flex;
+}
+
+#lesTables span > div {
+    width: 6em;
+    height: 6em;
+
+    text-align: center;
+
+    cursor: pointer;
+}
+
+#lesTables span > div p {
+    pointer-events: none;
+}
+
+.deleteT {
+    background-color: red;
+
+    border: 3px solid #5271ff;
+    border-radius: 20px;
+
+    width: 90%;
+    height: 2em;
+
+    font-size: 80%;
+    line-height: 2em;
+
+    cursor: pointer;
+}
+
+.deletedT {
+    opacity: 50%;
+}
+
+.tableNumber {
+    pointer-events: none;
+
+    border: 2px solid green;
+    border-radius: 20px;
+
+    width: 1.25em;
+    height: 1.25em;
+
+    line-height: 1.25em;
 }
 
 header * {
@@ -35,13 +87,12 @@ header * {
     border: none;
     background-color: white;
     width: 100%;
-    display:flex;
+    display: flex;
 }
 
 #logo {
     border: 3px solid #5271ff;
 }
-
 
 
 .topMenu {
@@ -78,8 +129,8 @@ h1 {
     border-radius: 25px;
     border: 10px solid #5271ff;
 
-    width:30%;
-    height:30%;
+    width: 30%;
+    height: 30%;
 }
 
 #butts {
@@ -131,7 +182,7 @@ hr {
 }
 
 .headerGauche {
-    display : flex ;
+    display: flex;
     flex-direction: column;
     margin-right: 20px;
     width: 35%;
@@ -148,15 +199,15 @@ hr {
     border-radius: 15px;
     border: 3px solid #5271ff;
     width: 50%;
-    height:50%;
+    height: 50%;
 }
 
-#import, select{
+#import, select {
     border: 3px solid #5271ff;
     background-color: #cccccc;
 }
 
-#content{
+#content {
     display: flex;
 
     margin-left: auto;
@@ -164,13 +215,15 @@ hr {
 
     justify-content: space-around;
 }
-#content main{
+
+#content main {
     width: 80%;
     margin-top: auto;
     margin-bottom: auto;
 }
-#content aside{
-    width:25%;
+
+#content aside {
+    width: 25%;
     display: block;
     margin-top: auto;
     margin-bottom: auto;
@@ -180,7 +233,7 @@ hr {
 .boutWalider {
     border: 1px solid black;
     background-color: red;
-    margin : 10px;
+    margin: 10px;
     padding: 3px;
     font-size: medium;
 
@@ -199,23 +252,23 @@ hr {
 
 
 .boutPlus {
-    font-size: large ;
-    border : 1px solid #233dff;
+    font-size: large;
+    border: 1px solid #233dff;
     background-color: #cccccc;
     border-radius: 40px;
-    height: fit-content ;
+    height: fit-content;
     width: fit-content;
     justify-content: center;
 }
 
 .invalid, .valid {
-    border : 1px solid #233dff;
-    padding: 5px ;
+    border: 1px solid #233dff;
+    padding: 5px;
 
 }
 
 .invalid {
-    background-color: rgba(255, 69, 0, 0.61) ;
+    background-color: rgba(255, 69, 0, 0.61);
 }
 
 .valid {
@@ -223,18 +276,14 @@ hr {
 }
 
 section {
-    margin : 5px ;
-    display : grid ;
+    margin: 5px;
+    display: grid;
 }
 
 .ligne {
     display: flex;
     flex-direction: row;
     align-content: center;
-}
-
-section span {
-    grid-row: 0;
 }
 
 .ligne input {
@@ -254,17 +303,19 @@ section span {
 }
 
 .inputLabel {
-    margin : 2px ;
+    margin: 2px;
 }
 
 .valuesOfTable {
     margin: 10px 5px;
 }
 
-.pasTable {visibility: hidden;}
+.pasTable {
+    visibility: hidden;
+}
 
 #doubleContent {
-    display : flex ;
+    display: flex;
     flex-direction: row;
 }
 

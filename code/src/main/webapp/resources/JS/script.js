@@ -15,7 +15,7 @@ if (document.getElementById("studentFile").files.length !== 0) {
     enableZone();
 }
 
-document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
 // TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function validerPlaceImposee(event) {
@@ -65,7 +65,7 @@ function validerPlaceImposee(event) {
 }
 
 
-document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
+// document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
     let idRemove = event.target.id;
@@ -350,13 +350,6 @@ function enableZone() {
         // les tables
         document.getElementById("visuofDouble").style.visibility = "visible";
 
-        // places imposées
-        document.querySelector("#imposedStudentId1").disabled = false;
-        document.querySelector("#imposedTableId1").disabled = false;
-        document.querySelector("#findImposed1").disabled = false;
-        document.querySelector("#imposedStudentName1").disabled = false;
-        document.querySelector("#deleteImposed1").disabled = false;
-
         // les groupes
         document.querySelector("#idEtu1G1").disabled = false;
         document.querySelector("#nomEtu1G1").disabled = false;
@@ -389,7 +382,16 @@ function createTables() {
                 else {
                     table = vals[0];
                     name = vals[3];
-                    t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
+                    t += `<div id="T${table}" class="table" role="button">`;
+
+                    t += '<div class="tableNumber">' + table + '</div>';
+
+                    t += '<p>aucun étu</p>'
+
+                    t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
+
+                    t += '</div>';
+
                     tables[i] = table;
                     noms[i] = name;
                     i++;
@@ -419,9 +421,16 @@ function createTables() {
         document.querySelector("#lesTables").insertAdjacentHTML("beforeend", t);
 
         for (let i = 0; i < tables.length; i++) {
-            // if (tables[i] !== "")
-            //     document.querySelector(`#T${tables[i]}`).addEventListener("click", getInfosTable);
+            if (tables[i] !== "")
+                document.getElementById("T" + tables[i]).addEventListener("click", handleTable);
         }
+    }
+}
+
+function handleTable(event) {
+    if (event.target.id.includes("delete")) {
+        document.getElementById(event.target.id).remove();
+        document.getElementById("T" + event.target.id.substring(7)).classList.add("deletedT");
     }
 }
 

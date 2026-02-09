@@ -64,7 +64,10 @@ function validerPlaceImposee(event) {
     }
 }
 
-
+window.addEventListener("scroll", () => {
+    document.querySelector("footer").style.transform =
+        `translateX(${window.scrollX}px)`;
+});
 // document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {

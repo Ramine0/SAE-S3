@@ -370,7 +370,7 @@ function enableZone() {
 function createTables() {
     let t = ""
     let table
-    let vals
+    let vals = []
     let name
     let i = 0;
 
@@ -379,6 +379,7 @@ function createTables() {
 
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
+
             if (vals.length === 4) {
                 if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei)
                     t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
@@ -400,6 +401,8 @@ function createTables() {
                     i++;
                 }
             } else if (vals.length === 2) {
+                console.log(vals);
+
                 table = vals[0];
                 name = vals[1];
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
@@ -408,6 +411,8 @@ function createTables() {
                 i++;
 
             }
+
+            table = table * table;
 
             if (i >= tables.length)
                 break;
@@ -466,7 +471,6 @@ function init() {
                     let elem = initReq.responseText.split("/");
 
                     size = elem[0].split(";");
-                    console.log(elem[1].split(";"));
                     const numbers = elem[1].split(";");
 
                     for (let i = 0; i < numbers.length - 1; i++)

@@ -24,7 +24,7 @@ public class CreatingIntermediate
 
     public boolean createTables(int lon, int lar)
     {
-        return d.setNumberTables(lon * lar);
+        return d.setNumberTables(lon, lar);
     }
 
     public int getNumberTables()

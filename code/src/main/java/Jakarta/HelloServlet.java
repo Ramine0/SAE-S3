@@ -7,26 +7,25 @@ import placement.PositioningIntermediate;
 
 import java.io.FileNotFoundException;
 
-public class HelloServlet
-{
+public class HelloServlet {
 
-    static void main(String[] args) throws FileNotFoundException
-    {
+    static void main(String[] args) throws FileNotFoundException {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
-        crea.loadPlanDefault("src/main/webapp/");
         PositioningIntermediate pos;
         pos = salle.getPositioningIntermediate();
 
-        crea.setMode(0);
+        crea.changePlanMode('D', "src/main/webapp/");
+        crea.loadPlanDefault("src/main/webapp/");
+        System.out.println(pos.getTablesForVisu());
 
-        crea.findStudentForGroup("p2406", 1);
-        crea.findStudentForGroup("p24033", 1);
-        crea.findStudentForGroup("p24039", 1);
-        System.out.println(crea.getNumberTables());
-        for (int i=0; i<crea.descripData().length;i++){
-            System.out.println(crea.descripData()[i]);
-        }
+        crea.changePlanMode('R', "src/main/webapp/");
+
+        crea.createTables(4, 4);
+        crea.setDimensions(4, 4);
+
+        System.out.println(pos.getTablesForVisu());
+    }
 //        salle.positioningMode();
 //
 //        System.out.println("Génération réussi : " + salle.generate());
@@ -59,8 +58,5 @@ public class HelloServlet
 //
 //            System.out.println(table.getNum() + ". " + (table.getEtu() != null ? table.getEtu().getFirstName() : "aucun étu"));
 //        }
-
-    }
-
 
 }

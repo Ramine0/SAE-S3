@@ -52,6 +52,7 @@ public class CreationServlet extends HttpServlet {
                 crea.setMode(0);
 
                 if (request.getParameter("planType").equals("defaultPlan")) {
+                    crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
                     crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
                     out.print(salle.getPositioningIntermediate().getTablesForVisu());
@@ -69,10 +70,11 @@ public class CreationServlet extends HttpServlet {
                     else if (lar > 8)
                         lar = 8;
 
+                    crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
+
                     crea.createTables(lon, lar);
                     crea.setDimensions(lon, lar);
 
-                    crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
                     out.print(salle.getPositioningIntermediate().getTablesForVisu());
                 }
             }

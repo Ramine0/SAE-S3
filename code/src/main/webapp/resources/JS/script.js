@@ -367,11 +367,9 @@ function enableZone() {
 function createTables() {
     let t = ""
     let table
-    let vals
+    let vals = []
     let name
     let i = 0;
-
-    console.log(size[0], size[1]);
 
     for (let hei = 1; hei <= size[1]; hei++) {
         t += "<span>"
@@ -400,6 +398,8 @@ function createTables() {
                     i++;
                 }
             } else if (vals.length === 2) {
+                console.log(vals);
+
                 table = vals[0];
                 name = vals[1];
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
@@ -408,6 +408,8 @@ function createTables() {
                 i++;
 
             }
+
+            table = table * table;
 
             if (i >= tables.length)
                 break;

@@ -371,11 +371,14 @@ function createTables() {
     let name
     let i = 0;
 
+    console.log(size[0], size[1]);
+
     for (let hei = 1; hei <= size[1]; hei++) {
         t += "<span>"
 
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
+
             if (vals.length === 4) {
                 if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei)
                     t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
@@ -463,7 +466,6 @@ function init() {
                     let elem = initReq.responseText.split("/");
 
                     size = elem[0].split(";");
-                    console.log(elem[1].split(";"));
                     const numbers = elem[1].split(";");
 
                     for (let i = 0; i < numbers.length - 1; i++)

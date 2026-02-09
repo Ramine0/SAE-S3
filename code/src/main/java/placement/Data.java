@@ -322,8 +322,7 @@ public class Data {
     public boolean setNumberTables(int lon, int lar) {
         int num = lon * lar;
 
-        int x = 0;
-        int y = 1;
+        Table.reset();
 
         // il faut que ca soit une rectangular map
         if (map instanceof RectangularMap) {
@@ -333,33 +332,17 @@ public class Data {
             if (num >= students.size()) {
                 tables = new Table[num];
 
-                for (int i = 0; i < tables.length; i++) {
-                    x++;
-
-                    if (x > lar)
-                    {
-                        x = 1;
-                        y++;
-                    }
-
-                    tables[i] = new Table(x, y);
-                }
+                for (int i = 0; i < tables.length; i++)
+                    tables[i] = new Table(i % lar + 1, i / lar + 1);
 
                 deletedTables = new int[num];
 
             } else {
                 tables = new Table[students.size()];
-                for (int i = 0; i < tables.length; i++) {
-                    x++;
 
-                    if (x > lar)
-                    {
-                        x = 1;
-                        y++;
-                    }
+                for (int i = 0; i < tables.length; i++)
+                    tables[i] = new Table(i % lar + 1, i / lar + 1);
 
-                    tables[i] = new Table(x, y);
-                }
                 deletedTables = new int[students.size()];
             }
             return true;

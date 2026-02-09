@@ -449,8 +449,9 @@ function init() {
             if (initReq.status === 200) {
                 if (initReq.responseText !== "rien") {
                     tables = []
+                    console.log(initReq.responseText);
+                    let elem = initReq.responseText.split("/");
 
-                    let elem = initReq.responseText.split("/")
                     size = elem[0].split(";");
                     console.log(elem[1].split(";"));
                     const numbers = elem[1].split(";");

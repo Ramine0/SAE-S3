@@ -312,6 +312,8 @@ section {
 
 .pasTable {
     visibility: hidden;
+    min-width: 131.82px;
+    min-height: 131.82px;
 }
 
 #doubleContent {

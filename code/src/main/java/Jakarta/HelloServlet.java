@@ -4,7 +4,9 @@ package Jakarta;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
+import utilitaire.OdgReader;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 
 public class HelloServlet
@@ -14,8 +16,7 @@ public class HelloServlet
     {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
-        crea.createTables(3, 3);
-        crea.setDimensions(3, 3);
+        crea.loadPlanDefault("src/main/webapp/");
         PositioningIntermediate pos;
         pos = salle.getPositioningIntermediate();
 
@@ -24,26 +25,39 @@ public class HelloServlet
         crea.findStudentForGroup("p2406", 1);
         crea.findStudentForGroup("p24033", 1);
         crea.findStudentForGroup("p24039", 1);
-        salle.positioningMode();
+        System.out.println(crea.getNumberTables());
+        for (int i=0; i<crea.descripData().length;i++){
+            System.out.println(crea.descripData()[i]);
+        }
+//        salle.positioningMode();
+//
+//        System.out.println("Génération réussi : " + salle.generate());
+//        System.out.println();
+//
+//        String studentId = crea.findEtu("p24033");
+//
+//        String result = studentId + ";";
+//        result += crea.studentInfo(studentId) + ";";
 
-        System.out.println("Génération réussi : " + salle.generate());
-        System.out.println();
 
-        String studentId = crea.findEtu("p24033");
+        try{
+            String odg= OdgReader.extractContentXml(new File("src/main/webapp/resources/Plan.odg"));
+            OdgReader.printAllTextNodes(odg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
-        String result = studentId + ";";
-        result += crea.studentInfo(studentId) + ";";
-
-        String tableNumber = "1";
-
-        if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > crea.maxTable())
-            result += "3;";
-        else if (tableNumber.isEmpty())
-            result += "null;";
-        else
-            result += crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
-
-        System.out.println(result);
+//
+//        String tableNumber = "1";
+//
+//        if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > crea.maxTable())
+//            result += "3;";
+//        else if (tableNumber.isEmpty())
+//            result += "null;";
+//        else
+//            result += crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
+//
+//        System.out.println(result);
 
 //        for (int i = 0; i < crea.getNumberTables(); i++)
 //        {

@@ -21,8 +21,8 @@ public class HelloServlet {
 
         crea.changePlanMode('R', "src/main/webapp/");
 
-        crea.createTables(4, 4);
-        crea.setDimensions(4, 4);
+        crea.createTables(10, 4);
+        crea.setDimensions(10, 4);
 
         System.out.println(pos.getTablesForVisu());
     }

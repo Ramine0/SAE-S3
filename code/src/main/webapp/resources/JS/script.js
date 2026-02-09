@@ -428,9 +428,19 @@ function createTables() {
 }
 
 function handleTable(event) {
+    const element = document.getElementById(event.target.id);
+
     if (event.target.id.includes("delete")) {
-        document.getElementById(event.target.id).remove();
+        element.remove();
         document.getElementById("T" + event.target.id.substring(7)).classList.add("deletedT");
+    } else if (event.target.id.startsWith("T")) {
+        if (element.children.length < 3) {
+            const table = event.target.id.substring(1);
+            element.classList.remove("deletedT");
+
+            const t = `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
+            element.insertAdjacentHTML("beforeend", t);
+        }
     }
 }
 

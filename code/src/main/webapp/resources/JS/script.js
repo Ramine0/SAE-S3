@@ -451,8 +451,14 @@ function handleTable(event) {
 
 
 function init() {
-    let lon = document.getElementById("long").value;
-    let lar = document.getElementById("larg").value;
+    let lon = document.getElementById("long");
+    let lar = document.getElementById("larg");
+
+    lon.value = Math.min(20, Math.max(0, lon.value));
+    lar.value = Math.min(8, Math.max(0, lar.value));
+
+    lon = lon.value;
+    lar = lar.value;
 
     let planType = document.getElementById("planType").value;
 

@@ -57,18 +57,8 @@ public class CreationServlet extends HttpServlet {
 
                     out.print(salle.getPositioningIntermediate().getTablesForVisu());
                 } else {
-                    lon = Integer.parseInt(request.getParameter("long"));
-                    lar = Integer.parseInt(request.getParameter("larg"));
-
-                    if (lon < 4)
-                        lon = 4;
-                    else if (lon > 20)
-                        lon = 20;
-
-                    if (lar < 4)
-                        lar = 4;
-                    else if (lar > 8)
-                        lar = 8;
+                    lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+                    lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
                     crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
 

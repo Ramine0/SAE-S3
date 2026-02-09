@@ -23,7 +23,7 @@
 
 <main>
     <div id="butts">
-        <a href="creation.jsp">Générer un placement</a>
+        <a href="double.jsp">Générer un placement</a>
         <a href="visualisation.jsp">Visualiser/Modifier</a>
     </div>
 

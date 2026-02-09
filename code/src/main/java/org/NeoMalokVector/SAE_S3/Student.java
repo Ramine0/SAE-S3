@@ -13,8 +13,6 @@ public class Student
 
         this.group = group;
         this.subGroup = subGroup;
-
-
         this.name = name;
         this.firstName = firstName;
 

@@ -33,7 +33,7 @@
         </section>
     </main>
 
-    <aside class="asideCrea">
+    <aside class="asideVisu">
 
         <span class="separateur"></span>
         <div class="valuesOfTable">
@@ -69,7 +69,7 @@
 <footer>
     <div> &copy; Copyright </div>
 </footer>
-<script type="module" src="resources/JS/scriptVisu.js">
+<script type="module" src="resources/JS/oldScriptVisu.js">
 </script>
 </body>
 </html>

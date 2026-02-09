@@ -4,9 +4,7 @@ package Jakarta;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
-import utilitaire.OdgReader;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 public class HelloServlet
@@ -39,13 +37,6 @@ public class HelloServlet
 //        String result = studentId + ";";
 //        result += crea.studentInfo(studentId) + ";";
 
-
-        try{
-            String odg= OdgReader.extractContentXml(new File("src/main/webapp/resources/Plan.odg"));
-            OdgReader.printAllTextNodes(odg);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
 
 //
 //        String tableNumber = "1";

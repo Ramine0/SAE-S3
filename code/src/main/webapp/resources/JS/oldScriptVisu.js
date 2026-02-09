@@ -89,10 +89,10 @@ function init() {
 
 }
 
-//document.querySelector("#swapForm").addEventListener("click",modeSwap) ;
+document.querySelector("#swapForm").addEventListener("click",modeSwap) ;
 init() ;
 
-//document.querySelector("#exporter").addEventListener("click",exportFile) ;
+document.querySelector("#exporter").addEventListener("click",exportFile) ;
 
 function getInfosTable(event) {
 

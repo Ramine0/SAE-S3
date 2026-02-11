@@ -48,6 +48,10 @@ public class CreationServlet extends HttpServlet {
         int lon, lar;
 
         switch (request.getParameter("action")) {
+            case "visu" -> {
+                out.print(salle.getPositioningIntermediate().isGenerated());
+            }
+
             case "define" -> {
                 crea.setMode(0);
                 crea.resetData();

@@ -9,11 +9,25 @@ let tables = []
 let noms = []
 
 let fileOk = false;
+let generated = false;
 
 if (document.getElementById("studentFile").files.length !== 0) {
     fileOk = true;
     enableZone();
 }
+
+const xhr = new XMLHttpRequest();
+xhr.open("GET", `creation?action=${encodeURIComponent("visu")}`, true)
+
+xhr.onreadystatechange = function () {
+    if (xhr.readyState === XMLHttpRequest.DONE)
+        if (xhr.status === 200) {
+            generated = xhr.statusText;
+        } else
+            console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
+}
+
+xhr.send();
 
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
@@ -467,7 +481,7 @@ function handleTable(event) {
             element.insertAdjacentHTML("beforeend", t);
 
             const xhr = new XMLHttpRequest();
-            xhr.open("GET", `creation?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(element.id.substring(1))}`)
+            xhr.open("GET", `creation?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(element.id.substring(1))}`, true)
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -479,11 +493,11 @@ function handleTable(event) {
                 }
             }
             xhr.send();
-        }else{
-            if (element.id.includes("select")){
-                element.id=element.id.replace(" select","");
-            }else{
-                element.id=element.id+" select";
+        } else {
+            if (element.id.includes("select")) {
+                element.id = element.id.replace(" select", "");
+            } else {
+                element.id = element.id + " select";
             }
         }
     }

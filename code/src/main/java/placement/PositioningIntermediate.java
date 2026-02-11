@@ -14,6 +14,9 @@ public class PositioningIntermediate
     // on manipule pas directement les tables on a juste leur numeros question d'optimisation et de securité
     private Data donnees;
     private final Random random = new Random();
+
+    private boolean generated = false;
+
     // on fait ce qu'on veux des contraintes c plus simple et + pratique
 
     // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
@@ -86,11 +89,8 @@ public class PositioningIntermediate
          */
 
 
-        if (donnees.freeTables() != null)
-        {
-            return donnees.freeStudents().length == 0;
-        }
-        return false;
+        generated = donnees.freeStudents().length == 0;
+        return generated;
     }
 
     // valide ou non le placement
@@ -191,5 +191,8 @@ public class PositioningIntermediate
         return donnees.getInfosForVisu(nb);
     }
 
-
+    public boolean isGenerated()
+    {
+        return generated;
+    }
 }

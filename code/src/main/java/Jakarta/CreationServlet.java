@@ -4,11 +4,13 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.*;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.RectangularMap;
 import utilitaire.Utilitaire;
 
+import javax.transaction.xa.XAResource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
@@ -192,5 +194,7 @@ public class CreationServlet extends HttpServlet {
         }
         return false ;
     }
+
+
 
 }

@@ -281,6 +281,10 @@ hr {
     background-color: rgba(26, 255, 0, 0.61);
 }
 
+.select {
+    border-color: rgba(26, 255, 0, 0.61);
+}
+
 section {
     margin: 5px;
     display: grid;

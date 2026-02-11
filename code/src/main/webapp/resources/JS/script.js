@@ -448,6 +448,12 @@ function handleTable(event) {
 
             const t = `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
             element.insertAdjacentHTML("beforeend", t);
+        }else{
+            if (element.id.includes("select")){
+                element.id=element.id.replace(" select","");
+            }else{
+                element.id=element.id+" select";
+            }
         }
     }
 }

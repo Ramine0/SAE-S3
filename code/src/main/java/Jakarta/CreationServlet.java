@@ -13,9 +13,11 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet {
     private static HashMap<String, Room> rooms;
+    static String msg ="";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -26,8 +28,9 @@ public class CreationServlet extends HttpServlet {
             rooms = new HashMap<>();
         }
         String user = request.getSession().getId();
+        msg += "1" ;
         if (!userExists(user)) {
-            rooms.put(user, new Room(request.getServletContext().getRealPath("/") + "/"));
+            createUser(user,request.getServletContext().getRealPath("/") + "/");
         }
         Room salle = rooms.get(user);
 
@@ -177,6 +180,7 @@ public class CreationServlet extends HttpServlet {
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 
+    @Transactional(Transactional.TxType.REQUIRED)
     private static boolean loadSession(String oldId, String newId) {
         if (userExists(oldId)) {
             // il faudrait une transaction
@@ -188,5 +192,18 @@ public class CreationServlet extends HttpServlet {
         return false;
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    private static boolean createUser(String user,String path) {
+        if (!userExists(user)) {
+            try {
+                rooms.put(user, new Room(path));
+                msg += "je cree le user" ;
+                return true ;
+            }catch (Exception e) {
+                return false ;
+            }
+        }
+        return true ;
+    }
 
 }

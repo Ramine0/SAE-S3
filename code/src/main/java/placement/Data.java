@@ -875,8 +875,7 @@ public class Data
             }
         }else if (newMode == 'D') {
             map = new GridMap();
-            tables = ((GridMap)map).loadMap(path) ;
-            return true ;
+            return loadPlanDefault(path);
         }else {
             return false ;
         }

@@ -182,5 +182,15 @@ public class CreationServlet extends HttpServlet {
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 
+    private static boolean loadSession(String oldId, String newId) {
+        if (userExists(oldId)) {
+            // il faudrait une transaction
+            rooms.put(newId,rooms.get(oldId)) ;
+            rooms.remove(oldId);
+            // qui se finirai la
+            return true ;
+        }
+        return false ;
+    }
 
 }

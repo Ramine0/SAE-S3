@@ -4,31 +4,33 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.*;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.RectangularMap;
 import utilitaire.Utilitaire;
 
-import javax.transaction.xa.XAResource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
 @WebServlet("/creation")
-public class CreationServlet extends HttpServlet {
+public class CreationServlet extends HttpServlet
+{
     private static HashMap<String, Room> rooms;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        if (rooms == null) {
+        if (rooms == null)
+        {
             rooms = new HashMap<>();
         }
         String user = request.getSession().getId();
-        if (!userExists(user)) {
+        if (!userExists(user))
+        {
             rooms.put(user, new Room(request.getServletContext().getRealPath("/") + "/"));
         }
         Room salle = rooms.get(user);
@@ -43,27 +45,32 @@ public class CreationServlet extends HttpServlet {
         out.flush();
     }
 
-    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
+    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle)
+    {
         salle.creatingMode();
         CreatingIntermediate crea = salle.getCrea();
 
         int lon, lar;
 
-        switch (request.getParameter("action")) {
-            case "visu" -> {
-                out.print(salle.getPositioningIntermediate().isGenerated());
-            }
+        switch (request.getParameter("action"))
+        {
+            case "isGenerated" -> out.print(salle.getPositioningIntermediate().isGenerated());
 
-            case "define" -> {
+            case "visu" -> out.print(salle.getPositioningIntermediate().getTablesForVisu());
+
+            case "define" ->
+            {
                 crea.setMode(0);
                 crea.resetData();
 
-                if (request.getParameter("planType").equals("defaultPlan")) {
+                if (request.getParameter("planType").equals("defaultPlan"))
+                {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
                     crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
                     out.print(salle.getPositioningIntermediate().getTablesForVisu());
-                } else {
+                } else
+                {
                     lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
                     lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
@@ -76,7 +83,8 @@ public class CreationServlet extends HttpServlet {
                 }
             }
 
-            case "present" -> {
+            case "present" ->
+            {
                 int num = Integer.parseInt(request.getParameter("num"));
 
                 if (crea.findTable(num))
@@ -93,14 +101,18 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
-    private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle) {
+    private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle)
+    {
         CreatingIntermediate crea = salle.getCrea();
-        if (crea == null) {
+        if (crea == null)
+        {
             out.println("heheheheh");
             return;
         }
-        switch (request.getParameter("constraint")) {
-            case "imposePlace" -> {
+        switch (request.getParameter("constraint"))
+        {
+            case "imposePlace" ->
+            {
                 String studentId = crea.findEtu(request.getParameter("studentId"));
 
                 String result = studentId + ";";
@@ -120,7 +132,8 @@ public class CreationServlet extends HttpServlet {
 
             case "removeImposedPlace" -> crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")) - 1);
 
-            case "deleteTable" -> {
+            case "deleteTable" ->
+            {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
 
                 if (num < crea.minTable())
@@ -131,12 +144,14 @@ public class CreationServlet extends HttpServlet {
                 out.print(crea.supprTable(num) + ";" + num);
             }
 
-            case "removeDeletedTable" -> {
+            case "removeDeletedTable" ->
+            {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
                 crea.unremoveTable(num);
             }
 
-            case "separeEtu" -> {
+            case "separeEtu" ->
+            {
                 String studentId = crea.findEtu(request.getParameter("studentId"));
 
                 String studentInfo = crea.findStudentForGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
@@ -147,12 +162,14 @@ public class CreationServlet extends HttpServlet {
                     out.print(studentId + ";" + studentInfo.split(";")[1]);
             }
 
-            case "deleteSepareEtu" -> {
+            case "deleteSepareEtu" ->
+            {
                 int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
                 crea.removeContrainst("G", constraintId);
             }
 
-            case "mode" -> {
+            case "mode" ->
+            {
                 if (request.getParameter("mode").equals("normal"))
                     crea.setMode(0);
 
@@ -165,31 +182,35 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
-    public static Room getSalle(String code) {
+    public static Room getSalle(String code)
+    {
         if (userExists(code))
             return rooms.get(code);
         else
             return null;
     }
 
-    private static boolean userExists(String user) {
-        if (rooms == null) {
+    private static boolean userExists(String user)
+    {
+        if (rooms == null)
+        {
             return false;
         }
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 
-    private static boolean loadSession(String oldId, String newId) {
-        if (userExists(oldId)) {
+    private static boolean loadSession(String oldId, String newId)
+    {
+        if (userExists(oldId))
+        {
             // il faudrait une transaction
-            rooms.put(newId,rooms.get(oldId)) ;
+            rooms.put(newId, rooms.get(oldId));
             rooms.remove(oldId);
             // qui se finirai la
-            return true ;
+            return true;
         }
-        return false ;
+        return false;
     }
-
 
 
 }

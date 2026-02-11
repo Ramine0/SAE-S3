@@ -17,12 +17,26 @@ if (document.getElementById("studentFile").files.length !== 0) {
 }
 
 const xhr = new XMLHttpRequest();
-xhr.open("GET", `creation?action=${encodeURIComponent("visu")}`, true)
+xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
 
 xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE)
         if (xhr.status === 200) {
             generated = xhr.statusText;
+
+            if (generated) {
+                console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
+                console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
+                console.log("ptn c quoi c'code")
+                console.log("ya rien qui marche en fait")
+                console.log("oo ee aa")
+                console.log("fo shu")
+                console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
+
+                document.getElementById("visuofDouble").style.visibility = "visible"
+
+                init()
+            }
         } else
             console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
 }
@@ -396,18 +410,21 @@ function createTables() {
             vals = tables[i]
 
             if (vals.length === 4) {
-                if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei)
-                    t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
-                else {
+                if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
+                    if (!generated)
+                        t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
+                } else {
                     table = vals[0];
                     name = vals[3];
                     t += `<div id="T${table}" class="table" role="button">`;
 
                     t += '<div class="tableNumber">' + table + '</div>';
+                    t += `<img id="deleteT${table}" class="deleteT" src="resources/img/delete.png" alt="delete">`;
 
-                    t += '<p>aucun étu</p>'
-
-                    t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
+                    if (generated)
+                        t += '<p>' + name + '</p>'
+                    else
+                        t += '<p>aucun étu</p>'
 
                     t += '</div>';
 
@@ -517,32 +534,31 @@ function init() {
     let planType = document.getElementById("planType").value;
 
     const initReq = new XMLHttpRequest();
-    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+
+    if (generated)
+        initReq.open("GET", `creation?action=${encodeURIComponent("visu")}`, true);
+    else
+        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {
             if (initReq.status === 200) {
-                if (initReq.responseText !== "rien") {
-                    tables = []
-                    console.log(initReq.responseText);
-                    let elem = initReq.responseText.split("/");
+                tables = []
+                console.log(initReq.responseText);
+                let elem = initReq.responseText.split("/");
 
-                    size = elem[0].split(";");
-                    const numbers = elem[1].split(";");
+                size = elem[0].split(";");
+                const numbers = elem[1].split(";");
 
-                    for (let i = 0; i < numbers.length - 1; i++)
-                        tables.push(numbers[i].split("!"));
+                for (let i = 0; i < numbers.length - 1; i++)
+                    tables.push(numbers[i].split("!"));
 
-                    createTables()
-                }
+                createTables()
             }
-
         }
     };
 
     initReq.send();
-
-
 }
 
 function setValid(section) {

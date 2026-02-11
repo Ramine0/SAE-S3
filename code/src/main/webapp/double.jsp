@@ -59,7 +59,10 @@
 
             </form>
             <form method="post" action="Display">
-                <button type="submit" id="walid" class="boutWalider" disabled>Générer</button>
+                <input type="text" name="testVal" id="testVal">
+                <button type="submit" id="walid" class="boutWalider" onclick="enableText()"
+                        disabled> Générer
+                </button>
             </form>
 
         </div>

@@ -23,6 +23,7 @@ public class Data
     private Constraint[] constraints;
     private Table[] tables;
     private int[] deletedTables;
+    private boolean loaded = false ;
 
     private Map map;
 
@@ -135,6 +136,9 @@ public class Data
     public int nbDeletedTables()
     {
         int num = 0;
+        if (tables.length==1) {
+            return 100 ;
+        }
         for (int i = 0; i < deletedTables.length; i++)
         {
             if (deletedTables[i] != 0)
@@ -851,7 +855,8 @@ public class Data
     public boolean loadPlanDefault(String path) {
         if (map instanceof GridMap) {
             tables = ((GridMap) map).loadMap(path);
-            return tables != null;
+            loaded = tables != null && tables.length > 1 ;
+            return tables != null && tables.length > 1;
         }else {
             return false;
         }
@@ -913,5 +918,8 @@ public class Data
         }
     }
 
+    public boolean loaded () {
+        return loaded ;
+    }
 
 }

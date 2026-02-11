@@ -78,36 +78,6 @@
                 </section>
             </div>
 
-            <div id="contraintes_impose">
-
-                <h2>Places imposées</h2>
-                <div class="ligne" id="ligneImposed">
-
-                    <section id="impose1" class="invalid">
-                        <div class="inputLabel">
-                            <label for="imposedStudentId1">Numéro étudiant</label>
-                            <input name="imposedStudentId1" id="imposedStudentId1" type="text" disabled>
-                        </div>
-
-                        <div class="inputLabel">
-                            <label for="imposedTableId1">Numéro table</label>
-                            <input name="imposedTableId" id="imposedTableId1" type="number" min="1" disabled>
-                        </div>
-
-                        <div class="inputLabel">
-                            <label for="imposedStudentName1">Nom de l'étudiant</label>
-                            <input name="idStudentImp1" type="text" id="imposedStudentName1" disabled>
-                        </div>
-
-                        <button class="remove" id="deleteImposed1" disabled>remove</button>
-                        <button class="chercher" id="findImposed1" disabled>find</button>
-                    </section>
-
-                    <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>
-                </div>
-
-            </div>
-
             <div id="EtuDist">
 
                 <h2>Etudiants mis à distance</h2>

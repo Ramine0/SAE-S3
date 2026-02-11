@@ -15,7 +15,7 @@ if (document.getElementById("studentFile").files.length !== 0) {
     enableZone();
 }
 
-document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
 // TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function validerPlaceImposee(event) {
@@ -64,8 +64,11 @@ function validerPlaceImposee(event) {
     }
 }
 
-
-document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
+window.addEventListener("scroll", () => {
+    document.querySelector("footer").style.transform =
+        `translateX(${window.scrollX}px)`;
+});
+// document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
     let idRemove = event.target.id;
@@ -350,13 +353,6 @@ function enableZone() {
         // les tables
         document.getElementById("visuofDouble").style.visibility = "visible";
 
-        // places imposées
-        document.querySelector("#imposedStudentId1").disabled = false;
-        document.querySelector("#imposedTableId1").disabled = false;
-        document.querySelector("#findImposed1").disabled = false;
-        document.querySelector("#imposedStudentName1").disabled = false;
-        document.querySelector("#deleteImposed1").disabled = false;
-
         // les groupes
         document.querySelector("#idEtu1G1").disabled = false;
         document.querySelector("#nomEtu1G1").disabled = false;
@@ -374,7 +370,7 @@ function enableZone() {
 function createTables() {
     let t = ""
     let table
-    let vals
+    let vals = []
     let name
     let i = 0;
 
@@ -383,18 +379,30 @@ function createTables() {
 
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
+
             if (vals.length === 4) {
                 if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei)
                     t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
                 else {
                     table = vals[0];
                     name = vals[3];
-                    t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
+                    t += `<div id="T${table}" class="table" role="button">`;
+
+                    t += '<div class="tableNumber">' + table + '</div>';
+
+                    t += '<p>aucun étu</p>'
+
+                    t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
+
+                    t += '</div>';
+
                     tables[i] = table;
                     noms[i] = name;
                     i++;
                 }
             } else if (vals.length === 2) {
+                console.log(vals);
+
                 table = vals[0];
                 name = vals[1];
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
@@ -403,6 +411,8 @@ function createTables() {
                 i++;
 
             }
+
+            table = table * table;
 
             if (i >= tables.length)
                 break;
@@ -419,8 +429,25 @@ function createTables() {
         document.querySelector("#lesTables").insertAdjacentHTML("beforeend", t);
 
         for (let i = 0; i < tables.length; i++) {
-            // if (tables[i] !== "")
-            //     document.querySelector(`#T${tables[i]}`).addEventListener("click", getInfosTable);
+            if (tables[i] !== "")
+                document.getElementById("T" + tables[i]).addEventListener("click", handleTable);
+        }
+    }
+}
+
+function handleTable(event) {
+    const element = document.getElementById(event.target.id);
+
+    if (event.target.id.includes("delete")) {
+        element.remove();
+        document.getElementById("T" + event.target.id.substring(7)).classList.add("deletedT");
+    } else if (event.target.id.startsWith("T")) {
+        if (element.children.length < 3) {
+            const table = event.target.id.substring(1);
+            element.classList.remove("deletedT");
+
+            const t = `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
+            element.insertAdjacentHTML("beforeend", t);
         }
     }
 }
@@ -440,10 +467,10 @@ function init() {
             if (initReq.status === 200) {
                 if (initReq.responseText !== "rien") {
                     tables = []
+                    console.log(initReq.responseText);
+                    let elem = initReq.responseText.split("/");
 
-                    let elem = initReq.responseText.split("/")
                     size = elem[0].split(";");
-                    console.log(elem[1].split(";"));
                     const numbers = elem[1].split(";");
 
                     for (let i = 0; i < numbers.length - 1; i++)

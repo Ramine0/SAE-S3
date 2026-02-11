@@ -479,6 +479,12 @@ function handleTable(event) {
                 }
             }
             xhr.send();
+        }else{
+            if (element.id.includes("select")){
+                element.id=element.id.replace(" select","");
+            }else{
+                element.id=element.id+" select";
+            }
         }
     }
 }

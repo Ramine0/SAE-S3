@@ -122,6 +122,9 @@ public class Data {
     // renvoie les numeros de tables disponibles
     public int nbDeletedTables() {
         int num = 0;
+        if (tables.length==1) {
+            return 100 ;
+        }
         for (int i = 0; i < deletedTables.length; i++) {
             if (deletedTables[i] != 0) {
                 num++;
@@ -722,10 +725,9 @@ public class Data {
             }
         } else if (newMode == 'D') {
             map = new GridMap();
-            tables = ((GridMap) map).loadMap(path);
-            return true;
-        } else {
-            return false;
+            return loadPlanDefault(path);
+        }else {
+            return false ;
         }
     }
 

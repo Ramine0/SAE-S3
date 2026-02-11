@@ -68,6 +68,7 @@ window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
+
 // document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
@@ -438,16 +439,46 @@ function createTables() {
 function handleTable(event) {
     const element = document.getElementById(event.target.id);
 
+    // suppression de la table
     if (event.target.id.includes("delete")) {
         element.remove();
         document.getElementById("T" + event.target.id.substring(7)).classList.add("deletedT");
-    } else if (event.target.id.startsWith("T")) {
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `creation?constraint=${encodeURIComponent("deleteTable")}&tableNumber=${encodeURIComponent(element.id.substring(7))}`)
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("table deleted successfully")
+                } else {
+                    console.log("error deleting table")
+                }
+            }
+        }
+        xhr.send();
+
+    } else if (event.target.id.startsWith("T")) { // désuppression de la table
         if (element.children.length < 3) {
             const table = event.target.id.substring(1);
             element.classList.remove("deletedT");
 
             const t = `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
             element.insertAdjacentHTML("beforeend", t);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `creation?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(element.id.substring(1))}`)
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("table recovered successfully")
+                    } else {
+                        console.log("error recovering table")
+                    }
+                }
+            }
+            xhr.send();
         }
     }
 }

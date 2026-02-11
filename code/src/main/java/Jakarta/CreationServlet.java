@@ -50,6 +50,7 @@ public class CreationServlet extends HttpServlet {
         switch (request.getParameter("action")) {
             case "define" -> {
                 crea.setMode(0);
+                crea.resetData();
 
                 if (request.getParameter("planType").equals("defaultPlan")) {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");

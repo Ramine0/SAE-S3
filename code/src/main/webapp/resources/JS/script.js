@@ -630,10 +630,6 @@ function decreaseId(idElem) {
 
 }
 
-function enableText() {
-    let code = document.querySelector("#testVal").disabled = false;
-}
-
 function codeForGeneration() {
 
     let code = document.querySelector("#testVal");

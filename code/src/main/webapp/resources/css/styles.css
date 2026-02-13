@@ -162,7 +162,7 @@ h1 {
 
 footer {
     height: 3em;
-    margin-top: 0px;
+    margin : 0px ;
 
     position: relative;
     width: 100%;
@@ -311,8 +311,8 @@ section {
 
 .pasTable {
     visibility: hidden;
-    min-width: 131.82px;
-    min-height: 131.82px;
+    min-width: 132px;
+    min-height: 132px;
 }
 
 

@@ -1,9 +1,5 @@
 package Jakarta;
 
-import constraints.ImposedPlacement;
-import constraints.PerClass;
-import constraints.PerGroup;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +15,7 @@ public class ExportServlet extends HttpServlet
 {
     private final CreatingIntermediate crea =null;
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         Room salle = CreationServlet.getSalle(request.getSession().getId());
         CreatingIntermediate crea = salle.getCrea();
@@ -31,8 +27,9 @@ public class ExportServlet extends HttpServlet
 
         PrintWriter out = response.getWriter();
         out.println("id;nom;table");
+        
         for (int i = 0; i< crea.getNumberTables(); i++){
-            if (crea.getTable(i+1)!=null && crea.StuFromTable(i+1)!=null){
+            if (crea.tableExist(i+1) && crea.StuFromTable(i+1)!=null){
                 out.println(crea.StuFromTable(i+1).getId()+";"+ crea.StuFromTable(i+1).getName()+" "+crea.StuFromTable(i+1).getFirstName()+";"+(i+1));
             }
         }

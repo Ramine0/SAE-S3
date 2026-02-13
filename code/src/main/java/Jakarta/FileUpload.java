@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
+import jakarta.transaction.Transactional;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.nio.file.StandardCopyOption;
 @MultipartConfig
 public class FileUpload extends HttpServlet
 {
+
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
@@ -26,9 +29,7 @@ public class FileUpload extends HttpServlet
 
         // Retrieve the file part from the request
         Part filePart = request.getPart("studentFile");
-        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-
-        fileName = "etudiants.csv";
+        String fileName = "etudiants.csv";
 
         // Save the file to the server
         InputStream inputStream = filePart.getInputStream();

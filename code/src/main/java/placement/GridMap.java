@@ -1,5 +1,6 @@
 package placement;
 
+import jakarta.transaction.Transactional;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
@@ -60,6 +61,7 @@ public class GridMap extends Map
     {
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     private Table[] chargerPlanDefaut(String path)
     {
         Table.reset();
@@ -107,12 +109,6 @@ public class GridMap extends Map
             }
         }
         return voisins;
-    }
-
-
-    public int[][] getMatriceAdj()
-    {
-        return matriceAdj;
     }
 
     public Table[] loadMap(String path)

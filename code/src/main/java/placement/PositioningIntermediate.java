@@ -6,16 +6,13 @@ import utilitaire.Utilitaire;
 
 import java.util.Random;
 
-public class PositioningIntermediate
-{
+public class PositioningIntermediate {
 
 
     // on passe par donnees pour acceder au données (etus et tables)
     // on manipule pas directement les tables on a juste leur numeros question d'optimisation et de securité
     private Data donnees;
     private final Random random = new Random();
-
-    private boolean generated = false;
 
     // on fait ce qu'on veux des contraintes c plus simple et + pratique
 
@@ -25,32 +22,26 @@ public class PositioningIntermediate
     // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
     // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
 
-    public PositioningIntermediate(Data d)
-    {
+    public PositioningIntermediate(Data d) {
         donnees = d;
     }
 
-    private PositioningIntermediate(String path)
-    {
-        try
-        {
+    private PositioningIntermediate(String path) {
+        try {
             donnees = new Data(path, "R");
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
     }
 
-    public boolean creerPlacement()
-    {
+    public boolean creerPlacement() {
         donnees.placerImposes();
 
         int loopCount;
         int tableNumber = 0;
 
-        while (donnees.freeStudents().length != 0 && tableNumber <= donnees.maxTableID())
-        {
+        while (donnees.freeStudents().length != 0 && tableNumber <= donnees.maxTableID()) {
             tableNumber++;
 
             if (!Utilitaire.in(tableNumber, donnees.freeTables()))
@@ -60,8 +51,7 @@ public class PositioningIntermediate
             String studentId = freeStudents[random.nextInt(freeStudents.length)];
 
             loopCount = 0;
-            while (!walid(donnees.getStudentFromId(studentId), tableNumber))
-            {
+            while (!walid(donnees.getStudentFromId(studentId), tableNumber)) {
                 studentId = freeStudents[random.nextInt(freeStudents.length)];
 
                 loopCount++;
@@ -89,30 +79,24 @@ public class PositioningIntermediate
          */
 
 
-        generated = donnees.freeStudents().length == 0;
-        return generated;
+        return donnees.freeStudents().length == 0;
     }
 
     // valide ou non le placement
-    private boolean walid(Student s, int t)
-    {
+    private boolean walid(Student s, int t) {
         if (!Utilitaire.in(t, donnees.freeTables()))
             return false;
 
         // si on sait que l'etu as des contraintes
-        if (Constraint.contraint(s.getId()) || donnees.hasMode())
-        {
+        if (Constraint.contraint(s.getId()) || donnees.hasMode()) {
             // on prends les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
 
-            for (Constraint c : donnees.getConstr())
-            {
+            for (Constraint c : donnees.getConstr()) {
                 // si ca bloque
-                if (c != null)
-                {
+                if (c != null) {
 
-                    if (!c.validate(s, t, voisins))
-                    {
+                    if (!c.validate(s, t, voisins)) {
                         return false; // ca bloque
                     }
                 }
@@ -124,13 +108,11 @@ public class PositioningIntermediate
 
     }
 
-    public String[] getAllInfo()
-    {
+    public String[] getAllInfo() {
         String[] infos = new String[donnees.getTables().length];
         int cpt = 0;
 
-        for (int t : donnees.getTables())
-        {
+        for (int t : donnees.getTables()) {
 
             if (!donnees.isDeleted(t))
                 infos[cpt] = donnees.getTableInfos(t);
@@ -140,59 +122,44 @@ public class PositioningIntermediate
         return infos;
     }
 
-    public String getAllTable(int numTable)
-    {
+    public String getAllTable(int numTable) {
         return donnees.getTableInfos(numTable);
     }
 
-    public String getTablesInfoForVisu()
-    {
+    public String getTablesInfoForVisu() {
         String result = "";
-        for (String s : getAllInfo())
-        {
+        for (String s : getAllInfo()) {
             result = result.concat(s + ":");
         }
         return result;
     }
 
-    public String getTablesForVisu()
-    {
+    public String getTablesForVisu() {
         StringBuilder result = new StringBuilder(donnees.getPlanSize() + "/");
-        for (int t : donnees.existingTables())
-        {
-            if (! donnees.isDeleted(t)) {
+        for (int t : donnees.existingTables()) {
+            if (!donnees.isDeleted(t)) {
                 result.append(donnees.getTableInfos(t)).append(";");
             }
         }
         return result.toString();
     }
 
-    public boolean swapPlaces(int numT1, int numT2)
-    {
-        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2, donnees.existingTables()))
-        {
+    public boolean swapPlaces(int numT1, int numT2) {
+        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2, donnees.existingTables())) {
             return donnees.swap(numT1, numT2);
         }
         return false;
     }
 
-    public String descripData()
-    {
+    public String descripData() {
         StringBuilder result = new StringBuilder();
-        for (String s : donnees.descrip())
-        {
+        for (String s : donnees.descrip()) {
             result.append(s).append(";");
         }
         return result.toString();
     }
 
-    public String tabInfoForVisu(int nb)
-    {
+    public String tabInfoForVisu(int nb) {
         return donnees.getInfosForVisu(nb);
-    }
-
-    public boolean isGenerated()
-    {
-        return generated;
     }
 }

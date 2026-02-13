@@ -4,6 +4,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.RectangularMap;
@@ -17,7 +18,7 @@ import java.util.HashMap;
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet {
     private static HashMap<String, Room> rooms;
-    static String msg ="";
+    static String msg = "";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -28,9 +29,9 @@ public class CreationServlet extends HttpServlet {
             rooms = new HashMap<>();
         }
         String user = request.getSession().getId();
-        msg += "1" ;
+        msg += "1";
         if (!userExists(user)) {
-            createUser(user,request.getServletContext().getRealPath("/") + "/");
+            createUser(user, request.getServletContext().getRealPath("/") + "/");
         }
         Room salle = rooms.get(user);
 
@@ -51,9 +52,17 @@ public class CreationServlet extends HttpServlet {
         int lon, lar;
 
         switch (request.getParameter("action")) {
-            case "isGenerated" -> out.print(salle.getPositioningIntermediate().isGenerated());
+            case "isGenerated" -> out.print(salle.isGenerated());
 
-            case "visu" -> out.print(salle.getPositioningIntermediate().getTablesForVisu());
+            case "visu" -> {
+                lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+                lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+
+                crea.createTables(lon, lar);
+                crea.setDimensions(lon, lar);
+
+                out.print(salle.getPositioningIntermediate().getTablesForVisu());
+            }
 
             case "define" -> {
                 crea.setMode(0);
@@ -193,17 +202,17 @@ public class CreationServlet extends HttpServlet {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private static boolean createUser(String user,String path) {
+    private static boolean createUser(String user, String path) {
         if (!userExists(user)) {
             try {
                 rooms.put(user, new Room(path));
-                msg += "je cree le user" ;
-                return true ;
-            }catch (Exception e) {
-                return false ;
+                msg += "je cree le user";
+                return true;
+            } catch (Exception e) {
+                return false;
             }
         }
-        return true ;
+        return true;
     }
 
 }

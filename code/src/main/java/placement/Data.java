@@ -637,7 +637,6 @@ public class Data {
     }
 
     private Table getTable(int num) {
-        if (! tableExist(num)) {return null;}
 
         for (Table tb : tables) {
             if (tb.getNum() == num) {
@@ -766,7 +765,7 @@ public class Data {
         }
     }
 
-    public boolean tableExist(int numTab) {return Utilitaire.in(numTab, tables) ;}
+    public boolean tableExist(int numTab) {return Utilitaire.in(numTab, existingTables()) ;}
 
     public boolean changeNumTable(int oldNum, int newNum) {
         if (getTable(oldNum) != null ){

@@ -212,7 +212,7 @@ public class CreatingIntermediate
         return d.changePlanMode(newOne, path);
     }
 
-    public String imposeButton(int oldNum, int newNum, String numEtu) {
+    public String tableValidateButton(int oldNum, int newNum, String numEtu) {
         String result = "";
         if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && ! tableExist(newNum)) {
             if ( d.changeNumTable(oldNum, newNum) ) {
@@ -224,10 +224,10 @@ public class CreatingIntermediate
             result+= "invalid;" ;
         }
 
-        if (numEtu != ""){
-            result += findEtu(numEtu);
+        if (numEtu != ""  && findTable(newNum)){
+            result += findNumsForImp(numEtu,newNum);
         }else {
-            result += "" ;
+            result += "";
         }
 
         return result ;

@@ -5,6 +5,7 @@ import constraints.Constraint;
 import constraints.ImposedPlacement;
 import constraints.PerClass;
 import constraints.PerGroup;
+import jakarta.transaction.Transactional;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -12,6 +13,7 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -30,7 +32,7 @@ public class Data {
         return deletedTables;
     }
 
-    public final ArrayList<Student> students = new ArrayList<>();
+    private final ArrayList<Student> students = new ArrayList<>();
     int idC;
     // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
@@ -241,6 +243,7 @@ public class Data {
         chargerFichier("src/main/webapp/");
     }
 
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     // le chargement du fichier exel donné par le/la prof
     private void chargerFichier(String path) throws FileNotFoundException {
         students.clear();
@@ -633,7 +636,9 @@ public class Data {
         return getTable(numTable).description();
     }
 
-    public Table getTable(int num) {
+    private Table getTable(int num) {
+        if (! tableExist(num)) {return null;}
+
         for (Table tb : tables) {
             if (tb.getNum() == num) {
                 return tb;
@@ -761,5 +766,13 @@ public class Data {
         }
     }
 
+    public boolean tableExist(int numTab) {return Utilitaire.in(numTab, tables) ;}
 
+    public boolean changeNumTable(int oldNum, int newNum) {
+        if (getTable(oldNum) != null ){
+            getTable(oldNum).setNum(newNum);
+            return true ;
+        }
+        return false ;
+    }
 }

@@ -61,10 +61,6 @@ public class CreatingIntermediate
         return Utilitaire.in(numTab, d.freeTables());
     }
 
-    public Table getTable(int numTab)
-    {
-        return d.getTable(numTab);
-    }
 
     public int findNumsForImp(String id, int num)
     {
@@ -214,6 +210,31 @@ public class CreatingIntermediate
 
     public boolean changePlanMode(char newOne, String path) {
         return d.changePlanMode(newOne, path);
+    }
+
+    public String tableValidateButton(int oldNum, int newNum, String numEtu) {
+        String result = "";
+        if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && ! tableExist(newNum)) {
+            if ( d.changeNumTable(oldNum, newNum) ) {
+                result += newNum + ";";
+            }else {
+                result += "error;";
+            }
+        }else if (oldNum != 0 ){
+            result+= "invalid;" ;
+        }
+
+        if (numEtu != ""  && findTable(newNum)){
+            result += findNumsForImp(numEtu,newNum);
+        }else {
+            result += "";
+        }
+
+        return result ;
+    }
+
+    public boolean tableExist(int numTab) {
+        return d.tableExist(numTab) ;
     }
 
 }

@@ -162,7 +162,7 @@ h1 {
 
 footer {
     height: 3em;
-    margin-top: 0px;
+    margin : 0 ;
 
     position: relative;
     width: 100%;
@@ -188,12 +188,13 @@ hr {
     flex-direction: column;
     margin-right: 20px;
     width: 35%;
-    border-bottom: 0px transparent;
+    border-bottom: 0 transparent;
 
 }
 
 .headerGauche .logo {
-    margin-left: 0px;
+    margin-left: 0;
+    margin-bottom: 0;
     height: 100%;
 }
 
@@ -214,7 +215,7 @@ hr {
     display: flex;
     flex-direction: row;
     justify-content: left;
-    margin : 0px;
+    margin : 0;
 }
 
 .mainDouble{
@@ -222,8 +223,8 @@ hr {
     overflow-x: auto;
     overflow-y:visible;
     margin-bottom: 10px;
-}
 
+}
 
 .boutWalider {
     border: 1px solid black;
@@ -311,8 +312,12 @@ section {
 
 .pasTable {
     visibility: hidden;
-    min-width: 131.82px;
-    min-height: 131.82px;
+    min-width: 132px;
+    min-height: 132px;
+}
+
+main {
+    padding-bottom: 3em;
 }
 
 

@@ -312,6 +312,25 @@ public class Data {
         return text;
     }
 
+    public void chargerStudents(String s){
+        String [] tab=s.split(";");
+        for (String string : tab) {
+            String[] student = string.replace(",", ";").split(";");
+            students.add(new Student(student[3], student[4], student[1], student[2], student[0]));
+        }
+    }
+
+    public void chargerTables(String t){
+        String [] tab=t.split(";");
+        tables=new Table[tab.length];
+        deletedTables=new int[tab.length];
+        int i=0;
+        for (String string : tab) {
+            String[] table = string.replace(",", ";").split(";");
+            tables[0]=new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[3]));
+        }
+    }
+
 
     public void placerImposes() {
         String[] s;

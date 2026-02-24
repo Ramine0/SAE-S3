@@ -13,38 +13,33 @@ let generated = false
 
 loadData()
 
-if (document.getElementById("studentFile").files.length !== 0) {
-    fileOk = true;
-    enableZone();
-}
-
-const xhr = new XMLHttpRequest();
-xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
-
-xhr.onreadystatechange = function () {
-    if (xhr.readyState === XMLHttpRequest.DONE)
-        if (xhr.status === 200) {
-            generated = xhr.responseText === "true";
-
-            if (generated) {
-                console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
-                console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
-                console.log("ptn c quoi c'code")
-                console.log("ya rien qui marche en fait")
-                console.log("oo ee aa")
-                console.log("fo shu")
-                console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
-
-                document.getElementById("visuofDouble").style.visibility = "visible"
-
-                init()
-            } else
-                console.log("c'est pas encore généré connard ça sert à rien")
-        } else
-            console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
-}
-
-xhr.send();
+// const xhr = new XMLHttpRequest();
+// xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
+//
+// // xhr.onreadystatechange = function () {
+// //     if (xhr.readyState === XMLHttpRequest.DONE)
+// //         if (xhr.status === 200) {
+// //             generated = xhr.responseText === "true";
+// //
+// //             if (generated) {
+// //                 console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
+// //                 console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
+// //                 console.log("ptn c quoi c'code")
+// //                 console.log("ya rien qui marche en fait")
+// //                 console.log("oo ee aa")
+// //                 console.log("fo shu")
+// //                 console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
+// //
+// //                 document.getElementById("visuofDouble").style.visibility = "visible"
+// //
+// //                 init()
+// //             } else
+// //                 console.log("c'est pas encore généré connard ça sert à rien")
+// //         } else
+// //             console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
+// // }
+// //
+// // xhr.send();
 
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
@@ -393,7 +388,7 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-        this.codeForGeneration()
+        codeForGeneration()
 
         init()
     }
@@ -686,7 +681,7 @@ function codeForGeneration() {
     let code = document.querySelector("#testVal");
     const xhr = new XMLHttpRequest();
     xhr.open("GET",
-        `creation?action=${encodeURIComponent("generate")}`
+        `creation?generate=${encodeURIComponent("n'importe quoi")}`
         , true);
 
     xhr.onreadystatechange = function () {
@@ -694,6 +689,8 @@ function codeForGeneration() {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
                 code.disabled = true;
+
+                init()
             } else {
             }
         }
@@ -721,6 +718,8 @@ function loadData() {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
+
+
                     /*
                     tables = []
                     let elem = initReq.responseText.split("/");
@@ -737,6 +736,11 @@ function loadData() {
                     console.log("fin des informations :")
                 } else {
                     console.log("user do not exists")
+
+                    if (document.getElementById("studentFile").files.length !== 0) {
+                        fileOk = true;
+                        enableZone()
+                    }
                 }
             } else {
             }

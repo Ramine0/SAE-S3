@@ -31,13 +31,16 @@ public class CreationServlet extends HttpServlet {
             return;
         }
 
+        String user = request.getSession().getId();
+        if (request.getParameter("generate") != null) {
+            createUser(user, request.getServletContext().getRealPath("/") + "/");
+
+            out.print(request.getSession().getId());
+        }
+
         if (rooms == null) {
             rooms = new HashMap<>();
         }
-        String user = request.getSession().getId();
-        msg += "1";
-
-        createUser(user, request.getServletContext().getRealPath("/") + "/");
 
         Room salle = rooms.get(user);
 
@@ -99,8 +102,6 @@ public class CreationServlet extends HttpServlet {
                 else
                     out.print("table introuvable");
             }
-
-            case "generate" -> out.print(request.getSession().getId());
 
 
             case "getDim" ->

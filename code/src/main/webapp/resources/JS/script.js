@@ -22,7 +22,7 @@ xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
 xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE)
         if (xhr.status === 200) {
-            generated = xhr.responseText;
+            generated = xhr.responseText === "true";
 
             if (generated) {
                 console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")

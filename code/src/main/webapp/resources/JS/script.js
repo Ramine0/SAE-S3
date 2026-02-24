@@ -9,6 +9,9 @@ let tables = []
 let noms = []
 
 let fileOk = false;
+let generated = false
+
+loadData()
 
 if (document.getElementById("studentFile").files.length !== 0) {
     fileOk = true;
@@ -96,6 +99,7 @@ window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
+
 // document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
@@ -389,7 +393,7 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-        codeForGeneration();
+        this.codeForGeneration()
 
         init()
     }
@@ -553,19 +557,20 @@ function init() {
                     tables = []
                     let elem = initReq.responseText.split("/");
 
-                size = elem[0].split(";");
-                const numbers = elem[1].split(";");
+                    size = elem[0].split(";");
+                    const numbers = elem[1].split(";");
 
-                for (let i = 0; i < numbers.length - 1; i++)
-                    tables.push(numbers[i].split("!"));
+                    for (let i = 0; i < numbers.length - 1; i++)
+                        tables.push(numbers[i].split("!"));
 
-                createTables()
+                    createTables()
+                }
+
             }
-
         }
-    };
 
-    initReq.send();
+        initReq.send();
+    }
 }
 
 function setValid(section) {
@@ -707,14 +712,14 @@ function genererWalid() {
 function loadData() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`);
+    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 if (xhr.responseText !== "null") {
                     console.log("user exists here are his informations :")
-                    console.log(xhr.responseText);
+                    console.log(xhr.responseText)
 
                     /*
                     tables = []
@@ -733,10 +738,10 @@ function loadData() {
                 } else {
                     console.log("user do not exists")
                 }
-            }else {
+            } else {
             }
         }
     }
-    xhr.send() ;
+    xhr.send()
 
 }

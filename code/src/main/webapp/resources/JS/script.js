@@ -9,7 +9,10 @@ let tables = []
 let noms = []
 
 let fileOk = false;
-loadData() ;
+let generated = false
+
+loadData()
+
 
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
@@ -363,7 +366,7 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-        codeForGeneration();
+        codeForGeneration()
 
         init()
     }
@@ -383,16 +386,23 @@ function createTables() {
             vals = tables[i]
 
             if (vals.length === 4) {
-                if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei)
+                if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
                     t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
-                else {
+                } else {
                     table = vals[0];
                     name = vals[3];
                     t += `<div id="T${table}" class="table" role="button">`;
 
+                    t += "<span>"
                     t += '<div class="tableNumber">' + table + '</div>';
+                    t += `<img id="deleteT${table}" class="deleteT" src="resources/img/delete.png" alt="delete">`;
 
-                    t += '<p>aucun étu</p>'
+                    t += "</span>"
+
+                    if (generated)
+                        t += '<p>' + name + '</p>'
+                    else
+                        t += '<p>aucun étu</p>'
 
                     t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
 
@@ -438,41 +448,84 @@ function createTables() {
 }
 
 function handleTable(event) {
-    const element = document.getElementById(event.target.id);
+    if (!event.target.id)
+        return
 
+    const element = document.getElementById(event.target.id)
+    element.id = element.id.replace(" select", "")
+
+    // suppression de la table
     if (event.target.id.includes("delete")) {
+        console.log("T" + event.target.id.substring(7))
+
         element.remove();
         document.getElementById("T" + event.target.id.substring(7)).classList.add("deletedT");
-    } else if (event.target.id.startsWith("T")) {
-        if (element.children.length < 3) {
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `creation?constraint=${encodeURIComponent("deleteTable")}&tableNumber=${encodeURIComponent(element.id.substring(7))}`)
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("table deleted successfully")
+                } else {
+                    console.log("error deleting table")
+                }
+            }
+        }
+        xhr.send();
+
+    } else if (event.target.id.startsWith("T")) { // désuppression de la table
+        if (element.children[0].children.length === 1) {
             const table = event.target.id.substring(1);
             element.classList.remove("deletedT");
 
-            const t = `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
-            element.insertAdjacentHTML("beforeend", t);
-        }else{
-            if (element.id.includes("select")){
-                element.id=element.id.replace(" select","");
-            }else{
-                element.id=element.id+" select";
+            const t = `<img id="deleteT${table}" class="deleteT" src="resources/img/delete.png" alt="delete">`;
+            element.children[0].insertAdjacentHTML("beforeend", t);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `creation?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(element.id.substring(1))}`, true)
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        console.log("table recovered successfully")
+                    } else {
+                        console.log("error recovering table")
+                    }
+                }
             }
+            xhr.send();
         }
     }
 }
 
 
 function init() {
-    let lon = document.getElementById("long").value;
-    let lar = document.getElementById("larg").value;
+    let lon = document.getElementById("long");
+    let lar = document.getElementById("larg");
+
+    lon.value = Math.min(20, Math.max(0, lon.value));
+    lar.value = Math.min(8, Math.max(0, lar.value));
+
+    lon = lon.value;
+    lar = lar.value;
 
     let planType = document.getElementById("planType").value;
 
     const initReq = new XMLHttpRequest();
-    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+
+    if (generated)
+        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+    else
+        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {
             if (initReq.status === 200) {
+                tables = []
+                console.log(initReq.responseText);
+                let elem = initReq.responseText.split("/");
                 if (initReq.responseText !== "rien") {
                     tables = []
                     let elem = initReq.responseText.split("/");
@@ -485,14 +538,12 @@ function init() {
 
                     createTables()
                 }
+
             }
-
         }
-    };
 
-    initReq.send();
-
-
+        initReq.send();
+    }
 }
 
 function setValid(section) {
@@ -608,7 +659,7 @@ function codeForGeneration() {
     let code = document.querySelector("#testVal");
     const xhr = new XMLHttpRequest();
     xhr.open("GET",
-        `creation?action=${encodeURIComponent("generate")}`
+        `creation?generate=${encodeURIComponent("n'importe quoi")}`
         , true);
 
     xhr.onreadystatechange = function () {
@@ -616,6 +667,8 @@ function codeForGeneration() {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
                 code.disabled = true;
+
+                init()
             } else {
             }
         }
@@ -634,14 +687,16 @@ function genererWalid() {
 function loadData() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`);
+    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 if (xhr.responseText !== "null") {
                     console.log("user exists here are his informations :")
-                    console.log(xhr.responseText);
+                    console.log(xhr.responseText)
+
+
 
                     /*
                     tables = []
@@ -660,16 +715,16 @@ function loadData() {
                     enableZone()
                 } else {
                     console.log("user do not exists")
+
                     if (document.getElementById("studentFile").files.length !== 0) {
                         fileOk = true;
-                        enableZone();
+                        enableZone()
                     }
-
                 }
-            }else {
+            } else {
             }
         }
     }
-    xhr.send() ;
+    xhr.send()
 
 }

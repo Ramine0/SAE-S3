@@ -31,12 +31,12 @@ body {
 }
 
 #lesTables span > div {
-    width: 6em;
-    height: 6em;
-
-    text-align: center;
-
     cursor: pointer;
+    text-align: center;
+}
+
+#lesTables span > div > span {
+    justify-content: space-between;
 }
 
 #lesTables span > div p {
@@ -49,7 +49,6 @@ body {
     border: 3px solid #5271ff;
     border-radius: 20px;
 
-    width: 90%;
     height: 2em;
 
     font-size: 80%;

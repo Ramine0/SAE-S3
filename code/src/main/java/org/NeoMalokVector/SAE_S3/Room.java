@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 public class Room
 {
 
-    private CreatingIntermediate crea, oldCrea;
+    private CreatingIntermediate crea;
     private PositioningIntermediate posing;
     public String message;
 
@@ -35,23 +35,8 @@ public class Room
         return posing;
     }
 
-    public boolean positioningMode()
-    {
-        if (crea != null)
-        {
-            posing = crea.generatePos();
-        }
-        return posing != null;
-    }
+    public void positioningMode() {posing = crea.generatePos();}
 
-    public void creatingMode()
-    {
-        if (crea == null)
-        {
-            crea = oldCrea;
-
-        }
-    }
 
     public boolean generate()
     {

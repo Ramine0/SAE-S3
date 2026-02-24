@@ -10,10 +10,6 @@ let noms = []
 
 let fileOk = false;
 loadData() ;
-if (document.getElementById("studentFile").files.length !== 0) {
-    fileOk = true;
-    enableZone();
-}
 
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
@@ -240,7 +236,13 @@ function moveFile(event) {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
-
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log(xhr.responseText);
+            }
+        }
+    }
     xhr.send(data);
 
     fileOk = true;
@@ -655,8 +657,14 @@ function loadData() {
                      */
 
                     console.log("fin des informations :")
+                    enableZone()
                 } else {
                     console.log("user do not exists")
+                    if (document.getElementById("studentFile").files.length !== 0) {
+                        fileOk = true;
+                        enableZone();
+                    }
+
                 }
             }else {
             }

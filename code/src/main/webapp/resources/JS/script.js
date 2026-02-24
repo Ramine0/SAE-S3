@@ -412,8 +412,7 @@ function createTables() {
 
             if (vals.length === 4) {
                 if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
-                    if (!generated)
-                        t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
+                    t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
                 } else {
                     table = vals[0];
                     name = vals[3];
@@ -423,12 +422,13 @@ function createTables() {
                     t += '<div class="tableNumber">' + table + '</div>';
                     t += `<img id="deleteT${table}" class="deleteT" src="resources/img/delete.png" alt="delete">`;
 
+                    t += "</span>"
+
                     if (generated)
                         t += '<p>' + name + '</p>'
                     else
                         t += '<p>aucun étu</p>'
 
-                    t += "</span>"
                     t += '</div>';
 
                     tables[i] = table;
@@ -471,10 +471,16 @@ function createTables() {
 }
 
 function handleTable(event) {
-    const element = document.getElementById(event.target.id);
+    if (!event.target.id)
+        return
+
+    const element = document.getElementById(event.target.id)
+    element.id = element.id.replace(" select", "")
 
     // suppression de la table
     if (event.target.id.includes("delete")) {
+        console.log("T" + event.target.id.substring(7))
+
         element.remove();
         document.getElementById("T" + event.target.id.substring(7)).classList.add("deletedT");
 
@@ -493,12 +499,12 @@ function handleTable(event) {
         xhr.send();
 
     } else if (event.target.id.startsWith("T")) { // désuppression de la table
-        if (element.children.length < 3) {
+        if (element.children[0].children.length === 1) {
             const table = event.target.id.substring(1);
             element.classList.remove("deletedT");
 
-            const t = `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
-            element.insertAdjacentHTML("beforeend", t);
+            const t = `<img id="deleteT${table}" class="deleteT" src="resources/img/delete.png" alt="delete">`;
+            element.children[0].insertAdjacentHTML("beforeend", t);
 
             const xhr = new XMLHttpRequest();
             xhr.open("GET", `creation?constraint=${encodeURIComponent("removeDeletedTable")}&tableNumber=${encodeURIComponent(element.id.substring(1))}`, true)
@@ -513,12 +519,6 @@ function handleTable(event) {
                 }
             }
             xhr.send();
-        } else {
-            if (element.id.includes("select")) {
-                element.id = element.id.replace(" select", "");
-            } else {
-                element.id = element.id + " select";
-            }
         }
     }
 }

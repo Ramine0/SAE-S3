@@ -59,8 +59,8 @@ public class DisplayServlet extends HttpServlet
                     
                     <main>
                     """);
-            if (salle.positioningMode())
-            {
+
+
                 PositioningIntermediate pos = salle.getPositioningIntermediate();
 
                 if (salle.generate())
@@ -78,17 +78,8 @@ public class DisplayServlet extends HttpServlet
                             <a href="creation.jsp"><Retour à la page de création</a>
                             """);
                 }
-            } else
-            {
-                out.println(salle.message);
-                out.println("""
-                        <h4> Erreur lors du changement en visualisation </h4>
-                        <a href="index.jsp">Retour à la page d'accueil</a>
-                        """);
-
             }
-        }
-        //response.sendRedirect("index.jsp");
+
     }
 
     @Override

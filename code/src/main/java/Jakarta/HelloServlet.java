@@ -13,18 +13,10 @@ public class HelloServlet {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
         PositioningIntermediate pos;
+        crea.setMode(1);
         pos = salle.getPositioningIntermediate();
-
-        crea.changePlanMode('D', "src/main/webapp/");
-        crea.loadPlanDefault("src/main/webapp/");
-        System.out.println(pos.getTablesForVisu());
-
-        crea.changePlanMode('R', "src/main/webapp/");
-
-        crea.createTables(10, 4);
-        crea.setDimensions(10, 4);
-
-        System.out.println(pos.getTablesForVisu());
+        System.out.println(crea.findStudentForGroup("p2406410",1)) ;
+        System.out.println(crea.getSeparated());
     }
 //        salle.positioningMode();
 //

@@ -1,6 +1,7 @@
 package placement;
 
 import constraints.Constraint;
+import constraints.PerGroup;
 import org.NeoMalokVector.SAE_S3.Student;
 import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
@@ -237,4 +238,24 @@ public class CreatingIntermediate
         return d.tableExist(numTab) ;
     }
 
+    public String getSeparated() {
+        String result = "";
+        for (int i = 1; i < 10 ; i++ ) {
+            PerGroup temp = d.getPerGroup(i) ;
+            if (temp == null) {
+                break ;
+            }else {
+                String[] students = temp.toString().split(";") ;
+                for (String s : students) {
+                    if (! s.isEmpty()) {
+                        String id = findEtu(s) ;
+                        result += id+":"+d.getFullName(id)+";" ;
+                    }
+                }
+                result += "<" ;
+            }
+        }
+
+        return result ;
+    }
 }

@@ -25,14 +25,19 @@ public class CreationServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
+        if (request.getParameter("load")!= null) {
+            out.print(getUserData(request.getSession().getId()));
+            out.flush();
+            return ;}
+
         if (rooms == null) {
             rooms = new HashMap<>();
         }
         String user = request.getSession().getId();
         msg += "1" ;
-        if (!userExists(user)) {
-            createUser(user,request.getServletContext().getRealPath("/") + "/");
-        }
+
+        createUser(user,request.getServletContext().getRealPath("/") + "/");
+
         Room salle = rooms.get(user);
 
 
@@ -45,8 +50,8 @@ public class CreationServlet extends HttpServlet {
         out.flush();
     }
 
-    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
-        salle.creatingMode();
+    private void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
+
         CreatingIntermediate crea = salle.getCrea();
 
         int lon, lar;
@@ -94,18 +99,16 @@ public class CreationServlet extends HttpServlet {
 
             case "generate" -> out.print(request.getSession().getId());
 
-
             case "getDim" ->
                     out.print(((RectangularMap) salle.getCrea().getMap()).getHeight() + ";" + ((RectangularMap) salle.getCrea().getMap()).getWidth());
+
+
         }
     }
 
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle) {
         CreatingIntermediate crea = salle.getCrea();
-        if (crea == null) {
-            out.println("heheheheh");
-            return;
-        }
+
         switch (request.getParameter("constraint")) {
             case "imposePlace" -> {
                 String studentId = crea.findEtu(request.getParameter("studentId"));
@@ -210,6 +213,24 @@ public class CreationServlet extends HttpServlet {
             }
         }
         return true ;
+    }
+
+
+
+    public String getUserData(String user) {
+        String result = userExists(user) ? user : "null";
+        if( ! result.equals("null") ){
+            Room salle = getSalle(user);
+            // les infos de la visu
+            if (salle.getPositioningIntermediate() != null) {result += "\n" + salle.getPositioningIntermediate().getTablesForVisu();}
+            result +="<" ;
+            // les infos d'etudians mis a distance
+            result += salle.getCrea().getSeparated() ;
+
+        }
+
+
+        return result ;
     }
 
 

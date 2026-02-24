@@ -156,7 +156,7 @@
 </main>
 
 
-<script src="resources/JS/oldScript.js"></script>
+<script src="resources/JS/script.js.old"></script>
 
 
 </body>

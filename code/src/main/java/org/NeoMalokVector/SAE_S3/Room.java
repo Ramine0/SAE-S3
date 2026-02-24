@@ -12,6 +12,8 @@ public class Room
     private PositioningIntermediate posing;
     public String message;
 
+    private boolean generated;
+
 
     public Room() throws FileNotFoundException
     {
@@ -40,7 +42,8 @@ public class Room
 
     public boolean generate()
     {
-        return posing.creerPlacement();
+        generated = posing.creerPlacement();
+        return generated;
     }
 
 
@@ -63,4 +66,7 @@ public class Room
         return false;
     }
 
+    public boolean isGenerated() {
+        return generated;
+    }
 }

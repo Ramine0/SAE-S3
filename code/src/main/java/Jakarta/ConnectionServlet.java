@@ -1,6 +1,7 @@
 package Jakarta;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+@WebServlet("/Connection")
 public class ConnectionServlet extends HttpServlet {
     private Data data;
 
@@ -27,6 +29,9 @@ public class ConnectionServlet extends HttpServlet {
     private DataSource dataSource;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        if (data==null){
+            data=new Data();
+        }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
@@ -40,6 +45,7 @@ public class ConnectionServlet extends HttpServlet {
                     ResultSet resultSet = preparedStatement.executeQuery();
                     out.print(resultSet.getString(1));
                     out.flush();
+                    resultSet.close();
                 }
             }else if (request.getParameter("action").equals("subscribe")){
                 String requestSubscribe="insert into User (name, email, password) values (?, ?, ?)";
@@ -58,12 +64,54 @@ public class ConnectionServlet extends HttpServlet {
                 try (PreparedStatement preparedStatement = connection.prepareStatement(requestInit)) {
                     preparedStatement.setString(1, id);
                     ResultSet resultSet = preparedStatement.executeQuery();
-                    
+                    while (!resultSet.wasNull()) {
+                        out.print(resultSet.getString(1));
+                        if (resultSet.next()){
+                            out.print(";");
+                        }
+                    }
+                    out.flush();
+                    resultSet.close();
                 }
             }else if (request.getParameter("action").equals("load")){
+                String loadStudents="select number, name, firstname, grp from Student where idPlacement=?";
+                String loadSeats="select num, x, y, number from Seat p left join Student s on p.idStudent=s.id where p.idPlacement=?";
+                String loadConstraint="select * from Constr c left join Student s on c.idStudent = s.id left join Seat p on c.idSeat=p.id where c.idPlacement=?";
+                String idPlacement=request.getParameter("idPlacement");
+                try (PreparedStatement preparedStatement = connection.prepareStatement(loadStudents)) {
+                    preparedStatement.setString(1, idPlacement);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                }
+                try (PreparedStatement preparedStatement = connection.prepareStatement(loadSeats)){
+                    preparedStatement.setString(1, idPlacement);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    String seats="";
+                    while (!resultSet.wasNull()) {
+                        seats+=resultSet.getString(2)+","+resultSet.getString(3)+","+resultSet.getString(4);
+                        if (resultSet.next()){
+                            seats+=";";
+                        }
+                    }
 
+                }
+                try (PreparedStatement preparedStatement = connection.prepareStatement(loadConstraint)) {
+                    preparedStatement.setString(1, idPlacement);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+                    while (!resultSet.wasNull()) {
+                        if (resultSet.getString(2).equals("I")){
+
+                        }else if (resultSet.getString(2).equals("G")){
+
+                        }else{
+                            data.changeMode(resultSet.getString(6).charAt(0));
+                        }
+                    }
+                }
             }else if (request.getParameter("action").equals("add")){
-
+                String addPlacement="Insert into Placement (idUser, name) values (?, ?)";
+                String addStudent="Insert into Student (number, idPlacement, name, firstname, grp) values (?, ?, ?, ?, ?)";
+                String addSeat="Insert into Seat (num, x, y, idPlacement, idStudent) values (?, ?, ?, ?, ?)";
+                String addConstraint="Insert into Constraints (type, idPlacement, idStudent, idSeat, grpConstr) values (?, ?, ?, ?, ?)";
             }
         }catch(Exception e){
             System.out.println(e.getMessage());

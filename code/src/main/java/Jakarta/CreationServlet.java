@@ -18,21 +18,26 @@ import java.util.HashMap;
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet {
     private static HashMap<String, Room> rooms;
-    static String msg = "";
+    static String msg ="";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
+        if (request.getParameter("load")!= null) {
+            out.print(getUserData(request.getSession().getId()));
+            out.flush();
+            return ;}
+
         if (rooms == null) {
             rooms = new HashMap<>();
         }
         String user = request.getSession().getId();
-        msg += "1";
-        if (!userExists(user)) {
-            createUser(user, request.getServletContext().getRealPath("/") + "/");
-        }
+        msg += "1" ;
+
+        createUser(user,request.getServletContext().getRealPath("/") + "/");
+
         Room salle = rooms.get(user);
 
 
@@ -45,8 +50,8 @@ public class CreationServlet extends HttpServlet {
         out.flush();
     }
 
-    private static void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
-        salle.creatingMode();
+    private void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
+
         CreatingIntermediate crea = salle.getCrea();
 
         int lon, lar;
@@ -66,7 +71,6 @@ public class CreationServlet extends HttpServlet {
 
             case "define" -> {
                 crea.setMode(0);
-                crea.resetData();
 
                 if (request.getParameter("planType").equals("defaultPlan")) {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
@@ -105,10 +109,7 @@ public class CreationServlet extends HttpServlet {
 
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle) {
         CreatingIntermediate crea = salle.getCrea();
-        if (crea == null) {
-            out.println("heheheheh");
-            return;
-        }
+
         switch (request.getParameter("constraint")) {
             case "imposePlace" -> {
                 String studentId = crea.findEtu(request.getParameter("studentId"));
@@ -193,26 +194,45 @@ public class CreationServlet extends HttpServlet {
     private static boolean loadSession(String oldId, String newId) {
         if (userExists(oldId)) {
             // il faudrait une transaction
-            rooms.put(newId, rooms.get(oldId));
+            rooms.put(newId,rooms.get(oldId)) ;
             rooms.remove(oldId);
             // qui se finirai la
-            return true;
+            return true ;
         }
-        return false;
+        return false ;
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private static boolean createUser(String user, String path) {
+    private static boolean createUser(String user,String path) {
         if (!userExists(user)) {
             try {
                 rooms.put(user, new Room(path));
-                msg += "je cree le user";
-                return true;
-            } catch (Exception e) {
-                return false;
+                msg += "je cree le user" ;
+                return true ;
+            }catch (Exception e) {
+                return false ;
             }
         }
-        return true;
+        return true ;
     }
+
+
+
+    public String getUserData(String user) {
+        String result = userExists(user) ? user : "null";
+        if( ! result.equals("null") ){
+            Room salle = getSalle(user);
+            // les infos de la visu
+            if (salle.getPositioningIntermediate() != null) {result += "\n" + salle.getPositioningIntermediate().getTablesForVisu();}
+            result +="<" ;
+            // les infos d'etudians mis a distance
+            result += salle.getCrea().getSeparated() ;
+
+        }
+
+
+        return result ;
+    }
+
 
 }

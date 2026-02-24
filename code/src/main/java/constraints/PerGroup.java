@@ -67,4 +67,13 @@ public class PerGroup extends Constraint
     public String getStudent(int index){
         return groupe[index];
     }
+
+    public String toString() {
+        String result = "" ;
+        for (String s : groupe) {
+            return s +";";
+        }
+
+        return result ;
+    }
 }

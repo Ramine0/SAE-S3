@@ -13,20 +13,24 @@ import java.io.PrintWriter;
 
 @WebServlet("/Display")
 @MultipartConfig
-public class DisplayServlet extends HttpServlet {
+public class DisplayServlet extends HttpServlet
+{
 
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
         String code = request.getParameter("testVal");
-        if (CreationServlet.getSalle(code) == null) {
+        if (CreationServlet.getSalle(code) == null)
+        {
             code = request.getSession().getId();
         }
         Room salle = CreationServlet.getSalle(code);
 
         if (salle == null)
             response.sendRedirect("index.jsp");
-        else {
+        else
+        {
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
 
@@ -55,15 +59,17 @@ public class DisplayServlet extends HttpServlet {
                     
                     <main>
                     """);
-            if (salle.positioningMode()) {
+
+
                 PositioningIntermediate pos = salle.getPositioningIntermediate();
 
                 if (salle.generate())
                     out.println("""
                             <h4> Génération réussie </h4>
-                            <a href="double.jsp">Voir le résultat</a>
+                            <a href="visualisation.jsp">Voir le résultat</a>
                             """);
-                else {
+                else
+                {
                     out.println("<p>" + pos.getTablesForVisu() + "</p>");
                     out.println(pos.descripData());
 
@@ -72,16 +78,8 @@ public class DisplayServlet extends HttpServlet {
                             <a href="creation.jsp"><Retour à la page de création</a>
                             """);
                 }
-            } else {
-                out.println(salle.message);
-                out.println("""
-                        <h4> Erreur lors du changement en visualisation </h4>
-                        <a href="index.jsp">Retour à la page d'accueil</a>
-                        """);
-
             }
-        }
-        //response.sendRedirect("index.jsp");
+
     }
 
     @Override
@@ -96,7 +94,8 @@ public class DisplayServlet extends HttpServlet {
         response.setContentType("text/html");
 
         if (pos != null) {
-            switch (request.getParameter("action")) {
+            switch (request.getParameter("action"))
+            {
                 case "init" -> out.print(pos.getTablesForVisu());
 
                 case "infos" -> {
@@ -115,7 +114,7 @@ public class DisplayServlet extends HttpServlet {
                 }
             }
 
-        } else {
+        }else {
             out.print("rien");
         }
 

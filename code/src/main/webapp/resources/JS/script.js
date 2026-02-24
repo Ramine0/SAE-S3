@@ -9,7 +9,6 @@ let tables = []
 let noms = []
 
 let fileOk = false;
-let generated = false;
 
 if (document.getElementById("studentFile").files.length !== 0) {
     fileOk = true;
@@ -97,7 +96,6 @@ window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
-
 // document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
@@ -429,6 +427,8 @@ function createTables() {
                     else
                         t += '<p>aucun étu</p>'
 
+                    t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
+
                     t += '</div>';
 
                     tables[i] = table;
@@ -436,7 +436,7 @@ function createTables() {
                     i++;
                 }
             } else if (vals.length === 2) {
-                console.log(vals);
+
 
                 table = vals[0];
                 name = vals[1];
@@ -549,6 +549,9 @@ function init() {
                 tables = []
                 console.log(initReq.responseText);
                 let elem = initReq.responseText.split("/");
+                if (initReq.responseText !== "rien") {
+                    tables = []
+                    let elem = initReq.responseText.split("/");
 
                 size = elem[0].split(";");
                 const numbers = elem[1].split(";");
@@ -558,6 +561,7 @@ function init() {
 
                 createTables()
             }
+
         }
     };
 
@@ -660,7 +664,6 @@ function decreaseId(idElem) {
             children[i].children[0].children[1].children[0].for = "nomEtu" + numEtu + "G" + numGrp;
             children[i].children[0].children[1].children[1].id = "nomEtu" + numEtu + "G" + numGrp;
             children[i].children[0].children[1].children[1].name = "nomEtu" + numEtu + "G" + numGrp;
-            console.log(children[i].children[0].children[2]);
             children[i].children[0].children[2].id = "supEtu" + numEtu + "G" + numGrp;
             children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
         }
@@ -699,4 +702,41 @@ function genererWalid() {
         document.querySelector("#walid").disabled = false;
         document.querySelector("#walid").style.backgroundColor = "#1AFF009B";
     }
+}
+
+function loadData() {
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`);
+    console.log("recherche des datas de l'utilisateur")
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                if (xhr.responseText !== "null") {
+                    console.log("user exists here are his informations :")
+                    console.log(xhr.responseText);
+
+                    /*
+                    tables = []
+                    let elem = initReq.responseText.split("/");
+
+                    size = elem[0].split(";");
+                    const numbers = elem[1].split(";");
+
+                    for (let i = 0; i < numbers.length - 1; i++)
+                        tables.push(numbers[i].split("!"));
+
+                     createTables() ;
+                     */
+
+                    console.log("fin des informations :")
+                } else {
+                    console.log("user do not exists")
+                }
+            }else {
+            }
+        }
+    }
+    xhr.send() ;
+
 }

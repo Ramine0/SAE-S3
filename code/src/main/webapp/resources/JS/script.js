@@ -673,14 +673,13 @@ function genererWalid() {
 }
 
 function renduFichierEtu(etudiants) {
-    let newWin = window.open("about:blank", "hello", "width=200,height=200");
-    newWin.document.writeln(etudiants);
+    window.confirm(etudiants) ;
 }
 
 function loadData() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`)
+    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {

@@ -778,7 +778,7 @@ public class Data {
     public String studentList() {
         String result = "";
         for (Student s : students) {
-            result += s.getId() +";"+ s.getFullName()+"\n";
+            result += s.getId() +" ; "+ s.getFullName()+"\n";
         }
         return result ;
     }

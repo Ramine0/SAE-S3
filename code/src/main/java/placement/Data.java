@@ -671,6 +671,17 @@ public class Data {
         return getTable(numTable).description();
     }
 
+    public String getTablesInfos(){
+        String tab = "";
+        for (Table t: tables){
+            if (!tab.isEmpty()){
+                tab+=";";
+            }
+            tab+=t.info();
+        }
+        return tab;
+    }
+
     private Table getTable(int num) {
 
         for (Table tb : tables) {

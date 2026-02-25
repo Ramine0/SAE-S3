@@ -134,7 +134,29 @@ public class ConnectionServlet extends HttpServlet {
                 String addStudent="Insert into Student (number, idPlacement, name, firstname, grp) values (?, ?, ?, ?, ?)";
                 String addSeat="Insert into Seat (num, x, y, idPlacement, idStudent) values (?, ?, ?, ?, ?)";
                 String addConstraint="Insert into Constraints (type, idPlacement, idStudent, idSeat, grpConstr) values (?, ?, ?, ?, ?)";
+                try (PreparedStatement preparedStatement = connection.prepareStatement(addPlacement)){
+                    preparedStatement.setString(1, request.getParameter("id"));
+                    preparedStatement.setString(2, request.getParameter("name"));
+                    preparedStatement.executeQuery();
+                }
+                int cnt=0;
+                while (cnt!=data.getEtus().length){
+                    String[] student=data.getEtus()[cnt].textVisu().replace(" ", ";").split(";");
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(addStudent)){
+                        preparedStatement.setString(1, student[0]);
+                        preparedStatement.setString(2, request.getParameter("idP"));
+                        preparedStatement.setString(3, student[1]);
+                        preparedStatement.setString(4, student[2]);
+                        preparedStatement.setString(5, student[3]);
+                    }
+                    cnt++;
+                }
+                cnt=0;
+                while (cnt!=1){
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(addSeat)){
 
+                    }
+                }
             }else if (request.getParameter("action").equals("change")){
 
             }

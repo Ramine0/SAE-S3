@@ -312,6 +312,41 @@ public class Data {
         return text;
     }
 
+    public void chargerStudents(String s){
+        String [] tab=s.split(";");
+        for (String string : tab) {
+            String[] student = string.replace(",", ";").split(";");
+            students.add(new Student(student[3], student[4], student[1], student[2], student[0]));
+        }
+    }
+
+    public void chargerTables(String t){
+        String [] tab=t.split(";");
+        tables=new Table[tab.length];
+        deletedTables=new int[tab.length];
+        int i=0;
+        for (String string : tab) {
+            String[] table = string.replace(",", ";").split(";");
+            tables[i]=new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
+            if (Integer.parseInt(table[3])==1){
+                removeTable(Integer.parseInt(table[0]));
+            }
+            i++;
+        }
+    }
+
+    public void chargerConstraint(String c){
+        String [] tab=c.split(";");
+        for (String string : tab) {
+            String[] contrainte = string.replace(",", ";").split(";");
+            if (contrainte[0].equals("G")){
+                addStudentGroupConstraint(contrainte[1], Integer.parseInt(contrainte[4]));
+            }else{
+                addImp(contrainte[1], Integer.parseInt(contrainte[2]));
+            }
+        }
+    }
+
 
     public void placerImposes() {
         String[] s;

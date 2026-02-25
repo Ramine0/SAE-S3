@@ -361,7 +361,6 @@ function enableZone() {
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
 
-        init()
     }
 }
 
@@ -508,20 +507,15 @@ function init() {
 
     const initReq = new XMLHttpRequest();
 
-    if (generated)
-        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
-    else
-        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {
             if (initReq.status === 200) {
                 tables = []
-                console.log(initReq.responseText);
                 let elem = initReq.responseText.split("/");
                 if (initReq.responseText !== "rien") {
                     tables = []
-                    let elem = initReq.responseText.split("/");
 
                     size = elem[0].split(";");
                     const numbers = elem[1].split(";");
@@ -535,8 +529,9 @@ function init() {
             }
         }
 
-        initReq.send();
     }
+    initReq.send();
+
 }
 
 function setValid(section) {
@@ -677,6 +672,11 @@ function genererWalid() {
     }
 }
 
+function renduFichierEtu(etudiants) {
+    let newWin = window.open("about:blank", "hello", "width=200,height=200");
+    newWin.document.writeln(etudiants);
+}
+
 function loadData() {
 
     const xhr = new XMLHttpRequest();
@@ -688,7 +688,7 @@ function loadData() {
                 if (xhr.responseText !== "null") {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
-
+                    let results = xhr.responseText.split("<")
 
 
                     /*
@@ -704,8 +704,10 @@ function loadData() {
                      createTables() ;
                      */
 
+                    renduFichierEtu(results[2])
                     console.log("fin des informations :")
                     enableZone()
+
                 } else {
                     console.log("user do not exists")
 

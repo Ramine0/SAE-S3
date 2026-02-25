@@ -24,6 +24,9 @@ public class CreationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        if (rooms == null) {
+            rooms = new HashMap<>();
+        }
 
         if (request.getParameter("load") != null) {
             out.print(getUserData(request.getSession().getId()));
@@ -33,14 +36,11 @@ public class CreationServlet extends HttpServlet {
 
         String user = request.getSession().getId();
         if (request.getParameter("generate") != null) {
-            createUser(user, request.getServletContext().getRealPath("/") + "/");
-
+            createUser(user, request.getServletContext().getRealPath("/") + "/") ;
             out.print(request.getSession().getId());
         }
 
-        if (rooms == null) {
-            rooms = new HashMap<>();
-        }
+
 
         Room salle = rooms.get(user);
 
@@ -209,7 +209,6 @@ public class CreationServlet extends HttpServlet {
         if (!userExists(user)) {
             try {
                 rooms.put(user, new Room(path));
-                msg += "je cree le user";
                 return true;
             } catch (Exception e) {
                 return false;
@@ -225,14 +224,16 @@ public class CreationServlet extends HttpServlet {
             Room salle = getSalle(user);
             // les infos de la visu
             if (salle.getPositioningIntermediate() != null) {
-                result += "\n" + salle.getPositioningIntermediate().getTablesForVisu();
+                result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
             }
-            result += "<";
             // les infos d'etudians mis a distance
+
             result += salle.getCrea().getSeparated();
+            result += "<";
+            result += salle.getCrea().getStudentList() +"<";
+
 
         }
-
 
         return result;
     }

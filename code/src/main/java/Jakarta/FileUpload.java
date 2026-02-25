@@ -35,6 +35,5 @@ public class FileUpload extends HttpServlet
         InputStream inputStream = filePart.getInputStream();
         Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);
 
-
     }
 }

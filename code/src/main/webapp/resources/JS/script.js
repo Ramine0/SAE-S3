@@ -390,7 +390,6 @@ function enableZone() {
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
 
-        init()
     }
 }
 
@@ -536,19 +535,16 @@ function init() {
     let planType = document.getElementById("planType").value;
 
     const initReq = new XMLHttpRequest();
-    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
-    console.log("INIT")
+    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {
             if (initReq.status === 200) {
                 tables = []
-                console.log(initReq.responseText);
-
+                let elem = initReq.responseText.split("/");
                 if (initReq.responseText !== "rien") {
                     tables = []
-                    let elem = initReq.responseText.split("/");
 
                     size = elem[0].split(";");
                     const numbers = elem[1].split(";");
@@ -562,7 +558,9 @@ function init() {
             }
         }
 
+    }
     initReq.send();
+
 }
 
 function setValid(section) {
@@ -703,12 +701,16 @@ function genererWalid() {
     }
 }
 
+function renduFichierEtu(etudiants) {
+    window.confirm(etudiants) ;
+}
+
 function loadData() {
 
     let students = []
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`)
+    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -743,7 +745,10 @@ function loadData() {
                      createTables() ;
                      */
 
+                    renduFichierEtu(results[2])
                     console.log("fin des informations :")
+                    enableZone()
+
                 } else {
                     console.log("user do not exists")
 

@@ -34,7 +34,6 @@ public class FileUpload extends HttpServlet
         // Save the file to the server
         InputStream inputStream = filePart.getInputStream();
         Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);
-        response.getOutputStream().print(CreationServlet.getSalle(request.getSession().getId()).getCrea().getStudentList()) ;
-        response.getOutputStream().flush();
+
     }
 }

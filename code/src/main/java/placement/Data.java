@@ -516,6 +516,16 @@ public class Data {
         }
     }
 
+    public int getNbConstraint(){
+        int nb=0;
+        for (Constraint c : constraints) {
+            if (c!=null){
+                nb++;
+            }
+        }
+        return nb;
+    }
+
     public int getNbConstraint(String type) {
         int nb = 0;
         if (type.equals("I")) {

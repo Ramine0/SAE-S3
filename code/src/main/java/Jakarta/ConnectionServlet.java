@@ -75,8 +75,8 @@ public class ConnectionServlet extends HttpServlet {
                 }
             }else if (request.getParameter("action").equals("load")){
                 String loadStudents="select number, name, firstname, grp from Student where idPlacement=?";
-                String loadSeats="select num, x, y, suppr, number from Seat p left join Student s on p.idStudent=s.id where p.idPlacement=?";
-                String loadConstraint="select type, number, num, subgrp, numGrp from Constr c left join Student s on c.idStudent = s.id left join Seat p on c.idSeat=p.id where c.idPlacement=?";
+                String loadSeats="select num, x, y, suppr, number from Seat p left join Student s on p.idStudent=s.number where p.idPlacement=?";
+                String loadConstraint="select type, number, num, subgrp, numGrp from Constr c left join Student s on c.idStudent = s.number left join Seat p on c.idSeat=p.num where c.idPlacement=?";
                 String idPlacement=request.getParameter("idPlacement");
                 try (PreparedStatement preparedStatement = connection.prepareStatement(loadStudents)) {
                     preparedStatement.setString(1, idPlacement);
@@ -152,10 +152,22 @@ public class ConnectionServlet extends HttpServlet {
                     cnt++;
                 }
                 cnt=0;
-                while (cnt!=1){
+                String[] tables=data.getTablesInfos().split(";");
+                while (cnt!=tables.length){
+                    String[] table=tables[cnt].split("!");
                     try (PreparedStatement preparedStatement = connection.prepareStatement(addSeat)){
-
+                        preparedStatement.setString(1, table[0]);
+                        preparedStatement.setString(2, table[1]);
+                        preparedStatement.setString(3, table[2]);
+                        preparedStatement.setString(4, request.getParameter("idP"));
+                        preparedStatement.setString(5, table[3]);
+                        preparedStatement.executeQuery();
                     }
+                    cnt++;
+                }
+                cnt=0;
+                while (cnt!=data.getNbConstraint()){
+
                 }
             }else if (request.getParameter("action").equals("change")){
 

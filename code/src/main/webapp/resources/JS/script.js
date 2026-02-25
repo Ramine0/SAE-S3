@@ -13,33 +13,6 @@ let generated = false
 
 loadData()
 
-// const xhr = new XMLHttpRequest();
-// xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
-//
-// // xhr.onreadystatechange = function () {
-// //     if (xhr.readyState === XMLHttpRequest.DONE)
-// //         if (xhr.status === 200) {
-// //             generated = xhr.responseText === "true";
-// //
-// //             if (generated) {
-// //                 console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
-// //                 console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
-// //                 console.log("ptn c quoi c'code")
-// //                 console.log("ya rien qui marche en fait")
-// //                 console.log("oo ee aa")
-// //                 console.log("fo shu")
-// //                 console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
-// //
-// //                 document.getElementById("visuofDouble").style.visibility = "visible"
-// //
-// //                 init()
-// //             } else
-// //                 console.log("c'est pas encore généré connard ça sert à rien")
-// //         } else
-// //             console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
-// // }
-// //
-// // xhr.send();
 
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
@@ -94,7 +67,6 @@ window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
-
 // document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
@@ -267,7 +239,6 @@ function moveFile(event) {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
-
     xhr.send(data);
 
     fileOk = true;
@@ -390,7 +361,6 @@ function enableZone() {
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
 
-        init()
     }
 }
 
@@ -537,20 +507,15 @@ function init() {
 
     const initReq = new XMLHttpRequest();
 
-    if (generated)
-        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
-    else
-        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {
             if (initReq.status === 200) {
                 tables = []
-                console.log(initReq.responseText);
                 let elem = initReq.responseText.split("/");
                 if (initReq.responseText !== "rien") {
                     tables = []
-                    let elem = initReq.responseText.split("/");
 
                     size = elem[0].split(";");
                     const numbers = elem[1].split(";");
@@ -564,8 +529,9 @@ function init() {
             }
         }
 
-        initReq.send();
     }
+    initReq.send();
+
 }
 
 function setValid(section) {
@@ -706,10 +672,14 @@ function genererWalid() {
     }
 }
 
+function renduFichierEtu(etudiants) {
+    window.confirm(etudiants) ;
+}
+
 function loadData() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`)
+    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -717,7 +687,7 @@ function loadData() {
                 if (xhr.responseText !== "null") {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
-
+                    let results = xhr.responseText.split("<")
 
 
                     /*
@@ -733,7 +703,10 @@ function loadData() {
                      createTables() ;
                      */
 
+                    renduFichierEtu(results[2])
                     console.log("fin des informations :")
+                    enableZone()
+
                 } else {
                     console.log("user do not exists")
 

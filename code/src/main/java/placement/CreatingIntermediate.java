@@ -252,10 +252,16 @@ public class CreatingIntermediate
                         result += id+":"+d.getFullName(id)+";" ;
                     }
                 }
-                result += "<" ;
+                result += "!" ;
             }
         }
 
+        return result ;
+    }
+
+    public String getStudentList() {
+        String result = "ID             ; nom prenom \n";
+        result += d.studentList() ;
         return result ;
     }
 }

@@ -820,4 +820,12 @@ public class Data {
         }
         return false ;
     }
+
+    public String studentList() {
+        String result = "";
+        for (Student s : students) {
+            result += s.getId() +" ; "+ s.getFullName()+"\n";
+        }
+        return result ;
+    }
 }

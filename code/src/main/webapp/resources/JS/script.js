@@ -536,18 +536,16 @@ function init() {
     let planType = document.getElementById("planType").value;
 
     const initReq = new XMLHttpRequest();
+    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
 
-    if (generated)
-        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
-    else
-        initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+    console.log("INIT")
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {
             if (initReq.status === 200) {
                 tables = []
                 console.log(initReq.responseText);
-                let elem = initReq.responseText.split("/");
+
                 if (initReq.responseText !== "rien") {
                     tables = []
                     let elem = initReq.responseText.split("/");
@@ -564,8 +562,7 @@ function init() {
             }
         }
 
-        initReq.send();
-    }
+    initReq.send();
 }
 
 function setValid(section) {
@@ -708,6 +705,8 @@ function genererWalid() {
 
 function loadData() {
 
+    let students = []
+
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?load=${encodeURIComponent("reel")}`)
     console.log("recherche des datas de l'utilisateur")
@@ -718,6 +717,17 @@ function loadData() {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
+                    xhr.responseText.split("<")[1].split(";").forEach(student => {
+                        students.push(student.split(":")[0])
+                    })
+                    students.pop()
+
+                    for (let i = 1; i <= students.length; i++) {
+                        console.log(students[i-1])
+
+                        if (document.getElementById("idEtu" + i + "G1").text === students[i-1])
+                            document.getElementById("idEtu" + i + "G1").classList.add("valid")
+                    }
 
 
                     /*

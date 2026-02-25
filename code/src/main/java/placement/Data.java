@@ -327,7 +327,23 @@ public class Data {
         int i=0;
         for (String string : tab) {
             String[] table = string.replace(",", ";").split(";");
-            tables[0]=new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[3]));
+            tables[i]=new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
+            if (Integer.parseInt(table[3])==1){
+                removeTable(Integer.parseInt(table[0]));
+            }
+            i++;
+        }
+    }
+
+    public void chargerConstraint(String c){
+        String [] tab=c.split(";");
+        for (String string : tab) {
+            String[] contrainte = string.replace(",", ";").split(";");
+            if (contrainte[0].equals("G")){
+                addStudentGroupConstraint(contrainte[1], Integer.parseInt(contrainte[4]));
+            }else{
+                addImp(contrainte[1], Integer.parseInt(contrainte[2]));
+            }
         }
     }
 

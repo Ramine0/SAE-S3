@@ -13,10 +13,8 @@ let generated = false
 
 loadData()
 
-
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
-// TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function validerPlaceImposee(event) {
     let idFind = event.target.id;
     let numConstr = idFind.charAt(11);
@@ -24,7 +22,6 @@ function validerPlaceImposee(event) {
     const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
     const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
 
-    //TO MODIFY  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (studentId === "")
         document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
     else if (tableNumber === "")
@@ -32,28 +29,30 @@ function validerPlaceImposee(event) {
     else {
         const xhr = new XMLHttpRequest();
         xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
-
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE)
                 if (xhr.status === 200) {
                     const response = xhr.responseText.split(";");
-                    if (response[1] === "null")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-                    else if (response[2] === "null")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-                    else if (response[2] === "1")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
-                    else if (response[2] === "2")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
-                    else if (response[2] === "3")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
-                    else if (response[2] === "-1")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
-                    else {
-                        validerSectImpose(idFind);
 
-                        document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
-                        document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
+                    switch (response[2]) {
+                        case "1":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
+                            break;
+                        case "2":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                            break;
+                        case "3":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
+                            break;
+                        case "-1":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
+                            break;
+                        default:
+                            validerSectImpose(idFind);
+
+                            document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
+                            document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
+                            break;
                     }
                 } else
                     console.error("Error fetching student data");
@@ -67,6 +66,7 @@ window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
+
 // document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
@@ -85,7 +85,6 @@ function supprimerPlaceImposee(event) {
     decreaseId("#i");
 
     genererWalid();
-
 }
 
 
@@ -125,17 +124,16 @@ function changeMode() {
     const m = document.getElementById("mode").value;
     const mode = new XMLHttpRequest();
     mode.open("GET", `creation?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
+
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
                 if (mode.responseText === "error") {
                     console.log("table nulle");
-                } else {
                 }
 
-            } else {
+            } else
                 console.log(mode.status);
-            }
         }
     };
     mode.send();
@@ -159,15 +157,20 @@ function validerEtuGrp(event) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
-                if (response[1] === "1")
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
-                else if (response[1] === "2")
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
-                else {
-                    validerSectEtuGrp(idFind);
+                switch (response[1]) {
+                    case "1":
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
+                        break;
+                    case "2":
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
+                        break;
+                    default:
+                        validerSectEtuGrp(idFind);
 
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
-                    document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
+                        document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
+
+                        break;
                 }
             } else {
                 console.error('Error fetching group data');
@@ -182,17 +185,16 @@ document.getElementById("supEtu1G1").addEventListener("click", enleverEtuGrp);
 
 function enleverEtuGrp(event) {
     let idBout = event.target.id;
-    let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
+    let numGrp = idBout.substring(8);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.readyState === XMLHttpRequest.DONE)
             if (xhr.status !== 200)
                 console.log("error deleting etu group");
-        }
     };
 
     xhr.send();
@@ -209,25 +211,21 @@ function enleverEtuGrp(event) {
 
             return;
         }
-
     }
+
     document.querySelector(`#E${numEtu}G${numGrp}`).remove();
     if (numEtu !== groupes[numGrp - 1].length) {
-        for (let g = 1; g <= groupes[numGrp - 1].length; g++) {
-            if (g > numEtu) {
+        for (let g = 1; g <= groupes[numGrp - 1].length; g++)
+            if (g > numEtu)
                 decreaseId(`#E${g}G${numGrp}`);
-            }
-        }
 
         document.getElementById("ajoutEtuGrp" + numGrp).disabled = false;
-
     }
 
-    if (numEtu <= groupes[numGrp.length]) {
+    if (numEtu <= groupes[numGrp.length])
         groupes[numGrp - 1].splice(numEtu - 1, 1);
-    }
-    genererWalid();
 
+    genererWalid();
 }
 
 document.getElementById("fileUploadForm").addEventListener("change", moveFile)
@@ -235,6 +233,7 @@ document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 function moveFile(event) {
     if (event.target.id !== "studentFile")
         return;
+
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
@@ -260,18 +259,21 @@ function setTableNumber() {
                     console.log("Default plan generated : " + xhr.responseText);
                 else if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
                     let l = xhr.responseText.split(";");
+
                     long = l[0];
                     document.getElementById("long").value = l[0];
+
                     larg = l[1];
                     document.getElementById("larg").value = l[1];
                 }
+
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;
-            } else {
+            } else
                 console.log("error number tables")
-            }
         }
     };
+
     xhr.send();
 }
 
@@ -299,6 +301,7 @@ function createGrp() {
         <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" disabled >+</button>
         <h4>Ajouter un étudiant au groupe</h4>
     </div>`
+
     document.querySelector('#ajoutGroup').disabled = true;
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
 
@@ -309,8 +312,6 @@ function createGrp() {
 
     document.querySelector("#walid").disabled = true;
     document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
-
 }
 
 document.getElementById("ajoutEtuGrp1").addEventListener("click", createEtuGrp);
@@ -342,7 +343,6 @@ function createEtuGrp(event) {
 
         document.querySelector("#walid").disabled = true;
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
     }
 }
 
@@ -360,7 +360,6 @@ function enableZone() {
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
-
     }
 }
 
@@ -378,9 +377,9 @@ function createTables() {
             vals = tables[i]
 
             if (vals.length === 4) {
-                if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
-                    t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
-                } else {
+                if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei)
+                    t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu</button>`
+                else {
                     table = vals[0];
                     name = vals[3];
                     t += `<div id="T${table}" class="table" role="button">`;
@@ -402,21 +401,22 @@ function createTables() {
 
                     tables[i] = table;
                     noms[i] = name;
+
                     i++;
                 }
             } else if (vals.length === 2) {
-
-
                 table = vals[0];
                 name = vals[1];
+
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
+
                 tables[i] = table;
                 noms[i] = name;
-                i++;
 
+                i++;
             }
 
-            table = table * table;
+            table *= table;
 
             if (i >= tables.length)
                 break;
@@ -432,10 +432,9 @@ function createTables() {
         document.querySelector("#lesTables").innerHTML = "";
         document.querySelector("#lesTables").insertAdjacentHTML("beforeend", t);
 
-        for (let i = 0; i < tables.length; i++) {
+        for (let i = 0; i < tables.length; i++)
             if (tables[i] !== "")
                 document.getElementById("T" + tables[i]).addEventListener("click", handleTable);
-        }
     }
 }
 
@@ -458,15 +457,14 @@ function handleTable(event) {
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
+                if (xhr.status === 200)
                     console.log("table deleted successfully")
-                } else {
+                else
                     console.log("error deleting table")
-                }
             }
         }
-        xhr.send();
 
+        xhr.send();
     } else if (event.target.id.startsWith("T")) { // désuppression de la table
         if (element.children[0].children.length === 1) {
             const table = event.target.id.substring(1);
@@ -487,6 +485,7 @@ function handleTable(event) {
                     }
                 }
             }
+
             xhr.send();
         }
     }
@@ -514,6 +513,7 @@ function init() {
             if (initReq.status === 200) {
                 tables = []
                 let elem = initReq.responseText.split("/");
+
                 if (initReq.responseText !== "rien") {
                     tables = []
 
@@ -525,72 +525,47 @@ function init() {
 
                     createTables()
                 }
-
             }
         }
-
     }
-    initReq.send();
 
+    initReq.send();
 }
 
 function setValid(section) {
-    if (!section.startsWith("#")) {
+    if (!section.startsWith("#"))
         section = "#" + section;
-    }
+
     document.querySelector(section).classList.remove("invalid");
     document.querySelector(section).classList.add("valid");
+
     if (section.includes("impose")) {
         document.querySelector("#ajoutImpos").disabled = false;
 
-        document.querySelector(`#imposedStudentId${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#imposedTableId${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#findImposed${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#imposedStudentName${nbImposedPlace}`
-        ).disabled = true;
-
+        document.querySelector(`#imposedStudentId${nbImposedPlace}`).disabled = true;
+        document.querySelector(`#imposedTableId${nbImposedPlace}`).disabled = true;
+        document.querySelector(`#findImposed${nbImposedPlace}`).disabled = true;
+        document.querySelector(`#imposedStudentName${nbImposedPlace}`).disabled = true;
     } else if (section.includes("supTable")) {
         document.querySelector("#ajoutSuppr").disabled = false;
-        document.querySelector(
-            `#numTabSup${nbPlacesSuppr}`
-        ).disabled = true;
-        document.querySelector(
-            `#findTable${nbPlacesSuppr}`
-        ).disabled = true;
-
+        document.querySelector(`#numTabSup${nbPlacesSuppr}`).disabled = true;
+        document.querySelector(`#findTable${nbPlacesSuppr}`).disabled = true;
     } else {
         let numGrp = groupes.length;
-        if (section.includes(
-            `G${numGrp}`
-        )) {
-            document.querySelector("#ajoutGroup").disabled = false;
-        } else {
-            numGrp = section.substring(4);
-        }
 
+        if (section.includes(`G${numGrp}`))
+            document.querySelector("#ajoutGroup").disabled = false;
+        else
+            numGrp = section.substring(4);
 
         let numEtu = groupes[numGrp - 1].length;
 
         if (numEtu < 9) {
-            document.querySelector(
-                `#ajoutEtuGrp${numGrp}`
-            ).disabled = false;
+            document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+            document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
+            document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
+            document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
         }
-        document.querySelector(
-            `#idEtu${numEtu}G${numGrp}`
-        ).disabled = true;
-        document.querySelector(
-            `#nomEtu${numEtu}G${numGrp}`
-        ).disabled = true;
-        document.querySelector(
-            `#walEtu${numEtu}G${numGrp}`
-        ).disabled = true;
     }
 
     genererWalid();
@@ -600,17 +575,13 @@ function setValid(section) {
 function validerSectEtuGrp(idBout) {
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
-    setValid(
-        `E${numEtu}G${numGrp}`
-    );
+
+    setValid(`E${numEtu}G${numGrp}`);
 }
 
 function validerSectImpose(idBout) {
     let numConstr = idBout.charAt(11);
-    setValid(
-        `impose${numConstr}`
-    );
-
+    setValid(`impose${numConstr}`);
 }
 
 function decreaseId(idElem) {
@@ -637,12 +608,10 @@ function decreaseId(idElem) {
 }
 
 function codeForGeneration() {
-
     let code = document.querySelector("#testVal");
     const xhr = new XMLHttpRequest();
-    xhr.open("GET",
-        `creation?generate=${encodeURIComponent("n'importe quoi")}`
-        , true);
+
+    xhr.open("GET", `creation?generate=${encodeURIComponent("n'importe quoi")}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -651,12 +620,11 @@ function codeForGeneration() {
                 code.disabled = true;
 
                 init()
-            } else {
             }
         }
     }
-    xhr.send();
 
+    xhr.send();
 }
 
 function genererWalid() {
@@ -667,14 +635,15 @@ function genererWalid() {
 }
 
 function renduFichierEtu(etudiants) {
-    window.confirm(etudiants) ;
+    window.confirm(etudiants);
 }
 
 function loadData() {
-
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
+
     console.log("recherche des datas de l'utilisateur")
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -709,10 +678,9 @@ function loadData() {
                         enableZone()
                     }
                 }
-            } else {
             }
         }
     }
-    xhr.send()
 
+    xhr.send()
 }

@@ -1,7 +1,6 @@
 package constraints;
 
 import org.NeoMalokVector.SAE_S3.Student;
-import utilitaire.Utilitaire;
 
 public class PerClass extends Constraint
 {
@@ -17,8 +16,8 @@ public class PerClass extends Constraint
     {
 
 
-        // on cherche a savoir si les tables voisines de l'etu on la meme classe
-        // donc on parcoure les voisins
+        // on cherche à savoir si les tables voisines de l'etu on la meme classe
+        // donc on parcourt les voisins
         for (Student s : etu)
         {
             if (s != null && student.sameGroup(s, subGroup))

@@ -50,7 +50,7 @@ public class Table
     }
 
     /**
-     * getter du numéro de table
+     * Getter du numéro de table
      * @return num
      */
     public int getNum() {

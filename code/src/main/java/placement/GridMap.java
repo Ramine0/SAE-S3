@@ -17,7 +17,7 @@ public class GridMap extends Map
         init(tables);
     }
 
-    private boolean init(Table[] tables)
+    private void init(Table[] tables)
     {
         matriceAdj = new int[tables.length + 1][tables.length + 1];
         if (tables[0].getCoord()[0] != -1)
@@ -52,9 +52,9 @@ public class GridMap extends Map
                     }
                 }
             }
-            return true;
+            return ;
         }
-        return false;
+
     }
 
     public GridMap()

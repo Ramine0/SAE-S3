@@ -702,7 +702,7 @@ function genererWalid() {
 }
 
 function renduFichierEtu(etudiants) {
-    window.confirm(etudiants) ;
+    window.confirm(etudiants);
 }
 
 function loadData() {
@@ -725,9 +725,9 @@ function loadData() {
                     students.pop()
 
                     for (let i = 1; i <= students.length; i++) {
-                        console.log(students[i-1])
+                        console.log(students[i - 1])
 
-                        if (document.getElementById("idEtu" + i + "G1").text === students[i-1])
+                        if (document.getElementById("idEtu" + i + "G1").text === students[i - 1])
                             document.getElementById("idEtu" + i + "G1").classList.add("valid")
                     }
 

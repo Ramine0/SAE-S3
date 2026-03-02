@@ -396,8 +396,6 @@ function createTables() {
                     else
                         t += '<p>aucun étu</p>'
 
-                    t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
-
                     t += '</div>';
 
                     tables[i] = table;
@@ -638,13 +636,11 @@ function decreaseId(idElem) {
 
 }
 
-function enableText() {
-    let code = document.querySelector("#testVal").disabled = false;
-}
+
 
 function codeForGeneration() {
 
-    let code = document.querySelector("#testVal");
+    let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
     xhr.open("GET",
         `creation?generate=${encodeURIComponent("n'importe quoi")}`
@@ -654,7 +650,6 @@ function codeForGeneration() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-                code.disabled = true;
 
                 init()
             } else {
@@ -679,7 +674,7 @@ function renduFichierEtu(etudiants) {
 function loadData() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
+    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#sessionCode").value)}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -722,3 +717,6 @@ function loadData() {
     xhr.send()
 
 }
+
+
+

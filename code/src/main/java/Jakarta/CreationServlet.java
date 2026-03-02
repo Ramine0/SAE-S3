@@ -24,17 +24,26 @@ public class CreationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        String user = request.getSession().getId();
+
         if (rooms == null) {
             rooms = new HashMap<>();
         }
 
-        if (request.getParameter("load") != null) {
-            out.print(getUserData(request.getSession().getId()));
+        if (request.getParameter("load") != null && !request.getParameter("load").isEmpty()) {
+            String temp = request.getParameter("load");
+            if (loadSession(temp,user)) {
+                out.print(getUserData(temp));
+            }else {
+                out.print("null") ;
+            }
             out.flush();
             return;
+        }else if (request.getParameter("load") != null) {
+            out.print("null") ;
         }
 
-        String user = request.getSession().getId();
+
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/") ;
             out.print(request.getSession().getId());
@@ -194,21 +203,21 @@ public class CreationServlet extends HttpServlet {
 
     @Transactional(Transactional.TxType.REQUIRED)
     private static boolean loadSession(String oldId, String newId) {
-        if (userExists(oldId)) {
-            // il faudrait une transaction
+        if ((!newId.equals(oldId)) && userExists(oldId) ) {
             rooms.put(newId, rooms.get(oldId));
             rooms.remove(oldId);
-            // qui se finirai la
             return true;
         }
-        return false;
+        return newId.equals(oldId);
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static boolean createUser(String user, String path) {
         if (!userExists(user)) {
             try {
-                rooms.put(user, new Room(path));
+                Room newData = new Room(path) ;
+                rooms.put(user,newData);
+
                 return true;
             } catch (Exception e) {
                 return false;

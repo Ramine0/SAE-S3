@@ -17,7 +17,7 @@ import java.util.HashMap;
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet {
     private static HashMap<String, Room> rooms;
-    static String msg = "";
+    static String msg = ""; // c a 2000% du debug
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -193,7 +193,7 @@ public class CreationServlet extends HttpServlet {
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 
-    @Transactional(Transactional.TxType.REQUIRED)
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static boolean loadSession(String oldId, String newId) {
         if (userExists(oldId)) {
             // il faudrait une transaction

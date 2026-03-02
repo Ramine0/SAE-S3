@@ -27,13 +27,8 @@ public class Data {
 
     private Map map;
 
-
-    public int[] getDeletedTables() {
-        return deletedTables;
-    }
-
     private final ArrayList<Student> students = new ArrayList<>();
-    int idC;
+    private int idC;
     // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
     // notement avec les methodes qui sont assez nombreuses
 
@@ -197,6 +192,7 @@ public class Data {
         return null;
     }
 
+    // voir si c pas remplacable
     public Constraint[] getConstr() {
         return constraints;
     }
@@ -235,9 +231,6 @@ public class Data {
         return lesNums;
     }
 
-    public Student[] getEtus() {
-        return students.toArray(new Student[0]);
-    }
 
     private void chargerFichier() throws FileNotFoundException {
         chargerFichier("src/main/webapp/");
@@ -335,6 +328,8 @@ public class Data {
         }
     }
 
+
+    // il servira
     public void chargerConstraint(String c){
         String [] tab=c.split(";");
         for (String string : tab) {
@@ -414,25 +409,6 @@ public class Data {
             }
         }
         return null;
-    }
-
-    public int getPerGroupIndex() {
-        int num = 1;
-        boolean valide = false;
-        while (!valide && num < getNbConstraint("G")) {
-            valide = true;
-            for (PerGroup pg : ((PerGroup[]) getConstr("G"))) {
-                if (pg.getNum() == num) {
-                    num++;
-                    valide = false;
-                }
-            }
-        }
-        if (valide) {
-            return num;
-        } else {
-            return -1;
-        }
     }
 
     public int getIndexConstraint(String type, int id) {
@@ -538,11 +514,6 @@ public class Data {
         return nb;
     }
 
-    public void modifStudentGroupConstraint(String numStudent, int idGp, int idStu) {
-        if (getPerGroup(idGp) != null) {
-            getPerGroup(idGp).modifStudent(numStudent, idStu);
-        }
-    }
 
     public int addConstraint(String numStudent, int numTable, char constr) {
         if (constr == 'I') {
@@ -572,7 +543,7 @@ public class Data {
         return 1;
     }
 
-
+    // a revoir ca la facon dont c'est fait me semble tres suspecte
     public void removeStudentGroupConstraint(int idGp, int idStu) {
         if (getPerGroup(idGp) != null) {
             getPerGroup(idGp).removeStudent(idStu);
@@ -625,11 +596,11 @@ public class Data {
 
         }
 
-        System.out.println();
-
         return voisins.toArray(new Student[0]);
     }
 
+    // ALED ALED OSKOUR NETOYEZ MES YEUX A LA JAVEL PK YA UN PTN DE GETMAP ARRGHH
+    // LA MAP EST PRIVÉE POUR UNE RAISON MERDE IL FAUT SE DEBARASSER DE CETTE HORREUR AU PLUS VITE (QUESTION DE VIE OU DE MORT)
     public Map getMap() {
         return map;
     }
@@ -695,6 +666,7 @@ public class Data {
         return etu.getFullName();
     }
 
+    // la fonction est cool je me demande pk elle est pas used
     public boolean haveStudent(int tab) {
         return (!isDeleted(tab)) && (getTable(tab).getEtu() != null);
     }
@@ -801,6 +773,7 @@ public class Data {
     }
 
     public boolean tableExist(int numTab) {return Utilitaire.in(numTab, existingTables()) ;}
+
 
     public boolean changeNumTable(int oldNum, int newNum) {
         if (getTable(oldNum) != null ){

@@ -86,9 +86,6 @@ public class CreatingIntermediate
     {
         d.removeConstraint(constr, id);
     }
-    public Constraint[] getConstr(){
-        return d.getConstr();
-    }
 
     public String findStudentForGroup(String idPartiel, int numGrp)
     {
@@ -139,9 +136,6 @@ public class CreatingIntermediate
         }
     }
 
-    public int[] free(){return d.freeTables();}
-    public int[] del(){return d.getDeletedTables();}
-    public int[] existing(){return d.existingTables();}
 
     public void unremoveTable(int num)
     {
@@ -149,15 +143,13 @@ public class CreatingIntermediate
     }
 
     public void setDimensions(int lon, int lar) {d.setDimensions(lon, lar);}
+
+    // OSKOUR
     public Map getMap()
     {
         return d.getMap();
     }
 
-    public String[] getImposedStud()
-    {
-        return d.imposedStudents();
-    }
 
     public void resetData()
     {
@@ -169,25 +161,6 @@ public class CreatingIntermediate
         return d.getStuFromTab(num);
     }
 
-    public int getNbConstr()
-    {
-        return d.getConstr().length;
-    }
-
-    public Constraint getConstr(int num)
-    {
-        return d.getConstr()[num - 1];
-    }
-
-    public Constraint getConstr(String type, int num){
-        if (type.equals("I")){
-            return d.getImposedPlacement(num);
-        }else if (type.equals("G")){
-            return d.getPerGroup(num);
-        }else{
-            return d.getConstr()[0];
-        }
-    }
 
     public void setMode(int i)
     {

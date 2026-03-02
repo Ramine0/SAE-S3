@@ -7,59 +7,56 @@ import utilitaire.Utilitaire;
 import java.util.Random;
 
 public class PositioningIntermediate {
-    private Data donnees; // contient les étudiants et les tables
+    private final Data donnees; // contient les étudiants et les tables
     // On ne manipule pas directement les tables, on a juste leur numéro. Question d'optimisation et de securité
 
     private final Random random = new Random();
 
-    // on fait ce qu'on veut des contraintes, c'est plus simple et plus pratique
-
+    // on a besoin des données (les vraies pas une copie)
     public PositioningIntermediate(Data d) {
         donnees = d;
     }
 
-    // À VOIR : pour l'instant ce constructeur est inutile, on va peut-être le supprimer plus tard
-    private PositioningIntermediate(String path) { // path contient les informations du format de plan
-        // premier caractère : type (R = rectangle)
-        // deuxième et troisième caractères : longueur et largeur du rectangle
-
-        // on donne aussi les numéros de tables supprimées
-
-
-        try {
-            donnees = new Data(path, "R");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
-
+    // la fonction principale du positionning qui genere le placement
     public boolean creerPlacement() {
-        donnees.placerImposes();
+        donnees.placerImposes(); // on commence par les etudiants imposés a des places
 
+        // un compteur de tentatives de placement sur une table
         int loopCount;
         int tableNumber = 0;
 
+        // tant qu'on a des etudiants non placés et qu'on a pas tester toute les tables
         while (donnees.freeStudents().length != 0 && tableNumber <= donnees.maxTableID()) {
-            tableNumber++;
+            tableNumber++;// on teste la table suivante
 
+            // on verifie qu'elle existe
             if (!Utilitaire.in(tableNumber, donnees.freeTables()))
                 continue;
 
-            String[] freeStudents = donnees.freeStudents();
-            String studentId = freeStudents[random.nextInt(freeStudents.length)];
+            String[] freeStudents = donnees.freeStudents(); // on recupere les etudiants a placer
+            String studentId = freeStudents[random.nextInt(freeStudents.length)]; // on en prend un au hazard
 
-            loopCount = 0;
+            loopCount = 0; // on commence a compter
+
+            // tant que l'etu selectionné est pas placable sur la table actuelle
             while (!walid(donnees.getStudentFromId(studentId), tableNumber)) {
+                // on teste un autre etu
                 studentId = freeStudents[random.nextInt(freeStudents.length)];
-
+                // on compte les try
                 loopCount++;
-                if (loopCount > freeStudents.length / 2)
-                    tableNumber++;
+
+                if (loopCount > freeStudents.length / 2) // si on a tester la moitié des etus
+                    tableNumber++; // on passe a la table suivante
             }
 
-            donnees.placeStudent(tableNumber, studentId);
+            // vu que c ok alors on place l'etu
+            if (donnees.placeStudent(tableNumber, studentId)){
+                // je sais pas quoi y mettre !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            }
         }
 
+        // si ya encore des etus c'est que ca chargé en contraintes
         return donnees.freeStudents().length == 0;
     }
 
@@ -84,29 +81,12 @@ public class PositioningIntermediate {
         return true;
     }
 
-    public String[] getAllInfo() {
-        String[] infos = new String[donnees.getTables().length];
-        int cpt = 0;
-
-        for (int t : donnees.getTables()) {
-
-            if (!donnees.isDeleted(t))
-                infos[cpt] = donnees.getTableInfos(t);
-
-            cpt++;
-        }
-
-        return infos;
-    }
-
-    // peut-être à supprimer
-    public String getAllTable(int numTable) {
-        return donnees.getTableInfos(numTable);
-    }
-
+    // renvoie une grosse string degeu qui donne les infos des tables
     public String getTablesForVisu() {
+        // on commence par la taille du plan
         StringBuilder result = new StringBuilder(donnees.getPlanSize() + "/");
 
+        // on cherche les tables pas supprimées et on donne leurs infos
         for (int t : donnees.existingTables())
             if (!donnees.isDeleted(t))
                 result.append(donnees.getTableInfos(t)).append(";");
@@ -114,6 +94,7 @@ public class PositioningIntermediate {
         return result.toString();
     }
 
+    // ca echange les etus des tables 1 et 2
     public boolean swapPlaces(int numT1, int numT2) {
         if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2, donnees.existingTables()))
             return donnees.swap(numT1, numT2);
@@ -121,6 +102,7 @@ public class PositioningIntermediate {
         return false;
     }
 
+    // une fonction de debug qui permet d'avoir un ptit rendu du placement
     public String descripData() {
         StringBuilder result = new StringBuilder();
 
@@ -130,6 +112,7 @@ public class PositioningIntermediate {
         return result.toString();
     }
 
+    // qqc cloche mais jsp quoi a revoir
     public String tabInfoForVisu(int nb) {
         return donnees.getInfosForVisu(nb);
     }

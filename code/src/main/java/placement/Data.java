@@ -65,23 +65,15 @@ public class Data {
     }
 
 
-    public void placeStudent(int table, String idStudent) {
+    public boolean placeStudent(int table, String idStudent) {
+        if (getTable(table)== null ) {
+            return false ;
+        }
         getTable(table).setStudent(getStudentFromId(idStudent));
+        return true ;
     }
 
-    // liste des fonctions a implementer
-    /*
-    bool isDeleted(Table/int) FAIT
-    int[] freeTables()  revoie un tableau de num de tables disponibles FAIT
-    getTable(int) FAIT
-    getDeleted() renvoie le tableau FAIT
-    freeStudents() renvoie les etus qui sont pas deja placés FAIT
-    removeTable() FAIT
-    unremoveTable() FAIT
-    getStudentFromId(string id) ; FAIT
 
-
-     */
     public boolean isDeleted(int numTable) {
         return (Utilitaire.in(numTable, deletedTables));
     }
@@ -595,11 +587,6 @@ public class Data {
         return voisins.toArray(new Student[0]);
     }
 
-    // ALED ALED OSKOUR NETOYEZ MES YEUX A LA JAVEL PK YA UN PTN DE GETMAP ARRGHH
-    // LA MAP EST PRIVÉE POUR UNE RAISON MERDE IL FAUT SE DEBARASSER DE CETTE HORREUR AU PLUS VITE (QUESTION DE VIE OU DE MORT)
-    public Map getMap() {
-        return map;
-    }
 
     public String[] imposedStudents() {
         String[] result = new String[getNbConstraint("I")];

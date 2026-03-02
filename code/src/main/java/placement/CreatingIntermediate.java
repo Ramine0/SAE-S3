@@ -142,11 +142,6 @@ public class CreatingIntermediate
 
     public void setDimensions(int lon, int lar) {d.setDimensions(lon, lar);}
 
-    // OSKOUR
-    public Map getMap()
-    {
-        return d.getMap();
-    }
 
 
     public void resetData()
@@ -196,7 +191,7 @@ public class CreatingIntermediate
             result+= "invalid;" ;
         }
 
-        if (numEtu != ""  && findTable(newNum)){
+        if (!numEtu.isEmpty()  && findTable(newNum)){
             result += findNumsForImp(numEtu,newNum);
         }else {
             result += "";

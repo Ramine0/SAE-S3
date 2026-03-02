@@ -10,7 +10,7 @@ public class Room
 
     private CreatingIntermediate crea;
     private PositioningIntermediate posing;
-    public String message;
+    public String message; // c pour debug
 
     private boolean generated;
 

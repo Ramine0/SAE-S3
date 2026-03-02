@@ -1,9 +1,7 @@
 package placement;
 
-import constraints.Constraint;
 import constraints.PerGroup;
 import org.NeoMalokVector.SAE_S3.Student;
-import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
@@ -236,5 +234,9 @@ public class CreatingIntermediate
         String result = "ID             ; nom prenom \n";
         result += d.studentList() ;
         return result ;
+    }
+
+    public String getDimentions() {
+        return d.getPlanSize() ;
     }
 }

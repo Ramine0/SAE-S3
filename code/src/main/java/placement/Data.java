@@ -13,7 +13,6 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -38,9 +37,6 @@ public class Data {
         if (mapType.charAt(0) == 'R') {
             // plan rectangulaire
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
-        } else if (mapType.charAt(0) == 'G') {
-            // plan grille
-            //map = new GridMap() ;
         } else if (mapType.charAt(0) == 'D') {
             map = new GridMap();
         }
@@ -639,6 +635,7 @@ public class Data {
 
 
     public String getTableInfos(int numTable) {
+        if (getTable(numTable)==null) {return null ;}
         return getTable(numTable).description();
     }
 
@@ -668,7 +665,7 @@ public class Data {
 
     // la fonction est cool je me demande pk elle est pas used
     public boolean haveStudent(int tab) {
-        return (!isDeleted(tab)) && (getTable(tab).getEtu() != null);
+        return !(getTable(tab) == null) && !isDeleted(tab) && (getTable(tab).getEtu() != null);
     }
 
 
@@ -790,4 +787,6 @@ public class Data {
         }
         return result ;
     }
+
+
 }

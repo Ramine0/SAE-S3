@@ -228,7 +228,7 @@ public class CreationServlet extends HttpServlet {
             if (salle.getPositioningIntermediate() != null) {
                 result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
             }
-            // les infos d'etudians mis a distance
+            // les infos d'etudians mis à distance
 
             result += salle.getCrea().getSeparated();
             result += "<";

@@ -634,12 +634,6 @@ function decreaseId(idElem) {
             children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
         }
     }
-
-
-}
-
-function enableText() {
-    let code = document.querySelector("#testVal").disabled = false;
 }
 
 function codeForGeneration() {

@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-// la classe va save les données pour les creer via un CreatingIntermediate et les avoir dans le positioning intermediate
-// elle aura plein de fonction utiles comme le lecture du fichier des etus ou le traitement des etus
+// la classe va save les données pour les créer via un CreatingIntermediate et les avoir dans le positioning intermediate,
+// elle aura plein de fonctions utiles comme la lecture du fichier des etus ou le traitement des etus
 
 public class Data {
     private Constraint[] constraints;
@@ -115,11 +115,11 @@ public class Data {
     // renvoie les numeros de tables disponibles
     public int nbDeletedTables() {
         int num = 0;
-        if (tables.length==1) {
-            return 100 ;
+        if (tables.length == 1) {
+            return 100;
         }
-        for (int i = 0; i < deletedTables.length; i++) {
-            if (deletedTables[i] != 0) {
+        for (int deletedTable : deletedTables) {
+            if (deletedTable != 0) {
                 num++;
             }
         }
@@ -129,12 +129,12 @@ public class Data {
     public int[] existingTables() {
         int[] result = new int[tables.length - nbDeletedTables()];
         int numRes = 0; // la position dans les resultats
-        for (int i = 0; i < tables.length; i++) {
-            if (tables[i] != null) {
-                // je verifie que ma table soit pas supprimée
-                if (!isDeleted(tables[i].getNum())) {
+        for (Table table : tables) {
+            if (table != null) {
+                // je vérifie que ma table ne soit pas supprimée
+                if (!isDeleted(table.getNum())) {
                     // si c ok je l'ajoute a la liste
-                    result[numRes] = tables[i].getNum();
+                    result[numRes] = table.getNum();
                     numRes++;
                 }
             }
@@ -147,15 +147,15 @@ public class Data {
         int length = 0;
         int numRes = 0;
 
-        for (int i = 0; i < tables.length; i++) {
-            if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null) {
+        for (Table table : tables) {
+            if (Utilitaire.in(table.getNum(), existingTables()) && table.getEtu() == null) {
                 length++;
             }
         }
         free = new int[length];
-        for (int i = 0; i < tables.length; i++) {
-            if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null) {
-                free[numRes] = tables[i].getNum();
+        for (Table table : tables) {
+            if (Utilitaire.in(table.getNum(), existingTables()) && table.getEtu() == null) {
+                free[numRes] = table.getNum();
                 numRes++;
             }
         }
@@ -193,6 +193,7 @@ public class Data {
         return constraints;
     }
 
+    // ne pas supprimer, sauf si on ne lui trouve aucune utilité
     public Constraint[] getConstr(String type) {
         int i = 0;
         Constraint[] constr;
@@ -301,23 +302,23 @@ public class Data {
         return text;
     }
 
-    public void chargerStudents(String s){
-        String [] tab=s.split(";");
+    public void chargerStudents(String s) {
+        String[] tab = s.split(";");
         for (String string : tab) {
             String[] student = string.replace(",", ";").split(";");
             students.add(new Student(student[3], student[4], student[1], student[2], student[0]));
         }
     }
 
-    public void chargerTables(String t){
-        String [] tab=t.split(";");
-        tables=new Table[tab.length];
-        deletedTables=new int[tab.length];
-        int i=0;
+    public void chargerTables(String t) {
+        String[] tab = t.split(";");
+        tables = new Table[tab.length];
+        deletedTables = new int[tab.length];
+        int i = 0;
         for (String string : tab) {
             String[] table = string.replace(",", ";").split(";");
-            tables[i]=new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
-            if (Integer.parseInt(table[3])==1){
+            tables[i] = new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
+            if (Integer.parseInt(table[3]) == 1) {
                 removeTable(Integer.parseInt(table[0]));
             }
             i++;
@@ -326,13 +327,13 @@ public class Data {
 
 
     // il servira
-    public void chargerConstraint(String c){
-        String [] tab=c.split(";");
+    public void chargerConstraint(String c) {
+        String[] tab = c.split(";");
         for (String string : tab) {
             String[] contrainte = string.replace(",", ";").split(";");
-            if (contrainte[0].equals("G")){
+            if (contrainte[0].equals("G")) {
                 addStudentGroupConstraint(contrainte[1], Integer.parseInt(contrainte[4]));
-            }else{
+            } else {
                 addImp(contrainte[1], Integer.parseInt(contrainte[2]));
             }
         }
@@ -351,7 +352,7 @@ public class Data {
         }
     }
 
-    public boolean setNumberTables(int lon, int lar) {
+    public void setNumberTables(int lon, int lar) {
         int num = lon * lar;
 
         Table.reset();
@@ -377,10 +378,8 @@ public class Data {
 
                 deletedTables = new int[students.size()];
             }
-            return true;
 
         }
-        return false;
     }
 
     public void changeMode(char mode) {
@@ -438,7 +437,7 @@ public class Data {
         return null;
     }
 
-    /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
+    /// Il faudra peut-être modifier tout ça en fonction de la manière dont les contraintes sont indiquées
     public String addStudentGroupConstraint(String numStudent, int idGp) {
         if (getPerGroup(idGp) != null) {
             if (getPerGroup(idGp).haveStu(numStudent)) {
@@ -490,21 +489,25 @@ public class Data {
 
     public int getNbConstraint(String type) {
         int nb = 0;
-        if (type.equals("I")) {
-            for (int i = 0; i < idC; i++) {
-                if (constraints[i] instanceof ImposedPlacement) {
-                    nb++;
+        switch (type) {
+            case "I" -> {
+                for (int i = 0; i < idC; i++) {
+                    if (constraints[i] instanceof ImposedPlacement) {
+                        nb++;
+                    }
                 }
             }
-        } else if (type.equals("G")) {
-            for (int i = 0; i < idC; i++) {
-                if (constraints[i] instanceof PerGroup) {
-                    nb++;
+            case "G" -> {
+                for (int i = 0; i < idC; i++) {
+                    if (constraints[i] instanceof PerGroup) {
+                        nb++;
+                    }
                 }
             }
-        } else if (type.equals("M")) {
-            if (constraints[0] != null) {
-                nb++;
+            case "M" -> {
+                if (constraints[0] != null) {
+                    nb++;
+                }
             }
         }
         return nb;
@@ -539,7 +542,7 @@ public class Data {
         return 1;
     }
 
-    // a revoir ca la facon dont c'est fait me semble tres suspecte
+    // à revoir, la façon dont c'est fait me semble très suspecte
     public void removeStudentGroupConstraint(int idGp, int idStu) {
         if (getPerGroup(idGp) != null) {
             getPerGroup(idGp).removeStudent(idStu);
@@ -571,9 +574,8 @@ public class Data {
         return addConstraint(id, num, 'I');
     }
 
-    public boolean setDimensions(int lon, int lar) {
+    public void setDimensions(int lon, int lar) {
         map = new RectangularMap(lon, lar);
-        return true;
     }
 
     // je prends les voisins de ma table
@@ -583,7 +585,7 @@ public class Data {
 
 //        System.out.println(Arrays.toString(map.neighbours(t, freeTables())));
         for (int i : map.neighbours(t, existingTables())) {
-            //je recupere l'etu de la table si on a bien une table
+            //je récupère l'etu de la table si on a bien une table
             if (i != -1) {
                 if (getTable(i) != null) {
                     voisins.add(getStuFromTab(i));
@@ -635,7 +637,9 @@ public class Data {
 
 
     public String getTableInfos(int numTable) {
-        if (getTable(numTable)==null) {return null ;}
+        if (getTable(numTable) == null) {
+            return null;
+        }
         return getTable(numTable).description();
     }
 
@@ -663,7 +667,7 @@ public class Data {
         return etu.getFullName();
     }
 
-    // la fonction est cool je me demande pk elle est pas used
+    // la fonction est cool, je me demande pourquoi elle n'est pas used
     public boolean haveStudent(int tab) {
         return !(getTable(tab) == null) && !isDeleted(tab) && (getTable(tab).getEtu() != null);
     }
@@ -706,36 +710,24 @@ public class Data {
         return constraints[0] != null;
     }
 
-    public boolean loadPlanDefault(String path) {
-        if (map instanceof GridMap) {
+    public void loadPlanDefault(String path) {
+        if (map instanceof GridMap)
             tables = ((GridMap) map).loadMap(path);
-            return tables != null;
-        } else {
-            return false;
-        }
     }
 
-    public boolean changePlanMode(char newMode, String path) {
+    public void changePlanMode(char newMode, String path) {
 
         if (newMode == 'R') {
             if (map instanceof GridMap) {
                 map = new RectangularMap(4, 4);
-                return true;
-            } else {
-                return false;
             }
         } else if (newMode == 'G') {
             if (map instanceof RectangularMap) {
                 map = new GridMap(tables);
-                return true;
-            } else {
-                return false;
             }
         } else if (newMode == 'D') {
             map = new GridMap();
-            return loadPlanDefault(path);
-        }else {
-            return false ;
+            loadPlanDefault(path);
         }
     }
 
@@ -769,23 +761,25 @@ public class Data {
         }
     }
 
-    public boolean tableExist(int numTab) {return Utilitaire.in(numTab, existingTables()) ;}
+    public boolean tableExist(int numTab) {
+        return Utilitaire.in(numTab, existingTables());
+    }
 
 
     public boolean changeNumTable(int oldNum, int newNum) {
-        if (getTable(oldNum) != null ){
+        if (getTable(oldNum) != null) {
             getTable(oldNum).setNum(newNum);
-            return true ;
+            return true;
         }
-        return false ;
+        return false;
     }
 
     public String studentList() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Student s : students) {
-            result += s.getId() +" ; "+ s.getFullName()+"\n";
+            result.append(s.getId()).append(" ; ").append(s.getFullName()).append("\n");
         }
-        return result ;
+        return result.toString();
     }
 
 

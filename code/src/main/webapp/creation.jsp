@@ -61,6 +61,7 @@
 
         </form>
         <form method="post" action="Display">
+            <label for="testVal"></label>
             <input type="text" name="testVal" id="testVal">
             <button type="submit" id="walid" class="boutWalider" onclick="enableText()" disabled> Générer</button>
         </form>
@@ -117,7 +118,7 @@
                     <button class="chercher" id="findTable1" disabled>find</button>
                 </section>
 
-                <button id="ajoutSuppr" class="boutPlus" onclick="createSuppr()" disabled>+</button>
+                <button id="ajoutSuppr" class="boutPlus" disabled>+</button>
             </div>
 
         </div>

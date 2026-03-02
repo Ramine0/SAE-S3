@@ -90,22 +90,8 @@ header * {
     display: flex;
 }
 
-#logo {
+.logo {
     border: 3px solid #5271ff;
-}
-
-
-.topMenu {
-    display: flex;
-
-    width: 50%;
-    background-color: #cccccc;
-    border: 3px solid #5271ff;
-
-    margin-left: auto;
-    margin-right: auto;
-
-    justify-content: space-around;
 }
 
 .topMenu div {
@@ -259,7 +245,6 @@ hr {
 .invalid, .valid {
     border: 1px solid #233dff;
     padding: 5px;
-
 }
 
 .invalid {

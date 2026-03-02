@@ -8,9 +8,8 @@ import java.io.FileNotFoundException;
 public class Room
 {
 
-    private CreatingIntermediate crea;
+    private final CreatingIntermediate crea;
     private PositioningIntermediate posing;
-    public String message;
 
     private boolean generated;
 
@@ -50,9 +49,9 @@ public class Room
     /**
      * Fonction qui change la place de l'étudiant à la table num1 avec l'étudiant à la table num2.
      * S'il n'y a pas d'étudiant à l'une des tables, change juste la place d'un étudiant.
-     * Il faudrait peut-être voir si on la déplace pas dans PositioningIntermediate, vu que c'est
+     * Il faudrait peut-être voir si on ne la déplace pas dans PositioningIntermediate, vu que c'est
      * ce qui est censé permettre de placer les élèves et que la fonction de création de placement est dans PositioningIntermediate.
-     * PositioningIntermediate a pas d'accès à swapPlaces au passage.
+     * PositioningIntermediate n'a pas d'accès à swapPlaces au passage.
      *
      * @param num1 numéro de la première table
      * @param num2 numéro de la deuxième table

@@ -7,163 +7,135 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 
 
-public class CreatingIntermediate
-{
+public class CreatingIntermediate {
     private final Data d;
 
-    public CreatingIntermediate() throws FileNotFoundException
-    {
+    public CreatingIntermediate() throws FileNotFoundException {
         d = new Data();
     }
 
-    public CreatingIntermediate(String path) throws FileNotFoundException
-    {
+    public CreatingIntermediate(String path) throws FileNotFoundException {
         d = new Data(path, "D");
     }
 
-    public boolean createTables(int lon, int lar)
-    {
-        return d.setNumberTables(lon, lar);
+    public void createTables(int lon, int lar) {
+        d.setNumberTables(lon, lar);
     }
 
-    public int getNumberTables()
-    {
+    public int getNumberTables() {
         return d.getTables().length;
     }
 
-    public int minTable(){
+    public int minTable() {
         return d.minNumTable();
     }
 
-    public int maxTable(){
+    public int maxTable() {
         return d.maxNumTable();
     }
 
-    public String findEtu(String id)
-    {
+    public String findEtu(String id) {
         String trouve = d.completeId(id);
-        if (!trouve.isEmpty())
-        {
+        if (!trouve.isEmpty()) {
             return trouve;
-        } else if (id.length() == 8)
-        {
+        } else if (id.length() == 8) {
             return "le num donné n'existe pas";
-        } else
-        {
+        } else {
             return "1";
         }
 
     }
 
-    public boolean findTable(int numTab)
-    {
+    public boolean findTable(int numTab) {
         return Utilitaire.in(numTab, d.freeTables());
     }
 
 
-    public int findNumsForImp(String id, int num)
-    {
+    public int findNumsForImp(String id, int num) {
         id = findEtu(id);
         num = findTable(num) ? num : -1;
 
-        if (id.equals("le num donné n'existe pas"))
-        {
+        if (id.equals("le num donné n'existe pas")) {
             return -1;
-        } else if (id.length() > 8)
-        {
+        } else if (id.length() > 8) {
             return -1;
-        } else if (num == -1)
-        {
+        } else if (num == -1) {
             return -1;
-        } else
-        {
+        } else {
             return d.addImp(id, num);
         }
     }
-    public void removeContrainst(String constr, int id)
-    {
+
+    public void removeContrainst(String constr, int id) {
         d.removeConstraint(constr, id);
     }
 
-    public String findStudentForGroup(String idPartiel, int numGrp)
-    {
+    public String findStudentForGroup(String idPartiel, int numGrp) {
         String etu = findEtu(idPartiel);
 
-        if (etu.length() == 8)
-        {
+        if (etu.length() == 8) {
             return d.addStudentGroupConstraint(etu, numGrp);
-        } else
-        {
+        } else {
             return etu;
         }
     }
 
-    public String[] descripData()
-    {
+    public String[] descripData() {
         return d.descrip();
     }
 
-    public String studentInfo(String num)
-    {
+    public String studentInfo(String num) {
         Student student = d.getStudentFromId(num);
-        if (student == null)
-        {
+        if (student == null) {
             return null;
         }
 
         return student.getName() + " " + student.getFirstName();
     }
 
-    public int supprTable(int num)
-    {
+    public int supprTable(int num) {
         num = findTable(num) ? num : -1;
 
-        if (num == -1)
-        {
+        if (num == -1) {
             return -2;
-        } else
-        {
+        } else {
             if (d.isDeleted(num))
                 return -3;
 
-            else if (d.isImposed(num)){
+            else if (d.isImposed(num)) {
                 return -4;
-            }else {
-                return d.removeTable(num) ;
+            } else {
+                return d.removeTable(num);
             }
         }
     }
 
 
-    public void unremoveTable(int num)
-    {
+    public void unremoveTable(int num) {
         d.unremoveTable(num);
     }
 
-    public void setDimensions(int lon, int lar) {d.setDimensions(lon, lar);}
+    public void setDimensions(int lon, int lar) {
+        d.setDimensions(lon, lar);
+    }
 
     // OSKOUR
-    public Map getMap()
-    {
+    public Map getMap() {
         return d.getMap();
     }
 
 
-    public void resetData()
-    {
+    public void resetData() {
         d.reset();
     }
 
-    public Student StuFromTable(int num)
-    {
+    public Student StuFromTable(int num) {
         return d.getStuFromTab(num);
     }
 
 
-    public void setMode(int i)
-    {
-        switch (i)
-        {
+    public void setMode(int i) {
+        switch (i) {
             case 0 -> d.changeMode('N');
             case 1 -> d.changeMode('G');
             case 2 -> d.changeMode('S');
@@ -171,72 +143,71 @@ public class CreatingIntermediate
     }
 
 
-    public PositioningIntermediate generatePos()
-    {
+    public PositioningIntermediate generatePos() {
         return new PositioningIntermediate(d);
     }
 
-    public boolean loadPlanDefault(String path) {
-        return d.loadPlanDefault(path);
+    public void loadPlanDefault(String path) {
+        d.loadPlanDefault(path);
     }
 
-    public boolean changePlanMode(char newOne, String path) {
-        return d.changePlanMode(newOne, path);
+    public void changePlanMode(char newOne, String path) {
+        d.changePlanMode(newOne, path);
     }
 
     public String tableValidateButton(int oldNum, int newNum, String numEtu) {
         String result = "";
-        if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && ! tableExist(newNum)) {
-            if ( d.changeNumTable(oldNum, newNum) ) {
+        if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && !tableExist(newNum)) {
+            if (d.changeNumTable(oldNum, newNum)) {
                 result += newNum + ";";
-            }else {
+            } else {
                 result += "error;";
             }
-        }else if (oldNum != 0 ){
-            result+= "invalid;" ;
+        } else if (oldNum != 0) {
+            result += "invalid;";
         }
 
-        if (numEtu != ""  && findTable(newNum)){
-            result += findNumsForImp(numEtu,newNum);
-        }else {
+        if (!numEtu.isEmpty() && findTable(newNum)) {
+            result += findNumsForImp(numEtu, newNum);
+        } else {
             result += "";
         }
 
-        return result ;
+        return result;
     }
 
     public boolean tableExist(int numTab) {
-        return d.tableExist(numTab) ;
+        return d.tableExist(numTab);
     }
 
     public String getSeparated() {
-        String result = "";
-        for (int i = 1; i < 10 ; i++ ) {
-            PerGroup temp = d.getPerGroup(i) ;
+        StringBuilder result = new StringBuilder();
+        for (int i = 1; i < 10; i++) {
+            PerGroup temp = d.getPerGroup(i);
             if (temp == null) {
-                break ;
-            }else {
-                String[] students = temp.toString().split(";") ;
+                break;
+            } else {
+                String[] students = temp.toString().split(";");
                 for (String s : students) {
-                    if (! s.isEmpty()) {
-                        String id = findEtu(s) ;
-                        result += id+":"+d.getFullName(id)+";" ;
+                    if (!s.isEmpty()) {
+                        String id = findEtu(s);
+                        result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }
-                result += "!" ;
+                result.append("!");
             }
         }
 
-        return result ;
+        return result.toString();
     }
 
     public String getStudentList() {
         String result = "ID             ; nom prenom \n";
-        result += d.studentList() ;
-        return result ;
+        result += d.studentList();
+        return result;
     }
 
     public String getDimentions() {
-        return d.getPlanSize() ;
+        return d.getPlanSize();
     }
 }

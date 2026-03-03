@@ -37,4 +37,7 @@ public class PerClass extends Constraint
         }
         return "group";
     }
+    public String toDatabase(){
+        return "C,"+subGroup;
+    }
 }

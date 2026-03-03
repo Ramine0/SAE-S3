@@ -1,4 +1,3 @@
-// const constGp=document.querySelector('#mode');
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
@@ -149,8 +148,10 @@ function createImposed() {
 
 }
 
+document.querySelector("#classMode").addEventListener("change",changeMode)
+
 function changeMode() {
-    const m = document.getElementById("mode").value;
+    const m = document.getElementById("classMode").value;
     const mode = new XMLHttpRequest();
     mode.open("GET", `creation?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
     mode.onreadystatechange = function () {
@@ -878,9 +879,26 @@ document.querySelector("#planType").addEventListener("change", (e) => {
 function tableInfoMod() {
     document.getElementById("valuesOfTable").style.visibility = "visible";
     document.getElementById("valuesOfTable").style.height = "fit-content";
-
+    document.getElementById("parameters").style.visibility = "hidden";
+    document.getElementById("parameters").style.height = "0";
 
 }
 
+
+document.querySelector("#modeHeader").addEventListener("change", changeHeaderMode)
+
+function changeHeaderMode (event) {
+    if (event.target.value === "create") {
+        document.getElementById("parameters").style.visibility = "visible";
+        document.getElementById("parameters").style.height = "100%";
+        document.getElementById("valuesOfTable").style.visibility = "hidden";
+        document.getElementById("valuesOfTable").style.height = "0";
+
+    }else if (event.target.value === "modify") {
+        tableInfoMod() ;
+    }else{
+        console.log("ALERTE ALERTE")
+    }
+}
 
 

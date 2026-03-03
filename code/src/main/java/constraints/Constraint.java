@@ -10,6 +10,7 @@ public abstract class Constraint
     public static ArrayList<String> studentsConstraints = new ArrayList<>();
 
     public abstract boolean validate(Student student, int table, Student[] etu);
+    public abstract String toDatabase();
     public static void reset(){
         studentsConstraints.clear();
     }

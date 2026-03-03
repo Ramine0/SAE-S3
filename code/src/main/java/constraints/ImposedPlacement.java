@@ -36,5 +36,8 @@ public class ImposedPlacement extends Constraint
     public String getNumEtu() {
         return numEtu;
     }
+    public String toDatabase(){
+        return "I,"+numEtu+","+numTable;
+    }
 
 }

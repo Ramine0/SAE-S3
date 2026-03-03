@@ -78,9 +78,10 @@ public class PerGroup extends Constraint
     }
 
     public String toDatabase(){
-        String group=""+num;
+        StringBuilder group= new StringBuilder("G," + num);
         for (String s : groupe) {
-
+            group.append(",").append(s);
         }
+        return group.toString();
     }
 }

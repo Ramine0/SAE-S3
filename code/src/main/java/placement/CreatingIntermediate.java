@@ -59,7 +59,7 @@ public class CreatingIntermediate
 
     public boolean findTable(int numTab)
     {
-        return Utilitaire.in(numTab, d.freeTables());
+        return Utilitaire.in(numTab, free());
     }
 
 
@@ -140,8 +140,6 @@ public class CreatingIntermediate
     }
 
     public int[] free(){return d.freeTables();}
-    public int[] del(){return d.getDeletedTables();}
-    public int[] existing(){return d.existingTables();}
 
     public void unremoveTable(int num)
     {

@@ -133,7 +133,7 @@ public class ConnectionServlet extends HttpServlet {
                 String addPlacement="Insert into Placement (idUser, name) values (?, ?)";
                 String addStudent="Insert into Student (number, idPlacement, name, firstname, grp) values (?, ?, ?, ?, ?)";
                 String addSeat="Insert into Seat (num, x, y, idPlacement, idStudent) values (?, ?, ?, ?, ?)";
-                String addConstraint="Insert into Constraints (type, idPlacement, idStudent, idSeat, grpConstr) values (?, ?, ?, ?, ?)";
+                String addConstraint="Insert into Constraints (type, idPlacement, idStudent, idSeat, subgrp, numGrp) values (?, ?, ?, ?, ?)";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(addPlacement)){
                     preparedStatement.setString(1, request.getParameter("id"));
                     preparedStatement.setString(2, request.getParameter("name"));
@@ -167,10 +167,39 @@ public class ConnectionServlet extends HttpServlet {
                 }
                 cnt=0;
                 while (cnt!=data.getNbConstraint()){
-
+                    String[] contrainte=data.getConstr()[cnt].toDatabase().split(",");
+                    if (contrainte[0].equals("G")){
+                        for (int i=2; i<contrainte.length; i++){
+                            try (PreparedStatement preparedStatement = connection.prepareStatement(addConstraint)){
+                                preparedStatement.setString(1, contrainte[0]);
+                                preparedStatement.setString(2, request.getParameter("idP"));
+                                preparedStatement.setString(3, contrainte[i]);
+                                preparedStatement.setString(4, null);
+                                preparedStatement.setString(5, null);
+                                preparedStatement.setString(6, contrainte[1]);
+                                preparedStatement.executeQuery();
+                            }
+                        }
+                    } else {
+                        try (PreparedStatement preparedStatement = connection.prepareStatement(addConstraint)){
+                            if (contrainte[0].equals("I")){
+                                preparedStatement.setString(1, contrainte[0]);
+                                preparedStatement.setString(2, request.getParameter("idP"));
+                                preparedStatement.setString(3, contrainte[1]);
+                                preparedStatement.setString(4, contrainte[2]);
+                                preparedStatement.setString(5, null);
+                                preparedStatement.setString(6, null);
+                            } else {
+                                preparedStatement.setString(1, contrainte[0]);
+                                preparedStatement.setString(2, request.getParameter("idP"));
+                                preparedStatement.setString(3, null);
+                                preparedStatement.setString(4, null);
+                                preparedStatement.setString(5, contrainte[1]);
+                                preparedStatement.setString(6, null);
+                            }
+                        }
+                    }
                 }
-            }else if (request.getParameter("action").equals("change")){
-
             }
         }catch(Exception e){
             System.out.println(e.getMessage());
@@ -183,8 +212,8 @@ public class ConnectionServlet extends HttpServlet {
             digest.update(password.getBytes());
             byte byteData[]=digest.digest();
             StringBuffer sb=new StringBuffer();
-            for(int i=0;i<byteData.length;i++){
-                sb.append(Integer.toString((byteData[i]&0xff)+0x100, 16).substring(1));
+            for (byte byteDatum : byteData) {
+                sb.append(Integer.toString((byteDatum & 0xff) + 0x100, 16).substring(1));
             }
             return sb.toString();
         }catch (Exception e){

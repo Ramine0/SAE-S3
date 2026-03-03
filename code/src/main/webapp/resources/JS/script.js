@@ -4,7 +4,7 @@ let nbPlacesSuppr = 1;
 let groupes = [[1]];
 let long = 0;
 let larg = 0;
-
+let swap = false ;
 let tables = []
 let noms = []
 
@@ -258,6 +258,42 @@ function enleverEtuGrp(event) {
 
 }
 
+function getInfosTable(event) {
+
+    if(swap) {
+        activateSwap(event.target.id) ;
+    }
+    let numTab = event.target.id.substring(1) ;
+    let reqInfo = new XMLHttpRequest() ;
+    reqInfo.open("GET", `Display?action=${encodeURIComponent("infos")}&number=${encodeURIComponent(numTab)}`, true);
+    reqInfo.onreadystatechange = function (){
+        if (reqInfo.readyState===XMLHttpRequest.DONE){
+            if (reqInfo.status===200){
+                if (reqInfo.responseText !== "null") {
+                    const values = reqInfo.responseText.split(";");
+                    if (values.length === 4) {
+                        document.querySelector("#idTabVisu").value = values[0];
+                        document.querySelector("#numEtuVisu").value = values[1];
+                        document.querySelector("#nomEtuVisu").value = values[2];
+                        document.querySelector("#grpEtuVisu").value = values[3];
+
+                        if (active != null && !swap) {
+                            document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";
+                        }
+                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
+
+                        active = values[0];
+
+                    }
+                }
+
+            }
+
+        }
+    };
+    reqInfo.send() ;
+}
+
 document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 
 function moveFile(event) {
@@ -271,6 +307,70 @@ function moveFile(event) {
     xhr.send(data);
 
     fileOk = true;
+}
+
+function exportFile(){
+    const excel=document.getElementById("Excel").value;
+    console.log(excel);
+    const excelRequest=new XMLHttpRequest();
+    excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
+    excelRequest.responseType="blob";
+    //excelRequest.onreadystatechange=function (){
+    excelRequest.onload=function (){
+        if (excelRequest.status===200){
+            const url = window.URL.createObjectURL(excelRequest.response);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "listing.csv";
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    }
+    excelRequest.send();
+
+}
+
+
+function modeSwap() {
+    activateSwap('none') ;
+}
+
+function activateSwap(button) {
+
+    let numt2 = active ;
+    if (button === "none" && active != null) {
+        swap = !swap;
+        document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
+    }else if (document.querySelector(`#${button}`)!= null){
+
+        const swapReq=new XMLHttpRequest();
+        swapReq.open("GET", `Display?action=${encodeURIComponent("swap")}&number1=${active}&number2=${button.substring(1)}`);
+        swapReq.onreadystatechange=function (){
+            if (swapReq.readyState===XMLHttpRequest.DONE){
+                if (swapReq.status===200){
+                    console.log(numt2)
+                    console.log(button)
+                    let numt1 = button.substring(1) ;
+                    let nomt1 = noms[tables.indexOf(numt1)] ;
+                    let nomt2 = noms[tables.indexOf(numt2)] ;
+
+                    let content = ` Table ${numt1} <br>${nomt2}`
+                    console.log(document.querySelector(`#T${numt1}`).innerHTML)
+                    document.querySelector(`#T${numt1}`).innerHTML = content ;
+
+                    console.log(document.querySelector(`#T${numt2}`).innerHTML)
+                    content = ` Table ${numt2} <br>${nomt1}`
+                    document.querySelector(`#T${numt2}`).innerHTML = content ;
+
+                    noms[tables.indexOf(numt1)] = nomt2 ;
+                    noms[tables.indexOf(numt2)] = nomt1 ;
+                    swap = false ;
+                }
+            }
+        }
+        swapReq.send() ;
+    }
+
 }
 
 function setTableNumber() {
@@ -424,8 +524,6 @@ function createTables() {
                         t += '<p>' + name + '</p>'
                     else
                         t += '<p>aucun étu</p>'
-
-                    t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
 
                     t += '</div>';
 
@@ -667,13 +765,11 @@ function decreaseId(idElem) {
 
 }
 
-function enableText() {
-    let code = document.querySelector("#testVal").disabled = false;
-}
+
 
 function codeForGeneration() {
 
-    let code = document.querySelector("#testVal");
+    let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
     xhr.open("GET",
         `creation?generate=${encodeURIComponent("n'importe quoi")}`
@@ -683,7 +779,6 @@ function codeForGeneration() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-                code.disabled = true;
 
                 init()
             } else {
@@ -710,7 +805,7 @@ function loadData() {
     let students = []
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
+    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#sessionCode").value)}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -750,7 +845,7 @@ function loadData() {
                      createTables() ;
                      */
 
-                    renduFichierEtu(results[2])
+                    //renduFichierEtu(results[2])
                     console.log("fin des informations :")
                     enableZone()
 
@@ -769,3 +864,24 @@ function loadData() {
     xhr.send()
 
 }
+
+
+document.querySelector("#planType").addEventListener("change", (e) => {
+    if (e.target.value === "rectangularPlan") {
+        document.getElementById("infoRect").style.visibility = "visible";
+        document.getElementById("infoRect").style.height = "fit-content";
+    }else {
+        document.getElementById("infoRect").style.visibility = "hidden";
+        document.getElementById("infoRect").style.height = "0";
+    }
+})
+
+function tableInfoMod() {
+    document.getElementById("valuesOfTable").style.visibility = "visible";
+    document.getElementById("valuesOfTable").style.height = "fit-content";
+
+
+}
+
+
+

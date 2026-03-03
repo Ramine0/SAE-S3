@@ -9,7 +9,6 @@ public class RectangularMap extends Map
     private final int width;
     private final int height;
 
-    private int[] dispo;
 
     // a revoir car on ne prends pas en compte les tables supprimées et les L et l
     // je v m'en charger
@@ -17,7 +16,6 @@ public class RectangularMap extends Map
     @Override
     public int[] neighbours(int table, int[] dispo)
     {
-        this.dispo = dispo;
         // Get the position of the table number (1-9) in the 1D array (0-8)
         int pos = Utilitaire.pos(table, dispo);
 

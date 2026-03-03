@@ -13,11 +13,11 @@ import java.io.PrintWriter;
 @WebServlet("/export")
 public class ExportServlet extends HttpServlet
 {
-    private final CreatingIntermediate crea =null;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         Room salle = CreationServlet.getSalle(request.getSession().getId());
+        assert salle != null;
         CreatingIntermediate crea = salle.getCrea();
         response.setContentType("text/csv;charset=UTF-8");
         response.setHeader(

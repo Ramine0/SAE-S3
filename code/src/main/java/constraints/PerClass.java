@@ -1,7 +1,6 @@
 package constraints;
 
 import org.NeoMalokVector.SAE_S3.Student;
-import utilitaire.Utilitaire;
 
 public class PerClass extends Constraint
 {

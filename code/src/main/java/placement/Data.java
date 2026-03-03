@@ -358,7 +358,7 @@ public class Data {
         }
     }
 
-    public boolean setNumberTables(int lon, int lar) {
+    public void setNumberTables(int lon, int lar) {
         int num = lon * lar;
 
         Table.reset();
@@ -384,10 +384,8 @@ public class Data {
 
                 deletedTables = new int[students.size()];
             }
-            return true;
 
         }
-        return false;
     }
 
     public void changeMode(char mode) {
@@ -759,36 +757,25 @@ public class Data {
         return constraints[0] != null;
     }
 
-    public boolean loadPlanDefault(String path) {
+    public void loadPlanDefault(String path) {
         if (map instanceof GridMap) {
             tables = ((GridMap) map).loadMap(path);
-            return tables != null;
-        } else {
-            return false;
         }
     }
 
-    public boolean changePlanMode(char newMode, String path) {
+    public void changePlanMode(char newMode, String path) {
 
         if (newMode == 'R') {
             if (map instanceof GridMap) {
                 map = new RectangularMap(4, 4);
-                return true;
-            } else {
-                return false;
             }
         } else if (newMode == 'G') {
             if (map instanceof RectangularMap) {
                 map = new GridMap(tables);
-                return true;
-            } else {
-                return false;
             }
         } else if (newMode == 'D') {
             map = new GridMap();
-            return loadPlanDefault(path);
-        }else {
-            return false ;
+            loadPlanDefault(path);
         }
     }
 

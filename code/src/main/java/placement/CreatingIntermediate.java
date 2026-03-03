@@ -3,7 +3,6 @@ package placement;
 import constraints.Constraint;
 import constraints.PerGroup;
 import org.NeoMalokVector.SAE_S3.Student;
-import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
@@ -23,9 +22,9 @@ public class CreatingIntermediate
         d = new Data(path, "D");
     }
 
-    public boolean createTables(int lon, int lar)
+    public void createTables(int lon, int lar)
     {
-        return d.setNumberTables(lon, lar);
+        d.setNumberTables(lon, lar);
     }
 
     public int getNumberTables()
@@ -203,12 +202,12 @@ public class CreatingIntermediate
         return new PositioningIntermediate(d);
     }
 
-    public boolean loadPlanDefault(String path) {
-        return d.loadPlanDefault(path);
+    public void loadPlanDefault(String path) {
+        d.loadPlanDefault(path);
     }
 
-    public boolean changePlanMode(char newOne, String path) {
-        return d.changePlanMode(newOne, path);
+    public void changePlanMode(char newOne, String path) {
+        d.changePlanMode(newOne, path);
     }
 
     public String tableValidateButton(int oldNum, int newNum, String numEtu) {
@@ -223,7 +222,7 @@ public class CreatingIntermediate
             result+= "invalid;" ;
         }
 
-        if (numEtu != ""  && findTable(newNum)){
+        if (numEtu.isEmpty() && findTable(newNum)){
             result += findNumsForImp(numEtu,newNum);
         }else {
             result += "";
@@ -237,7 +236,7 @@ public class CreatingIntermediate
     }
 
     public String getSeparated() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 1; i < 10 ; i++ ) {
             PerGroup temp = d.getPerGroup(i) ;
             if (temp == null) {
@@ -247,14 +246,14 @@ public class CreatingIntermediate
                 for (String s : students) {
                     if (! s.isEmpty()) {
                         String id = findEtu(s) ;
-                        result += id+":"+d.getFullName(id)+";" ;
+                        result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }
-                result += "!" ;
+                result.append("!");
             }
         }
 
-        return result ;
+        return result.toString();
     }
 
     public String getStudentList() {

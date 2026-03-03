@@ -212,18 +212,16 @@ public class CreationServlet extends HttpServlet {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private static boolean createUser(String user, String path) {
+    private static void createUser(String user, String path) {
         if (!userExists(user)) {
             try {
                 Room newData = new Room(path) ;
                 rooms.put(user,newData);
 
-                return true;
             } catch (Exception e) {
-                return false;
+                System.out.println(e.getMessage());
             }
         }
-        return true;
     }
 
 
@@ -232,14 +230,17 @@ public class CreationServlet extends HttpServlet {
         if (!result.equals("null")) {
             Room salle = getSalle(user);
             // les infos de la visu
-            if (salle.getPositioningIntermediate() != null) {
-                result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
-            }
-            // les infos d'etudians mis a distance
+            if (salle!=null){
+                if (salle.getPositioningIntermediate() != null) {
+                    result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
+                }
+                // les infos d'etudians mis a distance
 
-            result += salle.getCrea().getSeparated();
-            result += "<";
-            result += salle.getCrea().getStudentList() +"<";
+                result += salle.getCrea().getSeparated();
+                result += "<";
+                result += salle.getCrea().getStudentList() +"<";
+            }
+
             
         }
 

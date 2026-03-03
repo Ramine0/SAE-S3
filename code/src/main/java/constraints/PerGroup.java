@@ -71,7 +71,7 @@ public class PerGroup extends Constraint
     public String toString() {
         String result = "" ;
         for (String s : groupe) {
-            return s +";";
+            result = result.concat(s +";");
         }
 
         return result ;

@@ -258,8 +258,12 @@ public class CreatingIntermediate
     }
 
     public String getStudentList() {
-        String result = "ID             ; nom prenom \n";
+        String result = "ID          ; nom prenom \n";
         result += d.studentList() ;
         return result ;
     }
+
+
+
+
 }

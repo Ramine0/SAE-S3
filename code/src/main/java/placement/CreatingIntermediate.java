@@ -1,9 +1,7 @@
 package placement;
 
-import constraints.Constraint;
 import constraints.PerGroup;
 import org.NeoMalokVector.SAE_S3.Student;
-import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
@@ -11,26 +9,23 @@ import java.io.FileNotFoundException;
 /**
  * Classe utilisée comme controlleur de la création des données (contraintes, étudiants...)
  */
-public class CreatingIntermediate
-{
+public class CreatingIntermediate {
     private final Data d;
 
     /**
      * Constructeur par défaut de la classe.
      * @throws FileNotFoundException envoyée par Data() si elle ne trouve pas de fichier
      */
-    public CreatingIntermediate() throws FileNotFoundException
-    {
+    public CreatingIntermediate() throws FileNotFoundException {
         d = new Data();
     }
 
     /**
-     * Constructer de la classe. A quoi il sert, bonne question???
+     * Constructeur de la classe. A quoi il sert, bonne question???
      * @param path le chemin vers d'autres données?
      * @throws FileNotFoundException envoyée par Data() si elle ne trouve pas de fichier
      */
-    public CreatingIntermediate(String path) throws FileNotFoundException
-    {
+    public CreatingIntermediate(String path) throws FileNotFoundException {
         d = new Data(path, "D");
     }
 
@@ -78,14 +73,11 @@ public class CreatingIntermediate
     public String findEtu(String id)
     {
         String trouve = d.completeId(id);
-        if (!trouve.isEmpty())
-        {
+        if (!trouve.isEmpty()) {
             return trouve;
-        } else if (id.length() == 8)
-        {
+        } else if (id.length() == 8) {
             return "le num donné n'existe pas";
-        } else
-        {
+        } else {
             return "1";
         }
 
@@ -96,8 +88,7 @@ public class CreatingIntermediate
      * @param numTab le numéro de la table
      * @return true si elle fait partie des tables libres, false sinon
      */
-    public boolean findTable(int numTab)
-    {
+    public boolean findTable(int numTab) {
         return Utilitaire.in(numTab, d.freeTables());
     }
 
@@ -109,22 +100,17 @@ public class CreatingIntermediate
      * @param num numéro de la table
      * @return un entier correspondant à la situation
      */
-    public int findNumsForImp(String id, int num)
-    {
+    public int findNumsForImp(String id, int num) {
         id = findEtu(id);
         num = findTable(num) ? num : -1;
 
-        if (id.equals("le num donné n'existe pas"))
-        {
+        if (id.equals("le num donné n'existe pas")) {
             return -1;
-        } else if (id.length() > 8)
-        {
+        } else if (id.length() > 8) {
             return -1;
-        } else if (num == -1)
-        {
+        } else if (num == -1) {
             return -1;
-        } else
-        {
+        } else {
             return d.addImp(id, num);
         }
     }
@@ -134,17 +120,8 @@ public class CreatingIntermediate
      * @param constr type de la contrainte
      * @param id index de la contrainte
      */
-    public void removeContrainst(String constr, int id)
-    {
+    public void removeContrainst(String constr, int id) {
         d.removeConstraint(constr, id);
-    }
-
-    /**
-     * Renvoie le tableau de contraintes
-     * @return le tableau de contraintes
-     */
-    public Constraint[] getConstr(){
-        return d.getConstr();
     }
 
     /**
@@ -154,15 +131,12 @@ public class CreatingIntermediate
      * @param numGrp groupe auquel on veut ajouter l'étudiant
      * @return en cas de succès le message de la logique dans data, sinon l'idPartiel
      */
-    public String findStudentForGroup(String idPartiel, int numGrp)
-    {
+    public String findStudentForGroup(String idPartiel, int numGrp) {
         String etu = findEtu(idPartiel);
 
-        if (etu.length() == 8)
-        {
+        if (etu.length() == 8) {
             return d.addStudentGroupConstraint(etu, numGrp);
-        } else
-        {
+        } else {
             return etu;
         }
     }
@@ -171,8 +145,7 @@ public class CreatingIntermediate
      * fonction utilisée pour afficher la description des données
      * @return la description des données
      */
-    public String[] descripData()
-    {
+    public String[] descripData() {
         return d.descrip();
     }
 
@@ -181,11 +154,9 @@ public class CreatingIntermediate
      * @param num numéro de l'étudiant
      * @return null si l'étudiant n'est pas trouvé, son nom et son prénom sinon
      */
-    public String studentInfo(String num)
-    {
+    public String studentInfo(String num) {
         Student student = d.getStudentFromId(num);
-        if (student == null)
-        {
+        if (student == null) {
             return null;
         }
 
@@ -198,22 +169,19 @@ public class CreatingIntermediate
      * @param num le numéro de la table
      * @return un entier adapté à la situation (géré côté servlet et js)
      */
-    public int supprTable(int num)
-    {
+    public int supprTable(int num) {
         num = findTable(num) ? num : -1;
 
-        if (num == -1)
-        {
+        if (num == -1) {
             return -2;
-        } else
-        {
+        } else {
             if (d.isDeleted(num))
                 return -3;
 
-            else if (d.isImposed(num)){
+            else if (d.isImposed(num)) {
                 return -4;
-            }else {
-                return d.removeTable(num) ;
+            } else {
+                return d.removeTable(num);
             }
         }
     }
@@ -240,8 +208,7 @@ public class CreatingIntermediate
      * entre dans la logique de réinsertion de table supprimées pour la table num
      * @param num numéro de la table
      */
-    public void unremoveTable(int num)
-    {
+    public void unremoveTable(int num) {
         d.unremoveTable(num);
     }
 
@@ -250,31 +217,16 @@ public class CreatingIntermediate
      * @param lon longueur du plan
      * @param lar largeur du plan
      */
-    public void setDimensions(int lon, int lar) {d.setDimensions(lon, lar);}
-
-    /**
-     * fonction de récupération de la map
-     * @return la map
-     */
-    public Map getMap()
-    {
-        return d.getMap();
+    public void setDimensions(int lon, int lar) {
+        d.setDimensions(lon, lar);
     }
 
-    /**
-     * fonction de récupération des étudiants imposés
-     * @return un tableau contenant les numéros étuidants de tous les étudiants imposés
-     */
-    public String[] getImposedStud()
-    {
-        return d.imposedStudents();
-    }
+
 
     /**
      * fonction de réinitialisation des données
      */
-    public void resetData()
-    {
+    public void resetData() {
         d.reset();
     }
 
@@ -283,56 +235,13 @@ public class CreatingIntermediate
      * @param num le numéro de la table
      * @return l'étudiant assis à la table num
      */
-    public Student StuFromTable(int num)
-    {
+    public Student StuFromTable(int num) {
         return d.getStuFromTab(num);
     }
 
-    /**
-     * fonction d'obtention du nombre de contraintes
-     * @return le nombre de contraintes
-     */
-    public int getNbConstr()
-    {
-        return d.getConstr().length;
-    }
 
-    /**
-     * fonction d'accès aux différentes contraintes
-     * @param num le numéro de la contrainte
-     * @return la contrainte num
-     */
-    public Constraint getConstr(int num)
-    {
-        return d.getConstr()[num - 1];
-    }
-
-    /**
-     * fonction d'accès aux contraintes en fonction d'un type voulu (Place Imposé, Séparation par
-     * groupe, Séparation par Classe)
-     * @param type le type de la contrainte
-     * @param num le numéro de la contrainte
-     * @return la contrainte num de type type
-     */
-    public Constraint getConstr(String type, int num){
-        if (type.equals("I")){
-            return d.getImposedPlacement(num);
-        }else if (type.equals("G")){
-            return d.getPerGroup(num);
-        }else{
-            return d.getConstr()[0];
-        }
-    }
-
-    /**
-     * Fonction de contrôle de la séparation par classe
-     * @param i cas spécifique à un mode de séparation par classe (0 pour normal, 1 pour par groupe,
-     *          2 pour par sous-groupe
-     */
-    public void setMode(int i)
-    {
-        switch (i)
-        {
+    public void setMode(int i) {
+        switch (i) {
             case 0 -> d.changeMode('N');
             case 1 -> d.changeMode('G');
             case 2 -> d.changeMode('S');
@@ -344,8 +253,7 @@ public class CreatingIntermediate
      * fonction de génération du controlleur de positionnement
      * @return un objet PositioningIntermediate
      */
-    public PositioningIntermediate generatePos()
-    {
+    public PositioningIntermediate generatePos() {
         return new PositioningIntermediate(d);
     }
 
@@ -354,8 +262,8 @@ public class CreatingIntermediate
      * @param path chemin du plan à charger
      * @return true si le chargement à réussi, false sinon
      */
-    public boolean loadPlanDefault(String path) {
-        return d.loadPlanDefault(path);
+    public void loadPlanDefault(String path) {
+        d.loadPlanDefault(path);
     }
 
     /**
@@ -364,8 +272,8 @@ public class CreatingIntermediate
      * @param path chemin du plan
      * @return true si le changement de plan a réussi, false sinon
      */
-    public boolean changePlanMode(char newOne, String path) {
-        return d.changePlanMode(newOne, path);
+    public void changePlanMode(char newOne, String path) {
+        d.changePlanMode(newOne, path);
     }
 
     /**
@@ -377,23 +285,23 @@ public class CreatingIntermediate
      */
     public String tableValidateButton(int oldNum, int newNum, String numEtu) {
         String result = "";
-        if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && ! tableExist(newNum)) {
-            if ( d.changeNumTable(oldNum, newNum) ) {
+        if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && !tableExist(newNum)) {
+            if (d.changeNumTable(oldNum, newNum)) {
                 result += newNum + ";";
-            }else {
+            } else {
                 result += "error;";
             }
-        }else if (oldNum != 0 ){
-            result+= "invalid;" ;
+        } else if (oldNum != 0) {
+            result += "invalid;";
         }
 
-        if (numEtu != ""  && findTable(newNum)){
+        if (!numEtu.isEmpty()  && findTable(newNum)){
             result += findNumsForImp(numEtu,newNum);
         }else {
             result += "";
         }
 
-        return result ;
+        return result;
     }
 
     /**
@@ -402,7 +310,7 @@ public class CreatingIntermediate
      * @return true si la table existe, false sinon
      */
     public boolean tableExist(int numTab) {
-        return d.tableExist(numTab) ;
+        return d.tableExist(numTab);
     }
 
     /**
@@ -410,24 +318,24 @@ public class CreatingIntermediate
      * @return une chaine de caractère contenant les informations des étudiants séparés
      */
     public String getSeparated() {
-        String result = "";
-        for (int i = 1; i < 10 ; i++ ) {
-            PerGroup temp = d.getPerGroup(i) ;
+        StringBuilder result = new StringBuilder();
+        for (int i = 1; i < 10; i++) {
+            PerGroup temp = d.getPerGroup(i);
             if (temp == null) {
-                break ;
-            }else {
-                String[] students = temp.toString().split(";") ;
+                break;
+            } else {
+                String[] students = temp.toString().split(";");
                 for (String s : students) {
-                    if (! s.isEmpty()) {
-                        String id = findEtu(s) ;
-                        result += id+":"+d.getFullName(id)+";" ;
+                    if (!s.isEmpty()) {
+                        String id = findEtu(s);
+                        result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }
-                result += "!" ;
+                result.append("!");
             }
         }
 
-        return result ;
+        return result.toString();
     }
 
     /**
@@ -436,7 +344,11 @@ public class CreatingIntermediate
      */
     public String getStudentList() {
         String result = "ID             ; nom prenom \n";
-        result += d.studentList() ;
-        return result ;
+        result += d.studentList();
+        return result;
+    }
+
+    public String getDimentions() {
+        return d.getPlanSize();
     }
 }

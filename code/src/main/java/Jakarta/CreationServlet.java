@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
-import placement.RectangularMap;
 import utilitaire.Utilitaire;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ import java.util.HashMap;
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet {
     private static HashMap<String, Room> rooms;
-    static String msg = "";
+    static String msg = ""; // c a 2000% du debug
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -36,7 +35,9 @@ public class CreationServlet extends HttpServlet {
 
         String user = request.getSession().getId();
         if (request.getParameter("generate") != null) {
-            createUser(user, request.getServletContext().getRealPath("/") + "/") ;
+            if( !createUser(user, request.getServletContext().getRealPath("/") + "/")){
+                return ;
+            }
             out.print(request.getSession().getId());
         }
 
@@ -105,7 +106,7 @@ public class CreationServlet extends HttpServlet {
 
 
             case "getDim" ->
-                    out.print(((RectangularMap) salle.getCrea().getMap()).getHeight() + ";" + ((RectangularMap) salle.getCrea().getMap()).getWidth());
+                    out.print(crea.getDimentions());
         }
     }
 
@@ -192,7 +193,7 @@ public class CreationServlet extends HttpServlet {
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 
-    @Transactional(Transactional.TxType.REQUIRED)
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static boolean loadSession(String oldId, String newId) {
         if (userExists(oldId)) {
             // il faudrait une transaction
@@ -219,14 +220,15 @@ public class CreationServlet extends HttpServlet {
 
 
     public String getUserData(String user) {
-        String result = userExists(user) ? user : "null";
-        if (!result.equals("null")) {
-            Room salle = getSalle(user);
+        Room salle = getSalle(user);
+        String result = "null";
+        if (salle != null) {
+            result = "" ;
             // les infos de la visu
             if (salle.getPositioningIntermediate() != null) {
                 result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
             }
-            // les infos d'etudians mis a distance
+            // les infos d'etudians mis à distance
 
             result += salle.getCrea().getSeparated();
             result += "<";

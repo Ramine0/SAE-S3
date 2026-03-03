@@ -7,78 +7,56 @@ import utilitaire.Utilitaire;
 import java.util.Random;
 
 public class PositioningIntermediate {
+    private final Data donnees; // contient les étudiants et les tables
+    // On ne manipule pas directement les tables, on a juste leur numéro. Question d'optimisation et de securité
 
-
-    // on passe par donnees pour acceder au données (etus et tables)
-    // on manipule pas directement les tables on a juste leur numeros question d'optimisation et de securité
-    private Data donnees;
     private final Random random = new Random();
 
-    // on fait ce qu'on veux des contraintes c plus simple et + pratique
-
-    // Ici constructeur de l'intermediaire il prends en paramettre une sting qui donne les infos du format de plan
-    // charAt(0) c le type (rectangle) et les 2 suivants c l et L (pour rect)
-    // on donne aussi les numero de tables supprimées
-    // on donne pas le fichier d'etu car comme il y en a qu'1 on saura deja comment et ou on va l'enregistrer
-    // on va lme lire ici MAIS il faudra pour ca le save qqp AVANT
-
+    // on a besoin des données (les vraies pas une copie)
     public PositioningIntermediate(Data d) {
         donnees = d;
     }
 
-    private PositioningIntermediate(String path) {
-        try {
-            donnees = new Data(path, "R");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-
+    // la fonction principale du positionning qui genere le placement
     public boolean creerPlacement() {
-        donnees.placerImposes();
+        donnees.placerImposes(); // on commence par les etudiants imposés a des places
 
+        // un compteur de tentatives de placement sur une table
         int loopCount;
         int tableNumber = 0;
 
+        // tant qu'on a des etudiants non placés et qu'on a pas tester toute les tables
         while (donnees.freeStudents().length != 0 && tableNumber <= donnees.maxTableID()) {
-            tableNumber++;
+            tableNumber++;// on teste la table suivante
 
+            // on verifie qu'elle existe
             if (!Utilitaire.in(tableNumber, donnees.freeTables()))
                 continue;
 
-            String[] freeStudents = donnees.freeStudents();
-            String studentId = freeStudents[random.nextInt(freeStudents.length)];
+            String[] freeStudents = donnees.freeStudents(); // on recupere les etudiants a placer
+            String studentId = freeStudents[random.nextInt(freeStudents.length)]; // on en prend un au hazard
 
-            loopCount = 0;
+            loopCount = 0; // on commence a compter
+
+            // tant que l'etu selectionné est pas placable sur la table actuelle
             while (!walid(donnees.getStudentFromId(studentId), tableNumber)) {
+                // on teste un autre etu
                 studentId = freeStudents[random.nextInt(freeStudents.length)];
-
+                // on compte les try
                 loopCount++;
-                if (loopCount > freeStudents.length / 2)
-                    tableNumber++;
+
+                if (loopCount > freeStudents.length / 2) // si on a tester la moitié des etus
+                    tableNumber++; // on passe a la table suivante
             }
 
-            donnees.placeStudent(tableNumber, studentId);
+            // vu que c ok alors on place l'etu
+            if (donnees.placeStudent(tableNumber, studentId)){
+                // je sais pas quoi y mettre !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            }
         }
 
-        // j'ai trop la flemme de lire tout ce que Malik a écrit parce que c'est d'la merde et je sais même pas si c'est vraiment utile
-        // comme si Malik était utile
-        // lol
-        // cet arabe là
-        // psychopathe en plus
-        // mais ça c'est une bonne chose
-        // surtout pour faire chier Vector
-        // il a rien fait le pauvre
-
-
-        // le reste du la fonction (placer les etu aleatoirement en tenant compte du validateç
-        /*
-        faire une boucle qui parcours les etus et les places petit a petit sur les places aleatiores si walid
-        Ne pas oublier que si on a q'1 etu et que c pas walid on doit echanger aleatoirement avec etu donc la place est
-         */
-
-
+        // si ya encore des etus c'est que ca chargé en contraintes
         return donnees.freeStudents().length == 0;
     }
 
@@ -87,78 +65,54 @@ public class PositioningIntermediate {
         if (!Utilitaire.in(t, donnees.freeTables()))
             return false;
 
-        // si on sait que l'etu as des contraintes
+        // si on sait que l'étudiant a des contraintes
         if (Constraint.contraint(s.getId()) || donnees.hasMode()) {
-            // on prends les tables voisines pour regarder
+            // on prend les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
 
             for (Constraint c : donnees.getConstr()) {
-                // si ca bloque
-                if (c != null) {
-
-                    if (!c.validate(s, t, voisins)) {
-                        return false; // ca bloque
-                    }
-                }
+                // on vérifie si ça bloque
+                if (c != null && !c.validate(s, t, voisins))
+                    return false; // ça bloque
             }
         }
-        // sinon tout est ok à moins que la place soit déjà prise
 
+        // sinon tout est bon à moins que la place soit déjà prise
         return true;
-
     }
 
-    public String[] getAllInfo() {
-        String[] infos = new String[donnees.getTables().length];
-        int cpt = 0;
-
-        for (int t : donnees.getTables()) {
-
-            if (!donnees.isDeleted(t))
-                infos[cpt] = donnees.getTableInfos(t);
-
-            cpt++;
-        }
-        return infos;
-    }
-
-    public String getAllTable(int numTable) {
-        return donnees.getTableInfos(numTable);
-    }
-
-    public String getTablesInfoForVisu() {
-        String result = "";
-        for (String s : getAllInfo()) {
-            result = result.concat(s + ":");
-        }
-        return result;
-    }
-
+    // renvoie une grosse string degeu qui donne les infos des tables
     public String getTablesForVisu() {
+        // on commence par la taille du plan
         StringBuilder result = new StringBuilder(donnees.getPlanSize() + "/");
-        for (int t : donnees.existingTables()) {
-            if (!donnees.isDeleted(t)) {
+
+        // on cherche les tables pas supprimées et on donne leurs infos
+        for (int t : donnees.existingTables())
+            if (!donnees.isDeleted(t))
                 result.append(donnees.getTableInfos(t)).append(";");
-            }
-        }
+
         return result.toString();
     }
 
+    // ca echange les etus des tables 1 et 2
     public boolean swapPlaces(int numT1, int numT2) {
-        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2, donnees.existingTables())) {
+        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2, donnees.existingTables()))
             return donnees.swap(numT1, numT2);
-        }
+
         return false;
     }
 
+    // une fonction de debug qui permet d'avoir un ptit rendu du placement
     public String descripData() {
         StringBuilder result = new StringBuilder();
-        for (String s : donnees.descrip()) {
+
+        for (String s : donnees.descrip())
             result.append(s).append(";");
-        }
+
         return result.toString();
     }
 
+    // qqc cloche mais jsp quoi a revoir
     public String tabInfoForVisu(int nb) {
         return donnees.getInfosForVisu(nb);
     }

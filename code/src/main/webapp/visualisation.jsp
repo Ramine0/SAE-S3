@@ -21,7 +21,10 @@
     <div class="topAsside">
         <input type="file" name="importvisu" id="importvisu" accept="text/csv">
         <label> Format d'export</label>
+
+        <label for="Excel"></label>
         <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
+
         <button id="exporter"> Exporter </button>
     </div>
 </header>
@@ -41,7 +44,7 @@
                 <label for="idTabVisu"> Numero de Table </label>
                 <input name="idTabVisu" id="idTabVisu" type="number" disabled>
             </span>
-            <span id="studentInfo">
+            <section id="studentInfo">
 
                 <div >
                     <label for="numEtuVisu"> Numero Etudiant </label>
@@ -56,12 +59,12 @@
                     <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
                 </div>
 
-            </span>
+            </section>
         </div>
 
         <button class="modif" type="button" id="swapForm" >
             <img src="resources/img/swap.png" alt="Échanger">
-            <h2>&Eacute;changer</h2>
+<%--            <h2>&Eacute;changer</h2>--%>
         </button>
 
     </aside>

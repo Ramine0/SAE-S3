@@ -28,9 +28,6 @@ public class PerGroup extends Constraint
 
         studentsConstraints.add(numetu);
     }
-    public void modifStudent(String numetu, int index){
-        groupe[index]=numetu;
-    }
     public void removeStudent(int index){
         groupe[index]=null;
     }
@@ -54,18 +51,6 @@ public class PerGroup extends Constraint
 
     public boolean haveStu (String id) {
         return Utilitaire.in(id,groupe) ;
-    }
-
-    public int getNbStudent(){
-        int nb=0;
-        while (groupe[nb]!=null){
-            nb++;
-        }
-        return nb;
-    }
-
-    public String getStudent(int index){
-        return groupe[index];
     }
 
     public String toString() {

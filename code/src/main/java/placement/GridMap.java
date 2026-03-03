@@ -17,7 +17,7 @@ public class GridMap extends Map
         init(tables);
     }
 
-    private boolean init(Table[] tables)
+    private void init(Table[] tables)
     {
         matriceAdj = new int[tables.length + 1][tables.length + 1];
         if (tables[0].getCoord()[0] != -1)
@@ -39,8 +39,8 @@ public class GridMap extends Map
                                 int xVois = vois.getCoord()[0];
                                 int yVois = vois.getCoord()[1];
 
-                                // l'idée ici c'est de dire que si les deux ont une distance de 1 alors ils sont voisins
-                                // plutot que de faire une abs() pour les -1 j'ai fait un carré car évite d'importer la librairie et tt
+                                // l'idée ici, c'est de dire que si les deux ont une distance de 1 alors, ils sont voisins
+                                // plutot que de faire une abs() pour les -1 j'ai fait un carré, car évite d'importer la librairie et tt
                                 if (((x - xVois) * (x - xVois) == 1) && y == yVois || ((y - yVois) * (y - yVois) == 1) && x == xVois)
                                 {
                                     matriceAdj[t.getNum()][vois.getNum()] = 1;
@@ -52,9 +52,8 @@ public class GridMap extends Map
                     }
                 }
             }
-            return true;
         }
-        return false;
+
     }
 
     public GridMap()

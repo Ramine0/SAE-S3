@@ -23,17 +23,23 @@ public class CreationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+
+        // il faut bien creer la hashmap a un momment ou a un autre
         if (rooms == null) {
             rooms = new HashMap<>();
         }
 
+        // c'est la premiere requette qu'on va faire elle cherche des données existentes pour un user donné
         if (request.getParameter("load") != null) {
-            out.print(getUserData(request.getSession().getId()));
+            out.print(getUserData(request.getSession().getId())); // on renvoie la session
             out.flush();
             return;
         }
 
+        // un recup l'id de session psq on va grave s'en servir
         String user = request.getSession().getId();
+
+        // on cherche cree les données si user pas deja existant
         if (request.getParameter("generate") != null) {
             if( !createUser(user, request.getServletContext().getRealPath("/") + "/")){
                 return ;
@@ -41,29 +47,32 @@ public class CreationServlet extends HttpServlet {
             out.print(request.getSession().getId());
         }
 
-
-
+        // on charge la room du user
         Room salle = rooms.get(user);
 
-
+        // les actions table
         if (request.getParameter("action") != null)
             tableRequests(request, out, salle);
 
+        // les action constraint
         if (request.getParameter("constraint") != null)
             constraintRequests(request, out, salle);
 
         out.flush();
     }
 
+    // les action de categorie table
     private void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
 
+        // on charge le creating
         CreatingIntermediate crea = salle.getCrea();
 
         int lon, lar;
 
+        // les differentes action
         switch (request.getParameter("action")) {
-            case "isGenerated" -> out.print(salle.isGenerated());
 
+            // renvoie les tables
             case "visu" -> {
                 lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
                 lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
@@ -74,6 +83,7 @@ public class CreationServlet extends HttpServlet {
                 out.print(salle.getPositioningIntermediate().getTablesForVisu());
             }
 
+            // definition du type de plan
             case "define" -> {
                 crea.setMode(0);
 
@@ -95,25 +105,20 @@ public class CreationServlet extends HttpServlet {
                 }
             }
 
-            case "present" -> {
-                int num = Integer.parseInt(request.getParameter("num"));
-
-                if (crea.findTable(num))
-                    out.print("valide");
-                else
-                    out.print("table introuvable");
-            }
-
-
+            // les dimentions
             case "getDim" ->
                     out.print(crea.getDimentions());
         }
     }
 
+    // les requetes sur les contraintes
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle) {
         CreatingIntermediate crea = salle.getCrea();
 
+
         switch (request.getParameter("constraint")) {
+
+            // si on veux imposer une place
             case "imposePlace" -> {
                 String studentId = crea.findEtu(request.getParameter("studentId"));
 
@@ -122,21 +127,26 @@ public class CreationServlet extends HttpServlet {
 
                 String tableNumber = request.getParameter("tableNumber");
 
+                // on verifie un minimum les paramettres
                 if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > crea.maxTable())
                     result += "3;";
                 else if (tableNumber.isEmpty())
                     result += "null;";
                 else
+                    // on retourne le resultat du find
                     result += crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
 
                 out.print(result);
             }
 
+            // on retire la place imposée si elle existe (l'intermediate fait le controle
             case "removeImposedPlace" -> crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")) - 1);
 
+            // supprime la table
             case "deleteTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
 
+                // on fait un minimum de test
                 if (num < crea.minTable())
                     num = crea.minTable();
                 else if (num > crea.maxTable())
@@ -145,6 +155,7 @@ public class CreationServlet extends HttpServlet {
                 out.print(crea.supprTable(num) + ";" + num);
             }
 
+            // rend un table re disponible
             case "removeDeletedTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
                 crea.unremoveTable(num);

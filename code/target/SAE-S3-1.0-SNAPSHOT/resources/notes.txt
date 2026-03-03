@@ -1,0 +1,12 @@
+
+Pour la page de creation ya des choses a noter qui sont :
+
+ajouter un bouton X comme le + pour Supprimer une contrainte de groupe a separer
+il faut empecher la generation si certaines données ne sont pas walides
+
+POUR CHAQUE SECTION AVEC UN CHAMP A REMPLIR :
+on a un petit bouton walider et un petit bouton supprimer
+on peut chercher les données saisies pour les walider et on peut retier l'element de la liste (pour groupe l'etu ou pour la contrainte)
+
+
+

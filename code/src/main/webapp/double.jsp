@@ -23,38 +23,45 @@
         </a>
         <div class="general">
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
-                <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
-                <input type="file" name="studentFile" id="studentFile" accept="text/csv">
-                <label for="mode">Séparation des étudiants par groupes classes </label>
-                <select id="mode" name="mode">
-                    <option value="normal" selected>Placement basique</option>
-                    <option value="group">Par groupe</option>
-                    <option value="sub-group">Par sous-groupe</option>
+                <select id="modeHeader" name="modeHeader">
+                    <option value="create" selected>Paramettres de creation</option>
+                    <option value="modify">Voir les informations  </option>
                 </select>
 
-                <br>
+                <span id="parameters">
+                    <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
+                    <input type="file" name="studentFile" id="studentFile" accept="text/csv">
+                    <label for="classMode">Séparation des étudiants par groupes classes </label>
+                    <select id="classMode" name="classMode">
+                        <option value="normal" selected>Placement basique</option>
+                        <option value="group">Par groupe</option>
+                        <option value="sub-group">Par sous-groupe</option>
+                    </select>
 
-                <label for="planType">Type de plan</label>
+                    <br>
 
-                <select id="planType" name="planType">
-                    <option value="defaultPlan" selected>Plan par défaut</option>
-                    <option value="rectangularPlan">Plan rectangulaire</option>
-                </select>
+                    <label for="planType">Type de plan</label>
+
+                    <select id="planType" name="planType">
+                        <option value="defaultPlan" selected>Plan par défaut</option>
+                        <option value="rectangularPlan">Plan rectangulaire</option>
+                    </select>
 
 
-                <div id="infoRect" style="visibility: hidden; height: 0;">
-                    <section class="ligne">
-                        <label for="long">Nombre de tables par colonne</label>
-                        <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
-                    </section>
+                    <div id="infoRect" style="visibility: hidden; height: 0;">
+                        <section class="ligne">
+                            <label for="long">Nombre de tables par colonne</label>
+                            <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
+                        </section>
 
-                    <section class="ligne">
-                        <label for="larg">Nombre de tables par ligne</label>
-                        <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
-                    </section>
-                </div>
+                        <section class="ligne">
+                            <label for="larg">Nombre de tables par ligne</label>
+                            <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
+                        </section>
+                    </div>
+                </span>
 
-                <div class="valuesOfTable"  style ="visibility : hidden; height: 0; ">
+                <div id="valuesOfTable"  style ="visibility : hidden; height: 0; ">
                      <span id="TableNumber" >
                         <label for="idTabVisu"> Numero de Table </label>
                         <input name="idTabVisu" id="idTabVisu" type="number" disabled>
@@ -73,6 +80,11 @@
                             <label for="grpEtuVisu"> Groupe classe l'etudiant </label>
                             <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
                         </div>
+
+                        <span>
+                            <button action="setTableInfos">appliquer</button>
+                            <button action="swapMode">echanger</button>
+                        </span>
 
                     </span>
                 </div>

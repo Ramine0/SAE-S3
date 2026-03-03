@@ -41,19 +41,43 @@
                     <option value="rectangularPlan">Plan rectangulaire</option>
                 </select>
 
-                <section class="ligne">
-                    <label for="long">Nombre de tables par colonne</label>
-                    <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
-                </section>
 
-                <section class="ligne">
-                    <label for="larg">Nombre de tables par ligne</label>
-                    <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
-                </section>
+                <div id="infoRect" style="visibility: hidden; height: 0;">
+                    <section class="ligne">
+                        <label for="long">Nombre de tables par colonne</label>
+                        <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
+                    </section>
 
-                <button type="button" id="startConstr" class="validNbTable" onclick="loadData()"> Valider le fichier
-                    et le
-                    nombre de places
+                    <section class="ligne">
+                        <label for="larg">Nombre de tables par ligne</label>
+                        <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
+                    </section>
+                </div>
+
+                <div class="valuesOfTable"  style ="visibility : hidden; height: 0; ">
+                     <span id="TableNumber" >
+                        <label for="idTabVisu"> Numero de Table </label>
+                        <input name="idTabVisu" id="idTabVisu" type="number" disabled>
+                    </span>
+                    <span id="studentInfo">
+
+                        <div >
+                            <label for="numEtuVisu"> Numero Etudiant </label>
+                            <input name="numEtuVisu" id="numEtuVisu" type="text" disabled>
+                        </div>
+                        <div >
+                            <label for="nomEtuVisu"> Nom de l'etudiant </label>
+                            <input name="nomEtuVisu" id="nomEtuVisu" type="text" disabled>
+                        </div>
+                        <div >
+                            <label for="grpEtuVisu"> Groupe classe l'etudiant </label>
+                            <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
+                        </div>
+
+                    </span>
+                </div>
+
+                <button type="button" id="startConstr" class="validNbTable" onclick="loadData()"> Valider le fichier et le plan
                 </button>
                 <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
 
@@ -118,7 +142,6 @@
 </footer>
 
 <script src="resources/JS/script.js"></script>
-
 
 </body>
 </html>

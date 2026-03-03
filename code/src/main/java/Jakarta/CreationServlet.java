@@ -33,7 +33,7 @@ public class CreationServlet extends HttpServlet {
         if (request.getParameter("load") != null && !request.getParameter("load").isEmpty()) {
             String temp = request.getParameter("load");
             if (loadSession(temp,user)) {
-                out.print(getUserData(temp));
+                out.print(getUserData(user));
             }else {
                 out.print("null") ;
             }
@@ -240,8 +240,7 @@ public class CreationServlet extends HttpServlet {
             result += salle.getCrea().getSeparated();
             result += "<";
             result += salle.getCrea().getStudentList() +"<";
-
-
+            
         }
 
         return result;

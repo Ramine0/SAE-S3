@@ -290,18 +290,30 @@ public class CreatingIntermediate
 
     /**
      * fonction d'obtention du nombre de contraintes
-     * @return la longueur
+     * @return le nombre de contraintes
      */
     public int getNbConstr()
     {
         return d.getConstr().length;
     }
 
+    /**
+     * fonction d'accès aux différentes contraintes
+     * @param num le numéro de la contrainte
+     * @return la contrainte num
+     */
     public Constraint getConstr(int num)
     {
         return d.getConstr()[num - 1];
     }
 
+    /**
+     * fonction d'accès aux contraintes en fonction d'un type voulu (Place Imposé, Séparation par
+     * groupe, Séparation par Classe)
+     * @param type le type de la contrainte
+     * @param num le numéro de la contrainte
+     * @return la contrainte num de type type
+     */
     public Constraint getConstr(String type, int num){
         if (type.equals("I")){
             return d.getImposedPlacement(num);
@@ -312,6 +324,11 @@ public class CreatingIntermediate
         }
     }
 
+    /**
+     * Fonction de contrôle de la séparation par classe
+     * @param i cas spécifique à un mode de séparation par classe (0 pour normal, 1 pour par groupe,
+     *          2 pour par sous-groupe
+     */
     public void setMode(int i)
     {
         switch (i)
@@ -323,19 +340,41 @@ public class CreatingIntermediate
     }
 
 
+    /**
+     * fonction de génération du controlleur de positionnement
+     * @return un objet PositioningIntermediate
+     */
     public PositioningIntermediate generatePos()
     {
         return new PositioningIntermediate(d);
     }
 
+    /**
+     * charge un plan grâce à un path
+     * @param path chemin du plan à charger
+     * @return true si le chargement à réussi, false sinon
+     */
     public boolean loadPlanDefault(String path) {
         return d.loadPlanDefault(path);
     }
 
+    /**
+     * controlleur du type de plan choisi
+     * @param newOne charactère permettant le choix du type de plan
+     * @param path chemin du plan
+     * @return true si le changement de plan a réussi, false sinon
+     */
     public boolean changePlanMode(char newOne, String path) {
         return d.changePlanMode(newOne, path);
     }
 
+    /**
+     * Base pour la vision et modification de la table
+     * @param oldNum ancien numéro de la table
+     * @param newNum nouveau numéro de la table
+     * @param numEtu numéro de l'étudiant
+     * @return une chaine de caractère à utiliser sur la vision et modification de la table
+     */
     public String tableValidateButton(int oldNum, int newNum, String numEtu) {
         String result = "";
         if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && ! tableExist(newNum)) {
@@ -357,13 +396,18 @@ public class CreatingIntermediate
         return result ;
     }
 
+    /**
+     * vérifie que la table numTab existe
+     * @param numTab le numéro de la table
+     * @return true si la table existe, false sinon
+     */
     public boolean tableExist(int numTab) {
         return d.tableExist(numTab) ;
     }
 
     /**
-     *
-     * @return
+     * Fonction de récupération des étudiants séparés
+     * @return une chaine de caractère contenant les informations des étudiants séparés
      */
     public String getSeparated() {
         String result = "";

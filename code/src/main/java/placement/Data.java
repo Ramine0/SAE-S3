@@ -198,7 +198,21 @@ public class Data {
     }
 
     public Constraint[] getConstr() {
-        return constraints;
+        Constraint[] constr=new Constraint[getNbConstraint()];
+        int i=0;
+        for (Constraint c : constraints){
+            constr[i]=c;
+            i++;
+        }
+        return constr;
+    }
+
+    public int getNbConstraint() {
+        int nbConstr = 0;
+        for (Constraint constr : constraints) {
+            nbConstr++;
+        }
+        return nbConstr;
     }
 
     public Constraint[] getConstr(String type) {

@@ -719,16 +719,21 @@ function loadData() {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
+                    let results = xhr.responseText.split("<")
+
                     xhr.responseText.split("<")[1].split(";").forEach(student => {
                         students.push(student.split(":")[0])
                     })
                     students.pop()
 
+                    console.log(students)
+
                     for (let i = 1; i <= students.length; i++) {
                         console.log(students[i - 1])
 
-                        if (document.getElementById("idEtu" + i + "G1").text === students[i - 1])
-                            document.getElementById("idEtu" + i + "G1").classList.add("valid")
+                        if (document.getElementById("idEtu" + i + "G1").value === students[i - 1]) {
+                            document.getElementById("E" + i + "G1").classList.add("valid")
+                        }
                     }
 
 

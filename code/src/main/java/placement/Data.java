@@ -13,7 +13,7 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 
 
@@ -28,9 +28,7 @@ public class Data {
     private Map map;
 
 
-    public int[] getDeletedTables() {
-        return deletedTables;
-    }
+
 
     private final ArrayList<Student> students = new ArrayList<>();
     int idC;
@@ -45,7 +43,7 @@ public class Data {
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
         } else if (mapType.charAt(0) == 'G') {
             // plan grille
-            //map = new GridMap() ;
+            map = new GridMap() ;
         } else if (mapType.charAt(0) == 'D') {
             map = new GridMap();
         }
@@ -75,7 +73,7 @@ public class Data {
 
 
     public void placeStudent(int table, String idStudent) {
-        getTable(table).setStudent(getStudentFromId(idStudent));
+        Objects.requireNonNull(getTable(table)).setStudent(getStudentFromId(idStudent));
     }
 
     // liste des fonctions a implementer
@@ -118,7 +116,7 @@ public class Data {
     }
 
     public Student getStuFromTab(int num) {
-        return getTable(num).getEtu();
+        return Objects.requireNonNull(getTable(num)).getEtu();
     }
 
     // renvoie les numeros de tables disponibles
@@ -127,8 +125,8 @@ public class Data {
         if (tables.length==1) {
             return 100 ;
         }
-        for (int i = 0; i < deletedTables.length; i++) {
-            if (deletedTables[i] != 0) {
+        for (int deletedTable : deletedTables) {
+            if (deletedTable != 0) {
                 num++;
             }
         }
@@ -138,12 +136,12 @@ public class Data {
     public int[] existingTables() {
         int[] result = new int[tables.length - nbDeletedTables()];
         int numRes = 0; // la position dans les resultats
-        for (int i = 0; i < tables.length; i++) {
-            if (tables[i] != null) {
+        for (Table table : tables) {
+            if (table != null) {
                 // je verifie que ma table soit pas supprimée
-                if (!isDeleted(tables[i].getNum())) {
+                if (!isDeleted(table.getNum())) {
                     // si c ok je l'ajoute a la liste
-                    result[numRes] = tables[i].getNum();
+                    result[numRes] = table.getNum();
                     numRes++;
                 }
             }
@@ -156,15 +154,15 @@ public class Data {
         int length = 0;
         int numRes = 0;
 
-        for (int i = 0; i < tables.length; i++) {
-            if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null) {
+        for (Table table : tables) {
+            if (Utilitaire.in(table.getNum(), existingTables()) && table.getEtu() == null) {
                 length++;
             }
         }
         free = new int[length];
-        for (int i = 0; i < tables.length; i++) {
-            if (Utilitaire.in(tables[i].getNum(), existingTables()) && tables[i].getEtu() == null) {
-                free[numRes] = tables[i].getNum();
+        for (Table table : tables) {
+            if (Utilitaire.in(table.getNum(), existingTables()) && table.getEtu() == null) {
+                free[numRes] = table.getNum();
                 numRes++;
             }
         }
@@ -528,21 +526,25 @@ public class Data {
 
     public int getNbConstraint(String type) {
         int nb = 0;
-        if (type.equals("I")) {
-            for (int i = 0; i < idC; i++) {
-                if (constraints[i] instanceof ImposedPlacement) {
-                    nb++;
+        switch (type) {
+            case "I" -> {
+                for (int i = 0; i < idC; i++) {
+                    if (constraints[i] instanceof ImposedPlacement) {
+                        nb++;
+                    }
                 }
             }
-        } else if (type.equals("G")) {
-            for (int i = 0; i < idC; i++) {
-                if (constraints[i] instanceof PerGroup) {
-                    nb++;
+            case "G" -> {
+                for (int i = 0; i < idC; i++) {
+                    if (constraints[i] instanceof PerGroup) {
+                        nb++;
+                    }
                 }
             }
-        } else if (type.equals("M")) {
-            if (constraints[0] != null) {
-                nb++;
+            case "M" -> {
+                if (constraints[0] != null) {
+                    nb++;
+                }
             }
         }
         return nb;
@@ -614,9 +616,8 @@ public class Data {
         return addConstraint(id, num, 'I');
     }
 
-    public boolean setDimensions(int lon, int lar) {
+    public void setDimensions(int lon, int lar) {
         map = new RectangularMap(lon, lar);
-        return true;
     }
 
     // je prends les voisins de ma table
@@ -678,18 +679,18 @@ public class Data {
 
 
     public String getTableInfos(int numTable) {
-        return getTable(numTable).description();
+        return Objects.requireNonNull(getTable(numTable)).description();
     }
 
     public String getTablesInfos(){
-        String tab = "";
+        StringBuilder tab = new StringBuilder();
         for (Table t: tables){
             if (!tab.isEmpty()){
-                tab+=";";
+                tab.append(";");
             }
-            tab+=t.info();
+            tab.append(t.info());
         }
-        return tab;
+        return tab.toString();
     }
 
     private Table getTable(int num) {
@@ -717,15 +718,15 @@ public class Data {
     }
 
     public boolean haveStudent(int tab) {
-        return (!isDeleted(tab)) && (getTable(tab).getEtu() != null);
+        return (!isDeleted(tab)) && (Objects.requireNonNull(getTable(tab)).getEtu() != null);
     }
 
 
     public boolean swap(int numT1, int numT2) {
         if (getStuFromTab(numT1) != null || getStuFromTab(numT2) != null) {
             Student temp = getStuFromTab(numT1);
-            getTable(numT1).setStudent(getStuFromTab(numT2));
-            getTable(numT2).setStudent(temp);
+            Objects.requireNonNull(getTable(numT1)).setStudent(getStuFromTab(numT2));
+            Objects.requireNonNull(getTable(numT2)).setStudent(temp);
             return true;
         }
         return false;
@@ -825,17 +826,17 @@ public class Data {
 
     public boolean changeNumTable(int oldNum, int newNum) {
         if (getTable(oldNum) != null ){
-            getTable(oldNum).setNum(newNum);
+            Objects.requireNonNull(getTable(oldNum)).setNum(newNum);
             return true ;
         }
         return false ;
     }
 
     public String studentList() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (Student s : students) {
-            result += s.getId() +" ; "+ s.getFullName()+"\n";
+            result.append(s.getId()).append(" ; ").append(s.getFullName()).append("\n");
         }
-        return result ;
+        return result.toString();
     }
 }

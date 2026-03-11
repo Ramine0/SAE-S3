@@ -9,8 +9,9 @@ public class RectangularMap extends Map
     private final int width;
     private final int height;
 
-    // à revoir, car on ne prend pas en compte les tables supprimées et les L et l
-    // je vais m'en charger
+
+    // a revoir car on ne prends pas en compte les tables supprimées et les L et l
+    // je v m'en charger
     // oo ee aa
     @Override
     public int[] neighbours(int table, int[] dispo)
@@ -66,5 +67,16 @@ public class RectangularMap extends Map
     }
 
     public String getSize() {return width+";"+ height ;}
+
+    public int getWidth()
+    {
+        return width;
+    }
+
+    public int getHeight()
+    {
+        return height;
+    }
+
 }
 

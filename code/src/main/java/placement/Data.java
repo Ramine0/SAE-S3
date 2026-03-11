@@ -13,6 +13,7 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Data {
@@ -21,6 +22,9 @@ public class Data {
     private int[] deletedTables;
 
     private Map map;
+
+
+
 
     private final ArrayList<Student> students = new ArrayList<>();
     private int idC;
@@ -95,7 +99,7 @@ public class Data {
     }
 
     public Student getStuFromTab(int num) {
-        return getTable(num).getEtu();
+        return Objects.requireNonNull(getTable(num)).getEtu();
     }
 
     public int nbDeletedTables() {
@@ -116,7 +120,7 @@ public class Data {
         int numRes = 0;
         for (Table table : tables) {
             if (table != null) {
-                // je vérifie que ma table ne soit pas supprimée
+                // je verifie que ma table soit pas supprimée
                 if (!isDeleted(table.getNum())) {
                     // si c'est bon, je l'ajoute à la liste
                     result[numRes] = table.getNum();
@@ -184,13 +188,6 @@ public class Data {
         return constr;
     }
 
-    public int getNbConstraint() {
-        int nbConstr = 0;
-        for (Constraint constr : constraints) {
-            nbConstr++;
-        }
-        return nbConstr;
-    }
 
     // ne pas supprimer, sauf si on ne lui trouve aucune utilité
     public Constraint[] getConstr(String type) {
@@ -485,6 +482,16 @@ public class Data {
         }
     }
 
+    public int getNbConstraint(){
+        int nb=0;
+        for (Constraint c : constraints) {
+            if (c!=null){
+                nb++;
+            }
+        }
+        return nb;
+    }
+
     public int getNbConstraint(String type) {
         int nb = 0;
         switch (type) {
@@ -636,6 +643,17 @@ public class Data {
         return getTable(numTable).description();
     }
 
+    public String getTablesInfos(){
+        StringBuilder tab = new StringBuilder();
+        for (Table t: tables){
+            if (!tab.isEmpty()){
+                tab.append(";");
+            }
+            tab.append(t.info());
+        }
+        return tab.toString();
+    }
+
     private Table getTable(int num) {
 
         for (Table tb : tables) {
@@ -669,8 +687,8 @@ public class Data {
     public boolean swap(int numT1, int numT2) {
         if (getStuFromTab(numT1) != null || getStuFromTab(numT2) != null) {
             Student temp = getStuFromTab(numT1);
-            getTable(numT1).setStudent(getStuFromTab(numT2));
-            getTable(numT2).setStudent(temp);
+            Objects.requireNonNull(getTable(numT1)).setStudent(getStuFromTab(numT2));
+            Objects.requireNonNull(getTable(numT2)).setStudent(temp);
             return true;
         }
         return false;
@@ -706,6 +724,7 @@ public class Data {
     public void loadPlanDefault(String path) {
         if (map instanceof GridMap)
             tables = ((GridMap) map).loadMap(path);
+
     }
 
     public void changePlanMode(char newMode, String path) {
@@ -776,4 +795,8 @@ public class Data {
     }
 
 
+    // TODO ou la faire ou changer le code a vecteur pour utiliser student list qui est au dessus
+    public Student[] getEtus() {
+        return null ;
+    }
 }

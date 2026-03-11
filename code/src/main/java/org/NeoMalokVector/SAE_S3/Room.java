@@ -8,7 +8,7 @@ import java.io.FileNotFoundException;
 public class Room
 {
 
-    private CreatingIntermediate crea;
+    private final CreatingIntermediate crea;
     private PositioningIntermediate posing;
     public String debugMessage;
 

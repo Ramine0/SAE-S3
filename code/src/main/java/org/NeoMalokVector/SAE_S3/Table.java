@@ -49,6 +49,17 @@ public class Table
         return result ;
     }
 
+    public String info(){
+        String result=""+num;
+        if (coordX != -1) {
+            result +=  "!"+coordX+"!"+coordY;
+        }
+        if (student!=null){
+            result +=  "!"+student.getId();
+        }
+        return result;
+    }
+
     /**
      * Getter du numéro de table
      * @return num

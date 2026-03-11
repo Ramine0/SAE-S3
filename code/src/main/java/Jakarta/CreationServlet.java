@@ -25,19 +25,26 @@ public class CreationServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         // il faut bien creer la hashmap a un momment ou a un autre
+        String user = request.getSession().getId();
+
         if (rooms == null) {
             rooms = new HashMap<>();
         }
 
         // c'est la premiere requette qu'on va faire elle cherche des données existentes pour un user donné
-        if (request.getParameter("load") != null) {
-            out.print(getUserData(request.getSession().getId())); // on renvoie la session
+        if (request.getParameter("load") != null && !request.getParameter("load").isEmpty()) {
+            String temp = request.getParameter("load");
+            if (loadSession(temp,user)) {
+                out.print(getUserData(user));
+            }else {
+                out.print("null") ;
+            }
             out.flush();
             return;
+        }else if (request.getParameter("load") != null) {
+            out.print("null") ;
         }
 
-        // un recup l'id de session psq on va grave s'en servir
-        String user = request.getSession().getId();
 
         // on cherche cree les données si user pas deja existant
         if (request.getParameter("generate") != null) {
@@ -206,23 +213,24 @@ public class CreationServlet extends HttpServlet {
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static boolean loadSession(String oldId, String newId) {
-        if (userExists(oldId)) {
-            // il faudrait une transaction
+        if ((!newId.equals(oldId)) && userExists(oldId) ) {
             rooms.put(newId, rooms.get(oldId));
             rooms.remove(oldId);
-            // qui se finirai la
             return true;
         }
-        return false;
+        return newId.equals(oldId);
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static boolean createUser(String user, String path) {
         if (!userExists(user)) {
             try {
-                rooms.put(user, new Room(path));
-                return true;
+                Room newData = new Room(path) ;
+                rooms.put(user,newData);
+                return true ;
+
             } catch (Exception e) {
+                System.out.println(e.getMessage());
                 return false;
             }
         }
@@ -236,14 +244,16 @@ public class CreationServlet extends HttpServlet {
         if (salle != null) {
             result = "" ;
             // les infos de la visu
-            if (salle.getPositioningIntermediate() != null) {
-                result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
-            }
-            // les infos d'etudians mis à distance
+            if (salle!=null){
+                if (salle.getPositioningIntermediate() != null) {
+                    result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
+                }
+                // les infos d'etudians mis a distance
 
-            result += salle.getCrea().getSeparated();
-            result += "<";
-            result += salle.getCrea().getStudentList() +"<";
+                result += salle.getCrea().getSeparated();
+                result += "<";
+                result += salle.getCrea().getStudentList() +"<";
+            }
 
 
         }

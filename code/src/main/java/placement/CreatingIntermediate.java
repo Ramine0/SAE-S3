@@ -33,11 +33,10 @@ public class CreatingIntermediate {
      * Contrôle de création d'un plan rectangulaire
      * @param lon nombre de tables en longueurs
      * @param lar nombre de tables en largeurs
-     * @return true si la création est un succès, false sinon.
      */
-    public boolean createTables(int lon, int lar)
+    public void createTables(int lon, int lar)
     {
-        return d.setNumberTables(lon, lar);
+        d.setNumberTables(lon, lar);
     }
 
     /**
@@ -89,7 +88,7 @@ public class CreatingIntermediate {
      * @return true si elle fait partie des tables libres, false sinon
      */
     public boolean findTable(int numTab) {
-        return Utilitaire.in(numTab, d.freeTables());
+        return Utilitaire.in(numTab, free());
     }
 
 
@@ -193,18 +192,6 @@ public class CreatingIntermediate {
     public int[] free(){return d.freeTables();}
 
     /**
-     * tables supprimées
-     * @return les tables supprimées
-     */
-    public int[] del(){return d.getDeletedTables();}
-
-    /**
-     * tables existantes
-     * @return les tables existantes (non supprimées)
-     */
-    public int[] existing(){return d.existingTables();}
-
-    /**
      * entre dans la logique de réinsertion de table supprimées pour la table num
      * @param num numéro de la table
      */
@@ -260,7 +247,6 @@ public class CreatingIntermediate {
     /**
      * charge un plan grâce à un path
      * @param path chemin du plan à charger
-     * @return true si le chargement à réussi, false sinon
      */
     public void loadPlanDefault(String path) {
         d.loadPlanDefault(path);
@@ -295,7 +281,7 @@ public class CreatingIntermediate {
             result += "invalid;";
         }
 
-        if (!numEtu.isEmpty()  && findTable(newNum)){
+        if (!numEtu.isEmpty() && findTable(newNum)){
             result += findNumsForImp(numEtu,newNum);
         }else {
             result += "";
@@ -319,15 +305,15 @@ public class CreatingIntermediate {
      */
     public String getSeparated() {
         StringBuilder result = new StringBuilder();
-        for (int i = 1; i < 10; i++) {
-            PerGroup temp = d.getPerGroup(i);
+        for (int i = 1; i < 10 ; i++ ) {
+            PerGroup temp = d.getPerGroup(i) ;
             if (temp == null) {
                 break;
             } else {
                 String[] students = temp.toString().split(";");
                 for (String s : students) {
-                    if (!s.isEmpty()) {
-                        String id = findEtu(s);
+                    if (s.equals("null")) {
+                        String id = findEtu(s) ;
                         result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }
@@ -343,12 +329,16 @@ public class CreatingIntermediate {
      * @return un string avec la liste d'étudiants
      */
     public String getStudentList() {
-        String result = "ID             ; nom prenom \n";
-        result += d.studentList();
-        return result;
+        String result = "ID          ; nom prenom \n";
+        result += d.studentList() ;
+        return result ;
     }
 
     public String getDimentions() {
         return d.getPlanSize();
     }
+
+
+
+
 }

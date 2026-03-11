@@ -1,10 +1,9 @@
-// const constGp=document.querySelector('#mode');
 let nbImposedPlace = 1;
 let nbPlacesSuppr = 1;
 let groupes = [[1]];
 let long = 0;
 let larg = 0;
-
+let swap = false;
 let tables = []
 let noms = []
 
@@ -120,8 +119,10 @@ function createImposed() {
 
 }
 
+document.querySelector("#classMode").addEventListener("change",changeMode)
+
 function changeMode() {
-    const m = document.getElementById("mode").value;
+    const m = document.getElementById("classMode").value;
     const mode = new XMLHttpRequest();
     mode.open("GET", `creation?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
 
@@ -228,6 +229,42 @@ function enleverEtuGrp(event) {
     genererWalid();
 }
 
+function getInfosTable(event) {
+
+    if (swap) {
+        activateSwap(event.target.id);
+    }
+    let numTab = event.target.id.substring(1);
+    let reqInfo = new XMLHttpRequest();
+    reqInfo.open("GET", `Display?action=${encodeURIComponent("infos")}&number=${encodeURIComponent(numTab)}`, true);
+    reqInfo.onreadystatechange = function () {
+        if (reqInfo.readyState === XMLHttpRequest.DONE) {
+            if (reqInfo.status === 200) {
+                if (reqInfo.responseText !== "null") {
+                    const values = reqInfo.responseText.split(";");
+                    if (values.length === 4) {
+                        document.querySelector("#idTabVisu").value = values[0];
+                        document.querySelector("#numEtuVisu").value = values[1];
+                        document.querySelector("#nomEtuVisu").value = values[2];
+                        document.querySelector("#grpEtuVisu").value = values[3];
+
+                        if (active != null && !swap) {
+                            document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";
+                        }
+                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
+
+                        active = values[0];
+
+                    }
+                }
+
+            }
+
+        }
+    };
+    reqInfo.send();
+}
+
 document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 
 function moveFile(event) {
@@ -238,9 +275,74 @@ function moveFile(event) {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
+
     xhr.send(data);
 
     fileOk = true;
+}
+
+function exportFile() {
+    const excel = document.getElementById("Excel").value;
+    console.log(excel);
+    const excelRequest = new XMLHttpRequest();
+    excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
+    excelRequest.responseType = "blob";
+    //excelRequest.onreadystatechange=function (){
+    excelRequest.onload = function () {
+        if (excelRequest.status === 200) {
+            const url = window.URL.createObjectURL(excelRequest.response);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "listing.csv";
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+    }
+    excelRequest.send();
+
+}
+
+
+function modeSwap() {
+    activateSwap('none');
+}
+
+function activateSwap(button) {
+
+    let numt2 = active;
+    if (button === "none" && active != null) {
+        swap = !swap;
+        document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
+    } else if (document.querySelector(`#${button}`) != null) {
+
+        const swapReq = new XMLHttpRequest();
+        swapReq.open("GET", `Display?action=${encodeURIComponent("swap")}&number1=${active}&number2=${button.substring(1)}`);
+        swapReq.onreadystatechange = function () {
+            if (swapReq.readyState === XMLHttpRequest.DONE) {
+                if (swapReq.status === 200) {
+                    console.log(numt2)
+                    console.log(button)
+                    let numt1 = button.substring(1);
+                    let nomt1 = noms[tables.indexOf(numt1)];
+                    let nomt2 = noms[tables.indexOf(numt2)];
+
+                    let content = ` Table ${numt1} <br>${nomt2}`
+                    console.log(document.querySelector(`#T${numt1}`).innerHTML)
+                    document.querySelector(`#T${numt1}`).innerHTML = content;
+
+                    console.log(document.querySelector(`#T${numt2}`).innerHTML)
+                    content = ` Table ${numt2} <br>${nomt1}`
+                    document.querySelector(`#T${numt2}`).innerHTML = content;
+
+                    noms[tables.indexOf(numt1)] = nomt2;
+                    noms[tables.indexOf(numt2)] = nomt1;
+                    swap = false;
+                }
+            }
+        }
+        swapReq.send();
+    }
+
 }
 
 function setTableNumber() {
@@ -308,7 +410,7 @@ function createGrp() {
     document.querySelector("#walEtu1G" + groupes.length).addEventListener("click", validerEtuGrp);
     document.querySelector("#supEtu1G" + groupes.length).addEventListener("click", enleverEtuGrp);
 
-    document.querySelector("#ajoutEtuGrp" + groupes.length).addEventListener("click", createEtuGrp);
+    document.querySelector("#ajoutEtuGrp" + groupes.length).addEventListener("click", createEtuGrpFromString);
 
     document.querySelector("#walid").disabled = true;
     document.querySelector("#walid").style.backgroundColor = '#ec400b';
@@ -317,7 +419,10 @@ function createGrp() {
 document.getElementById("ajoutEtuGrp1").addEventListener("click", createEtuGrp);
 
 function createEtuGrp(event) {
-    let numGrp = event.target.id.substring(11);
+    createEtuGrpFromString(event.target.id.substring(11))
+}
+
+function createEtuGrpFromString(numGrp) {
     groupes[numGrp - 1].push(groupes[numGrp - 1].length);
     let numEtu = groupes[numGrp - 1].length;
     if (numEtu < 10) {
@@ -394,8 +499,6 @@ function createTables() {
                         t += '<p>' + name + '</p>'
                     else
                         t += '<p>aucun étu</p>'
-
-                    t += `<div id="deleteT${table}" class="deleteT" role="button">Supprimer</div>`;
 
                     t += '</div>';
 
@@ -565,6 +668,7 @@ function setValid(section) {
             document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
             document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
             document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
+            document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
         }
     }
 
@@ -605,10 +709,14 @@ function decreaseId(idElem) {
             children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
         }
     }
+
+
 }
 
+
 function codeForGeneration() {
-    let code = document.querySelector("#testVal");
+
+    let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
 
     xhr.open("GET", `creation?generate=${encodeURIComponent("n'importe quoi")}`, true);
@@ -617,7 +725,6 @@ function codeForGeneration() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-                code.disabled = true;
 
                 init()
             }
@@ -639,8 +746,9 @@ function renduFichierEtu(etudiants) {
 }
 
 function loadData() {
+    let students = []
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
+    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#sessionCode").value)}`)
 
     console.log("recherche des datas de l'utilisateur")
 
@@ -650,7 +758,26 @@ function loadData() {
                 if (xhr.responseText !== "null") {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
-                    let results = xhr.responseText.split("<")
+
+                    xhr.responseText.split("<")[1].split(";").forEach(student => {
+                        students.push(student)
+                    })
+                    students.pop()
+
+                    console.log(students)
+
+                    for (let i = 1; i <= students.length; i++) {
+                        if (document.getElementById("E" + i + "G1") == null) {
+                            createEtuGrpFromString(1)
+                        }
+
+                        const etuInfos = students[i - 1].split(":")
+
+                        document.getElementById("idEtu" + i + "G1").value = etuInfos[0]
+                        document.getElementById("nomEtu" + i + "G1").value = etuInfos[1]
+
+                        setValid("E" + i + "G1")
+                    }
 
 
                     /*
@@ -666,7 +793,7 @@ function loadData() {
                      createTables() ;
                      */
 
-                    renduFichierEtu(results[2])
+                    //renduFichierEtu(results[2])
                     console.log("fin des informations :")
                     enableZone()
 
@@ -684,3 +811,41 @@ function loadData() {
 
     xhr.send()
 }
+
+
+document.querySelector("#planType").addEventListener("change", (e) => {
+    if (e.target.value === "rectangularPlan") {
+        document.getElementById("infoRect").style.visibility = "visible";
+        document.getElementById("infoRect").style.height = "fit-content";
+    } else {
+        document.getElementById("infoRect").style.visibility = "hidden";
+        document.getElementById("infoRect").style.height = "0";
+    }
+})
+
+function tableInfoMod() {
+    document.getElementById("valuesOfTable").style.visibility = "visible";
+    document.getElementById("valuesOfTable").style.height = "fit-content";
+    document.getElementById("parameters").style.visibility = "hidden";
+    document.getElementById("parameters").style.height = "0";
+
+}
+
+
+document.querySelector("#modeHeader").addEventListener("change", changeHeaderMode)
+
+function changeHeaderMode (event) {
+    if (event.target.value === "create") {
+        document.getElementById("parameters").style.visibility = "visible";
+        document.getElementById("parameters").style.height = "100%";
+        document.getElementById("valuesOfTable").style.visibility = "hidden";
+        document.getElementById("valuesOfTable").style.height = "0";
+
+    }else if (event.target.value === "modify") {
+        tableInfoMod() ;
+    }else{
+        console.log("ALERTE ALERTE")
+    }
+}
+
+

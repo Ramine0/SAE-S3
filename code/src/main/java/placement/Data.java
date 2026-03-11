@@ -233,7 +233,7 @@ public class Data {
         return lesNums;
     }
 
-    public Student[] getEtus() {
+    public Student[] getStudents() {
         return students.toArray(new Student[0]);
     }
 
@@ -310,7 +310,7 @@ public class Data {
         return text;
     }
 
-    public void chargerStudents(String s){
+    public void loadStudents(String s){
         String [] tab=s.split(";");
         for (String string : tab) {
             String[] student = string.replace(",", ";").split(";");
@@ -318,7 +318,7 @@ public class Data {
         }
     }
 
-    public void chargerTables(String t){
+    public void loadTables(String t){
         String [] tab=t.split(";");
         tables=new Table[tab.length];
         deletedTables=new int[tab.length];
@@ -333,7 +333,7 @@ public class Data {
         }
     }
 
-    public void chargerConstraint(String c){
+    public void loadConstraints(String c){
         String [] tab=c.split(";");
         for (String string : tab) {
             String[] contrainte = string.replace(",", ";").split(";");

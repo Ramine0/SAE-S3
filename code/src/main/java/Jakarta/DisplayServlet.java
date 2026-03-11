@@ -21,11 +21,11 @@ public class DisplayServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         String code = request.getParameter("testVal");
-        if (CreationServlet.getSalle(code) == null) {code = request.getSession().getId();}
+        if (CreationServlet.getRoom(code) == null) {code = request.getSession().getId();}
 
-        Room salle = CreationServlet.getSalle(code);
+        Room room = CreationServlet.getRoom(code);
 
-        if (salle == null)
+        if (room == null)
             response.sendRedirect("index.jsp");
         else {
             response.setContentType("text/html");
@@ -58,9 +58,9 @@ public class DisplayServlet extends HttpServlet
                     """);
 
 
-                PositioningIntermediate pos = salle.getPositioningIntermediate();
+                PositioningIntermediate pos = room.getPositioningIntermediate();
 
-                if (salle.generate())
+                if (room.generate())
                     out.println("""
                             <h4> Génération réussie </h4>
                             <a href="visualisation.jsp">Voir le résultat</a>
@@ -82,10 +82,10 @@ public class DisplayServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        Room salle = CreationServlet.getSalle(request.getSession().getId());
+        Room room = CreationServlet.getRoom(request.getSession().getId());
         PositioningIntermediate pos = null;
-        if (salle != null) {
-            pos = salle.getPositioningIntermediate();
+        if (room != null) {
+            pos = room.getPositioningIntermediate();
         }
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
@@ -108,7 +108,7 @@ public class DisplayServlet extends HttpServlet
 
                 // on swap les etus des tables donnees
                 case "swap" -> {
-                    if (salle.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
+                    if (room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
                         out.println("0");
                     else
                         out.println("1");

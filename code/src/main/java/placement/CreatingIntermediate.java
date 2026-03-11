@@ -40,7 +40,7 @@ public class CreatingIntermediate
         return d.maxNumTable();
     }
 
-    public String findEtu(String id)
+    public String findStudent(String id)
     {
         String trouve = d.completeId(id);
         if (!trouve.isEmpty())
@@ -64,7 +64,7 @@ public class CreatingIntermediate
 
     public int findNumsForImp(String id, int num)
     {
-        id = findEtu(id);
+        id = findStudent(id);
         num = findTable(num) ? num : -1;
 
         if (id.equals("le num donné n'existe pas"))
@@ -81,7 +81,7 @@ public class CreatingIntermediate
             return d.addImp(id, num);
         }
     }
-    public void removeContrainst(String constr, int id)
+    public void removeConstraint(String constr, int id)
     {
         d.removeConstraint(constr, id);
     }
@@ -91,7 +91,7 @@ public class CreatingIntermediate
 
     public String findStudentForGroup(String idPartiel, int numGrp)
     {
-        String etu = findEtu(idPartiel);
+        String etu = findStudent(idPartiel);
 
         if (etu.length() == 8)
         {
@@ -118,7 +118,7 @@ public class CreatingIntermediate
         return student.getName() + " " + student.getFirstName();
     }
 
-    public int supprTable(int num)
+    public int removeTable(int num)
     {
         num = findTable(num) ? num : -1;
 
@@ -245,7 +245,7 @@ public class CreatingIntermediate
                 String[] students = temp.toString().split(";") ;
                 for (String s : students) {
                     if (s.equals("null")) {
-                        String id = findEtu(s) ;
+                        String id = findStudent(s) ;
                         result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }

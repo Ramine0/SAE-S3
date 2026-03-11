@@ -16,7 +16,7 @@ public class ExportServlet extends HttpServlet
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        Room room = CreationServlet.getSalle(request.getSession().getId());
+        Room room = CreationServlet.getRoom(request.getSession().getId());
         assert room != null;
         CreatingIntermediate crea = room.getCrea();
         response.setContentType("text/csv;charset=UTF-8");

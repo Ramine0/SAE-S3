@@ -118,12 +118,12 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
-    private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle) {
-        CreatingIntermediate crea = salle.getCrea();
+    private void constraintRequests(HttpServletRequest request, PrintWriter out, Room room) {
+        CreatingIntermediate crea = room.getCrea();
 
         switch (request.getParameter("constraint")) {
             case "imposePlace" -> {
-                String studentId = crea.findEtu(request.getParameter("studentId"));
+                String studentId = crea.findStudent(request.getParameter("studentId"));
 
                 String result = studentId + ";";
                 result += crea.studentInfo(studentId) + ";";
@@ -140,7 +140,7 @@ public class CreationServlet extends HttpServlet {
                 out.print(result);
             }
 
-            case "removeImposedPlace" -> crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")) - 1);
+            case "removeImposedPlace" -> crea.removeConstraint("I", Integer.parseInt(request.getParameter("id")) - 1);
 
             case "deleteTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
@@ -150,7 +150,7 @@ public class CreationServlet extends HttpServlet {
                 else if (num > crea.maxTable())
                     num = crea.maxTable();
 
-                out.print(crea.supprTable(num) + ";" + num);
+                out.print(crea.removeTable(num) + ";" + num);
             }
 
             case "removeDeletedTable" -> {
@@ -159,7 +159,7 @@ public class CreationServlet extends HttpServlet {
             }
 
             case "separeEtu" -> {
-                String studentId = crea.findEtu(request.getParameter("studentId"));
+                String studentId = crea.findStudent(request.getParameter("studentId"));
 
                 String studentInfo = crea.findStudentForGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
 
@@ -171,7 +171,7 @@ public class CreationServlet extends HttpServlet {
 
             case "deleteSepareEtu" -> {
                 int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
-                crea.removeContrainst("G", constraintId);
+                crea.removeConstraint("G", constraintId);
             }
 
             case "mode" -> {
@@ -187,7 +187,7 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
-    public static Room getSalle(String code) {
+    public static Room getRoom(String code) {
         if (userExists(code))
             return rooms.get(code);
         else
@@ -228,17 +228,17 @@ public class CreationServlet extends HttpServlet {
     public String getUserData(String user) {
         String result = userExists(user) ? user : "null";
         if (!result.equals("null")) {
-            Room salle = getSalle(user);
+            Room room = getRoom(user);
             // les infos de la visu
-            if (salle!=null){
-                if (salle.getPositioningIntermediate() != null) {
-                    result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
+            if (room!=null){
+                if (room.getPositioningIntermediate() != null) {
+                    result += "\n" + room.getPositioningIntermediate().getTablesForVisu() +"<";
                 }
                 // les infos d'etudians mis a distance
 
-                result += salle.getCrea().getSeparated();
+                result += room.getCrea().getSeparated();
                 result += "<";
-                result += salle.getCrea().getStudentList() +"<";
+                result += room.getCrea().getStudentList() +"<";
             }
 
             

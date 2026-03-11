@@ -548,11 +548,8 @@ public class Data {
         return nb;
     }
 
-    public void modifStudentGroupConstraint(String numStudent, int idGp, int idStu) {
-        if (getPerGroup(idGp) != null) {
-            getPerGroup(idGp).modifStudent(numStudent, idStu);
-        }
-    }
+
+
 
     public int addConstraint(String numStudent, int numTable, char constr) {
         if (constr == 'I') {

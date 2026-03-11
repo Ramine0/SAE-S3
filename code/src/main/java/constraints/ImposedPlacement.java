@@ -27,12 +27,15 @@ public class ImposedPlacement extends Constraint
     public String[] getPaire() {
         return new String[] {Integer.toString(numTable),numEtu} ;
     }
+
     public int getNumTable() {
         return numTable;
     }
+
     public String getNumEtu() {
         return numEtu;
     }
+
     public String toDatabase(){
         return "I,"+numEtu+","+numTable;
     }

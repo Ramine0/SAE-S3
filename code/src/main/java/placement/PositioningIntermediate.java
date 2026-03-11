@@ -50,10 +50,8 @@ public class PositioningIntermediate {
             }
 
             // vu que c ok alors on place l'etu
-            if (donnees.placeStudent(tableNumber, studentId)){
+            donnees.placeStudent(tableNumber, studentId);
                 // je sais pas quoi y mettre !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-            }
         }
 
         // si ya encore des etus c'est que ca chargé en contraintes

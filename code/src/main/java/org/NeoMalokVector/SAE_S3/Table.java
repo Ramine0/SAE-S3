@@ -32,7 +32,7 @@ public class Table
         student = s;
     }
     /**
-     * Fonction qui permettra d'afficher les informations des tables dans le plan
+     * Fonction qui permet d'afficher les informations des tables dans le plan
      * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant
      */
     public String description()

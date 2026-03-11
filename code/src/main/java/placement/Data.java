@@ -15,10 +15,6 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-// la classe va save les données pour les créer via un CreatingIntermediate et les avoir dans le positioning intermediate,
-// elle aura plein de fonctions utiles comme la lecture du fichier des etus ou le traitement des etus
-
 public class Data {
     private Constraint[] constraints;
     private Table[] tables;
@@ -28,8 +24,6 @@ public class Data {
 
     private final ArrayList<Student> students = new ArrayList<>();
     private int idC;
-    // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
-    // notement avec les methodes qui sont assez nombreuses
 
     public Data(String path, String mapType) throws FileNotFoundException {
         chargerFichier(path);
@@ -104,7 +98,6 @@ public class Data {
         return getTable(num).getEtu();
     }
 
-    // renvoie les numeros de tables disponibles
     public int nbDeletedTables() {
         int num = 0;
         if (tables.length == 1) {
@@ -120,12 +113,12 @@ public class Data {
 
     public int[] existingTables() {
         int[] result = new int[tables.length - nbDeletedTables()];
-        int numRes = 0; // la position dans les resultats
+        int numRes = 0;
         for (Table table : tables) {
             if (table != null) {
                 // je vérifie que ma table ne soit pas supprimée
                 if (!isDeleted(table.getNum())) {
-                    // si c ok je l'ajoute a la liste
+                    // si c'est bon, je l'ajoute à la liste
                     result[numRes] = table.getNum();
                     numRes++;
                 }
@@ -180,7 +173,7 @@ public class Data {
         return null;
     }
 
-    // voir si c pas remplacable
+    // voir si c'est pas remplacable
     public Constraint[] getConstr() {
         Constraint[] constr=new Constraint[getNbConstraint()];
         int i=0;
@@ -240,7 +233,6 @@ public class Data {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    // le chargement du fichier exel donné par le/la prof
     private void chargerFichier(String path) throws FileNotFoundException {
         students.clear();
 

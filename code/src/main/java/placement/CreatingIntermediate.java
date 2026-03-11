@@ -7,7 +7,7 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 
 /**
- * Classe utilisée comme controlleur de la création des données (contraintes, étudiants...)
+ * Classe utilisée comme contrôleur de la création des données (contraintes, étudiants...)
  */
 public class CreatingIntermediate {
     private final Data d;
@@ -22,8 +22,8 @@ public class CreatingIntermediate {
 
     /**
      * Constructeur de la classe. A quoi il sert, bonne question???
-     * @param path le chemin vers d'autres données?
-     * @throws FileNotFoundException envoyée par Data() si elle ne trouve pas de fichier
+     * @param path le chemin vers le fichier
+     * @throws FileNotFoundException envoyée par Data() si elle ne trouve pas le fichier
      */
     public CreatingIntermediate(String path) throws FileNotFoundException {
         d = new Data(path, "D");
@@ -31,8 +31,8 @@ public class CreatingIntermediate {
 
     /**
      * Contrôle de création d'un plan rectangulaire
-     * @param lon nombre de tables en longueurs
-     * @param lar nombre de tables en largeurs
+     * @param lon nombre de tables en longueur
+     * @param lar nombre de tables en largeur
      * @return true si la création est un succès, false sinon.
      */
     public boolean createTables(int lon, int lar)
@@ -95,7 +95,7 @@ public class CreatingIntermediate {
 
     /**
      * Regarde si les informations id et num sont correctements renseignées, si c'est le cas appelle
-     * la logique d'ajout de places imposées de Data
+     * la logique d'ajout de place imposée de Data
      * @param id numéro de l'étudiant
      * @param num numéro de la table
      * @return un entier correspondant à la situation
@@ -125,11 +125,11 @@ public class CreatingIntermediate {
     }
 
     /**
-     * Vérifie que les informations soient correctemen renseignées, si c'est le cas entre dans
+     * Vérifie que les informations soient correctement renseignées, si c'est le cas, entre dans
      * la logique d'ajout d'étudiant au groupe numGrp
      * @param idPartiel numéro de l'étudiant, complet ou non
      * @param numGrp groupe auquel on veut ajouter l'étudiant
-     * @return en cas de succès le message de la logique dans data, sinon l'idPartiel
+     * @return en cas de succès, le message de la logique dans Data, sinon l'id partiel
      */
     public String findStudentForGroup(String idPartiel, int numGrp) {
         String etu = findEtu(idPartiel);
@@ -167,7 +167,7 @@ public class CreatingIntermediate {
      * Cherche la table de numéro num, vérifie si elle est supprimée ou imposée, sinon entre dans
      * la logique de suppression de la table
      * @param num le numéro de la table
-     * @return un entier adapté à la situation (géré côté servlet et js)
+     * @return un entier adapté à la situation (géré côté Servlet et JavaScript)
      */
     public int supprTable(int num) {
         num = findTable(num) ? num : -1;
@@ -188,7 +188,7 @@ public class CreatingIntermediate {
 
     /**
      * tables libres
-     * @return les tables libres (non supprimées et sans étudiants/contrainte de place imposée
+     * @return les tables libres (non supprimées et sans étudiant/contrainte de place imposée)
      */
     public int[] free(){return d.freeTables();}
 
@@ -205,7 +205,7 @@ public class CreatingIntermediate {
     public int[] existing(){return d.existingTables();}
 
     /**
-     * entre dans la logique de réinsertion de table supprimées pour la table num
+     * entre dans la logique de réinsertion de table supprimée pour la table num
      * @param num numéro de la table
      */
     public void unremoveTable(int num) {
@@ -250,7 +250,7 @@ public class CreatingIntermediate {
 
 
     /**
-     * fonction de génération du controlleur de positionnement
+     * fonction de génération du contrôleur de positionnement
      * @return un objet PositioningIntermediate
      */
     public PositioningIntermediate generatePos() {
@@ -260,14 +260,14 @@ public class CreatingIntermediate {
     /**
      * charge un plan grâce à un path
      * @param path chemin du plan à charger
-     * @return true si le chargement à réussi, false sinon
+     * @return true si le chargement a réussi, false sinon
      */
     public void loadPlanDefault(String path) {
         d.loadPlanDefault(path);
     }
 
     /**
-     * controlleur du type de plan choisi
+     * contrôleur du type de plan choisi
      * @param newOne charactère permettant le choix du type de plan
      * @param path chemin du plan
      * @return true si le changement de plan a réussi, false sinon
@@ -281,7 +281,7 @@ public class CreatingIntermediate {
      * @param oldNum ancien numéro de la table
      * @param newNum nouveau numéro de la table
      * @param numEtu numéro de l'étudiant
-     * @return une chaine de caractère à utiliser sur la vision et modification de la table
+     * @return une chaine de caractères à utiliser sur la vision et modification de la table
      */
     public String tableValidateButton(int oldNum, int newNum, String numEtu) {
         String result = "";
@@ -315,7 +315,7 @@ public class CreatingIntermediate {
 
     /**
      * Fonction de récupération des étudiants séparés
-     * @return une chaine de caractère contenant les informations des étudiants séparés
+     * @return une chaine de caractères contenant les informations des étudiants séparés
      */
     public String getSeparated() {
         StringBuilder result = new StringBuilder();
@@ -339,7 +339,7 @@ public class CreatingIntermediate {
     }
 
     /**
-     * affichage des étudiants utilisé dans une fenêtre popup
+     * affichage des étudiants dans une fenêtre popup
      * @return un string avec la liste d'étudiants
      */
     public String getStudentList() {

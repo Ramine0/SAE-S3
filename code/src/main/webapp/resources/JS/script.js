@@ -1,23 +1,21 @@
-// const constGp=document.querySelector('#mode');
-let nbImposedPlace = 1;
-let nbPlacesSuppr = 1;
-let groupes = [[1]];
-let long = 0;
-let larg = 0;
+let long = 0
+let larg = 0
 
-let tables = []
+let groupes = [[1]]
+let nbPlacesSuppr = 1
+let nbImposedPlace = 1
+
 let noms = []
+let tables = []
 
-let fileOk = false;
+let fileOk = false
 let generated = false
 
 loadData()
 
-// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
-
 function validerPlaceImposee(event) {
-    let idFind = event.target.id;
-    let numConstr = idFind.charAt(11);
+    const idFind = event.target.id;
+    const numConstr = idFind.charAt(11);
 
     const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
     const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
@@ -70,8 +68,8 @@ window.addEventListener("scroll", () => {
 // document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
 
 function supprimerPlaceImposee(event) {
-    let idRemove = event.target.id;
-    let numConstr = idRemove.charAt(13);
+    const idRemove = event.target.id;
+    const numConstr = idRemove.charAt(13);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
@@ -86,7 +84,6 @@ function supprimerPlaceImposee(event) {
 
     genererWalid();
 }
-
 
 function createImposed() {
     nbImposedPlace++;
@@ -143,12 +140,14 @@ function changeMode() {
 document.getElementById("walEtu1G1").addEventListener("click", validerEtuGrp);
 
 function validerEtuGrp(event) {
-    let idFind = event.target.id;
-    let numGrp = idFind.substring(8);
-    let numEtu = idFind.charAt(6);
+    const idFind = event.target.id;
 
-    const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
+    const numEtu = idFind.charAt(6);
+    const numGrp = idFind.substring(8);
+
     let valid = true;
+    const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
+
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?constraint=${encodeURIComponent("separeEtu")}&studentId=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
 
@@ -161,9 +160,11 @@ function validerEtuGrp(event) {
                     case "1":
                         document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
                         break;
+
                     case "2":
                         document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
                         break;
+
                     default:
                         validerSectEtuGrp(idFind);
 
@@ -178,6 +179,7 @@ function validerEtuGrp(event) {
             }
         }
     };
+
     xhr.send();
 }
 
@@ -242,41 +244,6 @@ function moveFile(event) {
 
     fileOk = true;
 }
-
-function setTableNumber() {
-    let lon = document.getElementById("long").value;
-    let lar = document.getElementById("larg").value;
-
-    let planType = document.getElementById("planType").value;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                if (planType === "defaultPlan")
-                    console.log("Default plan generated : " + xhr.responseText);
-                else if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
-                    let l = xhr.responseText.split(";");
-
-                    long = l[0];
-                    document.getElementById("long").value = l[0];
-
-                    larg = l[1];
-                    document.getElementById("larg").value = l[1];
-                }
-
-                document.getElementById("imposedTableId1").max = lon * lar;
-                document.getElementById("numTabSup1").max = lon * lar;
-            } else
-                console.log("error number tables")
-        }
-    };
-
-    xhr.send();
-}
-
 
 function createGrp() {
     groupes.push([0]);
@@ -357,7 +324,7 @@ function enableZone() {
         document.querySelector("#supEtu1G1").disabled = false;
         document.querySelector("#walEtu1G1").disabled = false;
 
-        //le bout generer
+        // le bout générer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
     }
@@ -445,7 +412,7 @@ function handleTable(event) {
     const element = document.getElementById(event.target.id)
     element.id = element.id.replace(" select", "")
 
-    // suppression de la table
+    // Suppression de la table
     if (event.target.id.includes("delete")) {
         console.log("T" + event.target.id.substring(7))
 
@@ -465,7 +432,7 @@ function handleTable(event) {
         }
 
         xhr.send();
-    } else if (event.target.id.startsWith("T")) { // désuppression de la table
+    } else if (event.target.id.startsWith("T")) { // Désuppression de la table
         if (element.children[0].children.length === 1) {
             const table = event.target.id.substring(1);
             element.classList.remove("deletedT");

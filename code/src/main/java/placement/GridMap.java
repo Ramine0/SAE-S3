@@ -17,43 +17,43 @@ public class GridMap extends Map
         init(tables);
     }
 
+    // initialise la matrice d'adjacence qui contient les voisins de chaque table
     private void init(Table[] tables)
     {
         matriceAdj = new int[tables.length + 1][tables.length + 1];
         if (tables[0].getCoord()[0] != -1)
         {
-
             for (Table t : tables)
             {
                 if (t != null)
                 {
                     int x = t.getCoord()[0];
                     int y = t.getCoord()[1];
-                    for (Table vois : tables)
+
+                    for (Table neighbour : tables)
                     {
-                        if (vois != null)
-                        {
-                            if (vois.getNum() > t.getNum())
+                        if (neighbour != null)
+                            if (neighbour.getNum() > t.getNum())
                             {
+                                int neighbourX = neighbour.getCoord()[0];
+                                int neighbourY = neighbour.getCoord()[1];
 
-                                int xVois = vois.getCoord()[0];
-                                int yVois = vois.getCoord()[1];
-
-                                // l'idée ici, c'est de dire que si les deux ont une distance de 1 alors, ils sont voisins
-                                // plutot que de faire une abs() pour les -1 j'ai fait un carré, car évite d'importer la librairie et tt
-                                if (((x - xVois) * (x - xVois) == 1) && y == yVois || ((y - yVois) * (y - yVois) == 1) && x == xVois)
+                                if (hasNeighbour(x, neighbourX, y, neighbourY))
                                 {
-                                    matriceAdj[t.getNum()][vois.getNum()] = 1;
-                                    matriceAdj[vois.getNum()][t.getNum()] = 1;
+                                    matriceAdj[t.getNum()][neighbour.getNum()] = 1;
+                                    matriceAdj[neighbour.getNum()][t.getNum()] = 1;
                                 }
                             }
-                        }
-
                     }
                 }
             }
         }
 
+    }
+
+    private boolean hasNeighbour(int x, int neighBourX, int y, int neighBourY)
+    {
+        return ((x - neighBourX) * (x - neighBourX) == 1) && y == neighBourY || ((y - neighBourY) * (y - neighBourY) == 1) && x == neighBourX)
     }
 
     public GridMap()

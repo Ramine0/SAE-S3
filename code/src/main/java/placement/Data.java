@@ -195,13 +195,6 @@ public class Data {
         return constr;
     }
 
-    public int getNbConstraint() {
-        int nbConstr = 0;
-        for (Constraint constr : constraints) {
-            nbConstr++;
-        }
-        return nbConstr;
-    }
 
     // ne pas supprimer, sauf si on ne lui trouve aucune utilité
     public Constraint[] getConstr(String type) {
@@ -810,4 +803,8 @@ public class Data {
     }
 
 
+    // TODO ou la faire ou changer le code a vecteur pour utiliser student list qui est au dessus
+    public Student[] getEtus() {
+        return null ;
+    }
 }

@@ -222,16 +222,19 @@ public class CreationServlet extends HttpServlet {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private static void createUser(String user, String path) {
+    private static boolean createUser(String user, String path) {
         if (!userExists(user)) {
             try {
                 Room newData = new Room(path) ;
                 rooms.put(user,newData);
+                return true ;
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                return false;
             }
         }
+        return true;
     }
 
 

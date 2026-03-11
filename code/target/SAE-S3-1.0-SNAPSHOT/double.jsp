@@ -51,7 +51,7 @@
                     <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                 </section>
 
-                <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier
+                <button type="button" id="startConstr" class="validNbTable" onclick="loadData()"> Valider le fichier
                     et le
                     nombre de places
                 </button>
@@ -59,7 +59,8 @@
 
             </form>
             <form method="post" action="Display">
-                <input type="text" name="testVal" id="testVal">
+                <input type="text" name="sessionCode" id="sessionCode">
+                <button type="button" id="loadSession" onclick="loadData()" > Charger </button>
                 <button type="submit" id="walid" class="boutWalider" onclick="enableText()"
                         disabled> Générer
                 </button>

@@ -638,13 +638,9 @@ function decreaseId(idElem) {
 
 }
 
-function enableText() {
-    let code = document.querySelector("#testVal").disabled = false;
-}
 
 function codeForGeneration() {
 
-    let code = document.querySelector("#testVal");
     const xhr = new XMLHttpRequest();
     xhr.open("GET",
         `creation?generate=${encodeURIComponent("n'importe quoi")}`
@@ -654,7 +650,6 @@ function codeForGeneration() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-                code.disabled = true;
 
                 init()
             } else {
@@ -679,7 +674,6 @@ function renduFichierEtu(etudiants) {
 function loadData() {
 
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#testVal").value)}`)
     console.log("recherche des datas de l'utilisateur")
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -722,3 +716,8 @@ function loadData() {
     xhr.send()
 
 }
+
+
+
+//if (!event.target.id)
+

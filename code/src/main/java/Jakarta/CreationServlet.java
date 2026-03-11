@@ -86,15 +86,15 @@ public class CreationServlet extends HttpServlet {
                 crea.setMode(0);
 
                 if (request.getParameter("planType").equals("defaultPlan")) {
-                    crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
-                    crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
+                    crea.changeMapMode('D', request.getServletContext().getRealPath("/") + "/");
+                    crea.loadMapDefault(request.getServletContext().getRealPath("/") + "/");
 
                     out.print(room.getPositioningIntermediate().getTablesForVisu());
                 } else {
                     length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
                     width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
-                    crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
+                    crea.changeMapMode('R', request.getServletContext().getRealPath("/") + "/");
 
                     crea.createTables(length, width);
                     crea.setDimensions(length, width);

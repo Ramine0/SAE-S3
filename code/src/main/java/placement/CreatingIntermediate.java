@@ -202,11 +202,11 @@ public class CreatingIntermediate
         return new PositioningIntermediate(d);
     }
 
-    public void loadPlanDefault(String path) {
+    public void loadMapDefault(String path) {
         d.loadPlanDefault(path);
     }
 
-    public void changePlanMode(char newOne, String path) {
+    public void changeMapMode(char newOne, String path) {
         d.changePlanMode(newOne, path);
     }
 

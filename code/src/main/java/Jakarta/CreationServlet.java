@@ -51,35 +51,35 @@ public class CreationServlet extends HttpServlet {
 
 
 
-        Room salle = rooms.get(user);
+        Room room = rooms.get(user);
 
 
         if (request.getParameter("action") != null)
-            tableRequests(request, out, salle);
+            tableRequests(request, out, room);
 
         if (request.getParameter("constraint") != null)
-            constraintRequests(request, out, salle);
+            constraintRequests(request, out, room);
 
         out.flush();
     }
 
-    private void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
+    private void tableRequests(HttpServletRequest request, PrintWriter out, Room room) {
 
-        CreatingIntermediate crea = salle.getCrea();
+        CreatingIntermediate crea = room.getCrea();
 
-        int lon, lar;
+        int length, width;
 
         switch (request.getParameter("action")) {
-            case "isGenerated" -> out.print(salle.isGenerated());
+            case "isGenerated" -> out.print(room.isGenerated());
 
             case "visu" -> {
-                lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+                length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+                width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
-                crea.createTables(lon, lar);
-                crea.setDimensions(lon, lar);
+                crea.createTables(length, width);
+                crea.setDimensions(length, width);
 
-                out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                out.print(room.getPositioningIntermediate().getTablesForVisu());
             }
 
             case "define" -> {
@@ -89,17 +89,17 @@ public class CreationServlet extends HttpServlet {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
                     crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                    out.print(room.getPositioningIntermediate().getTablesForVisu());
                 } else {
-                    lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                    lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+                    length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+                    width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
                     crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
 
-                    crea.createTables(lon, lar);
-                    crea.setDimensions(lon, lar);
+                    crea.createTables(length, width);
+                    crea.setDimensions(length, width);
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                    out.print(room.getPositioningIntermediate().getTablesForVisu());
                 }
             }
 
@@ -114,7 +114,7 @@ public class CreationServlet extends HttpServlet {
 
 
             case "getDim" ->
-                    out.print(((RectangularMap) salle.getCrea().getMap()).getHeight() + ";" + ((RectangularMap) salle.getCrea().getMap()).getWidth());
+                    out.print(((RectangularMap) room.getCrea().getMap()).getHeight() + ";" + ((RectangularMap) room.getCrea().getMap()).getWidth());
         }
     }
 

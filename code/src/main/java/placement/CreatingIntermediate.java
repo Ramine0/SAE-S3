@@ -161,7 +161,7 @@ public class CreatingIntermediate
         d.reset();
     }
 
-    public Student StuFromTable(int num)
+    public Student stuFromTable(int num)
     {
         return d.getStuFromTab(num);
     }

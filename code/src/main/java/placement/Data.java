@@ -351,7 +351,7 @@ public class Data {
 
         for (Constraint c : constraints) {
             if (c instanceof ImposedPlacement) {
-                s = ((ImposedPlacement) c).getPaire();
+                s = ((ImposedPlacement) c).getImposed();
                 placeStudent(Integer.parseInt(s[0]), s[1]);
 
             }
@@ -645,7 +645,7 @@ public class Data {
         int i = 0;
         for (Constraint c : constraints) {
             if (c instanceof ImposedPlacement) {
-                result[i] = ((ImposedPlacement) c).getNumEtu();
+                result[i] = ((ImposedPlacement) c).getNumStudent();
                 i++;
             }
         }

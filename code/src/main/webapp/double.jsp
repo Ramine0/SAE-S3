@@ -24,14 +24,17 @@
         <div class="general">
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
                 <select id="modeHeader" name="modeHeader">
-                    <option value="create" selected>Paramettres de creation</option>
-                    <option value="modify">Voir les informations  </option>
+                    <option value="create" selected>Paramètres de création</option>
+                    <option value="modify">Voir les informationse</option>
                 </select>
 
                 <span id="parameters">
                     <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
                     <input type="file" name="studentFile" id="studentFile" accept="text/csv">
-                    <label for="classMode">Séparation des étudiants par groupes classes </label>
+
+                    <br>
+
+                    <label for="classMode">Type de séparation</label>
                     <select id="classMode" name="classMode">
                         <option value="normal" selected>Placement basique</option>
                         <option value="group">Par groupe</option>

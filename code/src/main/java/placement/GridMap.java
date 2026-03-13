@@ -53,7 +53,7 @@ public class GridMap extends Map
 
     private boolean hasNeighbour(int x, int neighBourX, int y, int neighBourY)
     {
-        return ((x - neighBourX) * (x - neighBourX) == 1) && y == neighBourY || ((y - neighBourY) * (y - neighBourY) == 1) && x == neighBourX)
+        return (((x - neighBourX) * (x - neighBourX) == 1) && y == neighBourY || ((y - neighBourY) * (y - neighBourY) == 1) && (x == neighBourX)) ;
     }
 
     public GridMap()

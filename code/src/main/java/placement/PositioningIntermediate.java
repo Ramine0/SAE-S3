@@ -45,7 +45,7 @@ public class PositioningIntermediate {
                     tableNumber++;
             }
 
-            donnees.placeStudent(tableNumber, studentId));
+            donnees.placeStudent(tableNumber, studentId) ;
         }
 
         return donnees.freeStudents().length == 0;

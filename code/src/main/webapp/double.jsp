@@ -25,7 +25,7 @@
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
                 <select id="modeHeader" name="modeHeader">
                     <option value="create" selected>Paramètres de création</option>
-                    <option value="modify">Voir les informationse</option>
+                    <option value="modify">Voir les informations</option>
                 </select>
 
                 <span id="parameters">

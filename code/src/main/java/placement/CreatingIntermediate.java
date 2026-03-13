@@ -21,12 +21,6 @@ public class CreatingIntermediate
     public CreatingIntermediate(String path) throws FileNotFoundException
     {
         d = new Data(path, "D");
-        if (d.getTables()==null) {
-            msg = "Tables not found!";
-        }
-        if (d.getEtus() == null) {
-            msg += "students not found" ;
-        }
     }
 
     public void createTables(int lon, int lar)
@@ -264,7 +258,7 @@ public class CreatingIntermediate
     }
 
     public String getStudentList() {
-        String result = "ID          ; nom prenom \n";
+        String result = "ID           nom prenom \n";
         result += d.studentList() ;
         return result ;
     }

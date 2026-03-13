@@ -38,13 +38,11 @@ public class CreationServlet extends HttpServlet {
 
                 // si jamais je suis en chargement de page
                 if(loadSession(request.getParameter("load"),user)){
-                    out.print("cas 1") ;
                     out.print(getUserData(user)) ;
                     out.flush();
                     return ;
                 }else {
                     out.print("null") ;
-                    out.print("cas 2") ;
                     out.flush();
                     return ;
                 }
@@ -66,7 +64,6 @@ public class CreationServlet extends HttpServlet {
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/") ;
             out.print(user);
-            out.print(msg) ;
         }
 
 
@@ -240,7 +237,6 @@ public class CreationServlet extends HttpServlet {
                 rooms.put(user,newData);
 
             } catch (Exception e) {
-                msg =  e.getMessage();
                 System.out.println(e.getMessage());
             }
         }
@@ -253,6 +249,7 @@ public class CreationServlet extends HttpServlet {
             Room salle = getSalle(user);
             // les infos de la visu
             if (salle!=null){
+                result = "" ;
                 if (salle.getPositioningIntermediate() != null) {
                     result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
                 }

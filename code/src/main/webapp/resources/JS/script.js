@@ -538,6 +538,7 @@ function createTables() {
                 document.getElementById("T" + tables[i]).addEventListener("click", handleTable);
         }
     }
+    document.getElementById("visuofDouble").style.visibility = "visible";
 }
 
 function handleTable(event) {
@@ -776,39 +777,40 @@ function loadData() {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
-                    results = xhr.responseText.split("<")
+                    let results = xhr.responseText.split("<")
 
-                    results[1].split(";").forEach(student => {
-                        students.push(student)
-                    })
-                    students.pop()
+                    if (!results[1] !== "") {
+                        results[1].split(";").forEach(student => {
+                            students.push(student)
+                        })
+                        students.pop()
 
-                    for (let i = 1; i <= students.length; i++) {
-                        if (document.getElementById("E" + i + "G1") == null) {
-                            createEtuGrpFromString(1)
+                        for (let i = 1; i <= students.length; i++) {
+                            if (document.getElementById("E" + i + "G1") == null) {
+                                createEtuGrpFromString(1)
+                            }
+
+                            const etuInfos = students[i - 1].split(":")
+
+                            document.getElementById("idEtu" + i + "G1").value = etuInfos[0]
+                            document.getElementById("nomEtu" + i + "G1").value = etuInfos[1]
+
+                            setValid("E" + i + "G1")
                         }
-
-                        const etuInfos = students[i - 1].split(":")
-
-                        document.getElementById("idEtu" + i + "G1").value = etuInfos[0]
-                        document.getElementById("nomEtu" + i + "G1").value = etuInfos[1]
-
-                        setValid("E" + i + "G1")
                     }
 
-
-                    /*
                     tables = []
-                    let elem = initReq.responseText.split("/");
+                    let elem = results[0].split("/");
+
 
                     size = elem[0].split(";");
                     const numbers = elem[1].split(";");
-
                     for (let i = 0; i < numbers.length - 1; i++)
                         tables.push(numbers[i].split("!"));
 
-                     createTables() ;
-                     */
+
+                    createTables() ;
+
 
                     renduFichierEtu(results[2])
                     console.log("fin des informations :")

@@ -24,7 +24,6 @@ public class Room
     public Room(String path) throws FileNotFoundException
     {
         crea = new CreatingIntermediate(path);
-        message = crea.msg ;
         positioningMode();
     }
 

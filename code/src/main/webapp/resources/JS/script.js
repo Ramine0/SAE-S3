@@ -776,7 +776,9 @@ function loadData() {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
-                    xhr.responseText.split("<")[1].split(";").forEach(student => {
+                    results = xhr.responseText.split("<")
+
+                    results[1].split(";").forEach(student => {
                         students.push(student)
                     })
                     students.pop()

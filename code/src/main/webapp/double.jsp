@@ -71,22 +71,22 @@
                     </span>
                     <span id="studentInfo">
 
-                        <div >
+                        <div>
                             <label for="numEtuVisu"> Numero Etudiant </label>
                             <input name="numEtuVisu" id="numEtuVisu" type="text" disabled>
                         </div>
-                        <div >
+                        <div>
                             <label for="nomEtuVisu"> Nom de l'etudiant </label>
                             <input name="nomEtuVisu" id="nomEtuVisu" type="text" disabled>
                         </div>
-                        <div >
+                        <div>
                             <label for="grpEtuVisu"> Groupe classe l'etudiant </label>
                             <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
                         </div>
 
                         <span>
-                            <button action="setTableInfos">appliquer</button>
-                            <button action="swapMode">echanger</button>
+                            <button onclick="setTableInfos()">appliquer</button>
+                            <button onclick="swapMode()">echanger</button>
                         </span>
 
                     </span>

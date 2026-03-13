@@ -141,21 +141,10 @@ public class CreationServlet extends HttpServlet {
 
         switch (request.getParameter("constraint")) {
             case "imposePlace" -> {
-                String studentId = crea.findEtu(request.getParameter("studentId"));
-
-                String result = studentId + ";";
-                result += crea.studentInfo(studentId) + ";";
-
-                String tableNumber = request.getParameter("tableNumber");
-
-                if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > crea.maxTable())
-                    result += "3;";
-                else if (tableNumber.isEmpty())
-                    result += "null;";
-                else
-                    result += crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
-
-                out.print(result);
+                if (request.getParameter("oldNum") != null  && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && ! request.getParameter("oldNum").isEmpty() && ! request.getParameter("newNum").isEmpty() && ! request.getParameter("numEtu").isEmpty()) {
+                    out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
+                }
+                out.print("null");
             }
 
             case "removeImposedPlace" -> crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")) - 1);

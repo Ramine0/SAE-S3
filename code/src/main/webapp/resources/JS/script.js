@@ -229,12 +229,12 @@ function enleverEtuGrp(event) {
 
 }
 
-function getInfosTable(event) {
+function getInfosTable(id) {
 
-    if (swap) {
-        activateSwap(event.target.id);
-    }
-    let numTab = event.target.id.substring(1);
+    // if (swap) {
+    //     activateSwap(event.target.id);
+    // }
+    let numTab = id.substring(1);
     let reqInfo = new XMLHttpRequest();
     reqInfo.open("GET", `Display?action=${encodeURIComponent("infos")}&number=${encodeURIComponent(numTab)}`, true);
     reqInfo.onreadystatechange = function () {
@@ -588,6 +588,8 @@ function handleTable(event) {
                 }
             }
             xhr.send();
+        } else {
+            getInfosTable(element.id)
         }
     }
 }
@@ -828,6 +830,7 @@ function loadData() {
 
     xhr.send()
 
+    document.querySelector("#modeHeader").selectedIndex = 0
 }
 
 

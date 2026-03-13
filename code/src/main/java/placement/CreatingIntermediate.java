@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 public class CreatingIntermediate
 {
     private final Data d;
+    public String msg ;
 
     public CreatingIntermediate() throws FileNotFoundException
     {
@@ -20,6 +21,12 @@ public class CreatingIntermediate
     public CreatingIntermediate(String path) throws FileNotFoundException
     {
         d = new Data(path, "D");
+        if (d.getTables()==null) {
+            msg = "Tables not found!";
+        }
+        if (d.getEtus() == null) {
+            msg += "students not found" ;
+        }
     }
 
     public void createTables(int lon, int lar)

@@ -30,23 +30,43 @@ public class CreationServlet extends HttpServlet {
             rooms = new HashMap<>();
         }
 
-        if (request.getParameter("load") != null && !request.getParameter("load").isEmpty()) {
-            String temp = request.getParameter("load");
-            if (loadSession(temp,user)) {
-                out.print(getUserData(user));
+        // quand on charge la page ou un id de session
+        if (request.getParameter("load") != null) {
+
+            // si c pas un chargement d'un nouveau user (un sans code)
+            if (!request.getParameter("load").isEmpty()){
+
+                // si jamais je suis en chargement de page
+                if(loadSession(request.getParameter("load"),user)){
+                    out.print("cas 1") ;
+                    out.print(getUserData(user)) ;
+                    out.flush();
+                    return ;
+                }else {
+                    out.print("null") ;
+                    out.print("cas 2") ;
+                    out.flush();
+                    return ;
+                }
+
+            }else if (userExists(user)) {
+                out.print(getUserData(user)) ;
+                out.flush();
+                return ;
             }else {
                 out.print("null") ;
+                out.flush();
+                return ;
             }
-            out.flush();
-            return;
-        }else if (request.getParameter("load") != null) {
-            out.print("null") ;
+
         }
+
 
 
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/") ;
-            out.print(request.getSession().getId());
+            out.print(user);
+            out.print(msg) ;
         }
 
 
@@ -89,7 +109,8 @@ public class CreationServlet extends HttpServlet {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
                     crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                    out.print(salle.getPositioningIntermediate().getTablesForVisu()+"wtf");
+
                 } else {
                     lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
                     lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
@@ -219,6 +240,7 @@ public class CreationServlet extends HttpServlet {
                 rooms.put(user,newData);
 
             } catch (Exception e) {
+                msg =  e.getMessage();
                 System.out.println(e.getMessage());
             }
         }
@@ -243,7 +265,6 @@ public class CreationServlet extends HttpServlet {
 
             
         }
-
         return result;
     }
 

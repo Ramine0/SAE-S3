@@ -12,36 +12,6 @@ let generated = false
 
 loadData()
 
-// const xhr = new XMLHttpRequest();
-// xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
-//
-// // xhr.onreadystatechange = function () {
-// //     if (xhr.readyState === XMLHttpRequest.DONE)
-// //         if (xhr.status === 200) {
-// //             generated = xhr.responseText === "true";
-// //
-// //             if (generated) {
-// //                 console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
-// //                 console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
-// //                 console.log("ptn c quoi c'code")
-// //                 console.log("ya rien qui marche en fait")
-// //                 console.log("oo ee aa")
-// //                 console.log("fo shu")
-// //                 console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
-// //
-// //                 document.getElementById("visuofDouble").style.visibility = "visible"
-// //
-// //                 init()
-// //             } else
-// //                 console.log("c'est pas encore généré connard ça sert à rien")
-// //         } else
-// //             console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
-// // }
-// //
-// // xhr.send();
-
-// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
-
 // TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function validerPlaceImposee(event) {
     let idFind = event.target.id;
@@ -579,7 +549,6 @@ function handleTable(event) {
 
     // suppression de la table
     if (event.target.id.includes("delete")) {
-        console.log("T" + event.target.id.substring(7))
 
         element.remove();
         document.getElementById("T" + event.target.id.substring(7)).classList.add("deletedT");
@@ -630,9 +599,6 @@ function init() {
 
     lon.value = Math.min(20, Math.max(0, lon.value));
     lar.value = Math.min(8, Math.max(0, lar.value));
-
-    lon = lon.value;
-    lar = lar.value;
 
     let planType = document.getElementById("planType").value;
 
@@ -806,7 +772,7 @@ function loadData() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                if (xhr.responseText !== "null") {
+                if (xhr.responseText !== "null" && ! xhr.responseText.startsWith("null")) {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
@@ -814,8 +780,6 @@ function loadData() {
                         students.push(student)
                     })
                     students.pop()
-
-                    console.log(students)
 
                     for (let i = 1; i <= students.length; i++) {
                         if (document.getElementById("E" + i + "G1") == null) {
@@ -844,13 +808,12 @@ function loadData() {
                      createTables() ;
                      */
 
-                    //renduFichierEtu(results[2])
+                    renduFichierEtu(results[2])
                     console.log("fin des informations :")
-                    enableZone()
 
                 } else {
                     console.log("user do not exists")
-
+                    console.log(xhr.responseText)
                     if (document.getElementById("studentFile").files.length !== 0) {
                         fileOk = true;
                         enableZone()

@@ -89,7 +89,7 @@
                     </span>
                 </div>
 
-                <button type="button" id="startConstr" class="validNbTable" onclick="loadData()"> Valider le fichier et le plan
+                <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le plan
                 </button>
                 <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
 

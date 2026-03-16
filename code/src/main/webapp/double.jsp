@@ -85,8 +85,8 @@
                         </div>
 
                         <span>
-                            <button onclick="setTableInfos()">appliquer</button>
-                            <button onclick="swapMode()">echanger</button>
+                            <input type="button" onclick="setTableInfos()" value="appliquer">
+                            <input type="button" onclick="modeSwap()" value="echanger">
                         </span>
 
                     </span>
@@ -100,8 +100,7 @@
             <form method="post" action="Display">
                 <input type="text" name="sessionCode" id="sessionCode">
                 <button type="button" id="loadSession" onclick="loadData()" > Charger </button>
-                <button type="submit" id="walid" class="boutWalider" onclick="enableText()"
-                        disabled> Générer
+                <button type="submit" id="walid" class="boutWalider" disabled> Générer
                 </button>
             </form>
 

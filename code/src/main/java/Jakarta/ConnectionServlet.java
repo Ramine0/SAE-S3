@@ -52,7 +52,8 @@ public class ConnectionServlet extends HttpServlet {
                     preparedStatement.setString(1, username);
                     preparedStatement.setString(2, email);
                     preparedStatement.setString(3, password);
-                    preparedStatement.executeUpdate();
+                    int result=preparedStatement.executeUpdate();
+                    out.print(result);
                 }
             }else if (request.getParameter("action").equals("init")){
                 String requestInit="Select idPlacement, name from Placement where idUser=?";

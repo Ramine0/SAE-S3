@@ -245,7 +245,7 @@ public class CreatingIntermediate
             }else {
                 String[] students = temp.toString().split(";") ;
                 for (String s : students) {
-                    if (s.equals("null")) {
+                    if (!s.equals("null")) {
                         String id = findEtu(s) ;
                         result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }

@@ -10,7 +10,59 @@ let active
 
 let fileOk = false;
 
+initPlacements()
 loadData()
+
+function initPlacements(){
+    const mapList=document.getElementById("planType")
+    const init=new XMLHttpRequest()
+    init.open('POST', 'Connection?action=init')
+    init.onreadystatechange = function () {
+        if (xhr.readyState===XMLHttpRequest.DONE){
+            if (xhr.status===200){
+                placements=xhr.responseText.split(";")
+                for (let i=0; i<placements.length; i++){
+                    info=placements[i].split(",")
+                    let p=document.createElement("option");
+                    p.value=`${info[0]}${info[1]}`
+                    p.text=info[1]
+                    mapList.appendChild(p)
+                }
+            }
+        }
+    }
+    init.send()
+}
+
+// const xhr = new XMLHttpRequest();
+// xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
+//
+// // xhr.onreadystatechange = function () {
+// //     if (xhr.readyState === XMLHttpRequest.DONE)
+// //         if (xhr.status === 200) {
+// //             generated = xhr.responseText === "true";
+// //
+// //             if (generated) {
+// //                 console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
+// //                 console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
+// //                 console.log("ptn c quoi c'code")
+// //                 console.log("ya rien qui marche en fait")
+// //                 console.log("oo ee aa")
+// //                 console.log("fo shu")
+// //                 console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
+// //
+// //                 document.getElementById("visuofDouble").style.visibility = "visible"
+// //
+// //                 init()
+// //             } else
+// //                 console.log("c'est pas encore généré connard ça sert à rien")
+// //         } else
+// //             console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
+// // }
+// //
+// // xhr.send();
+
+// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
 // TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 function validerPlaceImposee(event) {

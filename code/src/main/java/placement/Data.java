@@ -41,11 +41,9 @@ public class Data {
         if (mapType.charAt(0) == 'R') {
             // plan rectangulaire
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
-        } else if (mapType.charAt(0) == 'G') {
-            // plan grille
-            map = new GridMap() ;
         } else if (mapType.charAt(0) == 'D') {
             map = new GridMap();
+            loadPlanDefault(path);
         }
 
 

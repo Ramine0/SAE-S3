@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 public class CreatingIntermediate
 {
     private final Data d;
+    public String msg ;
 
     public CreatingIntermediate() throws FileNotFoundException
     {
@@ -244,7 +245,7 @@ public class CreatingIntermediate
             }else {
                 String[] students = temp.toString().split(";") ;
                 for (String s : students) {
-                    if (s.equals("null")) {
+                    if (!s.equals("null")) {
                         String id = findEtu(s) ;
                         result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
@@ -257,7 +258,7 @@ public class CreatingIntermediate
     }
 
     public String getStudentList() {
-        String result = "ID          ; nom prenom \n";
+        String result = "ID           nom prenom \n";
         result += d.studentList() ;
         return result ;
     }

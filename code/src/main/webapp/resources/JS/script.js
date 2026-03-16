@@ -10,7 +10,29 @@ let noms = []
 let fileOk = false;
 let generated = false
 
+initPlacements()
 loadData()
+
+function initPlacements(){
+    const mapList=document.getElementById("planType")
+    const init=new XMLHttpRequest()
+    init.open('POST', 'Connection?action=init')
+    init.onreadystatechange = function () {
+        if (xhr.readyState===XMLHttpRequest.DONE){
+            if (xhr.status===200){
+                placements=xhr.responseText.split(";")
+                for (let i=0; i<placements.length; i++){
+                    info=placements[i].split(",")
+                    let p=document.createElement("option");
+                    p.value=`${info[0]}${info[1]}`
+                    p.text=info[1]
+                    mapList.appendChild(p)
+                }
+            }
+        }
+    }
+    init.send()
+}
 
 // const xhr = new XMLHttpRequest();
 // xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
@@ -900,5 +922,4 @@ function changeHeaderMode (event) {
         console.log("ALERTE ALERTE")
     }
 }
-
 

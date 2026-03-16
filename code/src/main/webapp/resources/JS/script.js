@@ -6,9 +6,9 @@ let larg = 0;
 let swap = false;
 let tables = []
 let noms = []
+let active
 
 let fileOk = false;
-let generated = false
 
 loadData()
 
@@ -64,59 +64,6 @@ window.addEventListener("scroll", () => {
         `translateX(${window.scrollX}px)`;
 });
 
-// document.getElementById("deleteImposed1").addEventListener("click", supprimerPlaceImposee);
-
-function supprimerPlaceImposee(event) {
-    let idRemove = event.target.id;
-    let numConstr = idRemove.charAt(13);
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?constraint=${encodeURIComponent("removeImposedPlace")}&id=${encodeURIComponent(numConstr)}`, true);
-    xhr.send();
-
-    document.querySelector("#impose" + numConstr).remove();
-
-    nbImposedPlace--;
-    document.querySelector("#ajoutImpos").disabled = false;
-
-    decreaseId("#i");
-
-    genererWalid();
-
-}
-
-
-function createImposed() {
-    nbImposedPlace++;
-    let imposedPlace =
-        `<section id="impose${nbImposedPlace}" class="invalid">
-<section>
-    <label for="imposedStudentId${nbImposedPlace}">Numéro étudiant</label>
-    <input name="idEtuImp${nbImposedPlace}" id="imposedStudentId${nbImposedPlace}" type="text" >
-</section>
-<section>
-    <label for="imposedTableId${nbImposedPlace}">Numéro table</label>
-    <input name="idTabImp${nbImposedPlace}" id="imposedTableId${nbImposedPlace}" type="number" >
-</section>
-<section>
-    <label for="imposedStudentName${nbImposedPlace}">Nom de l'étudiant</label>
-    <input name="idStudentImp${nbImposedPlace}" id="imposedStudentName${nbImposedPlace}" type="text" >
-</section>
-<button class="remove" id="deleteImposed${nbImposedPlace}">remove</button>
-<button class="chercher" id="findImposed${nbImposedPlace}">find</button>
-</section>`;
-
-    document.querySelector('#ajoutImpos').insertAdjacentHTML("beforebegin", imposedPlace);
-    document.querySelector("#ajoutImpos").disabled = true;
-
-    document.querySelector("#findImposed" + nbImposedPlace).addEventListener("click", validerPlaceImposee);
-    document.querySelector("#deleteImposed" + nbImposedPlace).addEventListener("click", supprimerPlaceImposee);
-
-    document.querySelector("#walid").disabled = true;
-    document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
-
-}
 
 document.querySelector("#classMode").addEventListener("change",changeMode)
 
@@ -231,9 +178,9 @@ function enleverEtuGrp(event) {
 
 function getInfosTable(id) {
 
-    // if (swap) {
-    //     activateSwap(event.target.id);
-    // }
+    if (swap) {
+         activateSwap(id);
+    }
     let numTab = id.substring(1);
     let reqInfo = new XMLHttpRequest();
     reqInfo.open("GET", `Display?action=${encodeURIComponent("infos")}&number=${encodeURIComponent(numTab)}`, true);
@@ -325,12 +272,12 @@ function activateSwap(button) {
                     let nomt1 = noms[tables.indexOf(numt1)];
                     let nomt2 = noms[tables.indexOf(numt2)];
 
-                    let content = ` Table ${numt1} <br>${nomt2}`
+                    let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
                     console.log(document.querySelector(`#T${numt1}`).innerHTML)
                     document.querySelector(`#T${numt1}`).innerHTML = content;
 
                     console.log(document.querySelector(`#T${numt2}`).innerHTML)
-                    content = ` Table ${numt2} <br>${nomt1}`
+                    content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
                     document.querySelector(`#T${numt2}`).innerHTML = content;
 
                     noms[tables.indexOf(numt1)] = nomt2;
@@ -494,10 +441,7 @@ function createTables() {
 
                     t += "</span>"
 
-                    if (generated)
-                        t += '<p>' + name + '</p>'
-                    else
-                        t += '<p>aucun étu</p>'
+                    t += '<p>' + name + '</p>'
 
                     t += '</div>';
 
@@ -869,6 +813,12 @@ function changeHeaderMode (event) {
     }else{
         console.log("ALERTE ALERTE")
     }
+}
+
+
+function setTableInfos() {
+
+
 }
 
 

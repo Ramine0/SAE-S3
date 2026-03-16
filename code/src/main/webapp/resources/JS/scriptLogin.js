@@ -30,6 +30,13 @@ async function subscribe(){
         console.log('confirme');
         xhr=new XMLHttpRequest()
         xhr.open('GET', `Connection?action=${encodeURIComponent('subscribe')}&username=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
+        xhr.onreadystatechange = function(){
+            if (xhr.readyState===XMLHttpRequest.DONE){
+                if (xhr.status===200){
+                    console.log(xhr.responseText)
+                }
+            }
+        }
         xhr.send();
     }else{
         console.error("Mot de passe non confirmé")

@@ -84,6 +84,8 @@ public class PositioningIntermediate {
 
     // valide ou non le placement
     private boolean walid(Student s, int t) {
+        System.out.println(s.getFullName());
+
         if (!Utilitaire.in(t, donnees.freeTables()))
             return false;
 
@@ -96,7 +98,10 @@ public class PositioningIntermediate {
                 // si ca bloque
                 if (c != null) {
 
+                    System.out.println(s.getFullName() + " c is not null");
+
                     if (!c.validate(s, t, voisins)) {
+                        System.out.println(s.getFirstName() + " " + "not validating neighbours");
                         return false; // ca bloque
                     }
                 }

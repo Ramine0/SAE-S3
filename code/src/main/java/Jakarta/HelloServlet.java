@@ -6,6 +6,9 @@ import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
 
 import java.io.FileNotFoundException;
+import java.util.Arrays;
+
+import org.NeoMalokVector.SAE_S3.Table;
 
 public class HelloServlet {
 
@@ -13,11 +16,15 @@ public class HelloServlet {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
         PositioningIntermediate pos;
-        crea.setMode(1);
+        crea.setMode(0);
+        crea.loadPlanDefault("src/main/webapp/");
+
         pos = salle.getPositioningIntermediate();
-        System.out.println(crea.findStudentForGroup("p2406410",1)) ;
+        crea.findStudentForGroup("p2406410", 1);
+        crea.findStudentForGroup("p24033", 1);
         System.out.println(crea.getSeparated());
-    }
+
+        System.out.println(salle.generate());
 //        salle.positioningMode();
 //
 //        System.out.println("Génération réussi : " + salle.generate());
@@ -41,14 +48,5 @@ public class HelloServlet {
 //
 //        System.out.println(result);
 
-//        for (int i = 0; i < crea.getNumberTables(); i++)
-//        {
-//            Table table = crea.getTable(i);
-//
-//            if (table == null)
-//                continue;
-//
-//            System.out.println(table.getNum() + ". " + (table.getEtu() != null ? table.getEtu().getFirstName() : "aucun étu"));
-//        }
-
+    }
 }

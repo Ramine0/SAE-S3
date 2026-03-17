@@ -10,113 +10,15 @@ let active
 
 let fileOk = false;
 
-initPlacements()
 loadData()
 
-function initPlacements(){
-    const mapList=document.getElementById("planType")
-    const init=new XMLHttpRequest()
-    init.open('POST', 'Connection?action=init')
-    init.onreadystatechange = function () {
-        if (xhr.readyState===XMLHttpRequest.DONE){
-            if (xhr.status===200){
-                placements=xhr.responseText.split(";")
-                for (let i=0; i<placements.length; i++){
-                    info=placements[i].split(",")
-                    let p=document.createElement("option");
-                    p.value=`${info[0]}${info[1]}`
-                    p.text=info[1]
-                    mapList.appendChild(p)
-                }
-            }
-        }
-    }
-    init.send()
-}
-
-// const xhr = new XMLHttpRequest();
-// xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
-//
-// // xhr.onreadystatechange = function () {
-// //     if (xhr.readyState === XMLHttpRequest.DONE)
-// //         if (xhr.status === 200) {
-// //             generated = xhr.responseText === "true";
-// //
-// //             if (generated) {
-// //                 console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
-// //                 console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
-// //                 console.log("ptn c quoi c'code")
-// //                 console.log("ya rien qui marche en fait")
-// //                 console.log("oo ee aa")
-// //                 console.log("fo shu")
-// //                 console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
-// //
-// //                 document.getElementById("visuofDouble").style.visibility = "visible"
-// //
-// //                 init()
-// //             } else
-// //                 console.log("c'est pas encore généré connard ça sert à rien")
-// //         } else
-// //             console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
-// // }
-// //
-// // xhr.send();
-
-// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
-
-// TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-function validerPlaceImposee(event) {
-    let idFind = event.target.id;
-    let numConstr = idFind.charAt(11);
-
-    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
-    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
-
-    //TO MODIFY  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (studentId === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-    else if (tableNumber === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-    else {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE)
-                if (xhr.status === 200) {
-                    const response = xhr.responseText.split(";");
-                    if (response[1] === "null")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-                    else if (response[2] === "null")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-                    else if (response[2] === "1")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
-                    else if (response[2] === "2")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
-                    else if (response[2] === "3")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
-                    else if (response[2] === "-1")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
-                    else {
-                        validerSectImpose(idFind);
-
-                        document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
-                        document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
-                    }
-                } else
-                    console.error("Error fetching student data");
-        }
-
-        xhr.send();
-    }
-}
 
 window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
 
-
+// TO MODIFY
 document.querySelector("#classMode").addEventListener("change",changeMode)
 
 function changeMode() {
@@ -343,6 +245,7 @@ function activateSwap(button) {
 
 }
 
+// TO MODIFY
 function setTableNumber() {
     let lon = document.getElementById("long").value;
     let lar = document.getElementById("larg").value;
@@ -478,10 +381,9 @@ function createTables() {
 
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
-
             if (vals.length === 4) {
                 if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
-                    t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
+                    t += `<div class="pasTable"><span><div>none</div><</span><p>pas table</p></div>`
                 } else {
                     table = vals[0];
                     name = vals[3];
@@ -616,8 +518,9 @@ function init() {
                     size = elem[0].split(";");
                     const numbers = elem[1].split(";");
 
-                    for (let i = 0; i < numbers.length - 1; i++)
-                        tables.push(numbers[i].split("!"));
+                    for (let i = 0; i < numbers.length - 1; i++) {
+                        tables.push(numbers[i].split("!"))
+                    }
 
                     createTables()
                 }
@@ -634,55 +537,28 @@ function setValid(section) {
     if (!section.startsWith("#")) {
         section = "#" + section;
     }
-    document.querySelector(section).classList.remove("invalid");
-    document.querySelector(section).classList.add("valid");
-    if (section.includes("impose")) {
-        document.querySelector("#ajoutImpos").disabled = false;
-
-        document.querySelector(`#imposedStudentId${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#imposedTableId${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#findImposed${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#imposedStudentName${nbImposedPlace}`
-        ).disabled = true;
-
-    } else if (section.includes("supTable")) {
-        document.querySelector("#ajoutSuppr").disabled = false;
-        document.querySelector(
-            `#numTabSup${nbPlacesSuppr}`
-        ).disabled = true;
-        document.querySelector(
-            `#findTable${nbPlacesSuppr}`
-        ).disabled = true;
-
+    let numGrp = groupes.length;
+    if (section.includes(
+        `G${numGrp}`
+    )) {
+        document.querySelector("#ajoutGroup").disabled = false;
     } else {
-        let numGrp = groupes.length;
-        if (section.includes(
-            `G${numGrp}`
-        )) {
-            document.querySelector("#ajoutGroup").disabled = false;
-        } else {
-            numGrp = section.substring(4);
-        }
-
-
-        let numEtu = groupes[numGrp - 1].length;
-
-        if (numEtu < 9) {
-            document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
-        }
-        document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#supEtu${numEtu}G${numGrp}`).disabled = false;
+        numGrp = section.substring(4);
     }
 
-    genererWalid();
+
+    let numEtu = groupes[numGrp - 1].length;
+
+    if (numEtu < 9) {
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+    }
+    document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
+    document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
+    document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
+    document.querySelector(`#supEtu${numEtu}G${numGrp}`).disabled = false;
+
+
+    genererWalid()
 
 }
 
@@ -694,13 +570,6 @@ function validerSectEtuGrp(idBout) {
     );
 }
 
-function validerSectImpose(idBout) {
-    let numConstr = idBout.charAt(11);
-    setValid(
-        `impose${numConstr}`
-    );
-
-}
 
 function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
@@ -867,7 +736,7 @@ function changeHeaderMode (event) {
     }
 }
 
-
+// TODO
 function setTableInfos() {
 
 

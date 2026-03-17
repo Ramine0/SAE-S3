@@ -8,5 +8,28 @@ POUR CHAQUE SECTION AVEC UN CHAMP A REMPLIR :
 on a un petit bouton walider et un petit bouton supprimer
 on peut chercher les données saisies pour les walider et on peut retier l'element de la liste (pour groupe l'etu ou pour la contrainte)
 
+le plan defaut c
+num ; coord X ; coord Y
 
+actuel :
+10
+1;1;1
+2;2;1
+3;3;1
+4;1;2
+5;2;2
+6;3;2
+7;1;3
+8;2;3
+9;3;3
+10;5;5
+
+preparation du prochain plan defaut celui qui est basé sur les infos que je viens de prendre dans la salle DS
+prototype :
+
+NB TABLES
+51;1;1
+52;2;1
+53;3;1
+54;4;1
 

@@ -64,6 +64,7 @@ public class CreationServlet extends HttpServlet {
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/") ;
             out.print(user);
+            out.print(msg) ;
         }
 
 
@@ -227,6 +228,7 @@ public class CreationServlet extends HttpServlet {
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                msg = e.getMessage() ;
             }
         }
     }

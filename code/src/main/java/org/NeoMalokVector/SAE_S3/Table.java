@@ -24,13 +24,21 @@ public class Table
         id++ ;
         num = id ;
     }
+    public Table(int number, int  x, int y) {
+        num = number ;
+        coordX = x ;
+        coordY = y;
+        id = number ;
+    }
 
     public Table(int number, int x, int y, Student s){
         num = number;
         coordX = x;
         coordY = y;
         student = s;
+        id = number ;
     }
+
     /**
      * Fonction qui permettra d'afficher les informations des tables dans le plan
      * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant

@@ -295,6 +295,22 @@ section {
     display: flex;
     flex-direction: column;
 }
+.connect{
+    background: linear-gradient(white, #5271ff, #5271ff, white);
+}
+.login, .subscribe {
+    display: flex;
+    flex-direction: column;
+    background-color: aliceblue;
+    width: 400px;
+    position: sticky;
+    top: 250px;
+    left: 500px;
+}
+
+.formulaire {
+
+}
 
 .reverseLigne {
     display: flex;

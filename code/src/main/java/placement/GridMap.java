@@ -94,12 +94,10 @@ public class GridMap extends Map
             return lesTables;
         } catch (Exception e)
         {
-            for (int i : numbersOfTables) {
-                System.out.println(i);
-            }
             System.out.println(e.getMessage());
 
             System.out.println("je me disai aussi");
+
             return null;
         }
 

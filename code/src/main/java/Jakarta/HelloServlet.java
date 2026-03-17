@@ -12,7 +12,18 @@ public class HelloServlet {
     static void main(String[] args) throws FileNotFoundException {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
-        crea.setMode(1);
+        PositioningIntermediate pos = crea.generatePos();
+        crea.setMode(0);
+
+        crea.changePlanMode('R', "src/main/webapp/");
+
+        crea.createTables(3, 3);
+        crea.setDimensions(3, 3);
+
+        System.out.println("add group constr Malik : "+  crea.findStudentForGroup("p2406", 1));
+        System.out.println("add group constr Néo : " + crea.findStudentForGroup("p24033", 1));
+
+        System.out.println(salle.generate());
     }
 
 }

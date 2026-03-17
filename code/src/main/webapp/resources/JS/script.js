@@ -18,8 +18,6 @@ window.addEventListener("scroll", () => {
         `translateX(${window.scrollX}px)`;
 });
 
-// TO MODIFY
-document.querySelector("#classMode").addEventListener("change",changeMode)
 
 function changeMode() {
     const m = document.getElementById("classMode").value;
@@ -65,7 +63,6 @@ function validerEtuGrp(event) {
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
                 else {
                     validerSectEtuGrp(idFind);
-
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
                     document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
                 }
@@ -227,10 +224,8 @@ function activateSwap(button) {
                     let nomt2 = noms[tables.indexOf(numt2)];
 
                     let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
-                    console.log(document.querySelector(`#T${numt1}`).innerHTML)
                     document.querySelector(`#T${numt1}`).innerHTML = content;
 
-                    console.log(document.querySelector(`#T${numt2}`).innerHTML)
                     content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
                     document.querySelector(`#T${numt2}`).innerHTML = content;
 
@@ -364,7 +359,7 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-        codeForGeneration()
+        codeForGeneration(false)
 
     }
 }
@@ -597,7 +592,7 @@ function decreaseId(idElem) {
 }
 
 
-function codeForGeneration() {
+function codeForGeneration(loadOnly) {
 
     let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
@@ -609,8 +604,10 @@ function codeForGeneration() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-
-                init()
+                if (! loadOnly) {
+                    changeMode()
+                    init()
+                }
             } else {
             }
         }
@@ -677,7 +674,7 @@ function loadData() {
 
 
                     createTables() ;
-
+                    codeForGeneration(true)
 
                     renduFichierEtu(results[2])
                     console.log("fin des informations :")
@@ -739,7 +736,44 @@ function changeHeaderMode (event) {
 // TODO
 function setTableInfos() {
 
+    if (active != null ) {
+        let oldNum = active;
+        let newNum = document.querySelector("#idTabVisu").value;
+        let numEtu = document.getElementById("numEtuVisu").value;
 
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `creation?constraint=imposePlace&oldNum=${oldNum}&newNum=${newNum}&numEtu=${numEtu}`, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    let resp = xhr.responseText.split(";")
+                    if (resp[0] === "invalid") {
+                        console.log("invalide")
+                    }else if(resp[0] === "error") {
+                        console.log("une erreur")
+                    }else {
+                        console.log(resp[0])
+                        try {
+                            document.querySelector(`#T${resp[0]}`).children[0].children[0].innerHTML = resp[0]
+
+                        }catch(e) {console.log(e.message)}
+
+                        document.querySelector("#idTabVisu").value = resp[0]
+                    }
+                    if (resp[1] === "") {
+                        console.log("echec de l'imposition de l'etudiant")
+                    }else {
+                        console.log(resp[1])
+                    }
+
+                }
+            }
+        }
+
+        xhr.send();
+
+    }
 }
 
 

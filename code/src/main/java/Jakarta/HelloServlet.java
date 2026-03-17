@@ -13,6 +13,9 @@ public class HelloServlet {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCrea();
         crea.setMode(1);
+        crea.loadPlanDefault("src/main/webapp/");
+        salle.generate() ;
+        System.out.println(salle.getPositioningIntermediate().getTablesInfoForVisu()) ;
     }
 
 }

@@ -226,7 +226,7 @@ public class Data {
 
     public int[] getTables() {
         int[] lesNums = new int[tables.length];
-        for (int i = 0; i < maxNumTable(); i++) {
+        for (int i = 0; i < tables.length; i++) {
             lesNums[i] = tables[i].getNum();
         }
         return lesNums;

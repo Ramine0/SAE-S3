@@ -537,6 +537,10 @@ function setValid(section) {
     if (!section.startsWith("#")) {
         section = "#" + section;
     }
+
+    document.querySelector(section).classList.remove("invalid")
+    document.querySelector(section).classList.add("valid")
+
     let numGrp = groupes.length;
     if (section.includes(
         `G${numGrp}`

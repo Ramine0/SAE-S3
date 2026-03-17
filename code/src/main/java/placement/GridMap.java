@@ -77,6 +77,7 @@ public class GridMap extends Map
         {
             Scanner scan = new Scanner(new FileReader(path + "resources/planDefaut.csv"));
             lesTables = new Table[scan.nextInt()];
+            numbersOfTables = new int[lesTables.length] ;
             String[] line;
             int cpt = 0;
             while (scan.hasNextLine())
@@ -85,6 +86,7 @@ public class GridMap extends Map
                 if (!line[0].isEmpty())
                 {
                     lesTables[cpt] = new Table(Integer.parseInt(line[0]), Integer.parseInt(line[1]),Integer.parseInt(line[2]));
+                    numbersOfTables[cpt] = lesTables[cpt].getNum() ;
                     cpt++;
                 }
             }
@@ -95,7 +97,6 @@ public class GridMap extends Map
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
-
             System.out.println("je me disai aussi");
 
             return null;

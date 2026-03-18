@@ -13,20 +13,17 @@ import java.io.PrintWriter;
 
 @WebServlet("/Display")
 @MultipartConfig
-public class DisplayServlet extends HttpServlet
-{
-
-
+public class DisplayServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getHeader("Referer") == null) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
             return;
         }
 
         String code = request.getParameter("testVal");
-        if (CreationServlet.getRoom(code) == null) {code = request.getSession().getId();}
+        if (CreationServlet.getRoom(code) == null)
+            code = request.getSession().getId();
 
         Room room = CreationServlet.getRoom(code);
 
@@ -63,24 +60,24 @@ public class DisplayServlet extends HttpServlet
                     """);
 
 
-                PositioningIntermediate pos = room.getPositioningIntermediate();
+            PositioningIntermediate pos = room.getPositioningIntermediate();
 
-                if (room.generate())
-                    out.println("""
-                            <h4> Génération réussie </h4>
-                            <a href="double.jsp">Voir le résultat</a>
-                            """);
+            if (room.generate())
+                out.println("""
+                        <h4> Génération réussie </h4>
+                        <a href="double.jsp">Voir le résultat</a>
+                        """);
 
-                else {
+            else {
 
-                    out.println("<p>" + pos.getTablesForVisu() + "</p>");
-                    out.println(pos.describeData());
-                    out.println("""
-                            <h4> Erreur de génération </h4>
-                            <a href="creation.jsp"><Retour à la page de création</a>
-                            """);
-                }
+                out.println("<p>" + pos.getTablesForVisu() + "</p>");
+                out.println(pos.describeData());
+                out.println("""
+                        <h4> Erreur de génération </h4>
+                        <a href="creation.jsp"><Retour à la page de création</a>
+                        """);
             }
+        }
 
     }
 
@@ -93,16 +90,16 @@ public class DisplayServlet extends HttpServlet
 
         Room room = CreationServlet.getRoom(request.getSession().getId());
         PositioningIntermediate pos = null;
-        if (room != null) {
+
+        if (room != null)
             pos = room.getPositioningIntermediate();
-        }
+
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
         if (pos != null) {
             // on fait des actions ?!
-            switch (request.getParameter("action"))
-            {
+            switch (request.getParameter("action")) {
                 // on recup le visuel des tables
                 case "init" -> out.print(pos.getTablesForVisu());
 
@@ -124,7 +121,7 @@ public class DisplayServlet extends HttpServlet
                 }
             }
 
-        }else {
+        } else {
             // on fait rien ?!
             out.print("rien");
         }

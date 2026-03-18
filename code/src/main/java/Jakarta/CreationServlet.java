@@ -175,7 +175,7 @@ public class CreationServlet extends HttpServlet {
             }
 
             // les dimentions
-            case "getDim" -> out.print(crea.getDimentions());
+            case "getDim" -> out.print(crea.getDimensions());
         }
     }
 
@@ -203,7 +203,7 @@ public class CreationServlet extends HttpServlet {
                 else if (num > crea.maxTable())
                     num = crea.maxTable();
 
-                out.print(crea.supprTable(num) + ";" + num);
+                out.print(crea.removeTable(num) + ";" + num);
             }
 
             case "removeDeletedTable" -> {

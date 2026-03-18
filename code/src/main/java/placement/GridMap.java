@@ -12,6 +12,10 @@ public class GridMap extends Map {
     private int[] numbersOfTables;
     private int[][] matriceAdj;
 
+    public GridMap() {
+        
+    }
+
     public GridMap(Table[] tables) {
         init(tables);
     }

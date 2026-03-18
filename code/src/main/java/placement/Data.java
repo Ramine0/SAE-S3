@@ -384,7 +384,7 @@ public class Data {
     public PerGroup getPerGroup(int id) {
         for (Constraint constraint : constraints) {
             if (constraint instanceof PerGroup) {
-                if (((PerGroup) constraint).getNum() == id) {
+                if (((PerGroup) constraint).getNumber() == id) {
                     return (PerGroup) constraint;
                 }
             }
@@ -398,7 +398,7 @@ public class Data {
         while (!valide && num < getNbConstraint("G")) {
             valide = true;
             for (PerGroup pg : ((PerGroup[]) getConstr("G"))) {
-                if (pg.getNum() == num) {
+                if (pg.getNumber() == num) {
                     num++;
                     valide = false;
                 }
@@ -445,7 +445,7 @@ public class Data {
     /// Il faudra peut-être modifier tout ça en fonction de la manière dont les contraintes sont indiquées
     public String addStudentGroupConstraint(String numStudent, int idGp) {
         if (getPerGroup(idGp) != null) {
-            if (getPerGroup(idGp).haveStu(numStudent)) {
+            if (getPerGroup(idGp).haveStudent(numStudent)) {
                 return "2";
             } else {
                 getPerGroup(idGp).addStudent(numStudent);
@@ -617,7 +617,7 @@ public class Data {
         int i = 0;
         for (Constraint c : constraints) {
             if (c instanceof ImposedPlacement) {
-                result[i] = ((ImposedPlacement) c).getNumStudent();
+                result[i] = ((ImposedPlacement) c).getStudentNumber();
                 i++;
             }
         }
@@ -630,7 +630,7 @@ public class Data {
         int i = 0;
         for (Constraint c : constraints) {
             if (c instanceof ImposedPlacement) {
-                result[i] = ((ImposedPlacement) c).getNumTable();
+                result[i] = ((ImposedPlacement) c).getTableNumber();
                 i++;
             }
         }

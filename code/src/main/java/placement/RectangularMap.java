@@ -1,6 +1,7 @@
 package placement;
 
 import utilitaire.Utilitaire;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +52,10 @@ public class RectangularMap extends Map
         return newIndex;
     }
 
-    public RectangularMap(int longu, int larg)
+    public RectangularMap(int width, int height)
     {
-        width = larg;
-        height = longu;
+        this.width = height;
+        this.height = width;
     }
 
     public String getSize() {return width+";"+ height ;}

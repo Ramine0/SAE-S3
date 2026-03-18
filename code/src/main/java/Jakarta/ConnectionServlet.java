@@ -6,11 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import placement.Data;
 
-import java.io.PrintWriter;
-
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -142,8 +141,8 @@ public class ConnectionServlet extends HttpServlet {
                     preparedStatement.executeQuery();
                 }
                 int cnt=0;
-                while (cnt!=data.getEtus().length){
-                    String[] student=data.getEtus()[cnt].textVisu().replace(" ", ";").split(";");
+                while (cnt!=data.getStudents().length){
+                    String[] student=data.getStudents()[cnt].textVisu().replace(" ", ";").split(";");
                     try (PreparedStatement preparedStatement = connection.prepareStatement(addStudent)){
                         preparedStatement.setString(1, student[0]);
                         preparedStatement.setString(2, request.getParameter("idP"));

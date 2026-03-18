@@ -29,7 +29,7 @@ public class CreationServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
-        // il faut bien creer la hashmap a un momment ou a un autre
+        // il faut bien créer la hashmap à un moment ou a un autre
         String user = request.getSession().getId();
 
         if (rooms == null) {
@@ -39,56 +39,56 @@ public class CreationServlet extends HttpServlet {
         // quand on charge la page ou un id de session
         if (request.getParameter("load") != null) {
 
-            // si c pas un chargement d'un nouveau user (un sans code)
-            if (!request.getParameter("load").isEmpty()){
+            // si c pas un chargement d'un nouvel utilisateur (un sans code)
+            if (!request.getParameter("load").isEmpty()) {
 
                 // si jamais je suis en chargement de page
-                if(loadSession(request.getParameter("load"),user)){
-                    out.print(getUserData(user)) ;
+                if (loadSession(request.getParameter("load"), user)) {
+                    out.print(getUserData(user));
                     out.flush();
-                    return ;
-                }else {
-                    out.print("null") ;
+                    return;
+                } else {
+                    out.print("null");
                     out.flush();
-                    return ;
+                    return;
                 }
 
-            }else if (userExists(user)) {
-                out.print(getUserData(user)) ;
+            } else if (userExists(user)) {
+                out.print(getUserData(user));
                 out.flush();
-                return ;
-            }else {
-                out.print("null") ;
+                return;
+            } else {
+                out.print("null");
                 out.flush();
-                return ;
+                return;
             }
 
         }
 
 
-
         // on cherche cree les données si user pas deja existant
         if (request.getParameter("generate") != null) {
-            createUser(user, request.getServletContext().getRealPath("/") + "/") ;
+            if (!createUser(user, request.getServletContext().getRealPath("/") + "/"))
+                throw new Exception("User creation error");
             out.print(user);
-            out.print(msg) ;
+            out.print(msg);
         }
 
         // on charge la room du user
         Room salle = rooms.get(user);
 
-        // les actions table
+        // les actions des tables
         if (request.getParameter("action") != null)
             tableRequests(request, out, salle);
 
-        // les action constraint
+        // les actions des contraintes
         if (request.getParameter("constraint") != null)
             constraintRequests(request, out, salle);
 
         out.flush();
     }
 
-    // les action de categorie table
+    // les actions sur les tables
     private void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
 
         // on charge le creating
@@ -96,7 +96,7 @@ public class CreationServlet extends HttpServlet {
 
         int lon, lar;
 
-        // les differentes action
+        // les différentes action
         switch (request.getParameter("action")) {
 
             // renvoie les tables
@@ -118,7 +118,7 @@ public class CreationServlet extends HttpServlet {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
                     crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu()+"wtf");
+                    out.print(salle.getPositioningIntermediate().getTablesForVisu() + "wtf");
 
                 } else {
                     lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
@@ -133,29 +133,28 @@ public class CreationServlet extends HttpServlet {
                 }
             }
 
-            // les dimentions
-            case "getDim" ->
-                    out.print(crea.getDimentions());
+            // les dimensions
+            case "getDim" -> out.print(crea.getDimensions());
         }
     }
 
-    // les requetes sur les contraintes
+    // les requêtes sur les contraintes
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle) {
         CreatingIntermediate crea = salle.getCrea();
 
 
         switch (request.getParameter("constraint")) {
 
-            // si on veux imposer une place
+            // si on veut imposer une place
             case "imposePlace" -> {
-                if (request.getParameter("oldNum") != null  && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && ! request.getParameter("oldNum").isEmpty() && ! request.getParameter("newNum").isEmpty() && ! request.getParameter("numEtu").isEmpty()) {
+                if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty()) {
                     out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
                 }
                 out.print("null");
             }
 
-            // on retire la place imposée si elle existe (l'intermediate fait le controle
-            case "removeImposedPlace" -> crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")) - 1);
+            // on retire la place imposée si elle existe (le Creating Intermediate fait le contrôle)
+            case "removeImposedPlace" -> crea.removeConstraint("I", Integer.parseInt(request.getParameter("id")) - 1);
 
             // supprime la table
             case "deleteTable" -> {
@@ -167,13 +166,13 @@ public class CreationServlet extends HttpServlet {
                 else if (num > crea.maxTable())
                     num = crea.maxTable();
 
-                out.print(crea.supprTable(num) + ";" + num);
+                out.print(crea.deleteTable(num) + ";" + num);
             }
 
-            // rend un table re disponible
+            // annule la suppression d'une table
             case "removeDeletedTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
-                crea.unremoveTable(num);
+                crea.undeleteTable(num);
             }
 
             case "separeEtu" -> {
@@ -189,7 +188,7 @@ public class CreationServlet extends HttpServlet {
 
             case "deleteSepareEtu" -> {
                 int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
-                crea.removeContrainst("G", constraintId);
+                crea.removeConstraint("G", constraintId);
             }
 
             case "mode" -> {
@@ -221,7 +220,7 @@ public class CreationServlet extends HttpServlet {
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static boolean loadSession(String oldId, String newId) {
-        if ((!newId.equals(oldId)) && userExists(oldId) ) {
+        if ((!newId.equals(oldId)) && userExists(oldId)) {
             rooms.put(newId, rooms.get(oldId));
             rooms.remove(oldId);
             return true;
@@ -233,13 +232,13 @@ public class CreationServlet extends HttpServlet {
     private static boolean createUser(String user, String path) {
         if (!userExists(user)) {
             try {
-                Room newData = new Room(path) ;
-                rooms.put(user,newData);
-                return true ;
+                Room newData = new Room(path);
+                rooms.put(user, newData);
+                return true;
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
-                msg = e.getMessage() ;
+                msg = e.getMessage();
                 return false;
             }
         }
@@ -251,19 +250,16 @@ public class CreationServlet extends HttpServlet {
         Room salle = getSalle(user);
         String result = "null";
         if (salle != null) {
-            result = "" ;
-            // les infos de la visu
-            if (salle!=null){
-                result = "" ;
-                if (salle.getPositioningIntermediate() != null) {
-                    result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
-                }
-                // les infos d'etudians mis a distance
+            result = "";
 
-                result += salle.getCrea().getSeparated();
-                result += "<";
-                result += salle.getCrea().getStudentList() +"<";
+            if (salle.getPositioningIntermediate() != null) {
+                result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() + "<";
             }
+            // les informations des étudiants mis à distance
+
+            result += salle.getCrea().getSeparated();
+            result += "<";
+            result += salle.getCrea().getStudentList() + "<";
 
 
         }

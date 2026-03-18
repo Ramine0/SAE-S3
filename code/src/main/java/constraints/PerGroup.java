@@ -17,16 +17,16 @@ public class PerGroup extends Constraint
         addStudent(etu);
 
     }
-    public void addStudent(String numetu){
+    public void addStudent(String studentNumber){
         int id=-1;
         for (int i=0; i<groupe.length; i++){
             if (groupe[i]==null && id==-1){
                 id=i;
             }
         }
-        groupe[id]=numetu;
+        groupe[id]=studentNumber;
 
-        studentsConstraints.add(numetu);
+        studentsConstraints.add(studentNumber);
     }
     public void removeStudent(int index){
         groupe[index]=null;

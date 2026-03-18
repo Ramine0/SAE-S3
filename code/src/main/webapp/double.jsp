@@ -23,12 +23,12 @@
         </a>
         <div class="general">
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
-                <select id="modeHeader" name="modeHeader">
+                <label for="modeHeader">Action</label><select id="modeHeader" name="modeHeader">
                     <option value="create" selected>Paramètres de création</option>
                     <option value="modify">Voir les informations</option>
                 </select>
 
-                <span id="parameters">
+                <div id="parameters">
                     <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
                     <input type="file" name="studentFile" id="studentFile" accept="text/csv">
 
@@ -62,7 +62,7 @@
                             <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                         </section>
                     </div>
-                </span>
+                </div>
 
                 <div id="valuesOfTable"  style ="visibility : hidden; height: 0; ">
                      <span id="TableNumber" >
@@ -98,7 +98,7 @@
 
             </form>
             <form method="post" action="Display">
-                <input type="text" name="sessionCode" id="sessionCode">
+                <label for="sessionCode">Code de session</label><input type="text" name="sessionCode" id="sessionCode">
                 <button type="button" id="loadSession" onclick="loadData()" > Charger </button>
                 <button type="submit" id="walid" class="boutWalider" disabled> Générer
                 </button>

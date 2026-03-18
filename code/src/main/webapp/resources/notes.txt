@@ -14,7 +14,7 @@ actuel :
 9;3;3
 10;5;5
 
-preparation du prochain plan defaut celui qui est basé sur les infos que je viens de prendre dans la salle DS
+Preparation du prochain plan defaut celui qui est basé sur les infos que je viens de prendre dans la salle DS
 prototype :
 
 76

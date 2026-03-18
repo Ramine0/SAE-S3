@@ -95,7 +95,7 @@ public class PositioningIntermediate {
         return false;
     }
 
-    public String descripData() {
+    public String describeData() {
         StringBuilder result = new StringBuilder();
 
         for (String s : donnees.descrip())

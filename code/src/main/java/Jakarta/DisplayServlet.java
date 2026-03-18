@@ -58,7 +58,7 @@ public class DisplayServlet extends HttpServlet
                     """);
 
 
-                PositioningIntermediate pos = room.getPositioningIntermediate();
+                PositioningIntermediate pos = room.getPositioning();
 
                 if (room.generate())
                     out.println("""
@@ -85,7 +85,7 @@ public class DisplayServlet extends HttpServlet
         Room room = CreationServlet.getRoom(request.getSession().getId());
         PositioningIntermediate pos = null;
         if (room != null) {
-            pos = room.getPositioningIntermediate();
+            pos = room.getPositioning();
         }
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");

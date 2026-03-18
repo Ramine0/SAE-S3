@@ -23,7 +23,7 @@ public class GridMap extends Map
     {
 
         matriceAdj = new int[tables.length + 1][tables.length + 1];
-        if (tables[0].getCoord()[0] != -1)
+        if (tables[0].getCoordinates()[0] != -1)
         {
 
             int cpt = 0 ;
@@ -31,8 +31,8 @@ public class GridMap extends Map
             {
                 if (t != null)
                 {
-                    int x = t.getCoord()[0];
-                    int y = t.getCoord()[1];
+                    int x = t.getCoordinates()[0];
+                    int y = t.getCoordinates()[1];
                     int cptVois = 0;
                     for (Table vois : tables)
                     {
@@ -40,8 +40,8 @@ public class GridMap extends Map
                         {
                             if (cptVois > cpt)
                             {
-                                int neighbourX = vois.getCoord()[0];
-                                int neighbourY = vois.getCoord()[1];
+                                int neighbourX = vois.getCoordinates()[0];
+                                int neighbourY = vois.getCoordinates()[1];
 
                                 if (hasNeighbour(x, neighbourX, y, neighbourY))
                                 {
@@ -86,7 +86,7 @@ public class GridMap extends Map
                 if (!line[0].isEmpty())
                 {
                     lesTables[cpt] = new Table(Integer.parseInt(line[0]), Integer.parseInt(line[1]),Integer.parseInt(line[2]));
-                    numbersOfTables[cpt] = lesTables[cpt].getNum() ;
+                    numbersOfTables[cpt] = lesTables[cpt].getNumber() ;
                     cpt++;
                 }
             }

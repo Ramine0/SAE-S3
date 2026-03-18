@@ -8,8 +8,8 @@ import java.io.FileNotFoundException;
 public class Room
 {
 
-    private final CreatingIntermediate crea;
-    private PositioningIntermediate posing;
+    private final CreatingIntermediate creating;
+    private PositioningIntermediate positioning;
     public String debugMessage;
 
     private boolean generated;
@@ -17,40 +17,41 @@ public class Room
 
     public Room() throws FileNotFoundException
     {
-        crea = new CreatingIntermediate();
+        creating = new CreatingIntermediate();
         positioningMode();
     }
 
     public Room(String path) throws FileNotFoundException
     {
-        crea = new CreatingIntermediate(path);
+        creating = new CreatingIntermediate(path);
         positioningMode();
     }
 
-    public CreatingIntermediate getCrea()
+    public CreatingIntermediate getCreating()
     {
-        return crea;
+        return creating;
     }
 
-    public PositioningIntermediate getPositioningIntermediate()
+    public PositioningIntermediate getPositioning()
     {
-        return posing;
+        return positioning;
     }
 
-    public void positioningMode() {posing = crea.generatePos();}
+    public void positioningMode() {
+        positioning = creating.generatePos();}
 
 
     public boolean generate()
     {
-        generated = posing.creerPlacement();
+        generated = positioning.creerPlacement();
         return generated;
     }
 
     public boolean swapPlaces(int num1, int num2)
     {
-        if (posing != null)
+        if (positioning != null)
         {
-            return posing.swapPlaces(num1, num2);
+            return positioning.swapPlaces(num1, num2);
         }
         return false;
     }

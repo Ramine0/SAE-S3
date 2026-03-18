@@ -18,7 +18,7 @@ public class ExportServlet extends HttpServlet
     {
         Room room = CreationServlet.getRoom(request.getSession().getId());
         assert room != null;
-        CreatingIntermediate crea = room.getCrea();
+        CreatingIntermediate crea = room.getCreating();
         response.setContentType("text/csv;charset=UTF-8");
         response.setHeader(
                 "Content-Disposition",

@@ -80,44 +80,19 @@ public class CreationServlet extends HttpServlet {
     // les action de categorie table
     private void tableRequests(HttpServletRequest request, PrintWriter out, Room room) {
 
-        CreatingIntermediate crea = room.getCrea();
+        CreatingIntermediate crea = room.getCreating();
 
         int length, width;
 
         // les differentes action
         switch (request.getParameter("action")) {
 
-            // renvoie les tables
             case "visu" -> {
-                length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
-
-                crea.createTables(length, width);
-                crea.setDimensions(length, width);
-
-                out.print(room.getPositioningIntermediate().getTablesForVisu());
+                returnTables(request, out, room, crea);
             }
 
-            // definition du type de plan
             case "define" -> {
-                crea.setMode(0);
-
-                if (request.getParameter("planType").equals("defaultPlan")) {
-                    crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
-                    crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
-
-                    out.print(room.getPositioningIntermediate().getTablesForVisu());
-                } else {
-                    length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                    width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
-
-                    crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
-
-                    crea.createTables(length, width);
-                    crea.setDimensions(length, width);
-
-                    out.print(room.getPositioningIntermediate().getTablesForVisu());
-                }
+                defineMapType(request, out, room, crea);
             }
 
             // les dimentions
@@ -126,9 +101,44 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
+    private static void defineMapType(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
+        int length;
+        int width;
+        crea.setMode(0);
+
+        if (request.getParameter("planType").equals("defaultPlan")) {
+            crea.changeMapMode('D', request.getServletContext().getRealPath("/") + "/");
+            crea.loadDefaultMap(request.getServletContext().getRealPath("/") + "/");
+
+            out.print(room.getPositioning().getTablesForVisu());
+        } else {
+            length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+            width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+
+            crea.changeMapMode('R', request.getServletContext().getRealPath("/") + "/");
+
+            crea.createTables(length, width);
+            crea.setDimensions(length, width);
+
+            out.print(room.getPositioning().getTablesForVisu());
+        }
+    }
+
+    private static void returnTables(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
+        int width;
+        int length;
+        length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+        width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+
+        crea.createTables(length, width);
+        crea.setDimensions(length, width);
+
+        out.print(room.getPositioning().getTablesForVisu());
+    }
+
     // les requetes sur les contraintes
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room room) {
-        CreatingIntermediate crea = room.getCrea();
+        CreatingIntermediate crea = room.getCreating();
 
 
         switch (request.getParameter("constraint")) {
@@ -243,14 +253,14 @@ public class CreationServlet extends HttpServlet {
         String visualisationInfos = "null";
         if (room != null) {
             visualisationInfos = "" ;
-            if (room.getPositioningIntermediate() != null) {
-                visualisationInfos += "\n" + room.getPositioningIntermediate().getTablesForVisu() +"<";
+            if (room.getPositioning() != null) {
+                visualisationInfos += "\n" + room.getPositioning().getTablesForVisu() +"<";
             }
             // les infos d'etudians mis a distance
 
-            visualisationInfos += room.getCrea().getSeparated();
+            visualisationInfos += room.getCreating().getSeparated();
             visualisationInfos += "<";
-            visualisationInfos += room.getCrea().getStudentList() +"<";
+            visualisationInfos += room.getCreating().getStudentList() +"<";
         }
 
         return visualisationInfos;

@@ -185,7 +185,7 @@ public class ConnectionServlet extends HttpServlet {
     private void addStudents(HttpServletRequest request, Connection connection, String addStudent) throws SQLException {
         int cnt=0;
         while (cnt!=data.getStudents().length){
-            String[] student=data.getStudents()[cnt].textVisu().replace(" ", ";").split(";");
+            String[] student=data.getStudents()[cnt].textVisualisation().replace(" ", ";").split(";");
             try (PreparedStatement addAttempt = connection.prepareStatement(addStudent)){
                 addAttempt.setString(1, student[0]);
                 addAttempt.setString(2, request.getParameter("idP"));

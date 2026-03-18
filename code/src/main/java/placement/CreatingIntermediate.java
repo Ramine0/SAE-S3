@@ -250,8 +250,8 @@ public class CreatingIntermediate {
      * @param path chemin du plan à charger
      * @return true si le chargement a réussi, false sinon
      */
-    public void loadPlanDefault(String path) {
-        d.loadPlanDefault(path);
+    public void loadDefaultMap(String path) {
+        d.loadDefaultPlan(path);
     }
 
     /**
@@ -260,7 +260,7 @@ public class CreatingIntermediate {
      * @param path chemin du plan
      * @return true si le changement de plan a réussi, false sinon
      */
-    public void changePlanMode(char newOne, String path) {
+    public void changeMapMode(char newOne, String path) {
         d.changePlanMode(newOne, path);
     }
 

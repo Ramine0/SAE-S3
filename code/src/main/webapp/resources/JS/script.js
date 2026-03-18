@@ -12,6 +12,54 @@ let fileOk = false
 
 loadData()
 
+// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+
+function validerPlaceImposee(event) {
+    let idFind = event.target.id;
+    let numConstr = idFind.charAt(11);
+
+    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
+    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
+
+    if (studentId === "")
+        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
+    else if (tableNumber === "")
+        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+    else {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE)
+                if (xhr.status === 200) {
+                    const response = xhr.responseText.split(";");
+
+                    switch (response[2]) {
+                        case "1":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
+                            break;
+                        case "2":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                            break;
+                        case "3":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
+                            break;
+                        case "-1":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
+                            break;
+                        default:
+                            validerSectImpose(idFind);
+
+                            document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
+                            document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
+                            break;
+                    }
+                } else
+                    console.error("Error fetching student data");
+        }
+
+        xhr.send();
+    }
+}
 
 window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
@@ -25,7 +73,6 @@ function changeMode() {
     const m = document.getElementById("classMode").value;
     const mode = new XMLHttpRequest();
     mode.open("GET", `creation?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
-
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
@@ -33,8 +80,9 @@ function changeMode() {
                     console.log("table nulle");
                 }
 
-            } else
+            } else {
                 console.log(mode.status);
+            }
         }
     };
     mode.send();
@@ -126,6 +174,7 @@ function enleverEtuGrp(event) {
                 decreaseId(`#E${g}G${numGrp}`);
 
         document.getElementById("ajoutEtuGrp" + numGrp).disabled = false;
+
     }
 
     if (numEtu <= groupes[numGrp.length])
@@ -180,7 +229,6 @@ function moveFile(event) {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
-
     xhr.send(data);
 
     fileOk = true;
@@ -277,8 +325,9 @@ function setTableNumber() {
 
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;
-            } else
+            } else {
                 console.log("error number tables")
+            }
         }
     };
 
@@ -309,7 +358,6 @@ function createGrp() {
         <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" disabled >+</button>
         <h4>Ajouter un étudiant au groupe</h4>
     </div>`
-
     document.querySelector('#ajoutGroup').disabled = true;
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
 

@@ -36,37 +36,16 @@ public class CreationServlet extends HttpServlet {
             rooms = new HashMap<>();
         }
 
-        // quand on charge la page ou un id de session
+
         if (request.getParameter("load") != null) {
 
-            // si c pas un chargement d'un nouvel utilisateur (un sans code)
-            if (!request.getParameter("load").isEmpty()) {
-
-                // si jamais je suis en chargement de page
-                if (loadSession(request.getParameter("load"), user)) {
-                    out.print(getUserData(user));
-                    out.flush();
-                    return;
-                } else {
-                    out.print("null");
-                    out.flush();
-                    return;
-                }
-
-            } else if (userExists(user)) {
-                out.print(getUserData(user));
-                out.flush();
-                return;
-            } else {
-                out.print("null");
-                out.flush();
-                return;
-            }
+            loadSession(request, user, out);
+            return;
 
         }
 
 
-        // on cherche cree les données si user pas deja existant
+
         if (request.getParameter("generate") != null) {
             if (!createUser(user, request.getServletContext().getRealPath("/") + "/"))
                 throw new Exception("User creation error");
@@ -74,40 +53,58 @@ public class CreationServlet extends HttpServlet {
             out.print(msg);
         }
 
-        // on charge la room du user
-        Room salle = rooms.get(user);
 
-        // les actions des tables
+
+        Room room = rooms.get(user);
+
+
         if (request.getParameter("action") != null)
-            tableRequests(request, out, salle);
+            tableRequests(request, out, room);
 
-        // les actions des contraintes
+        // les action constraint
         if (request.getParameter("constraint") != null)
-            constraintRequests(request, out, salle);
+            constraintRequests(request, out, room);
 
         out.flush();
     }
 
+    private void loadSession(HttpServletRequest request, String user, PrintWriter out) {
+        if (!request.getParameter("load").isEmpty()){
+
+            loadWithCode(loadSession(request.getParameter("load"), user), out, user);
+
+        }else loadWithCode(userExists(user), out, user);
+    }
+
+    private void loadWithCode(boolean request, PrintWriter out, String user) {
+        if (request) {
+            out.print(getUserData(user));
+            out.flush();
+        } else {
+            out.print("null");
+            out.flush();
+        }
+    }
+
     // les actions sur les tables
-    private void tableRequests(HttpServletRequest request, PrintWriter out, Room salle) {
+    private void tableRequests(HttpServletRequest request, PrintWriter out, Room room) {
 
-        // on charge le creating
-        CreatingIntermediate crea = salle.getCrea();
+        CreatingIntermediate crea = room.getCrea();
 
-        int lon, lar;
+        int length, width;
 
         // les différentes action
         switch (request.getParameter("action")) {
 
             // renvoie les tables
             case "visu" -> {
-                lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+                length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+                width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
-                crea.createTables(lon, lar);
-                crea.setDimensions(lon, lar);
+                crea.createTables(length, width);
+                crea.setDimensions(length, width);
 
-                out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                out.print(room.getPositioningIntermediate().getTablesForVisu());
             }
 
             // definition du type de plan
@@ -118,18 +115,17 @@ public class CreationServlet extends HttpServlet {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
                     crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu() + "wtf");
-
+                    out.print(room.getPositioningIntermediate().getTablesForVisu() );
                 } else {
-                    lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                    lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+                    length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+                    width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
                     crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
 
-                    crea.createTables(lon, lar);
-                    crea.setDimensions(lon, lar);
+                    crea.createTables(length, width);
+                    crea.setDimensions(length, width);
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                    out.print(room.getPositioningIntermediate().getTablesForVisu());
                 }
             }
 
@@ -139,8 +135,8 @@ public class CreationServlet extends HttpServlet {
     }
 
     // les requêtes sur les contraintes
-    private void constraintRequests(HttpServletRequest request, PrintWriter out, Room salle) {
-        CreatingIntermediate crea = salle.getCrea();
+    private void constraintRequests(HttpServletRequest request, PrintWriter out, Room room) {
+        CreatingIntermediate crea = room.getCrea();
 
 
         switch (request.getParameter("constraint")) {
@@ -176,7 +172,7 @@ public class CreationServlet extends HttpServlet {
             }
 
             case "separeEtu" -> {
-                String studentId = crea.findEtu(request.getParameter("studentId"));
+                String studentId = crea.findStudent(request.getParameter("studentId"));
 
                 String studentInfo = crea.findStudentForGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
 
@@ -204,7 +200,7 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
-    public static Room getSalle(String code) {
+    public static Room getRoom(String code) {
         if (userExists(code))
             return rooms.get(code);
         else
@@ -237,33 +233,34 @@ public class CreationServlet extends HttpServlet {
                 return true;
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-                msg = e.getMessage();
+                msg = e.getMessage() ;
+                getMessage();
                 return false;
             }
         }
         return true;
     }
 
+    private static void getMessage() {
+        System.out.println(msg);
+    }
+
 
     public String getUserData(String user) {
-        Room salle = getSalle(user);
-        String result = "null";
-        if (salle != null) {
-            result = "";
-
-            if (salle.getPositioningIntermediate() != null) {
-                result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() + "<";
+        Room room = getSalle(user);
+        String visualisationInfos = "null";
+        if (room != null) {
+            visualisationInfos = "" ;
+            if (room.getPositioningIntermediate() != null) {
+                visualisationInfos += "\n" + room.getPositioningIntermediate().getTablesForVisu() +"<";
             }
-            // les informations des étudiants mis à distance
+            // les infos d'etudians mis a distance
 
-            result += salle.getCrea().getSeparated();
-            result += "<";
-            result += salle.getCrea().getStudentList() + "<";
+            visualisationInfos += room.getCrea().getSeparated();
+            visualisationInfos += "<";
+            visualisationInfos += room.getCrea().getStudentList() + "<";
 
-
-        }
-        return result;
+        return visualisationInfos;
     }
 
 

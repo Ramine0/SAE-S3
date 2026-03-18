@@ -12,11 +12,15 @@ public class PerClass extends Constraint
     }
 
     @Override
-    public boolean validate(Student student, int table, Student[] etu)
+    public boolean validate(Student student, int table, Student[] students)
     {
-        for (Student voisin : etu)
+
+
+        // on cherche à savoir si les tables voisines de l'etu on la meme classe
+        // donc on parcourt les voisins
+        for (Student s : students)
         {
-            if (voisin != null && student.sameGroup(voisin, subGroup))
+            if (s != null && student.sameGroup(s, subGroup))
             {
                 return false;
             }

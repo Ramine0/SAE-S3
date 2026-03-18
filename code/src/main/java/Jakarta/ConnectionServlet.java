@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @WebServlet("/Connection")
 public class ConnectionServlet extends HttpServlet {
@@ -35,175 +36,224 @@ public class ConnectionServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
             if (request.getParameter("action").equals("connect")){
-                String requestConnect="Select id from User where email=? and password=? limit 1";
-                String email = request.getParameter("email");
-                String password = request.getParameter("password");
-                try (PreparedStatement preparedStatement = connection.prepareStatement(requestConnect)) {
-                    preparedStatement.setString(1, email);
-                    preparedStatement.setString(2, password);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    user=resultSet.getString(1);
-                    out.print(resultSet.getString(1));
-                    out.flush();
-                    resultSet.close();
-                }
-            } else if (request.getParameter("action").equals("subscribe")) {
-                String requestSubscribe = "insert into User (name, email, password) values (?, ?, ?)";
-                String username = request.getParameter("username");
-                String email = request.getParameter("email");
-                String password = request.getParameter("password");
-                try (PreparedStatement preparedStatement = connection.prepareStatement(requestSubscribe)) {
-                    preparedStatement.setString(1, username);
-                    preparedStatement.setString(2, email);
-                    preparedStatement.setString(3, password);
-                    int result=preparedStatement.executeUpdate();
-                    out.print(result);
-                }
+                connect(request, connection, out);
+            }else if (request.getParameter("action").equals("subscribe")){
+                subscribe(request, connection);
             }else if (request.getParameter("action").equals("init")){
-                String requestInit="Select idPlacement, name from Placement where idUser=?";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(requestInit)) {
-                    preparedStatement.setString(1, user);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    while (!resultSet.wasNull()) {
-                        out.print(resultSet.getString(1)+","+resultSet.getString((2)));
-                        if (resultSet.next()){
-                            out.print(";");
-                        }
-                    }
-                    out.flush();
-                    resultSet.close();
-                }
+                initPlacements(request, connection, out, user);
             }else if (request.getParameter("action").equals("load")){
-                String loadStudents="select number, name, firstname, grp from Student where idPlacement=?";
-                String loadSeats="select num, x, y, suppr, number from Seat p left join Student s on p.idStudent=s.number where p.idPlacement=?";
-                String loadConstraint="select type, number, num, subgrp, numGrp from Constr c left join Student s on c.idStudent = s.number left join Seat p on c.idSeat=p.num where c.idPlacement=?";
-                String idPlacement=request.getParameter("idPlacement");
-                try (PreparedStatement preparedStatement = connection.prepareStatement(loadStudents)) {
-                    preparedStatement.setString(1, idPlacement);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    StringBuilder students= new StringBuilder();
-                    while (!resultSet.wasNull()) {
-                        students.append(resultSet.getString(1)).append(",").append(resultSet.getString(2)).append(",").append(resultSet.getString(3));
-                        String[] group=resultSet.getString(4).replace(".", ";").split(";");
-                        students.append(group[0]);
-                        if (group.length>1){
-                            students.append(",").append(group[1]);
-                        }
-                        if (resultSet.next()){
-                            students.append(";");
-                        }
-                    }
-                    data.chargerStudents(students.toString());
-                }
-                try (PreparedStatement preparedStatement = connection.prepareStatement(loadSeats)) {
-                    preparedStatement.setString(1, idPlacement);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    StringBuilder seats= new StringBuilder();
-                    while (!resultSet.wasNull()) {
-                        seats.append(resultSet.getString(1)).append(",").append(resultSet.getString(2)).append(",").append(resultSet.getString(3)).append(",").append(resultSet.getString(4)).append(",").append(resultSet.getString(5));
-                        if (resultSet.next()){
-                            seats.append(";");
-                        }
-                    }
-                    data.chargerTables(seats.toString());
-                }
-                try (PreparedStatement preparedStatement = connection.prepareStatement(loadConstraint)) {
-                    preparedStatement.setString(1, idPlacement);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-                    StringBuilder constraints= new StringBuilder();
-                    while (!resultSet.wasNull()) {
-                        if (resultSet.getString(2).equals("I")){
-                            constraints.append(resultSet.getString(1)).append(",").append(resultSet.getString(2)).append(",").append(resultSet.getString(3)).append(",").append(resultSet.getString(4));
-                        }else if (resultSet.getString(2).equals("G")){
-                            constraints.append(resultSet.getString(1)).append(",").append(resultSet.getString(2)).append(",").append(resultSet.getString(5));
-                        }else{
-                            if (resultSet.getString(4).equals("true")) {
-                                data.changeMode('S');
-                            } else {
-                                data.changeMode('G');
-                            }
-                        }
-                        if (!resultSet.getString(1).equals("C") && resultSet.next()){
-                            constraints.append(";");
-                        }
-                    }
-                    data.chargerConstraint(constraints.toString());
-
-                }
+                load(request, connection);
             }else if (request.getParameter("action").equals("add")){
-                String addPlacement="Insert into Placement (idUser, name) values (?, ?)";
-                String addStudent="Insert into Student (number, idPlacement, name, firstname, grp) values (?, ?, ?, ?, ?)";
-                String addSeat="Insert into Seat (num, x, y, idPlacement, idStudent) values (?, ?, ?, ?, ?)";
-                String addConstraint="Insert into Constraints (type, idPlacement, idStudent, idSeat, subgrp, numGrp) values (?, ?, ?, ?, ?)";
-                try (PreparedStatement preparedStatement = connection.prepareStatement(addPlacement)){
-                    preparedStatement.setString(1, request.getParameter("id"));
-                    preparedStatement.setString(2, request.getParameter("name"));
-                    preparedStatement.executeQuery();
+                add(request, connection);
+            }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+
+    }
+
+    private void connect(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
+        String connectRequest="Select id from User where name=? and password=? limit 1";
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+        try (PreparedStatement connexionAttempt = connection.prepareStatement(connectRequest)) {
+            connexionAttempt.setString(1, username);
+            connexionAttempt.setString(2, password);
+            ResultSet login = connexionAttempt.executeQuery();
+            user=login.getString(1);
+            out.print(login.getString(1));
+            out.flush();
+            login.close();
+        }
+    }
+
+    private void subscribe(HttpServletRequest request, Connection connection) throws SQLException {
+        String subscribeRequest="insert into User (name, email, password) values (?, ?, ?)";
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        try (PreparedStatement subscribeAttempt = connection.prepareStatement(subscribeRequest)) {
+            subscribeAttempt.setString(1, username);
+            subscribeAttempt.setString(2, email);
+            subscribeAttempt.setString(3, password);
+            subscribeAttempt.executeUpdate();
+        }
+    }
+
+    private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {
+        String initRequest="Select name from Placement where idUser=?";
+        try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
+            initialisationAttempt.setString(1, user);
+            ResultSet placements = initialisationAttempt.executeQuery();
+            while (!placements.wasNull()) {
+                out.print(placements.getString(1));
+                if (placements.next()){
+                    out.print(";");
                 }
-                int cnt=0;
-                while (cnt!=data.getStudents().length){
-                    String[] student=data.getStudents()[cnt].textVisu().replace(" ", ";").split(";");
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(addStudent)){
-                        preparedStatement.setString(1, student[0]);
-                        preparedStatement.setString(2, request.getParameter("idP"));
-                        preparedStatement.setString(3, student[1]);
-                        preparedStatement.setString(4, student[2]);
-                        preparedStatement.setString(5, student[3]);
+            }
+            out.flush();
+            placements.close();
+        }
+    }
+
+    private void load(HttpServletRequest request, Connection connection) throws SQLException {
+        String loadStudentsRequest="select number, name, firstname, grp from Student where idPlacement=?";
+        String loadSeatsRequest="select num, x, y, suppr, number from Seat p left join Student s on p.idStudent=s.number where p.idPlacement=?";
+        String loadConstraintsRequest="select type, number, num, subgrp, numGrp from Constr c left join Student s on c.idStudent = s.number left join Seat p on c.idSeat=p.num where c.idPlacement=?";
+        String idPlacement= request.getParameter("idPlacement");
+        loadStudents(connection, loadStudentsRequest, idPlacement);
+        loadTables(connection, loadSeatsRequest, idPlacement);
+        loadConstraints(connection, loadConstraintsRequest, idPlacement);
+    }
+
+    private void loadStudents(Connection connection, String loadStudents, String idPlacement) throws SQLException {
+        try (PreparedStatement loadAttempt = connection.prepareStatement(loadStudents)) {
+            loadAttempt.setString(1, idPlacement);
+            ResultSet studentsData = loadAttempt.executeQuery();
+            StringBuilder students= new StringBuilder();
+            while (!studentsData.wasNull()) {
+                students.append(studentsData.getString(1)).append(",").append(studentsData.getString(2)).append(",").append(studentsData.getString(3));
+                String[] group=studentsData.getString(4).replace(".", ";").split(";");
+                students.append(group[0]);
+                if (group.length>1){
+                    students.append(",").append(group[1]);
+                }
+                if (studentsData.next()){
+                    students.append(";");
+                }
+            }
+            data.loadStudents(students.toString());
+        }
+    }
+
+    private void loadTables(Connection connection, String loadSeats, String idPlacement) throws SQLException {
+        try (PreparedStatement loadAttempt = connection.prepareStatement(loadSeats)){
+            loadAttempt.setString(1, idPlacement);
+            ResultSet tablesData = loadAttempt.executeQuery();
+            StringBuilder tables= new StringBuilder();
+            while (!tablesData.wasNull()) {
+                tables.append(tablesData.getString(1)).append(",").append(tablesData.getString(2)).append(",").append(tablesData.getString(3)).append(",").append(tablesData.getString(4)).append(",").append(tablesData.getString(5));
+                if (tablesData.next()){
+                    tables.append(";");
+                }
+            }
+            data.loadTables(tables.toString());
+        }
+    }
+
+    private void loadConstraints(Connection connection, String loadConstraint, String idPlacement) throws SQLException {
+        try (PreparedStatement loadAttempt = connection.prepareStatement(loadConstraint)) {
+            loadAttempt.setString(1, idPlacement);
+            ResultSet constraintsData = loadAttempt.executeQuery();
+            StringBuilder constraints= new StringBuilder();
+            while (!constraintsData.wasNull()) {
+                if (constraintsData.getString(2).equals("I")){
+                    constraints.append(constraintsData.getString(1)).append(",").append(constraintsData.getString(2)).append(",").append(constraintsData.getString(3)).append(",").append(constraintsData.getString(4));
+                }else if (constraintsData.getString(2).equals("G")){
+                    constraints.append(constraintsData.getString(1)).append(",").append(constraintsData.getString(2)).append(",").append(constraintsData.getString(5));
+                }else{
+                    if (constraintsData.getString(4).equals("true")) {
+                        data.changeMode('S');
+                    }else{
+                        data.changeMode('G');
                     }
-                    cnt++;
                 }
-                cnt=0;
-                String[] tables=data.getTablesInfos().split(";");
-                while (cnt!=tables.length){
-                    String[] table=tables[cnt].split("!");
-                    try (PreparedStatement preparedStatement = connection.prepareStatement(addSeat)){
-                        preparedStatement.setString(1, table[0]);
-                        preparedStatement.setString(2, table[1]);
-                        preparedStatement.setString(3, table[2]);
-                        preparedStatement.setString(4, request.getParameter("idP"));
-                        preparedStatement.setString(5, table[3]);
-                        preparedStatement.executeQuery();
+                if (!constraintsData.getString(1).equals("C") && constraintsData.next()){
+                    constraints.append(";");
+                }
+            }
+            data.loadConstraints(constraints.toString());
+
+        }
+    }
+
+    private void add(HttpServletRequest request, Connection connection) throws SQLException {
+        String addPlacementRequest="Insert into Placement (idUser, name) values (?, ?)";
+        String addStudentRequest="Insert into Student (number, idPlacement, name, firstname, grp) values (?, ?, ?, ?, ?)";
+        String addSeatRequest="Insert into Seat (num, x, y, idPlacement, idStudent) values (?, ?, ?, ?, ?)";
+        String addConstraintRequest="Insert into Constraints (type, idPlacement, idStudent, idSeat, subgrp, numGrp) values (?, ?, ?, ?, ?)";
+        addPlacement(request, connection, addPlacementRequest);
+        addStudents(request, connection, addStudentRequest);
+        addPlaces(request, connection, addSeatRequest);
+        addConstraints(request, connection, addConstraintRequest);
+    }
+
+    private static void addPlacement(HttpServletRequest request, Connection connection, String addPlacement) throws SQLException {
+        try (PreparedStatement addAttempt = connection.prepareStatement(addPlacement)){
+            addAttempt.setString(1, request.getParameter("id"));
+            addAttempt.setString(2, request.getParameter("name"));
+            addAttempt.executeQuery();
+        }
+    }
+
+    private void addStudents(HttpServletRequest request, Connection connection, String addStudent) throws SQLException {
+        int cnt=0;
+        while (cnt!=data.getStudents().length){
+            String[] student=data.getStudents()[cnt].textVisu().replace(" ", ";").split(";");
+            try (PreparedStatement addAttempt = connection.prepareStatement(addStudent)){
+                addAttempt.setString(1, student[0]);
+                addAttempt.setString(2, request.getParameter("idP"));
+                addAttempt.setString(3, student[1]);
+                addAttempt.setString(4, student[2]);
+                addAttempt.setString(5, student[3]);
+            }
+            cnt++;
+        }
+    }
+
+    private void addPlaces(HttpServletRequest request, Connection connection, String addSeat) throws SQLException {
+        int cnt=0;
+        String[] tables=data.getTablesInfos().split(";");
+        while (cnt!=tables.length){
+            String[] table=tables[cnt].split("!");
+            try (PreparedStatement addAttempt = connection.prepareStatement(addSeat)){
+                addAttempt.setString(1, table[0]);
+                addAttempt.setString(2, table[1]);
+                addAttempt.setString(3, table[2]);
+                addAttempt.setString(4, request.getParameter("idP"));
+                addAttempt.setString(5, table[3]);
+                addAttempt.executeQuery();
+            }
+            cnt++;
+        }
+    }
+
+    private void addConstraints(HttpServletRequest request, Connection connection, String addConstraint) throws SQLException {
+        int cnt;
+        cnt=0;
+        while (cnt!=data.getNbConstraint()){
+            String[] contrainte=data.getConstr()[cnt].toDatabase().split(",");
+            if (contrainte[0].equals("G")){
+                for (int i=2; i<contrainte.length; i++){
+                    try (PreparedStatement addAttempt = connection.prepareStatement(addConstraint)){
+                        addAttempt.setString(1, contrainte[0]);
+                        addAttempt.setString(2, request.getParameter("idP"));
+                        addAttempt.setString(3, contrainte[i]);
+                        addAttempt.setString(4, null);
+                        addAttempt.setString(5, null);
+                        addAttempt.setString(6, contrainte[1]);
+                        addAttempt.executeQuery();
                     }
-                    cnt++;
                 }
-                cnt=0;
-                while (cnt!=data.getNbConstraint()){
-                    String[] contrainte=data.getConstr()[cnt].toDatabase().split(",");
-                    if (contrainte[0].equals("G")){
-                        for (int i=2; i<contrainte.length; i++){
-                            try (PreparedStatement preparedStatement = connection.prepareStatement(addConstraint)){
-                                preparedStatement.setString(1, contrainte[0]);
-                                preparedStatement.setString(2, request.getParameter("idP"));
-                                preparedStatement.setString(3, contrainte[i]);
-                                preparedStatement.setString(4, null);
-                                preparedStatement.setString(5, null);
-                                preparedStatement.setString(6, contrainte[1]);
-                                preparedStatement.executeQuery();
-                            }
-                        }
+            } else {
+                try (PreparedStatement addAttempt = connection.prepareStatement(addConstraint)){
+                    if (contrainte[0].equals("I")){
+                        addAttempt.setString(1, contrainte[0]);
+                        addAttempt.setString(2, request.getParameter("idP"));
+                        addAttempt.setString(3, contrainte[1]);
+                        addAttempt.setString(4, contrainte[2]);
+                        addAttempt.setString(5, null);
+                        addAttempt.setString(6, null);
                     } else {
-                        try (PreparedStatement preparedStatement = connection.prepareStatement(addConstraint)){
-                            if (contrainte[0].equals("I")){
-                                preparedStatement.setString(1, contrainte[0]);
-                                preparedStatement.setString(2, request.getParameter("idP"));
-                                preparedStatement.setString(3, contrainte[1]);
-                                preparedStatement.setString(4, contrainte[2]);
-                                preparedStatement.setString(5, null);
-                                preparedStatement.setString(6, null);
-                            } else {
-                                preparedStatement.setString(1, contrainte[0]);
-                                preparedStatement.setString(2, request.getParameter("idP"));
-                                preparedStatement.setString(3, null);
-                                preparedStatement.setString(4, null);
-                                preparedStatement.setString(5, contrainte[1]);
-                                preparedStatement.setString(6, null);
-                            }
-                        }
+                        addAttempt.setString(1, contrainte[0]);
+                        addAttempt.setString(2, request.getParameter("idP"));
+                        addAttempt.setString(3, null);
+                        addAttempt.setString(4, null);
+                        addAttempt.setString(5, contrainte[1]);
+                        addAttempt.setString(6, null);
                     }
                 }
             }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         }
 
     }

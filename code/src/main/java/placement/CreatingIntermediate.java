@@ -70,7 +70,7 @@ public class CreatingIntermediate {
      * @param id numéro étudiant, complet ou non
      * @return l'id complété ou un message adapté
      */
-    public String findEtu(String id)
+    public String findStudent(String id)
     {
         String trouve = d.completeId(id);
         if (!trouve.isEmpty()) {
@@ -101,7 +101,7 @@ public class CreatingIntermediate {
      * @return un entier correspondant à la situation
      */
     public int findNumsForImp(String id, int num) {
-        id = findEtu(id);
+        id = findStudent(id);
         num = findTable(num) ? num : -1;
 
         if (id.equals("le num donné n'existe pas")) {
@@ -132,12 +132,12 @@ public class CreatingIntermediate {
      * @return en cas de succès, le message de la logique dans Data, sinon l'id partiel
      */
     public String findStudentForGroup(String idPartiel, int numGrp) {
-        String etu = findEtu(idPartiel);
+        String student = findStudent(idPartiel);
 
-        if (etu.length() == 8) {
-            return d.addStudentGroupConstraint(etu, numGrp);
+        if (student.length() == 8) {
+            return d.addStudentGroupConstraint(student, numGrp);
         } else {
-            return etu;
+            return student;
         }
     }
 
@@ -223,7 +223,7 @@ public class CreatingIntermediate {
      * @param num le numéro de la table
      * @return l'étudiant assis à la table num
      */
-    public Student StuFromTable(int num) {
+    public Student stuFromTable(int num) {
         return d.getStuFromTab(num);
     }
 
@@ -305,15 +305,15 @@ public class CreatingIntermediate {
      */
     public String getSeparated() {
         StringBuilder result = new StringBuilder();
-        for (int i = 1; i < 10 ; i++ ) {
-            PerGroup temp = d.getPerGroup(i) ;
+        for (int i = 1; i < 10; i++) {
+            PerGroup temp = d.getPerGroup(i);
             if (temp == null) {
                 break;
             } else {
                 String[] students = temp.toString().split(";");
                 for (String s : students) {
-                    if (!s.equals("null")) {
-                        String id = findEtu(s) ;
+                    if (s.equals("null")) {
+                        String id = findStudent(s) ;
                         result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }
@@ -329,9 +329,9 @@ public class CreatingIntermediate {
      * @return un string avec la liste d'étudiants
      */
     public String getStudentList() {
-        String result = "ID           nom prenom \n";
-        result += d.studentList() ;
-        return result ;
+        String result = "ID             ; nom prenom \n";
+        result += d.studentList();
+        return result;
     }
 
     public String getDimensions() {

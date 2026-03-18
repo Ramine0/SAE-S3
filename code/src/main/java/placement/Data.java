@@ -103,7 +103,7 @@ public class Data {
 
     public int nbDeletedTables() {
         int num = 0;
-        if (tables.length == 1) {
+        if (tables.length==1) {
             return 100;
         }
         for (int deletedTable : deletedTables) {
@@ -223,6 +223,9 @@ public class Data {
         return lesNums;
     }
 
+    public Student[] getStudents() {
+        return students.toArray(new Student[0]);
+    }
 
     private void chargerFichier() throws FileNotFoundException {
         chargerFichier("src/main/webapp/");
@@ -296,33 +299,31 @@ public class Data {
         return text;
     }
 
-    public void chargerStudents(String s) {
-        String[] tab = s.split(";");
+    public void loadStudents(String s){
+        String [] tab=s.split(";");
         for (String string : tab) {
             String[] student = string.replace(",", ";").split(";");
             students.add(new Student(student[3], student[4], student[1], student[2], student[0]));
         }
     }
 
-    public void chargerTables(String t) {
-        String[] tab = t.split(";");
-        tables = new Table[tab.length];
-        deletedTables = new int[tab.length];
-        int i = 0;
+    public void loadTables(String t){
+        String [] tab=t.split(";");
+        tables=new Table[tab.length];
+        deletedTables=new int[tab.length];
+        int i=0;
         for (String string : tab) {
             String[] table = string.replace(",", ";").split(";");
-            tables[i] = new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
-            if (Integer.parseInt(table[3]) == 1) {
+            tables[i]=new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
+            if (Integer.parseInt(table[3])==1){
                 removeTable(Integer.parseInt(table[0]));
             }
             i++;
         }
     }
 
-
-    // il servira
-    public void chargerConstraint(String c) {
-        String[] tab = c.split(";");
+    public void loadConstraints(String c){
+        String [] tab=c.split(";");
         for (String string : tab) {
             String[] contrainte = string.replace(",", ";").split(";");
             if (contrainte[0].equals("G")) {
@@ -339,7 +340,7 @@ public class Data {
 
         for (Constraint c : constraints) {
             if (c instanceof ImposedPlacement) {
-                s = ((ImposedPlacement) c).getPaire();
+                s = ((ImposedPlacement) c).getImposed();
                 placeStudent(Integer.parseInt(s[0]), s[1]);
 
             }
@@ -398,6 +399,25 @@ public class Data {
             }
         }
         return null;
+    }
+
+    public int getPerGroupIndex() {
+        int num = 1;
+        boolean valide = false;
+        while (!valide && num < getNbConstraint("G")) {
+            valide = true;
+            for (PerGroup pg : ((PerGroup[]) getConstr("G"))) {
+                if (pg.getNum() == num) {
+                    num++;
+                    valide = false;
+                }
+            }
+        }
+        if (valide) {
+            return num;
+        } else {
+            return -1;
+        }
     }
 
     public int getIndexConstraint(String type, int id) {
@@ -518,6 +538,8 @@ public class Data {
     }
 
 
+
+
     public int addConstraint(String numStudent, int numTable, char constr) {
         if (constr == 'I') {
             if (!Utilitaire.in(numStudent, imposedStudents())) {
@@ -606,7 +628,7 @@ public class Data {
         int i = 0;
         for (Constraint c : constraints) {
             if (c instanceof ImposedPlacement) {
-                result[i] = ((ImposedPlacement) c).getNumEtu();
+                result[i] = ((ImposedPlacement) c).getNumStudent();
                 i++;
             }
         }
@@ -635,9 +657,6 @@ public class Data {
 
 
     public String getTableInfos(int numTable) {
-        if (getTable(numTable) == null) {
-            return null;
-        }
         return Objects.requireNonNull(getTable(numTable)).description();
     }
 
@@ -678,7 +697,7 @@ public class Data {
 
     // la fonction est cool, je me demande pourquoi elle n'est pas used
     public boolean haveStudent(int tab) {
-        return !(getTable(tab) == null) && !isDeleted(tab) && (Objects.requireNonNull(getTable(tab)).getEtu() != null);
+        return (!isDeleted(tab)) && (Objects.requireNonNull(Objects.requireNonNull(getTable(tab)).getEtu() != null);
     }
 
 
@@ -777,9 +796,9 @@ public class Data {
 
 
     public boolean changeNumTable(int oldNum, int newNum) {
-        if (getTable(oldNum) != null) {
+        if (getTable(oldNum) != null ){
             Objects.requireNonNull(getTable(oldNum)).setNum(newNum);
-            return true;
+            return true ;
         }
         return false;
     }

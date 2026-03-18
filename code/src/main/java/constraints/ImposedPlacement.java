@@ -7,8 +7,8 @@ public class ImposedPlacement extends Constraint {
     private final String studentNumber;
 
     public ImposedPlacement(int tableNumber, String studentNumber) {
-        this.numTable = tableNumber;
-        this.numStudent = studentNumber;
+        this.tableNumber = tableNumber;
+        this.studentNumber = studentNumber;
 
         studentsConstraints.add(studentNumber);
     }

@@ -52,6 +52,7 @@ public class Utilitaire {
 
     public static int max(int[] nb) {
         int result = nb[0];
+
         for (int i : nb) {
             if (result < i)
                 result = i;

@@ -40,8 +40,8 @@ public class GridMap extends Map
                         {
                             if (cptVois > cpt)
                             {
-                                int neighbourX = neighbour.getCoord()[0];
-                                int neighbourY = neighbour.getCoord()[1];
+                                int neighbourX = vois.getCoord()[0];
+                                int neighbourY = vois.getCoord()[1];
 
                                 if (hasNeighbour(x, neighbourX, y, neighbourY))
                                 {

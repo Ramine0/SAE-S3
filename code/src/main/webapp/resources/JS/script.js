@@ -2,8 +2,6 @@ let long = 0
 let larg = 0
 
 let groupes = [[1]]
-let nbPlacesSuppr = 1
-let nbImposedPlace = 1
 
 let noms = []
 let active
@@ -542,7 +540,7 @@ function init() {
 function setValid(section) {
     if (!section.startsWith("#"))
         section = "#" + section;
-    }
+
 
     document.querySelector(section).classList.remove("invalid")
     document.querySelector(section).classList.add("valid")
@@ -559,16 +557,12 @@ function setValid(section) {
 
     let numEtu = groupes[numGrp - 1].length;
 
-        if (numEtu < 9) {
-            document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
-        }
-        document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+    if (numEtu < 9) {document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false}
 
-    }
-
+    document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true
+    document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true
+    document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true
+    document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false
 
     genererWalid()
 

@@ -733,8 +733,12 @@ function changeHeaderMode (event) {
         document.getElementById("valuesOfTable").style.height = "0";
 
     }else if (event.target.value === "modify") {
-        tableInfoMod() ;
-    }else{
+        tableInfoMod()
+    }else if (event.target.value === "export"){
+        exportMode()
+    }else if (event.target.value === "import"){
+        importMode()
+    }else {
         console.log("ALERTE ALERTE")
     }
 }
@@ -781,5 +785,10 @@ function setTableInfos() {
 
     }
 }
+
+function exportMode() {}
+
+function importMode() {}
+
 
 

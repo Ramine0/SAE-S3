@@ -23,9 +23,13 @@
         </a>
         <div class="general">
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
+                <label for="modeHeader">Mode d'utilisation </label>
                 <select id="modeHeader" name="modeHeader">
                     <option value="create" selected>Paramètres de création</option>
                     <option value="modify">Voir les informations</option>
+                    <option value="export">Fonctions d'export</option>
+                    <option value="import">Fonctions d'import</option>
+
                 </select>
 
                 <span id="parameters">

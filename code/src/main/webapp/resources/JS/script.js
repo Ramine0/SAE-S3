@@ -706,38 +706,55 @@ function loadData() {
 
 document.querySelector("#planType").addEventListener("change", (e) => {
     if (e.target.value === "rectangularPlan") {
-        document.getElementById("infoRect").style.visibility = "visible";
-        document.getElementById("infoRect").style.height = "fit-content";
+        document.getElementById("infoRect").classList.remove("invisible");
     } else {
-        document.getElementById("infoRect").style.visibility = "hidden";
-        document.getElementById("infoRect").style.height = "0";
+        document.getElementById("infoRect").classList.add("invisible");
     }
 })
 
 function tableInfoMod() {
-    document.getElementById("valuesOfTable").style.visibility = "visible";
-    document.getElementById("valuesOfTable").style.height = "fit-content";
-    document.getElementById("parameters").style.visibility = "hidden";
-    document.getElementById("parameters").style.height = "0";
+    document.getElementById("valuesOfTable").classList.remove("invisible")
+    document.getElementById("parameters").classList.add("invisible")
+    document.getElementById("exportArea").classList.add("invisible")
+    document.getElementById("importArea").classList.add("invisible")
 
 }
 
+function parameterMod() {
+    document.getElementById("parameters").classList.remove("invisible")
+    document.getElementById("valuesOfTable").classList.add("invisible")
+    document.getElementById("exportArea").classList.add("invisible")
+    document.getElementById("importArea").classList.add("invisible")
+
+}
+
+function exportMod() {
+    document.getElementById("parameters").classList.add("invisible")
+    document.getElementById("valuesOfTable").classList.add("invisible")
+    document.getElementById("exportArea").classList.remove("invisible")
+    document.getElementById("importArea").classList.add("invisible")
+
+}
+
+
+function importMod() {
+    document.getElementById("parameters").classList.add("invisible")
+    document.getElementById("valuesOfTable").classList.add("invisible")
+    document.getElementById("exportArea").classList.add("invisible")
+    document.getElementById("importArea").classList.remove("invisible")
+}
 
 document.querySelector("#modeHeader").addEventListener("change", changeHeaderMode)
 
 function changeHeaderMode (event) {
     if (event.target.value === "create") {
-        document.getElementById("parameters").style.visibility = "visible";
-        document.getElementById("parameters").style.height = "100%";
-        document.getElementById("valuesOfTable").style.visibility = "hidden";
-        document.getElementById("valuesOfTable").style.height = "0";
-
+        parameterMod()
     }else if (event.target.value === "modify") {
         tableInfoMod()
     }else if (event.target.value === "export"){
-        exportMode()
+        exportMod()
     }else if (event.target.value === "import"){
-        importMode()
+        importMod()
     }else {
         console.log("ALERTE ALERTE")
     }

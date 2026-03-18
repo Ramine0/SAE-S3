@@ -96,7 +96,7 @@ public class Data {
         return rest;
     }
 
-    public Student getStuFromTab(int num) {
+    public Student getStudentFromTable(int num) {
         return Objects.requireNonNull(getTable(num)).getStudent();
     }
 
@@ -607,7 +607,7 @@ public class Data {
             //je récupère l'étudiant de la table si on a bien une table
             if (i != -1) {
                 if (getTable(i) != null) {
-                    voisins.add(getStuFromTab(i));
+                    voisins.add(getStudentFromTable(i));
                 }
             }
 
@@ -696,9 +696,9 @@ public class Data {
 
 
     public boolean swap(int numT1, int numT2) {
-        if (getStuFromTab(numT1) != null || getStuFromTab(numT2) != null) {
-            Student temp = getStuFromTab(numT1);
-            Objects.requireNonNull(getTable(numT1)).setStudent(getStuFromTab(numT2));
+        if (getStudentFromTable(numT1) != null || getStudentFromTable(numT2) != null) {
+            Student temp = getStudentFromTable(numT1);
+            Objects.requireNonNull(getTable(numT1)).setStudent(getStudentFromTable(numT2));
             Objects.requireNonNull(getTable(numT2)).setStudent(temp);
             return true;
         }
@@ -716,8 +716,8 @@ public class Data {
     }
 
     public String getInfosForVisu(int num) {
-        if (getTable(num) != null && getStuFromTab(num) != null) {
-            Student etu = getStuFromTab(num);
+        if (getTable(num) != null && getStudentFromTable(num) != null) {
+            Student etu = getStudentFromTable(num);
             return num + ";" + etu.textVisualisation();
         } else {
             return num + ";null;null;null";

@@ -12,7 +12,7 @@ public class HelloServlet {
     static void main(String[] args) throws FileNotFoundException {
         Room salle = new Room();
         CreatingIntermediate crea = salle.getCreating();
-        PositioningIntermediate pos = crea.generatePos();
+        PositioningIntermediate pos = crea.generatePositioning();
         crea.setMode(0);
 
         crea.changeMapMode('R', "src/main/webapp/");

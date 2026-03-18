@@ -223,8 +223,8 @@ public class CreatingIntermediate {
      * @param num le numéro de la table
      * @return l'étudiant assis à la table num
      */
-    public Student stuFromTable(int num) {
-        return d.getStuFromTab(num);
+    public Student studentFromTable(int num) {
+        return d.getStudentFromTable(num);
     }
 
 
@@ -241,7 +241,7 @@ public class CreatingIntermediate {
      * Fonction de génération du contrôleur de positionnement
      * @return un objet PositioningIntermediate
      */
-    public PositioningIntermediate generatePos() {
+    public PositioningIntermediate generatePositioning() {
         return new PositioningIntermediate(d);
     }
 
@@ -304,7 +304,7 @@ public class CreatingIntermediate {
      * @return une chaine de caractères contenant les informations des étudiants séparés
      */
     public String getSeparated() {
-        StringBuilder result = new StringBuilder();
+        StringBuilder separated = new StringBuilder();
         for (int i = 1; i < 10; i++) {
             PerGroup temp = d.getPerGroup(i);
             if (temp == null) {
@@ -314,14 +314,14 @@ public class CreatingIntermediate {
                 for (String s : students) {
                     if (s.equals("null")) {
                         String id = findStudent(s) ;
-                        result.append(id).append(":").append(d.getFullName(id)).append(";");
+                        separated.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }
-                result.append("!");
+                separated.append("!");
             }
         }
 
-        return result.toString();
+        return separated.toString();
     }
 
     /**
@@ -329,9 +329,9 @@ public class CreatingIntermediate {
      * @return un string avec la liste d'étudiants
      */
     public String getStudentList() {
-        String result = "ID             ; nom prenom \n";
-        result += d.studentList();
-        return result;
+        String list = "ID             ; nom prenom \n";
+        list += d.studentList();
+        return list;
     }
 
     public String getDimensions() {

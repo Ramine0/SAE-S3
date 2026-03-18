@@ -135,7 +135,7 @@ public class CreatingIntermediate {
         String student = findStudent(idPartiel);
 
         if (student.length() == 8) {
-            return d.addStudentGroupConstraint(etu, numGrp);
+            return d.addStudentGroupConstraint(student, numGrp);
         } else {
             return student;
         }

@@ -36,7 +36,7 @@ public class ConnectionServlet extends HttpServlet {
             }else if (request.getParameter("action").equals("subscribe")){
                 subscribe(request, connection);
             }else if (request.getParameter("action").equals("init")){
-                initPlacements(request, connection, out);
+                initPlacements(request, connection, out, user);
             }else if (request.getParameter("action").equals("load")){
                 load(request, connection);
             }else if (request.getParameter("action").equals("add")){
@@ -51,7 +51,7 @@ public class ConnectionServlet extends HttpServlet {
     private void connect(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
         String connectRequest="Select id from User where name=? and password=? limit 1";
         String username = request.getParameter("username");
-        String password = sha256(request.getParameter("password"));
+        String password = request.getParameter("password");
         try (PreparedStatement connexionAttempt = connection.prepareStatement(connectRequest)) {
             connexionAttempt.setString(1, username);
             connexionAttempt.setString(2, password);
@@ -67,7 +67,7 @@ public class ConnectionServlet extends HttpServlet {
         String subscribeRequest="insert into User (name, email, password) values (?, ?, ?)";
         String username = request.getParameter("username");
         String email = request.getParameter("email");
-        String password = sha256(request.getParameter("password"));
+        String password = request.getParameter("password");
         try (PreparedStatement subscribeAttempt = connection.prepareStatement(subscribeRequest)) {
             subscribeAttempt.setString(1, username);
             subscribeAttempt.setString(2, email);
@@ -76,7 +76,7 @@ public class ConnectionServlet extends HttpServlet {
         }
     }
 
-    private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
+    private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {
         String initRequest="Select name from Placement where idUser=?";
         try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
             initialisationAttempt.setString(1, user);

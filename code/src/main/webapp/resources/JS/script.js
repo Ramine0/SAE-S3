@@ -149,7 +149,6 @@ function enleverEtuGrp(event) {
         if (xhr.readyState === XMLHttpRequest.DONE)
             if (xhr.status !== 200)
                 console.log("error deleting etu group");
-        }
     };
 
     xhr.send();

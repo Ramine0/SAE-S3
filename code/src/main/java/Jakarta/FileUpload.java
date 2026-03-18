@@ -25,6 +25,11 @@ public class FileUpload extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         String uploadPath = request.getServletContext().getRealPath("/") + "/" + getServletContext().getInitParameter("upload.path");
 
         // Retrieve the file part from the request

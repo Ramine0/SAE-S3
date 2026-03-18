@@ -59,9 +59,9 @@ public class GridMap extends Map
 
     }
 
-    private boolean hasNeighbour(int x, int neighBourX, int y, int neighBourY)
+    private boolean hasNeighbour(int x, int neighbourX, int y, int neighbourY)
     {
-        return (((x - neighBourX) * (x - neighBourX) == 1) && y == neighBourY || ((y - neighBourY) * (y - neighBourY) == 1) && (x == neighBourX)) ;
+        return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX)) ;
     }
 
     public GridMap()
@@ -97,7 +97,7 @@ public class GridMap extends Map
         } catch (Exception e)
         {
             System.out.println(e.getMessage());
-            System.out.println("je me disai aussi");
+            System.out.println("je me disais aussi");
 
             return null;
         }

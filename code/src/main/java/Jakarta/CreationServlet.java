@@ -21,6 +21,11 @@ public class CreationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         String user = request.getSession().getId();
@@ -40,9 +45,9 @@ public class CreationServlet extends HttpServlet {
 
 
         if (request.getParameter("generate") != null) {
-            createUser(user, request.getServletContext().getRealPath("/") + "/") ;
+            createUser(user, request.getServletContext().getRealPath("/") + "/");
             out.print(user);
-            out.print(msg) ;
+            out.print(msg);
         }
 
 
@@ -77,14 +82,14 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
-    // les action de categorie table
+
     private void tableRequests(HttpServletRequest request, PrintWriter out, Room room) {
 
         CreatingIntermediate crea = room.getCreating();
 
         int length, width;
 
-        // les differentes action
+
         switch (request.getParameter("action")) {
 
             case "visu" -> {
@@ -136,29 +141,26 @@ public class CreationServlet extends HttpServlet {
         out.print(room.getPositioning().getTablesForVisu());
     }
 
-    // les requetes sur les contraintes
+
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room room) {
         CreatingIntermediate crea = room.getCreating();
 
 
         switch (request.getParameter("constraint")) {
 
-            // si on veux imposer une place
             case "imposePlace" -> {
-                if (request.getParameter("oldNum") != null  && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && ! request.getParameter("oldNum").isEmpty() && ! request.getParameter("newNum").isEmpty() && ! request.getParameter("numEtu").isEmpty()) {
+                if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty()) {
                     out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
                 }
                 out.print("null");
             }
 
-            // on retire la place imposée si elle existe (l'intermediate fait le controle
             case "removeImposedPlace" -> crea.removeConstraint("I", Integer.parseInt(request.getParameter("id")) - 1);
 
             // supprime la table
             case "deleteTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
 
-                // on fait un minimum de test
                 if (num < crea.minTable())
                     num = crea.minTable();
                 else if (num > crea.maxTable())
@@ -167,7 +169,6 @@ public class CreationServlet extends HttpServlet {
                 out.print(crea.supprTable(num) + ";" + num);
             }
 
-            // rend un table re disponible
             case "removeDeletedTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
                 crea.unremoveTable(num);
@@ -227,20 +228,17 @@ public class CreationServlet extends HttpServlet {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private static boolean createUser(String user, String path) {
+    private static void createUser(String user, String path) {
         if (!userExists(user)) {
             try {
-                Room newData = new Room(path) ;
-                rooms.put(user,newData);
-                return true ;
+                Room newData = new Room(path);
+                rooms.put(user, newData);
 
             } catch (Exception e) {
                 msg = e.getMessage() ;
                 getMessage();
-                return false;
             }
         }
-        return true;
     }
 
     private static void getMessage() {

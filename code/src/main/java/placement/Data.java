@@ -24,8 +24,6 @@ public class Data {
     private Map map;
 
 
-
-
     private final ArrayList<Student> students = new ArrayList<>();
     private int idC;
 
@@ -64,12 +62,11 @@ public class Data {
     }
 
 
-    public boolean placeStudent(int table, String idStudent) {
-        if (getTable(table)== null ) {
-            return false ;
+    public void placeStudent(int table, String idStudent) {
+        if (getTable(table) == null) {
+            return;
         }
-        getTable(table).setStudent(getStudentFromId(idStudent));
-        return true ;
+        Objects.requireNonNull(getTable(table)).setStudent(getStudentFromId(idStudent));
     }
 
 
@@ -121,7 +118,6 @@ public class Data {
         int numRes = 0;
         for (Table table : tables) {
             if (table != null) {
-                // je verifie que ma table soit pas supprimée
                 if (!isDeleted(table.getNumber())) {
                     // si c'est bon, je l'ajoute à la liste
                     result[numRes] = table.getNumber();
@@ -178,12 +174,12 @@ public class Data {
         return null;
     }
 
-    // voir si c'est pas remplacable
+    // voir si c'est pas remplaçable
     public Constraint[] getConstr() {
-        Constraint[] constr=new Constraint[getNbConstraint()];
-        int i=0;
-        for (Constraint c : constraints){
-            constr[i]=c;
+        Constraint[] constr = new Constraint[getNbConstraint()];
+        int i = 0;
+        for (Constraint c : constraints) {
+            constr[i] = c;
             i++;
         }
         return constr;
@@ -223,10 +219,6 @@ public class Data {
             lesNums[i] = tables[i].getNumber();
         }
         return lesNums;
-    }
-
-    public Student[] getStudents() {
-        return students.toArray(new Student[0]);
     }
 
     private void loadFile() throws FileNotFoundException {
@@ -503,10 +495,10 @@ public class Data {
         }
     }
 
-    public int getNbConstraint(){
-        int nb=0;
+    public int getNbConstraint() {
+        int nb = 0;
         for (Constraint c : constraints) {
-            if (c!=null){
+            if (c != null) {
                 nb++;
             }
         }
@@ -578,7 +570,7 @@ public class Data {
     }
 
     public String completeId(String incomplet) {
-        String possib = "";
+        String result = "";
         if (incomplet.startsWith("p") && students.getFirst().getId().startsWith("1")) {
             incomplet = "1" + incomplet.substring(1);
         } else if (incomplet.startsWith("1") && students.getFirst().getId().startsWith("p")) {
@@ -588,13 +580,13 @@ public class Data {
         for (Student s : students) {
             if (s.getId().equals(incomplet)) {
                 return incomplet;
-            } else if ((!possib.isEmpty()) && s.getId().startsWith(incomplet)) {
+            } else if ((!result.isEmpty()) && s.getId().startsWith(incomplet)) {
                 return "";
             } else if (s.getId().startsWith(incomplet)) {
-                possib = s.getId();
+                result = s.getId();
             }
         }
-        return possib;
+        return result;
     }
 
 
@@ -612,7 +604,7 @@ public class Data {
         // pour tous les voisins de la map
 
         for (int i : map.neighbours(t, existingTables())) {
-            //je récupère l'etu de la table si on a bien une table
+            //je récupère l'étudiant de la table si on a bien une table
             if (i != -1) {
                 if (getTable(i) != null) {
                     voisins.add(getStuFromTab(i));
@@ -662,10 +654,10 @@ public class Data {
         return Objects.requireNonNull(getTable(numTable)).description();
     }
 
-    public String getTablesInfos(){
+    public String getTablesInfos() {
         StringBuilder tab = new StringBuilder();
-        for (Table t: tables){
-            if (!tab.isEmpty()){
+        for (Table t : tables) {
+            if (!tab.isEmpty()) {
                 tab.append(";");
             }
             tab.append(t.information());
@@ -814,8 +806,7 @@ public class Data {
     }
 
 
-    // TODO ou la faire ou changer le code a vecteur pour utiliser student list qui est au dessus
-    public Student[] getEtus() {
-        return null ;
+    public Student[] getStudents() {
+        return students.toArray(new Student[0]);
     }
 }

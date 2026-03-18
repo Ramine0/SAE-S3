@@ -22,7 +22,7 @@ public class CreatingIntermediate {
     }
 
     /**
-     * Constructeur de la classe. A quoi il sert, bonne question???
+     * Constructeur de la classe. À quoi il sert, bonne question???
      * @param path le chemin vers le fichier
      * @throws FileNotFoundException envoyée par Data() si elle ne trouve pas le fichier
      */
@@ -94,7 +94,7 @@ public class CreatingIntermediate {
 
 
     /**
-     * Regarde si les informations id et num sont correctements renseignées, si c'est le cas appelle
+     * Regarde si les informations id et num sont correctement renseignées, si c'est le cas appelle
      * la logique d'ajout de place imposée de Data
      * @param id numéro de l'étudiant
      * @param num numéro de la table
@@ -142,10 +142,10 @@ public class CreatingIntermediate {
     }
 
     /**
-     * fonction utilisée pour afficher la description des données
+     * Fonction utilisée pour afficher la description des données
      * @return la description des données
      */
-    public String[] descripData() {
+    public String[] dataDescription() {
         return d.descrip();
     }
 
@@ -169,7 +169,7 @@ public class CreatingIntermediate {
      * @param num le numéro de la table
      * @return un entier adapté à la situation (géré côté Servlet et JavaScript)
      */
-    public int supprTable(int num) {
+    public int deleteTable(int num) {
         num = findTable(num) ? num : -1;
 
         if (num == -1) {
@@ -193,15 +193,15 @@ public class CreatingIntermediate {
     public int[] free(){return d.freeTables();}
 
     /**
-     * entre dans la logique de réinsertion de table supprimée pour la table num
+     * Entre dans la logique de réinsertion de table supprimée pour la table num
      * @param num numéro de la table
      */
-    public void unremoveTable(int num) {
-        d.unremoveTable(num);
+    public void undeleteTable(int num) {
+        d.undeleteTable(num);
     }
 
     /**
-     * définition des dimensions du plan
+     * Définition des dimensions du plan
      * @param lon longueur du plan
      * @param lar largeur du plan
      */
@@ -212,14 +212,14 @@ public class CreatingIntermediate {
 
 
     /**
-     * fonction de réinitialisation des données
+     * Fonction de réinitialisation des données
      */
     public void resetData() {
         d.reset();
     }
 
     /**
-     * fonction de récupération de l'étudiant assis à la table num
+     * Fonction de récupération de l'étudiant assis à la table num
      * @param num le numéro de la table
      * @return l'étudiant assis à la table num
      */
@@ -238,7 +238,7 @@ public class CreatingIntermediate {
 
 
     /**
-     * fonction de génération du contrôleur de positionnement
+     * Fonction de génération du contrôleur de positionnement
      * @return un objet PositioningIntermediate
      */
     public PositioningIntermediate generatePos() {
@@ -246,9 +246,8 @@ public class CreatingIntermediate {
     }
 
     /**
-     * charge un plan grâce à un path
+     * Charge un plan grâce à un path
      * @param path chemin du plan à charger
-     * @return true si le chargement a réussi, false sinon
      */
     public void loadDefaultMap(String path) {
         d.loadDefaultPlan(path);
@@ -256,9 +255,8 @@ public class CreatingIntermediate {
 
     /**
      * contrôleur du type de plan choisi
-     * @param newOne charactère permettant le choix du type de plan
+     * @param newOne caractère permettant le choix du type de plan
      * @param path chemin du plan
-     * @return true si le changement de plan a réussi, false sinon
      */
     public void changeMapMode(char newOne, String path) {
         d.changePlanMode(newOne, path);
@@ -327,7 +325,7 @@ public class CreatingIntermediate {
     }
 
     /**
-     * affichage des étudiants dans une fenêtre popup
+     * Affichage des étudiants dans une fenêtre popup
      * @return un string avec la liste d'étudiants
      */
     public String getStudentList() {
@@ -336,7 +334,7 @@ public class CreatingIntermediate {
         return result;
     }
 
-    public String getDimentions() {
+    public String getDimensions() {
         return d.getPlanSize();
     }
 }

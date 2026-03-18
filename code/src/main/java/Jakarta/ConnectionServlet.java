@@ -6,11 +6,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import placement.Data;
 
-import java.io.PrintWriter;
-
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,10 +20,15 @@ public class ConnectionServlet extends HttpServlet {
     private Data data;
     private String user;
 
-    @Resource(name="p2403918")
+    @Resource(name = "p2403918")
     private DataSource dataSource;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         if (data==null && (request.getParameter("action").equals("load") || request.getParameter("action").equals("add"))){
             data=new Data();
         }
@@ -251,6 +255,7 @@ public class ConnectionServlet extends HttpServlet {
                 }
             }
         }
+
     }
 
 }

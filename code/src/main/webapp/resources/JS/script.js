@@ -1,5 +1,5 @@
-let long = 0
-let larg = 0
+let width = 0
+let height = 0
 
 let groupes = [[1]]
 
@@ -262,7 +262,7 @@ function modeSwap() {
 
 function activateSwap(button) {
 
-    let numt2 = active;
+    let table2Number = active;
     if (button === "none" && active != null) {
         swap = !swap;
         document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
@@ -273,22 +273,22 @@ function activateSwap(button) {
         swapReq.onreadystatechange = function () {
             if (swapReq.readyState === XMLHttpRequest.DONE) {
                 if (swapReq.status === 200) {
-                    console.log(numt2)
+                    console.log(table2Number)
                     console.log(button)
                     let numt1 = button.substring(1);
                     let nomt1 = noms[tables.indexOf(numt1)];
-                    let nomt2 = noms[tables.indexOf(numt2)];
+                    let nomt2 = noms[tables.indexOf(table2Number)];
 
                     let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
                     console.log(document.querySelector(`#T${numt1}`).innerHTML)
                     document.querySelector(`#T${numt1}`).innerHTML = content;
 
-                    console.log(document.querySelector(`#T${numt2}`).innerHTML)
-                    content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
-                    document.querySelector(`#T${numt2}`).innerHTML = content;
+                    console.log(document.querySelector(`#T${table2Number}`).innerHTML)
+                    content = `<span><div class="tableNumber">${table2Number}</div><img id="deleteT${table2Number}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
+                    document.querySelector(`#T${table2Number}`).innerHTML = content;
 
                     noms[tables.indexOf(numt1)] = nomt2;
-                    noms[tables.indexOf(numt2)] = nomt1;
+                    noms[tables.indexOf(table2Number)] = nomt1;
                     swap = false;
                 }
             }
@@ -316,10 +316,10 @@ function setTableNumber() {
                 else if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
                     let l = xhr.responseText.split(";");
 
-                    long = l[0];
+                    width = l[0];
                     document.getElementById("long").value = l[0];
 
-                    larg = l[1];
+                    height = l[1];
                     document.getElementById("larg").value = l[1];
                 }
 
@@ -416,7 +416,7 @@ function enableZone() {
         document.querySelector("#supEtu1G1").disabled = false;
         document.querySelector("#walEtu1G1").disabled = false;
 
-        // le bout générer
+        // le bouton générer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
     }
@@ -694,7 +694,7 @@ function loadData() {
 
                     let results = xhr.responseText.split("<")
 
-                    if (!results[1] !== "") {
+                    if (results[1] !== "") {
                         results[1].split(";").forEach(student => {
                             students.push(student)
                         })

@@ -28,7 +28,7 @@ async function subscribe(){
     confirm = await sha256(confirm).then(hash => {return hash})
     if (password===confirm){
         console.log('confirme');
-        xhr=new XMLHttpRequest()
+        const xhr=new XMLHttpRequest()
         xhr.open('GET', `Connection?action=${encodeURIComponent('subscribe')}&username=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
         xhr.onreadystatechange = function(){
             if (xhr.readyState===XMLHttpRequest.DONE){
@@ -69,9 +69,9 @@ function initPlacements(){
     init.onreadystatechange = function () {
         if (xhr.readyState===XMLHttpRequest.DONE){
             if (xhr.status===200){
-                placements=xhr.responseText.split(";")
+                const placements=xhr.responseText.split(";")
                 for (let i=0; i<placements.length; i++){
-                    info=placements[i].split(",")
+                    const info=placements[i].split(",")
                     let p=document.createElement("option");
                     p.value=`${info[0]}${info[1]}`
                     p.text=info[1]

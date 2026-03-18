@@ -20,6 +20,11 @@ public class DisplayServlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         String code = request.getParameter("testVal");
         if (CreationServlet.getRoom(code) == null) {code = request.getSession().getId();}
 
@@ -69,7 +74,7 @@ public class DisplayServlet extends HttpServlet
                 else {
 
                     out.println("<p>" + pos.getTablesForVisu() + "</p>");
-                    out.println(pos.descripData());
+                    out.println(pos.describeData());
                     out.println("""
                             <h4> Erreur de génération </h4>
                             <a href="creation.jsp"><Retour à la page de création</a>
@@ -81,6 +86,10 @@ public class DisplayServlet extends HttpServlet
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
 
         Room room = CreationServlet.getRoom(request.getSession().getId());
         PositioningIntermediate pos = null;
@@ -97,7 +106,7 @@ public class DisplayServlet extends HttpServlet
                 // on recup le visuel des tables
                 case "init" -> out.print(pos.getTablesForVisu());
 
-                // on recupere les information de la table
+                // on récupère les information de la table
                 case "infos" -> {
                     try {
                         out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
@@ -106,7 +115,7 @@ public class DisplayServlet extends HttpServlet
                     }
                 }
 
-                // on swap les etus des tables donnees
+                // on swap les étudiants des tables donnees
                 case "swap" -> {
                     if (room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
                         out.println("0");

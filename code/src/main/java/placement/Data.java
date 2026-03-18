@@ -223,10 +223,6 @@ public class Data {
         return lesNums;
     }
 
-    public Student[] getStudents() {
-        return students.toArray(new Student[0]);
-    }
-
     private void chargerFichier() throws FileNotFoundException {
         chargerFichier("src/main/webapp/");
     }
@@ -697,7 +693,7 @@ public class Data {
 
     // la fonction est cool, je me demande pourquoi elle n'est pas used
     public boolean haveStudent(int tab) {
-        return (!isDeleted(tab)) && (Objects.requireNonNull(Objects.requireNonNull(getTable(tab)).getEtu() != null);
+        return (!isDeleted(tab)) && (Objects.requireNonNull(Objects.requireNonNull(getTable(tab)).getEtu() != null));
     }
 
 

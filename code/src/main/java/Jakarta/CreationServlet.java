@@ -47,8 +47,7 @@ public class CreationServlet extends HttpServlet {
 
 
         if (request.getParameter("generate") != null) {
-            if (!createUser(user, request.getServletContext().getRealPath("/") + "/"))
-                throw new Exception("User creation error");
+            createUser(user, request.getServletContext().getRealPath("/") + "/");
             out.print(user);
             out.print(msg);
         }
@@ -225,20 +224,17 @@ public class CreationServlet extends HttpServlet {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private static boolean createUser(String user, String path) {
+    private static void createUser(String user, String path) {
         if (!userExists(user)) {
             try {
                 Room newData = new Room(path);
                 rooms.put(user, newData);
-                return true;
 
             } catch (Exception e) {
                 msg = e.getMessage() ;
                 getMessage();
-                return false;
             }
         }
-        return true;
     }
 
     private static void getMessage() {
@@ -247,18 +243,19 @@ public class CreationServlet extends HttpServlet {
 
 
     public String getUserData(String user) {
-        Room room = getSalle(user);
+        Room room = getRoom(user);
         String visualisationInfos = "null";
         if (room != null) {
-            visualisationInfos = "" ;
+            visualisationInfos = "";
             if (room.getPositioningIntermediate() != null) {
-                visualisationInfos += "\n" + room.getPositioningIntermediate().getTablesForVisu() +"<";
+                visualisationInfos += "\n" + room.getPositioningIntermediate().getTablesForVisu() + "<";
             }
             // les infos d'etudians mis a distance
 
             visualisationInfos += room.getCrea().getSeparated();
             visualisationInfos += "<";
             visualisationInfos += room.getCrea().getStudentList() + "<";
+        }
 
         return visualisationInfos;
     }

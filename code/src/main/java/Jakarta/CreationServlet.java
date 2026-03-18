@@ -29,38 +29,16 @@ public class CreationServlet extends HttpServlet {
             rooms = new HashMap<>();
         }
 
-        // quand on charge la page ou un id de session
+
         if (request.getParameter("load") != null) {
 
-            // si c pas un chargement d'un nouveau user (un sans code)
-            if (!request.getParameter("load").isEmpty()){
-
-                // si jamais je suis en chargement de page
-                if(loadSession(request.getParameter("load"),user)){
-                    out.print(getUserData(user)) ;
-                    out.flush();
-                    return ;
-                }else {
-                    out.print("null") ;
-                    out.flush();
-                    return ;
-                }
-
-            }else if (userExists(user)) {
-                out.print(getUserData(user)) ;
-                out.flush();
-                return ;
-            }else {
-                out.print("null") ;
-                out.flush();
-                return ;
-            }
+            loadSession(request, user, out);
+            return;
 
         }
 
 
 
-        // on cherche cree les données si user pas deja existant
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/") ;
             out.print(user);
@@ -75,11 +53,28 @@ public class CreationServlet extends HttpServlet {
         if (request.getParameter("action") != null)
             tableRequests(request, out, room);
 
-        // les action constraint
         if (request.getParameter("constraint") != null)
             constraintRequests(request, out, room);
 
         out.flush();
+    }
+
+    private void loadSession(HttpServletRequest request, String user, PrintWriter out) {
+        if (!request.getParameter("load").isEmpty()){
+
+            loadWithCode(loadSession(request.getParameter("load"), user), out, user);
+
+        }else loadWithCode(userExists(user), out, user);
+    }
+
+    private void loadWithCode(boolean request, PrintWriter out, String user) {
+        if (request) {
+            out.print(getUserData(user));
+            out.flush();
+        } else {
+            out.print("null");
+            out.flush();
+        }
     }
 
     // les action de categorie table
@@ -230,36 +225,35 @@ public class CreationServlet extends HttpServlet {
                 return true ;
 
             } catch (Exception e) {
-                System.out.println(e.getMessage());
                 msg = e.getMessage() ;
+                getMessage();
                 return false;
             }
         }
         return true;
     }
 
+    private static void getMessage() {
+        System.out.println(msg);
+    }
+
 
     public String getUserData(String user) {
         Room room = getRoom(user);
-        String result = "null";
+        String visualisationInfos = "null";
         if (room != null) {
-            result = "" ;
-            // les infos de la visu
-            if (room!=null){
-                result = "" ;
-                if (room.getPositioningIntermediate() != null) {
-                    result += "\n" + room.getPositioningIntermediate().getTablesForVisu() +"<";
-                }
-                // les infos d'etudians mis a distance
-
-                result += room.getCrea().getSeparated();
-                result += "<";
-                result += room.getCrea().getStudentList() +"<";
+            visualisationInfos = "" ;
+            if (room.getPositioningIntermediate() != null) {
+                visualisationInfos += "\n" + room.getPositioningIntermediate().getTablesForVisu() +"<";
             }
+            // les infos d'etudians mis a distance
 
-
+            visualisationInfos += room.getCrea().getSeparated();
+            visualisationInfos += "<";
+            visualisationInfos += room.getCrea().getStudentList() +"<";
         }
-        return result;
+
+        return visualisationInfos;
     }
 
 

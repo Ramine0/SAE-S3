@@ -33,27 +33,6 @@ public class ExportServlet extends HttpServlet
                 out.println(crea.stuFromTable(i+1).getId()+";"+ crea.stuFromTable(i+1).getName()+" "+crea.stuFromTable(i+1).getFirstName()+";"+(i+1));
             }
         }
-        /*
-        if (request.getParameter("format").equals("Excel")){
-            out.println(";;;;contrainte;detail");
-            for (int i = 0; i< crea.getNbConstr(); i++){
-                if (crea.getConstr(i+1)!=null){
-                    String type= crea.getConstr(i+1).getClass().getTypeName();
-                    out.print(";;;;"+type);
-                    if (type.equals("PerGroup")){
-                        for (int j = 0; j<((PerGroup) crea.getConstr(i+1)).getNbStudent(); j++){
-                            out.print(";"+((PerGroup) crea.getConstr(i+1)).getNum()+";"+((PerGroup) crea.getConstr(i+1)).getStudent(j));
-                        }
-                    }else if (type.equals("PerClass")){
-                        out.print(";"+((PerClass)crea.getConstr(i+1)).typePerClass());
-                    }else if (type.equals("ImposedPlacement")){
-                        out.print(";"+((ImposedPlacement)crea.getConstr(i+1)).getNumEtu()+";"+((ImposedPlacement)crea.getConstr(i+1)).getNumTable());
-                    }
-                }
-                out.println();
-            }
-        }
-         */
         out.flush();
     }
 }

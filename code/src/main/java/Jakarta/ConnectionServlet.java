@@ -6,11 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import placement.Data;
 
+import java.io.PrintWriter;
+
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -18,25 +18,27 @@ import java.sql.ResultSet;
 @WebServlet("/Connection")
 public class ConnectionServlet extends HttpServlet {
     private Data data;
+    private String user;
 
     @Resource(name = "p2403918")
     private DataSource dataSource;
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (data == null) {
-            data = new Data();
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+    {
+        if (data==null && (request.getParameter("action").equals("load") || request.getParameter("action").equals("add"))){
+            data=new Data();
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
-            if (request.getParameter("action").equals("connect")) {
-                String requestConnect = "Select id from User where name=? and password=? limit 1";
-                String username = request.getParameter("username");
-                String password = sha256(request.getParameter("password"));
+            if (request.getParameter("action").equals("connect")){
+                String requestConnect="Select id from User where email=? and password=? limit 1";
+                String email = request.getParameter("email");
+                String password = request.getParameter("password");
                 try (PreparedStatement preparedStatement = connection.prepareStatement(requestConnect)) {
-                    preparedStatement.setString(1, username);
+                    preparedStatement.setString(1, email);
                     preparedStatement.setString(2, password);
                     ResultSet resultSet = preparedStatement.executeQuery();
+                    user=resultSet.getString(1);
                     out.print(resultSet.getString(1));
                     out.flush();
                     resultSet.close();
@@ -45,22 +47,22 @@ public class ConnectionServlet extends HttpServlet {
                 String requestSubscribe = "insert into User (name, email, password) values (?, ?, ?)";
                 String username = request.getParameter("username");
                 String email = request.getParameter("email");
-                String password = sha256(request.getParameter("password"));
+                String password = request.getParameter("password");
                 try (PreparedStatement preparedStatement = connection.prepareStatement(requestSubscribe)) {
                     preparedStatement.setString(1, username);
                     preparedStatement.setString(2, email);
                     preparedStatement.setString(3, password);
-                    preparedStatement.executeUpdate();
+                    int result=preparedStatement.executeUpdate();
+                    out.print(result);
                 }
-            } else if (request.getParameter("action").equals("init")) {
-                String requestInit = "Select name from Placement where idUser=?";
-                String id = request.getParameter("id");
+            }else if (request.getParameter("action").equals("init")){
+                String requestInit="Select idPlacement, name from Placement where idUser=?";
                 try (PreparedStatement preparedStatement = connection.prepareStatement(requestInit)) {
-                    preparedStatement.setString(1, id);
+                    preparedStatement.setString(1, user);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     while (!resultSet.wasNull()) {
-                        out.print(resultSet.getString(1));
-                        if (resultSet.next()) {
+                        out.print(resultSet.getString(1)+","+resultSet.getString((2)));
+                        if (resultSet.next()){
                             out.print(";");
                         }
                     }
@@ -200,22 +202,6 @@ public class ConnectionServlet extends HttpServlet {
             System.out.println(e.getMessage());
         }
 
-    }
-
-    String sha256(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(password.getBytes());
-            byte[] byteData =digest.digest();
-            StringBuilder sb=new StringBuilder();
-            for (byte byteDatum : byteData) {
-                sb.append(Integer.toString((byteDatum & 0xff) + 0x100, 16).substring(1));
-            }
-            return sb.toString();
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return "";
-        }
     }
 
 }

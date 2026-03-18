@@ -37,6 +37,7 @@ public class Data {
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
         } else if (mapType.charAt(0) == 'D') {
             map = new GridMap();
+            loadPlanDefault(path);
         }
 
 
@@ -45,6 +46,7 @@ public class Data {
 
     public Data() throws FileNotFoundException {
         map = new GridMap();
+        loadPlanDefault("src/main/webapp/");
         chargerFichier();
         init();
     }
@@ -218,7 +220,7 @@ public class Data {
 
     public int[] getTables() {
         int[] lesNums = new int[tables.length];
-        for (int i = 0; i < tables.length; i++) {
+        for (int i = 0; i < maxNumTable(); i++) {
             lesNums[i] = tables[i].getNum();
         }
         return lesNums;
@@ -588,7 +590,6 @@ public class Data {
         ArrayList<Student> voisins = new ArrayList<>();
         // pour tous les voisins de la map
 
-//        System.out.println(Arrays.toString(map.neighbours(t, freeTables())));
         for (int i : map.neighbours(t, existingTables())) {
             //je récupère l'etu de la table si on a bien une table
             if (i != -1) {

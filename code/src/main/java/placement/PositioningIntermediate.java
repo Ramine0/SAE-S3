@@ -57,6 +57,8 @@ public class PositioningIntermediate {
 
     // valide ou non le placement
     private boolean walid(Student s, int t) {
+        System.out.println(s.getFullName());
+
         if (!Utilitaire.in(t, donnees.freeTables()))
             return false;
 

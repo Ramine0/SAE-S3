@@ -24,14 +24,17 @@
         <div class="general">
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
                 <select id="modeHeader" name="modeHeader">
-                    <option value="create" selected>Paramettres de creation</option>
-                    <option value="modify">Voir les informations  </option>
+                    <option value="create" selected>Paramètres de création</option>
+                    <option value="modify">Voir les informations</option>
                 </select>
 
                 <span id="parameters">
                     <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
                     <input type="file" name="studentFile" id="studentFile" accept="text/csv">
-                    <label for="classMode">Séparation des étudiants par groupes classes </label>
+
+                    <br>
+
+                    <label for="classMode">Type de séparation</label>
                     <select id="classMode" name="classMode">
                         <option value="normal" selected>Placement basique</option>
                         <option value="group">Par groupe</option>
@@ -68,28 +71,28 @@
                     </span>
                     <span id="studentInfo">
 
-                        <div >
+                        <div>
                             <label for="numEtuVisu"> Numero Etudiant </label>
                             <input name="numEtuVisu" id="numEtuVisu" type="text" disabled>
                         </div>
-                        <div >
+                        <div>
                             <label for="nomEtuVisu"> Nom de l'etudiant </label>
                             <input name="nomEtuVisu" id="nomEtuVisu" type="text" disabled>
                         </div>
-                        <div >
+                        <div>
                             <label for="grpEtuVisu"> Groupe classe l'etudiant </label>
                             <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
                         </div>
 
                         <span>
-                            <button action="setTableInfos">appliquer</button>
-                            <button action="swapMode">echanger</button>
+                            <input type="button" onclick="setTableInfos()" value="appliquer">
+                            <input type="button" onclick="modeSwap()" value="echanger">
                         </span>
 
                     </span>
                 </div>
 
-                <button type="button" id="startConstr" class="validNbTable" onclick="loadData()"> Valider le fichier et le plan
+                <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le plan
                 </button>
                 <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
 
@@ -97,8 +100,7 @@
             <form method="post" action="Display">
                 <input type="text" name="sessionCode" id="sessionCode">
                 <button type="button" id="loadSession" onclick="loadData()" > Charger </button>
-                <button type="submit" id="walid" class="boutWalider" onclick="enableText()"
-                        disabled> Générer
+                <button type="submit" id="walid" class="boutWalider" disabled> Générer
                 </button>
             </form>
 

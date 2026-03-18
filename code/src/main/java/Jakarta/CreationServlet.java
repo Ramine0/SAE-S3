@@ -31,27 +31,42 @@ public class CreationServlet extends HttpServlet {
             rooms = new HashMap<>();
         }
 
-        // c'est la premiere requette qu'on va faire elle cherche des données existentes pour un user donné
-        if (request.getParameter("load") != null && !request.getParameter("load").isEmpty()) {
-            String temp = request.getParameter("load");
-            if (loadSession(temp,user)) {
-                out.print(getUserData(user));
+        // quand on charge la page ou un id de session
+        if (request.getParameter("load") != null) {
+
+            // si c pas un chargement d'un nouveau user (un sans code)
+            if (!request.getParameter("load").isEmpty()){
+
+                // si jamais je suis en chargement de page
+                if(loadSession(request.getParameter("load"),user)){
+                    out.print(getUserData(user)) ;
+                    out.flush();
+                    return ;
+                }else {
+                    out.print("null") ;
+                    out.flush();
+                    return ;
+                }
+
+            }else if (userExists(user)) {
+                out.print(getUserData(user)) ;
+                out.flush();
+                return ;
             }else {
                 out.print("null") ;
+                out.flush();
+                return ;
             }
-            out.flush();
-            return;
-        }else if (request.getParameter("load") != null) {
-            out.print("null") ;
+
         }
+
 
 
         // on cherche cree les données si user pas deja existant
         if (request.getParameter("generate") != null) {
-            if( !createUser(user, request.getServletContext().getRealPath("/") + "/")){
-                return ;
-            }
-            out.print(request.getSession().getId());
+            createUser(user, request.getServletContext().getRealPath("/") + "/") ;
+            out.print(user);
+            out.print(msg) ;
         }
 
         // on charge la room du user
@@ -98,7 +113,8 @@ public class CreationServlet extends HttpServlet {
                     crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
                     crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                    out.print(salle.getPositioningIntermediate().getTablesForVisu()+"wtf");
+
                 } else {
                     lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
                     lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
@@ -127,23 +143,10 @@ public class CreationServlet extends HttpServlet {
 
             // si on veux imposer une place
             case "imposePlace" -> {
-                String studentId = crea.findEtu(request.getParameter("studentId"));
-
-                String result = studentId + ";";
-                result += crea.studentInfo(studentId) + ";";
-
-                String tableNumber = request.getParameter("tableNumber");
-
-                // on verifie un minimum les paramettres
-                if (Integer.parseInt(tableNumber) <= 0 || Integer.parseInt(tableNumber) > crea.maxTable())
-                    result += "3;";
-                else if (tableNumber.isEmpty())
-                    result += "null;";
-                else
-                    // on retourne le resultat du find
-                    result += crea.findNumsForImp(studentId, Integer.parseInt(tableNumber)) + ";";
-
-                out.print(result);
+                if (request.getParameter("oldNum") != null  && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && ! request.getParameter("oldNum").isEmpty() && ! request.getParameter("newNum").isEmpty() && ! request.getParameter("numEtu").isEmpty()) {
+                    out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
+                }
+                out.print("null");
             }
 
             // on retire la place imposée si elle existe (l'intermediate fait le controle
@@ -231,6 +234,7 @@ public class CreationServlet extends HttpServlet {
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                msg = e.getMessage() ;
                 return false;
             }
         }
@@ -245,6 +249,7 @@ public class CreationServlet extends HttpServlet {
             result = "" ;
             // les infos de la visu
             if (salle!=null){
+                result = "" ;
                 if (salle.getPositioningIntermediate() != null) {
                     result += "\n" + salle.getPositioningIntermediate().getTablesForVisu() +"<";
                 }
@@ -257,7 +262,6 @@ public class CreationServlet extends HttpServlet {
 
 
         }
-
         return result;
     }
 

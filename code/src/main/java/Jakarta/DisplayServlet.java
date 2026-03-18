@@ -63,7 +63,7 @@ public class DisplayServlet extends HttpServlet
                 if (salle.generate())
                     out.println("""
                             <h4> Génération réussie </h4>
-                            <a href="visualisation.jsp">Voir le résultat</a>
+                            <a href="double.jsp">Voir le résultat</a>
                             """);
 
                 else {

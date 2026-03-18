@@ -67,7 +67,7 @@ window.addEventListener("scroll", () => {
 });
 
 // TO MODIFY
-document.querySelector("#classMode").addEventListener("change",changeMode)
+document.querySelector("#classMode").addEventListener("change", changeMode)
 
 function changeMode() {
     const m = document.getElementById("classMode").value;
@@ -186,7 +186,7 @@ function enleverEtuGrp(event) {
 function getInfosTable(id) {
 
     if (swap) {
-         activateSwap(id);
+        activateSwap(id);
     }
     let numTab = id.substring(1);
     let reqInfo = new XMLHttpRequest();
@@ -605,7 +605,9 @@ function setValid(section) {
 
     let numEtu = groupes[numGrp - 1].length;
 
-    if (numEtu < 9) {document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false}
+    if (numEtu < 9) {
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false
+    }
 
     document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true
     document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true
@@ -688,7 +690,7 @@ function loadData() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                if (xhr.responseText !== "null" && ! xhr.responseText.startsWith("null")) {
+                if (xhr.responseText !== "null" && !xhr.responseText.startsWith("null")) {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
@@ -724,7 +726,7 @@ function loadData() {
                         tables.push(numbers[i].split("!"));
 
 
-                    createTables() ;
+                    createTables();
 
 
                     renduFichierEtu(results[2])
@@ -769,16 +771,16 @@ function tableInfoMod() {
 
 document.querySelector("#modeHeader").addEventListener("change", changeHeaderMode)
 
-function changeHeaderMode (event) {
+function changeHeaderMode(event) {
     if (event.target.value === "create") {
         document.getElementById("parameters").style.visibility = "visible";
         document.getElementById("parameters").style.height = "100%";
         document.getElementById("valuesOfTable").style.visibility = "hidden";
         document.getElementById("valuesOfTable").style.height = "0";
 
-    }else if (event.target.value === "modify") {
-        tableInfoMod() ;
-    }else{
+    } else if (event.target.value === "modify") {
+        tableInfoMod();
+    } else {
         console.log("ALERTE ALERTE")
     }
 }

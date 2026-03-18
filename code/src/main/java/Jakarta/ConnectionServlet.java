@@ -23,6 +23,34 @@ public class ConnectionServlet extends HttpServlet {
     @Resource(name = "p2403918")
     private DataSource dataSource;
 
+    private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {
+        String initRequest = "Select name from Placement where idUser=?";
+
+        try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
+            initialisationAttempt.setString(1, user);
+            ResultSet placements = initialisationAttempt.executeQuery();
+
+            while (!placements.wasNull()) {
+                out.print(placements.getString(1));
+
+                if (placements.next())
+                    out.print(";");
+            }
+
+            out.flush();
+            placements.close();
+        }
+    }
+
+    private static void addPlacement(HttpServletRequest request, Connection connection, String addPlacement) throws SQLException {
+        try (PreparedStatement addAttempt = connection.prepareStatement(addPlacement)) {
+            addAttempt.setString(1, request.getParameter("id"));
+            addAttempt.setString(2, request.getParameter("name"));
+
+            addAttempt.executeQuery();
+        }
+    }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getHeader("Referer") == null) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
@@ -82,25 +110,6 @@ public class ConnectionServlet extends HttpServlet {
             subscribeAttempt.setString(3, password);
 
             subscribeAttempt.executeUpdate();
-        }
-    }
-
-    private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {
-        String initRequest = "Select name from Placement where idUser=?";
-
-        try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
-            initialisationAttempt.setString(1, user);
-            ResultSet placements = initialisationAttempt.executeQuery();
-
-            while (!placements.wasNull()) {
-                out.print(placements.getString(1));
-
-                if (placements.next())
-                    out.print(";");
-            }
-
-            out.flush();
-            placements.close();
         }
     }
 
@@ -190,15 +199,6 @@ public class ConnectionServlet extends HttpServlet {
         addStudents(request, connection, addStudentRequest);
         addPlaces(request, connection, addSeatRequest);
         addConstraints(request, connection, addConstraintRequest);
-    }
-
-    private static void addPlacement(HttpServletRequest request, Connection connection, String addPlacement) throws SQLException {
-        try (PreparedStatement addAttempt = connection.prepareStatement(addPlacement)) {
-            addAttempt.setString(1, request.getParameter("id"));
-            addAttempt.setString(2, request.getParameter("name"));
-
-            addAttempt.executeQuery();
-        }
     }
 
     private void addStudents(HttpServletRequest request, Connection connection, String addStudent) throws SQLException {

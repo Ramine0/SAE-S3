@@ -11,10 +11,11 @@ import java.io.FileNotFoundException;
  */
 public class CreatingIntermediate {
     private final Data d;
-    public String msg ;
+    public String msg;
 
     /**
      * Constructeur par défaut de la classe.
+     *
      * @throws FileNotFoundException envoyée par Data() si elle ne trouve pas de fichier
      */
     public CreatingIntermediate() throws FileNotFoundException {
@@ -23,6 +24,7 @@ public class CreatingIntermediate {
 
     /**
      * Constructeur de la classe. À quoi il sert, bonne question???
+     *
      * @param path le chemin vers le fichier
      * @throws FileNotFoundException envoyée par Data() si elle ne trouve pas le fichier
      */
@@ -32,46 +34,48 @@ public class CreatingIntermediate {
 
     /**
      * Contrôle de création d'un plan rectangulaire
+     *
      * @param lon nombre de tables en longueur
      * @param lar nombre de tables en largeur
      */
-    public void createTables(int lon, int lar)
-    {
+    public void createTables(int lon, int lar) {
         d.setNumberTables(lon, lar);
     }
 
     /**
      * Fonction de récupération du nombre de tables
+     *
      * @return le nombre de tables de la salle
      */
-    public int getNumberTables()
-    {
+    public int getNumberTables() {
         return d.getTables().length;
     }
 
     /**
      * Fonction de récupération du numéro de table minimum
+     *
      * @return le numéro de table le plus faible
      */
-    public int minTable(){
+    public int minTable() {
         return d.minNumTable();
     }
 
     /**
      * Fonction de récupération du numéro de table maximum
+     *
      * @return le numéro de table le plus important
      */
-    public int maxTable(){
+    public int maxTable() {
         return d.maxNumTable();
     }
 
     /**
      * Fonction de recherche d'un étudiant à partir de l'id
+     *
      * @param id numéro étudiant, complet ou non
      * @return l'id complété ou un message adapté
      */
-    public String findStudent(String id)
-    {
+    public String findStudent(String id) {
         String trouve = d.completeId(id);
         if (!trouve.isEmpty()) {
             return trouve;
@@ -85,6 +89,7 @@ public class CreatingIntermediate {
 
     /**
      * Vérifie que la table numTab soit dans les tables libres
+     *
      * @param numTab le numéro de la table
      * @return true si elle fait partie des tables libres, false sinon
      */
@@ -96,7 +101,8 @@ public class CreatingIntermediate {
     /**
      * Regarde si les informations id et num sont correctement renseignées, si c'est le cas appelle
      * la logique d'ajout de place imposée de Data
-     * @param id numéro de l'étudiant
+     *
+     * @param id  numéro de l'étudiant
      * @param num numéro de la table
      * @return un entier correspondant à la situation
      */
@@ -117,8 +123,9 @@ public class CreatingIntermediate {
 
     /**
      * Retire la contrainte de type constr et d'index id
+     *
      * @param constr type de la contrainte
-     * @param id index de la contrainte
+     * @param id     index de la contrainte
      */
     public void removeConstraint(String constr, int id) {
         d.removeConstraint(constr, id);
@@ -127,8 +134,9 @@ public class CreatingIntermediate {
     /**
      * Vérifie que les informations soient correctement renseignées, si c'est le cas, entre dans
      * la logique d'ajout d'étudiant au groupe numGrp
+     *
      * @param idPartiel numéro de l'étudiant, complet ou non
-     * @param numGrp groupe auquel on veut ajouter l'étudiant
+     * @param numGrp    groupe auquel on veut ajouter l'étudiant
      * @return en cas de succès, le message de la logique dans Data, sinon l'id partiel
      */
     public String findStudentForGroup(String idPartiel, int numGrp) {
@@ -143,6 +151,7 @@ public class CreatingIntermediate {
 
     /**
      * Fonction utilisée pour afficher la description des données
+     *
      * @return la description des données
      */
     public String[] describeData() {
@@ -151,6 +160,7 @@ public class CreatingIntermediate {
 
     /**
      * Fonction de récupération de l'étudiant de numéro étudiant num
+     *
      * @param num numéro de l'étudiant
      * @return null si l'étudiant n'est pas trouvé, son nom et son prénom sinon
      */
@@ -166,6 +176,7 @@ public class CreatingIntermediate {
     /**
      * Cherche la table de numéro num, vérifie si elle est supprimée ou imposée, sinon entre dans
      * la logique de suppression de la table
+     *
      * @param num le numéro de la table
      * @return un entier adapté à la situation (géré côté Servlet et JavaScript)
      */
@@ -188,12 +199,16 @@ public class CreatingIntermediate {
 
     /**
      * tables libres
+     *
      * @return les tables libres (non supprimées et sans étudiant/contrainte de place imposée)
      */
-    public int[] free(){return d.freeTables();}
+    public int[] free() {
+        return d.freeTables();
+    }
 
     /**
      * Entre dans la logique de réinsertion de table supprimée pour la table num
+     *
      * @param num numéro de la table
      */
     public void unremoveTable(int num) {
@@ -202,13 +217,13 @@ public class CreatingIntermediate {
 
     /**
      * Définition des dimensions du plan
+     *
      * @param lon longueur du plan
      * @param lar largeur du plan
      */
     public void setDimensions(int lon, int lar) {
         d.setDimensions(lon, lar);
     }
-
 
 
     /**
@@ -220,6 +235,7 @@ public class CreatingIntermediate {
 
     /**
      * Fonction de récupération de l'étudiant assis à la table num
+     *
      * @param num le numéro de la table
      * @return l'étudiant assis à la table num
      */
@@ -239,6 +255,7 @@ public class CreatingIntermediate {
 
     /**
      * Fonction de génération du contrôleur de positionnement
+     *
      * @return un objet PositioningIntermediate
      */
     public PositioningIntermediate generatePos() {
@@ -247,6 +264,7 @@ public class CreatingIntermediate {
 
     /**
      * Charge un plan grâce à un path
+     *
      * @param path chemin du plan à charger
      */
     public void loadDefaultMap(String path) {
@@ -255,8 +273,9 @@ public class CreatingIntermediate {
 
     /**
      * contrôleur du type de plan choisi
+     *
      * @param newOne caractère permettant le choix du type de plan
-     * @param path chemin du plan
+     * @param path   chemin du plan
      */
     public void changeMapMode(char newOne, String path) {
         d.changePlanMode(newOne, path);
@@ -264,6 +283,7 @@ public class CreatingIntermediate {
 
     /**
      * Base pour la vision et modification de la table
+     *
      * @param oldNum ancien numéro de la table
      * @param newNum nouveau numéro de la table
      * @param numEtu numéro de l'étudiant
@@ -281,9 +301,9 @@ public class CreatingIntermediate {
             result += "invalid;";
         }
 
-        if (!numEtu.isEmpty() && findTable(newNum)){
-            result += findNumsForImp(numEtu,newNum);
-        }else {
+        if (!numEtu.isEmpty() && findTable(newNum)) {
+            result += findNumsForImp(numEtu, newNum);
+        } else {
             result += "";
         }
 
@@ -292,6 +312,7 @@ public class CreatingIntermediate {
 
     /**
      * vérifie que la table numTab existe
+     *
      * @param numTab le numéro de la table
      * @return true si la table existe, false sinon
      */
@@ -301,6 +322,7 @@ public class CreatingIntermediate {
 
     /**
      * Fonction de récupération des étudiants séparés
+     *
      * @return une chaine de caractères contenant les informations des étudiants séparés
      */
     public String getSeparated() {
@@ -313,7 +335,7 @@ public class CreatingIntermediate {
                 String[] students = temp.toString().split(";");
                 for (String s : students) {
                     if (s.equals("null")) {
-                        String id = findStudent(s) ;
+                        String id = findStudent(s);
                         result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
                 }
@@ -326,6 +348,7 @@ public class CreatingIntermediate {
 
     /**
      * Affichage des étudiants dans une fenêtre popup
+     *
      * @return un string avec la liste d'étudiants
      */
     public String getStudentList() {

@@ -1,99 +1,99 @@
 package org.NeoMalokVector.SAE_S3;
 
-public class Table
-{
-    private static int id=0;
-    private int number;
-    private Student student;
+public class Table {
+    private static int id = 0;
     private final int cordX;
     private final int cordY;
+    private int number;
+    private Student student;
 
     /**
      * Constructeur par défaut de table, crée une table à la suite de la dernière table
      */
-    public Table(){
+    public Table() {
         id++;
-        number =id;
+        number = id;
         cordX = -1;
         cordY = -1;
     }
 
-    public Table(int  x, int y) {
-        cordX = x ;
+    public Table(int x, int y) {
+        cordX = x;
         cordY = y;
-        id++ ;
-        number = id ;
-    }
-    public Table(int number, int  x, int y) {
-        this.number = number ;
-        cordX = x ;
-        cordY = y;
-        id = number ;
+        id++;
+        number = id;
     }
 
-    public Table(int number, int x, int y, Student s){
+    public Table(int number, int x, int y) {
+        this.number = number;
+        cordX = x;
+        cordY = y;
+        id = number;
+    }
+
+    public Table(int number, int x, int y, Student s) {
         this.number = number;
         cordX = x;
         cordY = y;
         student = s;
-        id = number ;
+        id = number;
+    }
+
+    public static void reset() {
+        id = 0;
     }
 
     /**
      * Fonction qui permet d'afficher les informations des tables dans le plan
+     *
      * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant
      */
-    public String describe()
-    {
-        String description = number +"!";
+    public String describe() {
+        String description = number + "!";
         if (cordX != -1) {
-            description +=  cordX +"!"+ cordY +"!";
+            description += cordX + "!" + cordY + "!";
         }
-        if (student!=null){
-           description += student.getFullName();
-        }else {
+        if (student != null) {
+            description += student.getFullName();
+        } else {
             description += "aucun etu";
         }
-        return description ;
+        return description;
     }
 
-    public String inform(){
-        String information=""+ number;
+    public String inform() {
+        String information = "" + number;
         if (cordX != -1) {
-            information +=  "!"+ cordX +"!"+ cordY;
+            information += "!" + cordX + "!" + cordY;
         }
-        if (student!=null){
-            information +=  "!"+student.getId();
+        if (student != null) {
+            information += "!" + student.getId();
         }
         return information;
     }
 
     /**
      * Getter du numéro de table
+     *
      * @return num
      */
     public int getNumber() {
         return number;
     }
-    public void setNumber(int number){
+
+    public void setNumber(int number) {
         this.number = number;
     }
 
-
-    public Student getStudent() {return student ;}
-
-
+    public Student getStudent() {
+        return student;
+    }
 
     public void setStudent(Student student) {
         this.student = student;
     }
 
-    public static void reset()
-    {
-        id = 0;
-    }
-
     public int[] getCoordinates() {
-        return new int[]{cordX, cordY} ;
+        return new int[]{cordX, cordY};
     }
 }

@@ -9,6 +9,11 @@ public class RectangularMap extends Map {
     private final int width;
     private final int height;
 
+    public RectangularMap(int width, int height) {
+        this.width = height;
+        this.height = width;
+    }
+
     @Override
     public int[] neighbours(int table, int[] dispo) {
         int pos = Utilitaire.pos(table, dispo);
@@ -52,11 +57,6 @@ public class RectangularMap extends Map {
         }
 
         return newIndex;
-    }
-
-    public RectangularMap(int width, int height) {
-        this.width = height;
-        this.height = width;
     }
 
     public String getSize() {

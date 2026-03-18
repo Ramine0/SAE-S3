@@ -24,6 +24,11 @@ public class ConnectionServlet extends HttpServlet {
     private DataSource dataSource;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         if (data==null && (request.getParameter("action").equals("load") || request.getParameter("action").equals("add"))){
             data=new Data();
         }

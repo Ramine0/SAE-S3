@@ -20,6 +20,11 @@ public class DisplayServlet extends HttpServlet
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         String code = request.getParameter("testVal");
         if (CreationServlet.getSalle(code) == null) {code = request.getSession().getId();}
 
@@ -81,6 +86,10 @@ public class DisplayServlet extends HttpServlet
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
 
         Room salle = CreationServlet.getSalle(request.getSession().getId());
         PositioningIntermediate pos = null;

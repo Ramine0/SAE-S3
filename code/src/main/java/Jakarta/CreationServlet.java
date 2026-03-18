@@ -21,6 +21,11 @@ public class CreationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 

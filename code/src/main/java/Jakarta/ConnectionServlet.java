@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import placement.Data;
 
 import java.io.PrintWriter;
-import java.security.MessageDigest;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -20,12 +19,13 @@ import java.sql.SQLException;
 @WebServlet("/Connection")
 public class ConnectionServlet extends HttpServlet {
     private Data data;
+    private String user;
 
     @Resource(name="p2403918")
     private DataSource dataSource;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
-        if (data==null){
+        if (data==null && (request.getParameter("action").equals("load") || request.getParameter("action").equals("add"))){
             data=new Data();
         }
         response.setContentType("text/html");
@@ -56,6 +56,7 @@ public class ConnectionServlet extends HttpServlet {
             connexionAttempt.setString(1, username);
             connexionAttempt.setString(2, password);
             ResultSet login = connexionAttempt.executeQuery();
+            user=login.getString(1);
             out.print(login.getString(1));
             out.flush();
             login.close();
@@ -77,9 +78,8 @@ public class ConnectionServlet extends HttpServlet {
 
     private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
         String initRequest="Select name from Placement where idUser=?";
-        String id= request.getParameter("id");
         try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
-            initialisationAttempt.setString(1, id);
+            initialisationAttempt.setString(1, user);
             ResultSet placements = initialisationAttempt.executeQuery();
             while (!placements.wasNull()) {
                 out.print(placements.getString(1));
@@ -250,22 +250,6 @@ public class ConnectionServlet extends HttpServlet {
                     }
                 }
             }
-        }
-    }
-
-    String sha256(String password){
-        try{
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.update(password.getBytes());
-            byte[] byteData =digest.digest();
-            StringBuilder sb=new StringBuilder();
-            for (byte byteDatum : byteData) {
-                sb.append(Integer.toString((byteDatum & 0xff) + 0x100, 16).substring(1));
-            }
-            return sb.toString();
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            return "";
         }
     }
 

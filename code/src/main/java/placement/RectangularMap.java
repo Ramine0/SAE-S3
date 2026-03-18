@@ -9,55 +9,46 @@ public class RectangularMap extends Map
     private final int width;
     private final int height;
 
-
-    // a revoir car on ne prends pas en compte les tables supprimées et les L et l
-    // je v m'en charger
-    // oo ee aa
     @Override
     public int[] neighbours(int table, int[] dispo)
     {
-        // Get the position of the table number (1-9) in the 1D array (0-8)
         int pos = Utilitaire.pos(table, dispo);
 
-        // Define neighbor offsets
         int[][] offsets = {
-                {0, -1},    // Above middle
-                {1, -1},    // Top right
-                {1, 0},     // Right
-                {1, 1},     // Bottom right
-                {0, 1},     // Below middle
-                {-1, 1},    // Bottom left
-                {-1, 0},    // Left
-                {-1, -1}    // Top left
+                {0, -1},
+                {1, -1},
+                {1, 0},
+                {1, 1},
+                {0, 1},
+                {-1, 1},
+                {-1, 0},
+                {-1, -1}
         };
 
-        // Use a List to collect valid neighbor numbers
         List<Integer> validNeighbors = new ArrayList<>();
 
         for (int[] offset : offsets) {
             int neighborIndex = getNeighbour(pos, offset[0], offset[1],dispo.length);
             if (neighborIndex != -1) {
-                validNeighbors.add(dispo[neighborIndex]); // Store the neighbor value
+                validNeighbors.add(dispo[neighborIndex]);
             }
         }
 
-
-        // Convert List to an array and return
         return validNeighbors.stream().mapToInt(Integer::intValue).toArray();
     }
 
     private int getNeighbour(int index, int xOffset, int yOffset,int maxIndex) {
-        int newIndex = index + xOffset + yOffset * width; // Calculate new index
-        // pas de retour ligne
+        int newIndex = index + xOffset + yOffset * width;
+
         if (index %width == 0 && xOffset == -1) {return -1 ;}
-        //encore
+
         if (index %width == width-1 && xOffset == 1) {return -1 ;}
-        // Return -1 if out of bounds
+
         if (newIndex < 0 || newIndex >= maxIndex ) {
             return -1;
         }
 
-        return newIndex; // Return valid index
+        return newIndex;
     }
 
     public RectangularMap(int longu, int larg)
@@ -67,16 +58,5 @@ public class RectangularMap extends Map
     }
 
     public String getSize() {return width+";"+ height ;}
-
-    public int getWidth()
-    {
-        return width;
-    }
-
-    public int getHeight()
-    {
-        return height;
-    }
-
 }
 

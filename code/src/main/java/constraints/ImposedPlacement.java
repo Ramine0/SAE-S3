@@ -14,7 +14,6 @@ public class ImposedPlacement extends Constraint
         studentsConstraints.add(numStudent);
     }
 
-    // pas besoin de valider, on doit juste placer l'etu a la place qu'on lui a donné
     @Override
     public boolean validate(Student student, int table, Student[] students) {
         return (student.getId().equals(numStudent) && table==numTable) ;

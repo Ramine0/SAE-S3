@@ -16,10 +16,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
-
-// la classe va save les données pour les creer via un CreatingIntermediate et les avoir dans le positioning intermediate
-// elle aura plein de fonction utiles comme le lecture du fichier des etus ou le traitement des etus
-
 public class Data {
     private Constraint[] constraints;
     private Table[] tables;
@@ -31,9 +27,7 @@ public class Data {
 
 
     private final ArrayList<Student> students = new ArrayList<>();
-    int idC;
-    // on laisse utiliser parfaitement les etus car c'est bcp plus pratique car il y a bcp de traitement a faire
-    // notement avec les methodes qui sont assez nombreuses
+    private int idC;
 
     public Data(String path, String mapType) throws FileNotFoundException {
         chargerFichier(path);
@@ -41,11 +35,9 @@ public class Data {
         if (mapType.charAt(0) == 'R') {
             // plan rectangulaire
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
-        } else if (mapType.charAt(0) == 'G') {
-            // plan grille
-            map = new GridMap() ;
         } else if (mapType.charAt(0) == 'D') {
             map = new GridMap();
+            loadPlanDefault(path);
         }
 
 
@@ -54,6 +46,7 @@ public class Data {
 
     public Data() throws FileNotFoundException {
         map = new GridMap();
+        loadPlanDefault("src/main/webapp/");
         chargerFichier();
         init();
     }
@@ -72,23 +65,15 @@ public class Data {
     }
 
 
-    public void placeStudent(int table, String idStudent) {
-        Objects.requireNonNull(getTable(table)).setStudent(getStudentFromId(idStudent));
+    public boolean placeStudent(int table, String idStudent) {
+        if (getTable(table)== null ) {
+            return false ;
+        }
+        getTable(table).setStudent(getStudentFromId(idStudent));
+        return true ;
     }
 
-    // liste des fonctions a implementer
-    /*
-    bool isDeleted(Table/int) FAIT
-    int[] freeTables()  revoie un tableau de num de tables disponibles FAIT
-    getTable(int) FAIT
-    getDeleted() renvoie le tableau FAIT
-    freeStudents() renvoie les etus qui sont pas deja placés FAIT
-    removeTable() FAIT
-    unremoveTable() FAIT
-    getStudentFromId(string id) ; FAIT
 
-
-     */
     public boolean isDeleted(int numTable) {
         return (Utilitaire.in(numTable, deletedTables));
     }
@@ -119,11 +104,10 @@ public class Data {
         return Objects.requireNonNull(getTable(num)).getEtu();
     }
 
-    // renvoie les numeros de tables disponibles
     public int nbDeletedTables() {
         int num = 0;
         if (tables.length==1) {
-            return 100 ;
+            return 100;
         }
         for (int deletedTable : deletedTables) {
             if (deletedTable != 0) {
@@ -135,12 +119,12 @@ public class Data {
 
     public int[] existingTables() {
         int[] result = new int[tables.length - nbDeletedTables()];
-        int numRes = 0; // la position dans les resultats
+        int numRes = 0;
         for (Table table : tables) {
             if (table != null) {
                 // je verifie que ma table soit pas supprimée
                 if (!isDeleted(table.getNum())) {
-                    // si c ok je l'ajoute a la liste
+                    // si c'est bon, je l'ajoute à la liste
                     result[numRes] = table.getNum();
                     numRes++;
                 }
@@ -195,10 +179,19 @@ public class Data {
         return null;
     }
 
+    // voir si c'est pas remplacable
     public Constraint[] getConstr() {
-        return constraints;
+        Constraint[] constr=new Constraint[getNbConstraint()];
+        int i=0;
+        for (Constraint c : constraints){
+            constr[i]=c;
+            i++;
+        }
+        return constr;
     }
 
+
+    // ne pas supprimer, sauf si on ne lui trouve aucune utilité
     public Constraint[] getConstr(String type) {
         int i = 0;
         Constraint[] constr;
@@ -227,7 +220,7 @@ public class Data {
 
     public int[] getTables() {
         int[] lesNums = new int[tables.length];
-        for (int i = 0; i < tables.length; i++) {
+        for (int i = 0; i < maxNumTable(); i++) {
             lesNums[i] = tables[i].getNum();
         }
         return lesNums;
@@ -242,7 +235,6 @@ public class Data {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    // le chargement du fichier exel donné par le/la prof
     private void chargerFichier(String path) throws FileNotFoundException {
         students.clear();
 
@@ -337,9 +329,9 @@ public class Data {
         String [] tab=c.split(";");
         for (String string : tab) {
             String[] contrainte = string.replace(",", ";").split(";");
-            if (contrainte[0].equals("G")){
+            if (contrainte[0].equals("G")) {
                 addStudentGroupConstraint(contrainte[1], Integer.parseInt(contrainte[4]));
-            }else{
+            } else {
                 addImp(contrainte[1], Integer.parseInt(contrainte[2]));
             }
         }
@@ -462,7 +454,7 @@ public class Data {
         return null;
     }
 
-    /// Il faudra peut-être modifié tout ça en fonction de la manière dont les contraintes sont indiquées
+    /// Il faudra peut-être modifier tout ça en fonction de la manière dont les contraintes sont indiquées
     public String addStudentGroupConstraint(String numStudent, int idGp) {
         if (getPerGroup(idGp) != null) {
             if (getPerGroup(idGp).haveStu(numStudent)) {
@@ -579,7 +571,7 @@ public class Data {
         return 1;
     }
 
-
+    // à revoir, la façon dont c'est fait me semble très suspecte
     public void removeStudentGroupConstraint(int idGp, int idStu) {
         if (getPerGroup(idGp) != null) {
             getPerGroup(idGp).removeStudent(idStu);
@@ -620,9 +612,8 @@ public class Data {
         ArrayList<Student> voisins = new ArrayList<>();
         // pour tous les voisins de la map
 
-//        System.out.println(Arrays.toString(map.neighbours(t, freeTables())));
         for (int i : map.neighbours(t, existingTables())) {
-            //je recupere l'etu de la table si on a bien une table
+            //je récupère l'etu de la table si on a bien une table
             if (i != -1) {
                 if (getTable(i) != null) {
                     voisins.add(getStuFromTab(i));
@@ -631,14 +622,9 @@ public class Data {
 
         }
 
-        System.out.println();
-
         return voisins.toArray(new Student[0]);
     }
 
-    public Map getMap() {
-        return map;
-    }
 
     public String[] imposedStudents() {
         String[] result = new String[getNbConstraint("I")];
@@ -712,6 +698,7 @@ public class Data {
         return etu.getFullName();
     }
 
+    // la fonction est cool, je me demande pourquoi elle n'est pas used
     public boolean haveStudent(int tab) {
         return (!isDeleted(tab)) && (Objects.requireNonNull(getTable(tab)).getEtu() != null);
     }
@@ -755,9 +742,9 @@ public class Data {
     }
 
     public void loadPlanDefault(String path) {
-        if (map instanceof GridMap) {
+        if (map instanceof GridMap)
             tables = ((GridMap) map).loadMap(path);
-        }
+
     }
 
     public void changePlanMode(char newMode, String path) {
@@ -806,14 +793,17 @@ public class Data {
         }
     }
 
-    public boolean tableExist(int numTab) {return Utilitaire.in(numTab, existingTables()) ;}
+    public boolean tableExist(int numTab) {
+        return Utilitaire.in(numTab, existingTables());
+    }
+
 
     public boolean changeNumTable(int oldNum, int newNum) {
         if (getTable(oldNum) != null ){
             Objects.requireNonNull(getTable(oldNum)).setNum(newNum);
             return true ;
         }
-        return false ;
+        return false;
     }
 
     public String studentList() {
@@ -822,5 +812,11 @@ public class Data {
             result.append(s.getId()).append(" ; ").append(s.getFullName()).append("\n");
         }
         return result.toString();
+    }
+
+
+    // TODO ou la faire ou changer le code a vecteur pour utiliser student list qui est au dessus
+    public Student[] getEtus() {
+        return null ;
     }
 }

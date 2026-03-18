@@ -11,11 +11,11 @@ public class HelloServlet {
 
     static void main(String[] args) throws FileNotFoundException {
         Room salle = new Room();
-        CreatingIntermediate crea = salle.getCrea();
+        CreatingIntermediate crea = salle.getCreating();
         PositioningIntermediate pos = crea.generatePos();
         crea.setMode(0);
 
-        crea.changePlanMode('R', "src/main/webapp/");
+        crea.changeMapMode('R', "src/main/webapp/");
 
         crea.createTables(3, 3);
         crea.setDimensions(3, 3);

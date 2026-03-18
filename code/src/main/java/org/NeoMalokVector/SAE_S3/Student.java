@@ -21,13 +21,13 @@ public class Student
 
     public String describe(boolean inline)
     {
-        String result = "L'étudiant d'id " + id;
-        result += inline ? "\n" : ";";
-        result += "est " + name + " " + firstName;
-        result += inline ? "\n" : ";";
-        result += "du groupe " + (group == null ? "groupe introuvable" : group) + "." + (subGroup == null ? "groupe introuvable" : subGroup);
+        String description = "L'étudiant d'id " + id;
+        description += inline ? "\n" : ";";
+        description += "est " + name + " " + firstName;
+        description += inline ? "\n" : ";";
+        description += "du groupe " + (group == null ? "groupe introuvable" : group) + "." + (subGroup == null ? "groupe introuvable" : subGroup);
 
-        return result;
+        return description;
 
     }
 
@@ -64,7 +64,7 @@ public class Student
         return false;
     }
 
-    public String textVisu() {
+    public String textVisualisation() {
         if (group  != null ) {
             return getId() + ";" + getName() + " " + getFirstName() + ";"+(group + "." + subGroup);
         }else {

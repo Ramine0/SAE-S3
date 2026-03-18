@@ -28,14 +28,13 @@ public class Data {
     private int idC;
 
     public Data(String path, String mapType) throws FileNotFoundException {
-        chargerFichier(path);
+        loadFile(path);
 
         if (mapType.charAt(0) == 'R') {
-            // plan rectangulaire
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
         } else if (mapType.charAt(0) == 'D') {
             map = new GridMap();
-            loadPlanDefault(path);
+            loadDefaultPlan(path);
         }
 
 
@@ -44,8 +43,8 @@ public class Data {
 
     public Data() throws FileNotFoundException {
         map = new GridMap();
-        loadPlanDefault("src/main/webapp/");
-        chargerFichier();
+        loadDefaultPlan("src/main/webapp/");
+        loadFile();
         init();
     }
 
@@ -81,8 +80,8 @@ public class Data {
         int numPla = 0;
 
         for (Table table : tables)
-            if (table.getEtu() != null) {
-                place[numPla] = table.getEtu().getId();
+            if (table.getStudent() != null) {
+                place[numPla] = table.getStudent().getId();
                 numPla++;
             }
 
@@ -98,7 +97,7 @@ public class Data {
     }
 
     public Student getStuFromTab(int num) {
-        return Objects.requireNonNull(getTable(num)).getEtu();
+        return Objects.requireNonNull(getTable(num)).getStudent();
     }
 
     public int nbDeletedTables() {
@@ -119,10 +118,9 @@ public class Data {
         int numRes = 0;
         for (Table table : tables) {
             if (table != null) {
-                // je vérifie que ma table ne soit pas supprimée
-                if (!isDeleted(table.getNum())) {
+                if (!isDeleted(table.getNumber())) {
                     // si c'est bon, je l'ajoute à la liste
-                    result[numRes] = table.getNum();
+                    result[numRes] = table.getNumber();
                     numRes++;
                 }
             }
@@ -136,14 +134,14 @@ public class Data {
         int numRes = 0;
 
         for (Table table : tables) {
-            if (Utilitaire.in(table.getNum(), existingTables()) && table.getEtu() == null) {
+            if (Utilitaire.in(table.getNumber(), existingTables()) && table.getStudent() == null) {
                 length++;
             }
         }
         free = new int[length];
         for (Table table : tables) {
-            if (Utilitaire.in(table.getNum(), existingTables()) && table.getEtu() == null) {
-                free[numRes] = table.getNum();
+            if (Utilitaire.in(table.getNumber(), existingTables()) && table.getStudent() == null) {
+                free[numRes] = table.getNumber();
                 numRes++;
             }
         }
@@ -160,7 +158,7 @@ public class Data {
         return -1;
     }
 
-    public void undeleteTable(int num) {
+    public void unremoveTable(int num) {
         for (int n = 0; n < deletedTables.length; n++) {
             if (deletedTables[n] == num) {
                 deletedTables[n] = 0;
@@ -218,17 +216,17 @@ public class Data {
     public int[] getTables() {
         int[] lesNums = new int[tables.length];
         for (int i = 0; i < maxNumTable(); i++) {
-            lesNums[i] = tables[i].getNum();
+            lesNums[i] = tables[i].getNumber();
         }
         return lesNums;
     }
 
-    private void chargerFichier() throws FileNotFoundException {
-        chargerFichier("src/main/webapp/");
+    private void loadFile() throws FileNotFoundException {
+        loadFile("src/main/webapp/");
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private void chargerFichier(String path) throws FileNotFoundException {
+    private void loadFile(String path) throws FileNotFoundException {
         students.clear();
 
         Scanner sc = new Scanner(new FileReader(path + "resources/etudiants.csv"));
@@ -653,7 +651,7 @@ public class Data {
 
 
     public String getTableInfos(int numTable) {
-        return Objects.requireNonNull(getTable(numTable)).description();
+        return Objects.requireNonNull(getTable(numTable)).describe();
     }
 
     public String getTablesInfos() {
@@ -662,7 +660,7 @@ public class Data {
             if (!tab.isEmpty()) {
                 tab.append(";");
             }
-            tab.append(t.info());
+            tab.append(t.inform());
         }
         return tab.toString();
     }
@@ -670,7 +668,7 @@ public class Data {
     private Table getTable(int num) {
 
         for (Table tb : tables) {
-            if (tb.getNum() == num) {
+            if (tb.getNumber() == num) {
                 return tb;
             }
         }
@@ -693,7 +691,7 @@ public class Data {
 
     // la fonction est cool, je me demande pourquoi elle n'est pas used
     public boolean haveStudent(int tab) {
-        return (!isDeleted(tab)) && (Objects.requireNonNull(Objects.requireNonNull(getTable(tab)).getEtu() != null));
+        return (!isDeleted(tab)) && (Objects.requireNonNull(getTable(tab)).getStudent() != null);
     }
 
 
@@ -710,8 +708,8 @@ public class Data {
     public int maxTableID() {
         int max = 0;
         for (Table t : tables) {
-            if (t.getNum() > max) {
-                max = t.getNum();
+            if (t.getNumber() > max) {
+                max = t.getNumber();
             }
         }
         return max;
@@ -720,7 +718,7 @@ public class Data {
     public String getInfosForVisu(int num) {
         if (getTable(num) != null && getStuFromTab(num) != null) {
             Student etu = getStuFromTab(num);
-            return num + ";" + etu.textVisu();
+            return num + ";" + etu.textVisualisation();
         } else {
             return num + ";null;null;null";
         }
@@ -734,7 +732,7 @@ public class Data {
         return constraints[0] != null;
     }
 
-    public void loadPlanDefault(String path) {
+    public void loadDefaultPlan(String path) {
         if (map instanceof GridMap)
             tables = ((GridMap) map).loadMap(path);
 
@@ -752,7 +750,7 @@ public class Data {
             }
         } else if (newMode == 'D') {
             map = new GridMap();
-            loadPlanDefault(path);
+            loadDefaultPlan(path);
         }
     }
 
@@ -760,7 +758,7 @@ public class Data {
         int[] coords = new int[tables.length];
         int cpt = 0;
         for (Table tb : tables) {
-            coords[cpt] = tb.getCoord()[0];
+            coords[cpt] = tb.getCoordinates()[0];
             cpt++;
         }
         return Utilitaire.max(coords);
@@ -770,7 +768,7 @@ public class Data {
         int[] coords = new int[tables.length];
         int cpt = 0;
         for (Table tb : tables) {
-            coords[cpt] = tb.getCoord()[1];
+            coords[cpt] = tb.getCoordinates()[1];
             cpt++;
         }
         return Utilitaire.max(coords);
@@ -793,7 +791,7 @@ public class Data {
 
     public boolean changeNumTable(int oldNum, int newNum) {
         if (getTable(oldNum) != null ){
-            Objects.requireNonNull(getTable(oldNum)).setNum(newNum);
+            Objects.requireNonNull(getTable(oldNum)).setNumber(newNum);
             return true ;
         }
         return false;

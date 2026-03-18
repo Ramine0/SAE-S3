@@ -28,8 +28,6 @@ public class CreationServlet extends HttpServlet {
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        // il faut bien créer la hashmap à un moment ou a un autre
         String user = request.getSession().getId();
 
         if (rooms == null) {
@@ -60,7 +58,6 @@ public class CreationServlet extends HttpServlet {
         if (request.getParameter("action") != null)
             tableRequests(request, out, room);
 
-        // les action constraint
         if (request.getParameter("constraint") != null)
             constraintRequests(request, out, room);
 
@@ -85,62 +82,72 @@ public class CreationServlet extends HttpServlet {
         }
     }
 
-    // les actions sur les tables
+
     private void tableRequests(HttpServletRequest request, PrintWriter out, Room room) {
 
-        CreatingIntermediate crea = room.getCrea();
+        CreatingIntermediate crea = room.getCreating();
 
         int length, width;
 
-        // les différentes action
+
         switch (request.getParameter("action")) {
 
-            // renvoie les tables
             case "visu" -> {
-                length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
-
-                crea.createTables(length, width);
-                crea.setDimensions(length, width);
-
-                out.print(room.getPositioningIntermediate().getTablesForVisu());
+                returnTables(request, out, room, crea);
             }
 
-            // definition du type de plan
             case "define" -> {
-                crea.setMode(0);
-
-                if (request.getParameter("planType").equals("defaultPlan")) {
-                    crea.changePlanMode('D', request.getServletContext().getRealPath("/") + "/");
-                    crea.loadPlanDefault(request.getServletContext().getRealPath("/") + "/");
-
-                    out.print(room.getPositioningIntermediate().getTablesForVisu() );
-                } else {
-                    length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                    width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
-
-                    crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
-
-                    crea.createTables(length, width);
-                    crea.setDimensions(length, width);
-
-                    out.print(room.getPositioningIntermediate().getTablesForVisu());
-                }
+                defineMapType(request, out, room, crea);
             }
 
-            // les dimensions
-            case "getDim" -> out.print(crea.getDimensions());
+            // les dimentions
+            case "getDim" ->
+                    out.print(crea.getDimentions());
         }
     }
 
-    // les requêtes sur les contraintes
+    private static void defineMapType(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
+        int length;
+        int width;
+        crea.setMode(0);
+
+        if (request.getParameter("planType").equals("defaultPlan")) {
+            crea.changeMapMode('D', request.getServletContext().getRealPath("/") + "/");
+            crea.loadDefaultMap(request.getServletContext().getRealPath("/") + "/");
+
+            out.print(room.getPositioning().getTablesForVisu());
+        } else {
+            length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+            width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+
+            crea.changeMapMode('R', request.getServletContext().getRealPath("/") + "/");
+
+            crea.createTables(length, width);
+            crea.setDimensions(length, width);
+
+            out.print(room.getPositioning().getTablesForVisu());
+        }
+    }
+
+    private static void returnTables(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
+        int width;
+        int length;
+        length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+        width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+
+        crea.createTables(length, width);
+        crea.setDimensions(length, width);
+
+        out.print(room.getPositioning().getTablesForVisu());
+    }
+
+
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room room) {
-        CreatingIntermediate crea = room.getCrea();
+        CreatingIntermediate crea = room.getCreating();
 
 
         switch (request.getParameter("constraint")) {
 
-            // si on veut imposer une place
             case "imposePlace" -> {
                 if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty()) {
                     out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
@@ -148,26 +155,23 @@ public class CreationServlet extends HttpServlet {
                 out.print("null");
             }
 
-            // on retire la place imposée si elle existe (le Creating Intermediate fait le contrôle)
             case "removeImposedPlace" -> crea.removeConstraint("I", Integer.parseInt(request.getParameter("id")) - 1);
 
             // supprime la table
             case "deleteTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
 
-                // on fait un minimum de test
                 if (num < crea.minTable())
                     num = crea.minTable();
                 else if (num > crea.maxTable())
                     num = crea.maxTable();
 
-                out.print(crea.deleteTable(num) + ";" + num);
+                out.print(crea.supprTable(num) + ";" + num);
             }
 
-            // annule la suppression d'une table
             case "removeDeletedTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
-                crea.undeleteTable(num);
+                crea.unremoveTable(num);
             }
 
             case "separeEtu" -> {
@@ -215,7 +219,7 @@ public class CreationServlet extends HttpServlet {
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static boolean loadSession(String oldId, String newId) {
-        if ((!newId.equals(oldId)) && userExists(oldId)) {
+        if ((!newId.equals(oldId)) && userExists(oldId) ) {
             rooms.put(newId, rooms.get(oldId));
             rooms.remove(oldId);
             return true;
@@ -246,15 +250,15 @@ public class CreationServlet extends HttpServlet {
         Room room = getRoom(user);
         String visualisationInfos = "null";
         if (room != null) {
-            visualisationInfos = "";
-            if (room.getPositioningIntermediate() != null) {
-                visualisationInfos += "\n" + room.getPositioningIntermediate().getTablesForVisu() + "<";
+            visualisationInfos = "" ;
+            if (room.getPositioning() != null) {
+                visualisationInfos += "\n" + room.getPositioning().getTablesForVisu() +"<";
             }
             // les infos d'etudians mis a distance
 
-            visualisationInfos += room.getCrea().getSeparated();
+            visualisationInfos += room.getCreating().getSeparated();
             visualisationInfos += "<";
-            visualisationInfos += room.getCrea().getStudentList() + "<";
+            visualisationInfos += room.getCreating().getStudentList() +"<";
         }
 
         return visualisationInfos;

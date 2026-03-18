@@ -145,7 +145,7 @@ public class CreatingIntermediate {
      * Fonction utilisée pour afficher la description des données
      * @return la description des données
      */
-    public String[] dataDescription() {
+    public String[] describeData() {
         return d.descrip();
     }
 
@@ -169,7 +169,7 @@ public class CreatingIntermediate {
      * @param num le numéro de la table
      * @return un entier adapté à la situation (géré côté Servlet et JavaScript)
      */
-    public int deleteTable(int num) {
+    public int removeTable(int num) {
         num = findTable(num) ? num : -1;
 
         if (num == -1) {
@@ -196,8 +196,8 @@ public class CreatingIntermediate {
      * Entre dans la logique de réinsertion de table supprimée pour la table num
      * @param num numéro de la table
      */
-    public void undeleteTable(int num) {
-        d.undeleteTable(num);
+    public void unremoveTable(int num) {
+        d.unremoveTable(num);
     }
 
     /**
@@ -249,8 +249,8 @@ public class CreatingIntermediate {
      * Charge un plan grâce à un path
      * @param path chemin du plan à charger
      */
-    public void loadPlanDefault(String path) {
-        d.loadPlanDefault(path);
+    public void loadDefaultMap(String path) {
+        d.loadDefaultPlan(path);
     }
 
     /**
@@ -258,7 +258,7 @@ public class CreatingIntermediate {
      * @param newOne caractère permettant le choix du type de plan
      * @param path chemin du plan
      */
-    public void changePlanMode(char newOne, String path) {
+    public void changeMapMode(char newOne, String path) {
         d.changePlanMode(newOne, path);
     }
 

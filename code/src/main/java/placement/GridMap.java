@@ -20,19 +20,19 @@ public class GridMap extends Map {
     private void init(Table[] tables) {
 
         matriceAdj = new int[tables.length + 1][tables.length + 1];
-        if (tables[0].getCoord()[0] != -1) {
+        if (tables[0].getCoordinates()[0] != -1) {
 
             int cpt = 0;
             for (Table t : tables) {
                 if (t != null) {
-                    int x = t.getCoord()[0];
-                    int y = t.getCoord()[1];
+                    int x = t.getCoordinates()[0];
+                    int y = t.getCoordinates()[1];
                     int cptVois = 0;
                     for (Table vois : tables) {
                         if (vois != null) {
                             if (cptVois > cpt) {
-                                int neighbourX = vois.getCoord()[0];
-                                int neighbourY = vois.getCoord()[1];
+                                int neighbourX = vois.getCoordinates()[0];
+                                int neighbourY = vois.getCoordinates()[1];
 
                                 if (hasNeighbour(x, neighbourX, y, neighbourY)) {
                                     matriceAdj[cpt][cptVois] = 1;
@@ -71,7 +71,7 @@ public class GridMap extends Map {
 
                 if (!line[0].isEmpty()) {
                     result[cpt] = new Table(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Integer.parseInt(line[2]));
-                    numbersOfTables[cpt] = result[cpt].getNum();
+                    numbersOfTables[cpt] = result[cpt].getNumber();
                     cpt++;
                 }
             }

@@ -205,7 +205,7 @@ public class ConnectionServlet extends HttpServlet {
         int cnt = 0;
 
         while (cnt != data.getStudents().length) {
-            String[] student = data.getStudents()[cnt].textVisu().replace(" ", ";").split(";");
+            String[] student = data.getStudents()[cnt].textVisualisation().replace(" ", ";").split(";");
 
             try (PreparedStatement addAttempt = connection.prepareStatement(addStudent)) {
                 addAttempt.setString(1, student[0]);

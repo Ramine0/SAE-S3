@@ -223,10 +223,12 @@ function activateSwap(button) {
                     let nomt1 = noms[tables.indexOf(numt1)];
                     let nomt2 = noms[tables.indexOf(numt2)];
 
-                    let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
+                    let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
+                    console.log(document.querySelector(`#T${numt1}`).innerHTML)
                     document.querySelector(`#T${numt1}`).innerHTML = content;
 
-                    content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
+                    console.log(document.querySelector(`#T${numt2}`).innerHTML)
+                    content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
                     document.querySelector(`#T${numt2}`).innerHTML = content;
 
                     noms[tables.indexOf(numt1)] = nomt2;
@@ -532,6 +534,10 @@ function setValid(section) {
     if (!section.startsWith("#")) {
         section = "#" + section;
     }
+
+    document.querySelector(section).classList.remove("invalid")
+    document.querySelector(section).classList.add("valid")
+
     let numGrp = groupes.length;
     if (section.includes(
         `G${numGrp}`

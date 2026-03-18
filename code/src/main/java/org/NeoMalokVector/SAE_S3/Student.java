@@ -19,7 +19,7 @@ public class Student
         this.id = id;
     }
 
-    public String description(boolean inline)
+    public String describe(boolean inline)
     {
         String description = "L'étudiant d'id " + id;
         description += inline ? "\n" : ";";

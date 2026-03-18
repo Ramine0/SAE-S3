@@ -286,7 +286,7 @@ public class Data {
         String[] text = new String[students.size()];
         int i = 0;
         for (Student s : students) {
-            text[i] = s.description(true);
+            text[i] = s.describe(true);
             i++;
         }
 
@@ -651,7 +651,7 @@ public class Data {
 
 
     public String getTableInfos(int numTable) {
-        return Objects.requireNonNull(getTable(numTable)).description();
+        return Objects.requireNonNull(getTable(numTable)).describe();
     }
 
     public String getTablesInfos() {
@@ -660,7 +660,7 @@ public class Data {
             if (!tab.isEmpty()) {
                 tab.append(";");
             }
-            tab.append(t.information());
+            tab.append(t.inform());
         }
         return tab.toString();
     }

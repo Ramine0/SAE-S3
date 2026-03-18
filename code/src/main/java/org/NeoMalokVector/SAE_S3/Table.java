@@ -43,7 +43,7 @@ public class Table
      * Fonction qui permet d'afficher les informations des tables dans le plan
      * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant
      */
-    public String description()
+    public String describe()
     {
         String description = number +"!";
         if (cordX != -1) {
@@ -57,7 +57,7 @@ public class Table
         return description ;
     }
 
-    public String information(){
+    public String inform(){
         String information=""+ number;
         if (cordX != -1) {
             information +=  "!"+ cordX +"!"+ cordY;

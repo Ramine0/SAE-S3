@@ -34,6 +34,9 @@ public class ConnectionServlet extends HttpServlet {
         }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        if (dataSource==null){
+            out.print("WTF");
+        }
         try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
             if (request.getParameter("action").equals("connect")){
                 connect(request, connection, out);

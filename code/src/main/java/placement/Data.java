@@ -173,13 +173,7 @@ public class Data {
 
     // voir si c'est pas remplaçable
     public Constraint[] getConstr() {
-        Constraint[] constr = new Constraint[getNbConstraint()];
-        int i = 0;
-        for (Constraint c : constraints) {
-            constr[i] = c;
-            i++;
-        }
-        return constr;
+        return constraints;
     }
 
 

@@ -650,7 +650,7 @@ function decreaseId(idElem) {
 }
 
 function codeForGeneration() {
-    let code = document.querySelector("#testVal");
+    let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
 
     xhr.open("GET", `creation?generate=${encodeURIComponent("n'importe quoi")}`, true);

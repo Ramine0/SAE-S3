@@ -221,8 +221,10 @@ public class CreatingIntermediate
             }
         }else if (!tableExist(newNum)) {
             result += "la table" + newNum +" existe deja;";
+            newNum = oldNum;
         }else if (tableExist(oldNum)) {
             result += "table existante;";
+            newNum = oldNum ;
         } else if (oldNum != 0 ){
             result+= "invalid;" ;
         }
@@ -232,7 +234,7 @@ public class CreatingIntermediate
         }else if (!numEtu.isEmpty() && newNum == 0 && !numEtu.equals("null")) {
             result += findNumsForImp(numEtu, oldNum);
         }else {
-            result += numEtu.isEmpty() ? "":numEtu;
+            result += "pas imposé l'etu : " + (numEtu.isEmpty() ? "":findEtu(numEtu)) ;
         }
 
         return result ;

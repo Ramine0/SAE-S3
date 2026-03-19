@@ -110,15 +110,19 @@ public class CreationServlet extends HttpServlet {
                     out.print(salle.getPositioningIntermediate().getTablesForVisu()+"wtf");
 
                 } else {
-                    lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-                    lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+                    try {
+                        lon = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+                        lar = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
-                    crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
+                        crea.changePlanMode('R', request.getServletContext().getRealPath("/") + "/");
 
-                    crea.createTables(lon, lar);
-                    crea.setDimensions(lon, lar);
+                        crea.createTables(lon, lar);
+                        crea.setDimensions(lon, lar);
 
-                    out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                        out.print(salle.getPositioningIntermediate().getTablesForVisu());
+                    } catch (Exception e) {
+                        out.print("erreur format des données") ;
+                    }
                 }
             }
 

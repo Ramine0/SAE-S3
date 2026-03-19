@@ -4,7 +4,10 @@ mettre l'import export sur la page double
 faire le tutoriel et autres docs
 corriger le mode per class
 si possible apercu du fichier a la validation du fichier et du plan mais ca a l'air bien harr
-verifier que le plan rect marche bien
+etudist apres load modifiable
+est-ce-qu'on supprime la fonctionnalité du generate rouge et disabled ?
+bloquer le routage des ressources
+
 
 Pour la page de creation ya des choses a noter qui sont :
 

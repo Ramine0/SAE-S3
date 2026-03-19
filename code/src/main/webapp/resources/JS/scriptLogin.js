@@ -20,13 +20,11 @@ async function login(){
 }
 
 async function subscribe(){
-    let name = document.getElementById("name");
-    let email = document.getElementById("email");
-    let password = document.getElementById("password");
-    password = await sha256(password).then(hash => {return hash} )
-    let confirm= document.getElementById("confirm");
-    confirm = await sha256(confirm).then(hash => {return hash})
-    if (password===confirm){
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let password = await sha256(document.getElementById("password").value).then(hash => {return hash} );
+    let confirm= await sha256(document.getElementById("confirm").value).then(hash => {return hash})
+    if (email!=="" && password!=="" && password===confirm){
         console.log('confirme');
         const xhr=new XMLHttpRequest()
         xhr.open('GET', `Connection?action=${encodeURIComponent('subscribe')}&username=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
@@ -59,8 +57,6 @@ async function test(){
 
 test()
 test()
-initPlacements()
-
 
 function initPlacements(){
     const mapList=document.getElementById("planType")

@@ -64,6 +64,7 @@ public class CreationServlet extends HttpServlet {
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/") ;
             out.print(user);
+            out.print(msg) ;
         }
 
 
@@ -141,10 +142,11 @@ public class CreationServlet extends HttpServlet {
 
         switch (request.getParameter("constraint")) {
             case "imposePlace" -> {
-                if (request.getParameter("oldNum") != null  && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && ! request.getParameter("oldNum").isEmpty() && ! request.getParameter("newNum").isEmpty() && ! request.getParameter("numEtu").isEmpty()) {
-                    out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
+                if (request.getParameter("oldNum") != null  && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && ! request.getParameter("oldNum").isEmpty() && ! request.getParameter("numEtu").isEmpty()) {
+                    out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), request.getParameter("newNum").isEmpty() ? 0 : Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
+                }else {
+                    out.print("champs vides !!");
                 }
-                out.print("null");
             }
 
             case "removeImposedPlace" -> crea.removeContrainst("I", Integer.parseInt(request.getParameter("id")) - 1);
@@ -227,6 +229,7 @@ public class CreationServlet extends HttpServlet {
 
             } catch (Exception e) {
                 System.out.println(e.getMessage());
+                msg = e.getMessage() ;
             }
         }
     }

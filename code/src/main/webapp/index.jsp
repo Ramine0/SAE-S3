@@ -24,7 +24,7 @@
 <main>
     <div id="butts">
         <a href="double.jsp">Générer un placement</a>
-        <a href="visualisation.jsp">Visualiser/Modifier</a>
+        <a href="login.jsp">Connection</a>
     </div>
 
     <hr>

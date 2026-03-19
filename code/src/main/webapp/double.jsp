@@ -23,12 +23,29 @@
         </a>
         <div class="general">
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
-                <select id="modeHeader" name="modeHeader">
-                    <option value="create" selected>Paramètres de création</option>
-                    <option value="modify">Voir les informations</option>
-                </select>
+                <div class="selecteur">
+                    <label for="modeHeader">Mode d'utilisation </label>
+                    <select id="modeHeader" name="modeHeader">
+                        <option value="create" selected>Paramètres de création</option>
+                        <option value="modify">Voir les informations</option>
+                        <option value="export">Fonctions d'export</option>
+                        <option value="import">Fonctions d'import</option>
+                    </select>
+                </div>
 
-                <span id="parameters">
+                <div class="modeDouble invisible" id="exportArea" >
+                    <label for="Excel"> Format d'export</label>
+                    <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
+                    <button id="exporter"> Exporter </button>
+                </div>
+
+                <div class="modeDouble invisible" id="importArea" >
+                    <label for="importCSV"> Format d'import</label>
+                    <input type="checkbox" name="importByFile" id="importCSV" value="importByFile"> Fichier CSV
+                    <button id="import"> Importer </button>
+                </div>
+
+                <div class="modeDouble" id="parameters">
                     <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
                     <input type="file" name="studentFile" id="studentFile" accept="text/csv">
 
@@ -51,7 +68,7 @@
                     </select>
 
 
-                    <div id="infoRect" style="visibility: hidden; height: 0;">
+                    <div id="infoRect" class="invisible">
                         <section class="ligne">
                             <label for="long">Nombre de tables par colonne</label>
                             <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
@@ -62,14 +79,17 @@
                             <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                         </section>
                     </div>
-                </span>
 
-                <div id="valuesOfTable"  style ="visibility : hidden; height: 0; ">
+                    <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le plan</button>
+
+                </div>
+
+                <div class="modeDouble invisible" id="valuesOfTable">
                      <span id="TableNumber" >
                         <label for="idTabVisu"> Numero de Table </label>
                         <input name="idTabVisu" id="idTabVisu" type="number" disabled>
                     </span>
-                    <span id="studentInfo">
+                    <div id="studentInfo">
 
                         <div>
                             <label for="numEtuVisu"> Numero Etudiant </label>
@@ -89,12 +109,8 @@
                             <input type="button" onclick="modeSwap()" value="echanger">
                         </span>
 
-                    </span>
+                    </div>
                 </div>
-
-                <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le plan
-                </button>
-                <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
 
             </form>
             <form method="post" action="Display">
@@ -109,6 +125,7 @@
     </header>
 
     <main class="mainDouble">
+
         <!-- on va utiliser les maquettes pour faire un truc cool -->
         <div class="le_Form">
             <div id="visuofDouble" style="visibility: hidden">
@@ -148,6 +165,7 @@
                 </section>
             </div>
         </div>
+
     </main>
 </div>
 

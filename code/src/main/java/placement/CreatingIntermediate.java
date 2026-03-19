@@ -214,19 +214,25 @@ public class CreatingIntermediate
     public String tableValidateButton(int oldNum, int newNum, String numEtu) {
         String result = "";
         if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && ! tableExist(newNum)) {
-            if ( d.changeNumTable(oldNum, newNum) ) {
+            if (d.changeNumTable(oldNum, newNum)) {
                 result += newNum + ";";
-            }else {
+            } else {
                 result += "error;";
             }
-        }else if (oldNum != 0 ){
+        }else if (!tableExist(newNum)) {
+            result += "la table" + newNum +" existe deja;";
+        }else if (tableExist(oldNum)) {
+            result += "table existante;";
+        } else if (oldNum != 0 ){
             result+= "invalid;" ;
         }
 
-        if (numEtu.isEmpty() && findTable(newNum)){
-            result += findNumsForImp(numEtu,newNum);
+        if (!numEtu.isEmpty() && findTable(newNum) && !numEtu.equals("null")) {
+            result += findNumsForImp(numEtu, newNum);
+        }else if (!numEtu.isEmpty() && newNum == 0 && !numEtu.equals("null")) {
+            result += findNumsForImp(numEtu, oldNum);
         }else {
-            result += "";
+            result += numEtu.isEmpty() ? "":numEtu;
         }
 
         return result ;

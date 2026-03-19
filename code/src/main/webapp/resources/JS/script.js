@@ -10,114 +10,14 @@ let active
 
 let fileOk = false;
 
-initPlacements()
 loadData()
 
-function initPlacements(){
-    const mapList=document.getElementById("planType")
-    const init=new XMLHttpRequest()
-    init.open('POST', 'Connection?action=init')
-    init.onreadystatechange = function () {
-        if (xhr.readyState===XMLHttpRequest.DONE){
-            if (xhr.status===200){
-                placements=xhr.responseText.split(";")
-                for (let i=0; i<placements.length; i++){
-                    info=placements[i].split(",")
-                    let p=document.createElement("option");
-                    p.value=`${info[0]}${info[1]}`
-                    p.text=info[1]
-                    mapList.appendChild(p)
-                }
-            }
-        }
-    }
-    init.send()
-}
-
-// const xhr = new XMLHttpRequest();
-// xhr.open("GET", `creation?action=${encodeURIComponent("isGenerated")}`, true)
-//
-// // xhr.onreadystatechange = function () {
-// //     if (xhr.readyState === XMLHttpRequest.DONE)
-// //         if (xhr.status === 200) {
-// //             generated = xhr.responseText === "true";
-// //
-// //             if (generated) {
-// //                 console.log("LET'S GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO LA GENERATION A MARCHÉÉÉÉÉÉÉÉÉÉÉ")
-// //                 console.log("ah merde il manque les etu BORDEEEEEEEEEEEEEEEEEEEEEEL")
-// //                 console.log("ptn c quoi c'code")
-// //                 console.log("ya rien qui marche en fait")
-// //                 console.log("oo ee aa")
-// //                 console.log("fo shu")
-// //                 console.log("faut ptet que j'travaille au lieu d'écrire des conneries")
-// //
-// //                 document.getElementById("visuofDouble").style.visibility = "visible"
-// //
-// //                 init()
-// //             } else
-// //                 console.log("c'est pas encore généré connard ça sert à rien")
-// //         } else
-// //             console.log("naaan bordel il a pas réussi à savoir si la génération a réussi ou pas ptn")
-// // }
-// //
-// // xhr.send();
-
-// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
-
-// TO MODIFY !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-function validerPlaceImposee(event) {
-    let idFind = event.target.id;
-    let numConstr = idFind.charAt(11);
-
-    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
-    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
-
-    //TO MODIFY  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    if (studentId === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-    else if (tableNumber === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-    else {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
-
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE)
-                if (xhr.status === 200) {
-                    const response = xhr.responseText.split(";");
-                    if (response[1] === "null")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-                    else if (response[2] === "null")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-                    else if (response[2] === "1")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
-                    else if (response[2] === "2")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
-                    else if (response[2] === "3")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
-                    else if (response[2] === "-1")
-                        document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
-                    else {
-                        validerSectImpose(idFind);
-
-                        document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
-                        document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
-                    }
-                } else
-                    console.error("Error fetching student data");
-        }
-
-        xhr.send();
-    }
-}
 
 window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
 
-
-document.querySelector("#classMode").addEventListener("change",changeMode)
 
 function changeMode() {
     const m = document.getElementById("classMode").value;
@@ -163,7 +63,6 @@ function validerEtuGrp(event) {
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
                 else {
                     validerSectEtuGrp(idFind);
-
                     document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
                     document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
                 }
@@ -324,12 +223,12 @@ function activateSwap(button) {
                     let nomt1 = noms[tables.indexOf(numt1)];
                     let nomt2 = noms[tables.indexOf(numt2)];
 
-                    let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
+                    let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
                     console.log(document.querySelector(`#T${numt1}`).innerHTML)
                     document.querySelector(`#T${numt1}`).innerHTML = content;
 
                     console.log(document.querySelector(`#T${numt2}`).innerHTML)
-                    content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
+                    content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
                     document.querySelector(`#T${numt2}`).innerHTML = content;
 
                     noms[tables.indexOf(numt1)] = nomt2;
@@ -343,6 +242,7 @@ function activateSwap(button) {
 
 }
 
+// TO MODIFY
 function setTableNumber() {
     let lon = document.getElementById("long").value;
     let lar = document.getElementById("larg").value;
@@ -461,7 +361,7 @@ function enableZone() {
 
         //le bout generer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-        codeForGeneration()
+        codeForGeneration(false)
 
     }
 }
@@ -478,10 +378,9 @@ function createTables() {
 
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
-
             if (vals.length === 4) {
                 if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
-                    t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
+                    t += `<div class="pasTable"><span><div>none</div><</span><p>pas table</p></div>`
                 } else {
                     table = vals[0];
                     name = vals[3];
@@ -616,8 +515,9 @@ function init() {
                     size = elem[0].split(";");
                     const numbers = elem[1].split(";");
 
-                    for (let i = 0; i < numbers.length - 1; i++)
-                        tables.push(numbers[i].split("!"));
+                    for (let i = 0; i < numbers.length - 1; i++) {
+                        tables.push(numbers[i].split("!"))
+                    }
 
                     createTables()
                 }
@@ -634,55 +534,32 @@ function setValid(section) {
     if (!section.startsWith("#")) {
         section = "#" + section;
     }
-    document.querySelector(section).classList.remove("invalid");
-    document.querySelector(section).classList.add("valid");
-    if (section.includes("impose")) {
-        document.querySelector("#ajoutImpos").disabled = false;
 
-        document.querySelector(`#imposedStudentId${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#imposedTableId${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#findImposed${nbImposedPlace}`
-        ).disabled = true;
-        document.querySelector(
-            `#imposedStudentName${nbImposedPlace}`
-        ).disabled = true;
+    document.querySelector(section).classList.remove("invalid")
+    document.querySelector(section).classList.add("valid")
 
-    } else if (section.includes("supTable")) {
-        document.querySelector("#ajoutSuppr").disabled = false;
-        document.querySelector(
-            `#numTabSup${nbPlacesSuppr}`
-        ).disabled = true;
-        document.querySelector(
-            `#findTable${nbPlacesSuppr}`
-        ).disabled = true;
-
+    let numGrp = groupes.length;
+    if (section.includes(
+        `G${numGrp}`
+    )) {
+        document.querySelector("#ajoutGroup").disabled = false;
     } else {
-        let numGrp = groupes.length;
-        if (section.includes(
-            `G${numGrp}`
-        )) {
-            document.querySelector("#ajoutGroup").disabled = false;
-        } else {
-            numGrp = section.substring(4);
-        }
-
-
-        let numEtu = groupes[numGrp - 1].length;
-
-        if (numEtu < 9) {
-            document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
-        }
-        document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
-        document.querySelector(`#supEtu${numEtu}G${numGrp}`).disabled = false;
+        numGrp = section.substring(4);
     }
 
-    genererWalid();
+
+    let numEtu = groupes[numGrp - 1].length;
+
+    if (numEtu < 9) {
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
+    }
+    document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
+    document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
+    document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
+    document.querySelector(`#supEtu${numEtu}G${numGrp}`).disabled = false;
+
+
+    genererWalid()
 
 }
 
@@ -694,13 +571,6 @@ function validerSectEtuGrp(idBout) {
     );
 }
 
-function validerSectImpose(idBout) {
-    let numConstr = idBout.charAt(11);
-    setValid(
-        `impose${numConstr}`
-    );
-
-}
 
 function decreaseId(idElem) {
     if (idElem.startsWith("#E")) {
@@ -728,7 +598,7 @@ function decreaseId(idElem) {
 }
 
 
-function codeForGeneration() {
+function codeForGeneration(loadOnly) {
 
     let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
@@ -740,8 +610,10 @@ function codeForGeneration() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-
-                init()
+                if (! loadOnly) {
+                    changeMode()
+                    init()
+                }
             } else {
             }
         }
@@ -808,7 +680,7 @@ function loadData() {
 
 
                     createTables() ;
-
+                    codeForGeneration(true)
 
                     renduFichierEtu(results[2])
                     console.log("fin des informations :")
@@ -834,43 +706,106 @@ function loadData() {
 
 document.querySelector("#planType").addEventListener("change", (e) => {
     if (e.target.value === "rectangularPlan") {
-        document.getElementById("infoRect").style.visibility = "visible";
-        document.getElementById("infoRect").style.height = "fit-content";
+        document.getElementById("infoRect").classList.remove("invisible");
     } else {
-        document.getElementById("infoRect").style.visibility = "hidden";
-        document.getElementById("infoRect").style.height = "0";
+        document.getElementById("infoRect").classList.add("invisible");
     }
 })
 
 function tableInfoMod() {
-    document.getElementById("valuesOfTable").style.visibility = "visible";
-    document.getElementById("valuesOfTable").style.height = "fit-content";
-    document.getElementById("parameters").style.visibility = "hidden";
-    document.getElementById("parameters").style.height = "0";
+    document.getElementById("valuesOfTable").classList.remove("invisible")
+    document.getElementById("parameters").classList.add("invisible")
+    document.getElementById("exportArea").classList.add("invisible")
+    document.getElementById("importArea").classList.add("invisible")
 
 }
 
+function parameterMod() {
+    document.getElementById("parameters").classList.remove("invisible")
+    document.getElementById("valuesOfTable").classList.add("invisible")
+    document.getElementById("exportArea").classList.add("invisible")
+    document.getElementById("importArea").classList.add("invisible")
+
+}
+
+function exportMod() {
+    document.getElementById("parameters").classList.add("invisible")
+    document.getElementById("valuesOfTable").classList.add("invisible")
+    document.getElementById("exportArea").classList.remove("invisible")
+    document.getElementById("importArea").classList.add("invisible")
+
+}
+
+
+function importMod() {
+    document.getElementById("parameters").classList.add("invisible")
+    document.getElementById("valuesOfTable").classList.add("invisible")
+    document.getElementById("exportArea").classList.add("invisible")
+    document.getElementById("importArea").classList.remove("invisible")
+}
 
 document.querySelector("#modeHeader").addEventListener("change", changeHeaderMode)
 
 function changeHeaderMode (event) {
     if (event.target.value === "create") {
-        document.getElementById("parameters").style.visibility = "visible";
-        document.getElementById("parameters").style.height = "100%";
-        document.getElementById("valuesOfTable").style.visibility = "hidden";
-        document.getElementById("valuesOfTable").style.height = "0";
-
+        parameterMod()
     }else if (event.target.value === "modify") {
-        tableInfoMod() ;
-    }else{
+        tableInfoMod()
+    }else if (event.target.value === "export"){
+        exportMod()
+    }else if (event.target.value === "import"){
+        importMod()
+    }else {
         console.log("ALERTE ALERTE")
     }
 }
 
-
+// TODO
 function setTableInfos() {
 
+    if (active != null ) {
+        let oldNum = active;
+        let newNum = document.querySelector("#idTabVisu").value;
+        let numEtu = document.getElementById("numEtuVisu").value;
 
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `creation?constraint=imposePlace&oldNum=${oldNum}&newNum=${newNum}&numEtu=${numEtu}`, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    let resp = xhr.responseText.split(";")
+                    if (resp[0] === "invalid") {
+                        console.log("invalide")
+                    }else if(resp[0] === "error") {
+                        console.log("une erreur")
+                    }else {
+                        console.log(resp[0])
+                        try {
+                            document.querySelector(`#T${resp[0]}`).children[0].children[0].innerHTML = resp[0]
+
+                        }catch(e) {console.log(e.message)}
+
+                        document.querySelector("#idTabVisu").value = resp[0]
+                    }
+                    if (resp[1] === "") {
+                        console.log("echec de l'imposition de l'etudiant")
+                    }else {
+                        console.log(resp[1])
+                    }
+
+                }
+            }
+        }
+
+        xhr.send();
+
+    }
 }
+
+function exportMode() {}
+
+function importMode() {}
+
 
 

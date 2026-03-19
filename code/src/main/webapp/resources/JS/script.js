@@ -803,9 +803,6 @@ function setTableInfos() {
     }
 }
 
-function exportMode() {}
-
-function importMode() {}
 
 
 

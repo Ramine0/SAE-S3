@@ -360,3 +360,12 @@ label+input {
     visibility: hidden;
 }
 
+select {
+    padding : 0;
+}
+
+#parameters * {
+    padding-top: 1% ;
+}
+
+

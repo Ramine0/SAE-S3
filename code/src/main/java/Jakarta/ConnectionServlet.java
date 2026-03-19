@@ -4,11 +4,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
 import placement.Data;
 
 import java.io.PrintWriter;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
@@ -20,7 +20,7 @@ public class ConnectionServlet extends HttpServlet {
     private Data data;
     private String user;
 
-    @Resource(name="p2403918")
+    @Resource(name="jdbc/p2403918")
     private DataSource dataSource;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {

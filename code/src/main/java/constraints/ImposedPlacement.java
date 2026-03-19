@@ -4,8 +4,8 @@ import org.NeoMalokVector.SAE_S3.Student;
 
 public class ImposedPlacement extends Constraint
 {
-    private int numTable;
-    private String numEtu ;
+    private final int numTable;
+    private final String numEtu ;
 
     public ImposedPlacement(int numTable, String numEtu){
         this.numTable = numTable;
@@ -13,11 +13,7 @@ public class ImposedPlacement extends Constraint
 
         studentsConstraints.add(numEtu);
     }
-    public void set(int numTable, String numEtu){
-        this.numTable = numTable;
-        this.numEtu = numEtu;
-    }
-    // pas besoin de valider on doit juste placer l'etu a la place qu'on lui a donné
+
     @Override
     public boolean validate(Student student, int table, Student[] etu) {
         return (student.getId().equals(numEtu) && table==numTable) ;

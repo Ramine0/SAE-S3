@@ -5,12 +5,8 @@ code/target/
 code/.kotlin
 
 ### IntelliJ IDEA ###
-code/.idea/modules.xml
-code/.idea/jarRepositories.xml
-code/.idea/compiler.xml
-code/.idea/libraries/
-code/*.iws
-code/*.iml
-code/*.ipr
+code/.idea
 
 Placement aléatoire via DSRoomMaker.pdf
+
+.DS_Store

@@ -21,16 +21,13 @@ public class DisplayServlet extends HttpServlet
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         String code = request.getParameter("testVal");
-        if (CreationServlet.getSalle(code) == null)
-        {
-            code = request.getSession().getId();
-        }
+        if (CreationServlet.getSalle(code) == null) {code = request.getSession().getId();}
+
         Room salle = CreationServlet.getSalle(code);
 
         if (salle == null)
             response.sendRedirect("index.jsp");
-        else
-        {
+        else {
             response.setContentType("text/html");
             PrintWriter out = response.getWriter();
 
@@ -68,11 +65,11 @@ public class DisplayServlet extends HttpServlet
                             <h4> Génération réussie </h4>
                             <a href="double.jsp">Voir le résultat</a>
                             """);
-                else
-                {
+
+                else {
+
                     out.println("<p>" + pos.getTablesForVisu() + "</p>");
                     out.println(pos.descripData());
-
                     out.println("""
                             <h4> Erreur de génération </h4>
                             <a href="creation.jsp"><Retour à la page de création</a>
@@ -94,10 +91,13 @@ public class DisplayServlet extends HttpServlet
         response.setContentType("text/html");
 
         if (pos != null) {
+            // on fait des actions ?!
             switch (request.getParameter("action"))
             {
+                // on recup le visuel des tables
                 case "init" -> out.print(pos.getTablesForVisu());
 
+                // on recupere les information de la table
                 case "infos" -> {
                     try {
                         out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
@@ -106,6 +106,7 @@ public class DisplayServlet extends HttpServlet
                     }
                 }
 
+                // on swap les etus des tables donnees
                 case "swap" -> {
                     if (salle.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
                         out.println("0");
@@ -115,6 +116,7 @@ public class DisplayServlet extends HttpServlet
             }
 
         }else {
+            // on fait rien ?!
             out.print("rien");
         }
 

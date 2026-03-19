@@ -20,7 +20,7 @@ public class ConnectionServlet extends HttpServlet {
     private Data data;
     private String user;
 
-    @Resource(name="p2403918")
+    @Resource(name = "p2403918")
     private DataSource dataSource;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
@@ -43,8 +43,8 @@ public class ConnectionServlet extends HttpServlet {
                     out.flush();
                     resultSet.close();
                 }
-            }else if (request.getParameter("action").equals("subscribe")){
-                String requestSubscribe="insert into User (name, email, password) values (?, ?, ?)";
+            } else if (request.getParameter("action").equals("subscribe")) {
+                String requestSubscribe = "insert into User (name, email, password) values (?, ?, ?)";
                 String username = request.getParameter("username");
                 String email = request.getParameter("email");
                 String password = request.getParameter("password");
@@ -91,7 +91,7 @@ public class ConnectionServlet extends HttpServlet {
                     }
                     data.chargerStudents(students.toString());
                 }
-                try (PreparedStatement preparedStatement = connection.prepareStatement(loadSeats)){
+                try (PreparedStatement preparedStatement = connection.prepareStatement(loadSeats)) {
                     preparedStatement.setString(1, idPlacement);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     StringBuilder seats= new StringBuilder();
@@ -115,7 +115,7 @@ public class ConnectionServlet extends HttpServlet {
                         }else{
                             if (resultSet.getString(4).equals("true")) {
                                 data.changeMode('S');
-                            }else{
+                            } else {
                                 data.changeMode('G');
                             }
                         }
@@ -198,7 +198,7 @@ public class ConnectionServlet extends HttpServlet {
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 

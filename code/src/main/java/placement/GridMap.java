@@ -5,8 +5,6 @@ import org.NeoMalokVector.SAE_S3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class GridMap extends Map
@@ -20,6 +18,7 @@ public class GridMap extends Map
         init(tables);
     }
 
+    // initialise la matrice d'adjacence qui contient les voisins de chaque table
     private void init(Table[] tables)
     {
 
@@ -41,13 +40,10 @@ public class GridMap extends Map
                         {
                             if (cptVois > cpt)
                             {
+                                int neighbourX = vois.getCoord()[0];
+                                int neighbourY = vois.getCoord()[1];
 
-                                int xVois = vois.getCoord()[0];
-                                int yVois = vois.getCoord()[1];
-
-                                // l'idée ici c'est de dire que si les deux ont une distance de 1 alors ils sont voisins
-                                // plutot que de faire une abs() pour les -1 j'ai fait un carré car évite d'importer la librairie et tt
-                                if (((x - xVois) * (x - xVois) == 1) && y == yVois || ((y - yVois) * (y - yVois) == 1) && x == xVois)
+                                if (hasNeighbour(x, neighbourX, y, neighbourY))
                                 {
                                     matriceAdj[cpt][cptVois] = 1;
                                     matriceAdj[cptVois][cptVois] = 1;
@@ -61,7 +57,11 @@ public class GridMap extends Map
             }
         }
 
+    }
 
+    private boolean hasNeighbour(int x, int neighBourX, int y, int neighBourY)
+    {
+        return (((x - neighBourX) * (x - neighBourX) == 1) && y == neighBourY || ((y - neighBourY) * (y - neighBourY) == 1) && (x == neighBourX)) ;
     }
 
     public GridMap()

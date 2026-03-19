@@ -40,7 +40,7 @@ public class Table
     }
 
     /**
-     * Fonction qui permettra d'afficher les informations des tables dans le plan
+     * Fonction qui permet d'afficher les informations des tables dans le plan
      * @return les informations de la table, soit son id si pas d'étudiant, soit son id+student.id si étudiant
      */
     public String description()
@@ -69,7 +69,7 @@ public class Table
     }
 
     /**
-     * getter du numéro de table
+     * Getter du numéro de table
      * @return num
      */
     public int getNum() {

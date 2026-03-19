@@ -88,7 +88,7 @@ body {
     display: flex;
 }
 
-#logo {
+.logo {
     border: 2px solid #5271ff;
 }
 
@@ -257,7 +257,6 @@ hr {
 .invalid, .valid {
     border: 1px solid #233dff;
     padding: 5px;
-
 }
 
 .invalid {

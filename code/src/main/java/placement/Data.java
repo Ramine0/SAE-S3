@@ -809,7 +809,7 @@ public class Data {
 
     public boolean changeNumTable(int oldNum, int newNum) {
         if (getTable(oldNum) != null ){
-            Objects.requireNonNull(getTable(oldNum)).setNum(newNum);
+            getTable(oldNum).setNum(newNum);
             return true ;
         }
         return false ;

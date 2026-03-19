@@ -139,17 +139,19 @@ function getInfosTable(id) {
         if (reqInfo.readyState === XMLHttpRequest.DONE) {
             if (reqInfo.status === 200) {
                 if (reqInfo.responseText !== "null") {
-                    const values = reqInfo.responseText.split(";");
+                    const values = reqInfo.responseText.split(";")
                     if (values.length === 4) {
-                        document.querySelector("#idTabVisu").value = values[0];
-                        document.querySelector("#numEtuVisu").value = values[1];
-                        document.querySelector("#nomEtuVisu").value = values[2];
-                        document.querySelector("#grpEtuVisu").value = values[3];
+                        document.querySelector("#idTabVisu").value = values[0]
+                        document.querySelector("#numEtuVisu").value = values[1]
+                        document.querySelector("#idTabVisu").disabled = false
+                        document.querySelector("#numEtuVisu").disabled = false
+                        document.querySelector("#nomEtuVisu").value = values[2]
+                        document.querySelector("#grpEtuVisu").value = values[3]
 
                         if (active != null && !swap) {
-                            document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc";
+                            document.querySelector(`#T${active}`).style.backgroundColor = "#cccccc"
                         }
-                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B";
+                        document.querySelector(`#T${values[0]}`).style.backgroundColor = "#1AFF009B"
 
                         active = values[0];
 
@@ -349,20 +351,25 @@ function createEtuGrpFromString(numGrp) {
 }
 
 function enableZone() {
+
     if (fileOk) {
+
         // les tables
         document.getElementById("visuofDouble").style.visibility = "visible";
 
         // les groupes
-        document.querySelector("#idEtu1G1").disabled = false;
-        document.querySelector("#nomEtu1G1").disabled = false;
-        document.querySelector("#supEtu1G1").disabled = false;
-        document.querySelector("#walEtu1G1").disabled = false;
+        if (document.querySelector("#idEtu1G1") != null) {
+            document.querySelector("#idEtu1G1").disabled = false;
+            document.querySelector("#nomEtu1G1").disabled = false;
+            document.querySelector("#supEtu1G1").disabled = false;
+            document.querySelector("#walEtu1G1").disabled = false;
+        }
 
         //le bout generer
-        document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration(false)
 
+    }else {
+        console.log("pourquoi file pas ok ??!!!")
     }
 }
 
@@ -502,14 +509,14 @@ function init() {
 
     const initReq = new XMLHttpRequest();
 
-    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon.value)}&larg=${encodeURIComponent(lar.value)}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {
             if (initReq.status === 200) {
                 tables = []
                 let elem = initReq.responseText.split("/");
-                if (initReq.responseText !== "rien") {
+                if (initReq.responseText !== "rien" && !initReq.responseText.includes("erreur")) {
                     tables = []
 
                     size = elem[0].split(";");
@@ -520,6 +527,8 @@ function init() {
                     }
 
                     createTables()
+                }else {
+                    console.log(initReq.responseText)
                 }
 
             }
@@ -775,14 +784,14 @@ function setTableInfos() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
                     let resp = xhr.responseText.split(";")
-                    if (resp[0] === "invalid") {
-                        console.log("invalide")
+                    if (resp[0].startsWith("invalid")) {
+                        console.log(xhr.responseText)
                     }else if(resp[0] === "error") {
                         console.log("une erreur")
                     }else {
                         console.log(resp[0])
                         try {
-                            document.querySelector(`#T${resp[0]}`).children[0].children[0].innerHTML = resp[0]
+                            document.querySelector(`#T${oldNum}`).children[0].children[0].innerHTML = resp[0]
 
                         }catch(e) {console.log(e.message)}
 

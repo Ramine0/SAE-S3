@@ -91,7 +91,7 @@ public class ConnectionServlet extends HttpServlet {
                     }
                     data.chargerStudents(students.toString());
                 }
-                try (PreparedStatement preparedStatement = connection.prepareStatement(loadSeats)){
+                try (PreparedStatement preparedStatement = connection.prepareStatement(loadSeats)) {
                     preparedStatement.setString(1, idPlacement);
                     ResultSet resultSet = preparedStatement.executeQuery();
                     StringBuilder seats= new StringBuilder();
@@ -115,7 +115,7 @@ public class ConnectionServlet extends HttpServlet {
                         }else{
                             if (resultSet.getString(4).equals("true")) {
                                 data.changeMode('S');
-                            }else{
+                            } else {
                                 data.changeMode('G');
                             }
                         }
@@ -198,7 +198,7 @@ public class ConnectionServlet extends HttpServlet {
                     }
                 }
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 

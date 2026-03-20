@@ -13,7 +13,6 @@ import java.io.PrintWriter;
 @WebServlet("/export")
 public class ExportServlet extends HttpServlet
 {
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
         Room salle = CreationServlet.getSalle(request.getSession().getId());
@@ -27,10 +26,10 @@ public class ExportServlet extends HttpServlet
 
         PrintWriter out = response.getWriter();
         out.println("id;nom;table");
-        
-        for (int i = 0; i< crea.getNumberTables(); i++){
-            if (crea.tableExist(i+1) && crea.StuFromTable(i+1)!=null){
-                out.println(crea.StuFromTable(i+1).getId()+";"+ crea.StuFromTable(i+1).getName()+" "+crea.StuFromTable(i+1).getFirstName()+";"+(i+1));
+
+        for (int i = 0; i < crea.getNumberTables(); i++) {
+            if (crea.tableExist(i + 1) && crea.StuFromTable(i + 1) != null) {
+                out.println(crea.StuFromTable(i + 1).getId() + ";" + crea.StuFromTable(i + 1).getName() + " " + crea.StuFromTable(i + 1).getFirstName() + ";" + (i + 1));
             }
         }
         /*

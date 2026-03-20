@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public abstract class Constraint
 {
-    public static ArrayList<String> studentsConstraints = new ArrayList<>();
+    public static final ArrayList<String> studentsConstraints = new ArrayList<>();
 
     public abstract boolean validate(Student student, int table, Student[] etu);
     public abstract String toDatabase();

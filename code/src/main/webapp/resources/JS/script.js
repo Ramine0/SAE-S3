@@ -1,14 +1,14 @@
-let nbImposedPlace = 1;
-let nbPlacesSuppr = 1;
-let groupes = [[1]];
-let long = 0;
-let larg = 0;
-let swap = false;
-let tables = []
+let long = 0
+let larg = 0
+
+let groupes = [[1]]
+
 let noms = []
 let active
+let tables = []
 
-let fileOk = false;
+let swap = false
+let fileOk = false
 
 loadData()
 
@@ -23,17 +23,16 @@ function changeMode() {
     const m = document.getElementById("classMode").value;
     const mode = new XMLHttpRequest();
     mode.open("GET", `creation?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
+
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
                 if (mode.responseText === "error") {
                     console.log("table nulle");
-                } else {
                 }
 
-            } else {
+            } else
                 console.log(mode.status);
-            }
         }
     };
     mode.send();
@@ -43,12 +42,14 @@ function changeMode() {
 document.getElementById("walEtu1G1").addEventListener("click", validerEtuGrp);
 
 function validerEtuGrp(event) {
-    let idFind = event.target.id;
-    let numGrp = idFind.substring(8);
-    let numEtu = idFind.charAt(6);
+    const idFind = event.target.id;
 
-    const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
+    const numEtu = idFind.charAt(6);
+    const numGrp = idFind.substring(8);
+
     let valid = true;
+    const studentId = document.getElementById(`idEtu${numEtu}G${numGrp}`).value;
+
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?constraint=${encodeURIComponent("separeEtu")}&studentId=${encodeURIComponent(studentId)}&numGrp=${encodeURIComponent(numGrp)}`, true);
 
@@ -57,14 +58,22 @@ function validerEtuGrp(event) {
             if (xhr.status === 200) {
                 const response = xhr.responseText.split(";");
 
-                if (response[1] === "1")
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
-                else if (response[1] === "2")
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
-                else {
-                    validerSectEtuGrp(idFind);
-                    document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
-                    document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
+                switch (response[1]) {
+                    case "1":
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
+                        break;
+
+                    case "2":
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
+                        break;
+
+                    default:
+                        validerSectEtuGrp(idFind);
+
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = response[1];
+                        document.getElementById(`idEtu${numEtu}G${numGrp}`).value = response[0];
+
+                        break;
                 }
             } else {
                 console.error('Error fetching group data');
@@ -72,6 +81,7 @@ function validerEtuGrp(event) {
             }
         }
     };
+
     xhr.send();
 }
 
@@ -79,17 +89,16 @@ document.getElementById("supEtu1G1").addEventListener("click", enleverEtuGrp);
 
 function enleverEtuGrp(event) {
     let idBout = event.target.id;
-    let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
+    let numGrp = idBout.substring(8);
 
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?constraint=${encodeURIComponent("deleteSepareEtu")}&constraintId=${encodeURIComponent(numEtu + "G" + numGrp)}`);
 
     xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.readyState === XMLHttpRequest.DONE)
             if (xhr.status !== 200)
                 console.log("error deleting etu group");
-        }
     };
 
     xhr.send();
@@ -106,25 +115,21 @@ function enleverEtuGrp(event) {
 
             return;
         }
-
     }
+
     document.querySelector(`#E${numEtu}G${numGrp}`).remove();
     if (numEtu !== groupes[numGrp - 1].length) {
-        for (let g = 1; g <= groupes[numGrp - 1].length; g++) {
-            if (g > numEtu) {
+        for (let g = 1; g <= groupes[numGrp - 1].length; g++)
+            if (g > numEtu)
                 decreaseId(`#E${g}G${numGrp}`);
-            }
-        }
 
         document.getElementById("ajoutEtuGrp" + numGrp).disabled = false;
-
     }
 
-    if (numEtu <= groupes[numGrp.length]) {
+    if (numEtu <= groupes[numGrp.length])
         groupes[numGrp - 1].splice(numEtu - 1, 1);
-    }
-    genererWalid();
 
+    genererWalid();
 }
 
 function getInfosTable(id) {
@@ -170,6 +175,7 @@ document.getElementById("fileUploadForm").addEventListener("change", moveFile)
 function moveFile(event) {
     if (event.target.id !== "studentFile")
         return;
+
     const data = new FormData(document.getElementById("fileUploadForm"));
 
     const xhr = new XMLHttpRequest();
@@ -261,18 +267,21 @@ function setTableNumber() {
                     console.log("Default plan generated : " + xhr.responseText);
                 else if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
                     let l = xhr.responseText.split(";");
+
                     long = l[0];
                     document.getElementById("long").value = l[0];
+
                     larg = l[1];
                     document.getElementById("larg").value = l[1];
                 }
+
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;
-            } else {
+            } else
                 console.log("error number tables")
-            }
         }
     };
+
     xhr.send();
 }
 
@@ -300,6 +309,7 @@ function createGrp() {
         <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" disabled >+</button>
         <h4>Ajouter un étudiant au groupe</h4>
     </div>`
+
     document.querySelector('#ajoutGroup').disabled = true;
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
 
@@ -310,8 +320,6 @@ function createGrp() {
 
     document.querySelector("#walid").disabled = true;
     document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
-
 }
 
 document.getElementById("ajoutEtuGrp1").addEventListener("click", createEtuGrp);
@@ -346,7 +354,6 @@ function createEtuGrpFromString(numGrp) {
 
         document.querySelector("#walid").disabled = true;
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
-
     }
 }
 
@@ -405,21 +412,22 @@ function createTables() {
 
                     tables[i] = table;
                     noms[i] = name;
+
                     i++;
                 }
             } else if (vals.length === 2) {
-
-
                 table = vals[0];
                 name = vals[1];
+
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
+
                 tables[i] = table;
                 noms[i] = name;
-                i++;
 
+                i++;
             }
 
-            table = table * table;
+            table *= table;
 
             if (i >= tables.length)
                 break;
@@ -435,10 +443,9 @@ function createTables() {
         document.querySelector("#lesTables").innerHTML = "";
         document.querySelector("#lesTables").insertAdjacentHTML("beforeend", t);
 
-        for (let i = 0; i < tables.length; i++) {
+        for (let i = 0; i < tables.length; i++)
             if (tables[i] !== "")
                 document.getElementById("T" + tables[i]).addEventListener("click", handleTable);
-        }
     }
     document.getElementById("visuofDouble").style.visibility = "visible";
 }
@@ -450,7 +457,7 @@ function handleTable(event) {
     const element = document.getElementById(event.target.id)
     element.id = element.id.replace(" select", "")
 
-    // suppression de la table
+    // Suppression de la table
     if (event.target.id.includes("delete")) {
 
         element.remove();
@@ -461,16 +468,15 @@ function handleTable(event) {
 
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
+                if (xhr.status === 200)
                     console.log("table deleted successfully")
-                } else {
+                else
                     console.log("error deleting table")
-                }
             }
         }
-        xhr.send();
 
-    } else if (event.target.id.startsWith("T")) { // désuppression de la table
+        xhr.send();
+    } else if (event.target.id.startsWith("T")) { // Désuppression de la table
         if (element.children[0].children.length === 1) {
             const table = event.target.id.substring(1);
             element.classList.remove("deletedT");
@@ -490,6 +496,7 @@ function handleTable(event) {
                     }
                 }
             }
+
             xhr.send();
         } else {
             getInfosTable(element.id)
@@ -530,19 +537,17 @@ function init() {
                 }else {
                     console.log(initReq.responseText)
                 }
-
             }
         }
-
     }
-    initReq.send();
 
+    initReq.send();
 }
 
 function setValid(section) {
-    if (!section.startsWith("#")) {
+    if (!section.startsWith("#"))
         section = "#" + section;
-    }
+
 
     document.querySelector(section).classList.remove("invalid")
     document.querySelector(section).classList.add("valid")
@@ -559,14 +564,12 @@ function setValid(section) {
 
     let numEtu = groupes[numGrp - 1].length;
 
-    if (numEtu < 9) {
-        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false;
-    }
-    document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true;
-    document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true;
-    document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true;
-    document.querySelector(`#supEtu${numEtu}G${numGrp}`).disabled = false;
+    if (numEtu < 9) {document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false}
 
+    document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true
+    document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true
+    document.querySelector(`#walEtu${numEtu}G${numGrp}`).disabled = true
+    document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false
 
     genererWalid()
 
@@ -575,9 +578,8 @@ function setValid(section) {
 function validerSectEtuGrp(idBout) {
     let numGrp = idBout.substring(8);
     let numEtu = idBout.charAt(6);
-    setValid(
-        `E${numEtu}G${numGrp}`
-    );
+
+    setValid(`E${numEtu}G${numGrp}`);
 }
 
 
@@ -602,18 +604,14 @@ function decreaseId(idElem) {
             children[i].children[0].children[3].id = "walEtu" + numEtu + "G" + numGrp;
         }
     }
-
-
 }
-
 
 function codeForGeneration(loadOnly) {
 
     let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
-    xhr.open("GET",
-        `creation?generate=${encodeURIComponent("n'importe quoi")}`
-        , true);
+
+    xhr.open("GET", `creation?generate=${encodeURIComponent("n'importe quoi")}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -627,8 +625,8 @@ function codeForGeneration(loadOnly) {
             }
         }
     }
-    xhr.send();
 
+    xhr.send();
 }
 
 function genererWalid() {
@@ -643,12 +641,12 @@ function renduFichierEtu(etudiants) {
 }
 
 function loadData() {
-
     let students = []
-
     const xhr = new XMLHttpRequest();
     xhr.open("GET", `creation?load=${encodeURIComponent(document.querySelector("#sessionCode").value)}`)
+
     console.log("recherche des datas de l'utilisateur")
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
@@ -702,7 +700,6 @@ function loadData() {
                         enableZone()
                     }
                 }
-            } else {
             }
         }
     }

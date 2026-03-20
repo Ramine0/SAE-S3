@@ -10,58 +10,58 @@ import java.util.Scanner;
 public class GridMap extends Map
 {
 
-    private int[] numbersOfTables ;
-    private int[][] matriceAdj;
+    private int[] tableNumber;
+    private int[][] adjacencyMatrix;
 
     public GridMap(Table[] tables)
     {
         init(tables);
     }
 
-    // initialise la matrice d'adjacence qui contient les voisins de chaque table
+
     private void init(Table[] tables)
     {
 
-        matriceAdj = new int[tables.length + 1][tables.length + 1];
+        adjacencyMatrix = new int[tables.length + 1][tables.length + 1];
         if (tables[0].getCoord()[0] != -1)
         {
 
-            int cpt = 0 ;
-            for (Table t : tables)
+            int counter = 0 ;
+            for (Table table : tables)
             {
-                if (t != null)
+                if (table != null)
                 {
-                    int x = t.getCoord()[0];
-                    int y = t.getCoord()[1];
-                    int cptVois = 0;
-                    for (Table vois : tables)
+                    int x = table.getCoord()[0];
+                    int y = table.getCoord()[1];
+                    int counterNeighbour = 0;
+                    for (Table neighbour : tables)
                     {
-                        if (vois != null)
+                        if (neighbour != null)
                         {
-                            if (cptVois > cpt)
+                            if (counterNeighbour > counter)
                             {
-                                int neighbourX = vois.getCoord()[0];
-                                int neighbourY = vois.getCoord()[1];
+                                int neighbourX = neighbour.getCoord()[0];
+                                int neighbourY = neighbour.getCoord()[1];
 
                                 if (hasNeighbour(x, neighbourX, y, neighbourY))
                                 {
-                                    matriceAdj[cpt][cptVois] = 1;
-                                    matriceAdj[cptVois][cptVois] = 1;
+                                    adjacencyMatrix[counter][counterNeighbour] = 1;
+                                    adjacencyMatrix[counterNeighbour][counterNeighbour] = 1;
                                 }
                             }
                         }
-                        cptVois ++ ;
+                        counterNeighbour ++ ;
                     }
                 }
-                cpt ++ ;
+                counter ++ ;
             }
         }
 
     }
 
-    private boolean hasNeighbour(int x, int neighBourX, int y, int neighBourY)
+    private boolean hasNeighbour(int x, int neighbourX, int y, int neighbourY)
     {
-        return (((x - neighBourX) * (x - neighBourX) == 1) && y == neighBourY || ((y - neighBourY) * (y - neighBourY) == 1) && (x == neighBourX)) ;
+        return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX)) ;
     }
 
     public GridMap()
@@ -69,7 +69,7 @@ public class GridMap extends Map
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private Table[] chargerPlanDefaut(String path)
+    private Table[] loadDefaultMap(String path)
     {
         Table.reset();
         Table[] lesTables;
@@ -77,7 +77,7 @@ public class GridMap extends Map
         {
             Scanner scan = new Scanner(new FileReader(path + "resources/planDefaut.csv"));
             lesTables = new Table[scan.nextInt()];
-            numbersOfTables = new int[lesTables.length] ;
+            tableNumber = new int[lesTables.length] ;
             String[] line;
             int cpt = 0;
             while (scan.hasNextLine())
@@ -86,7 +86,7 @@ public class GridMap extends Map
                 if (!line[0].isEmpty())
                 {
                     lesTables[cpt] = new Table(Integer.parseInt(line[0]), Integer.parseInt(line[1]),Integer.parseInt(line[2]));
-                    numbersOfTables[cpt] = lesTables[cpt].getNum() ;
+                    tableNumber[cpt] = lesTables[cpt].getNum() ;
                     cpt++;
                 }
             }
@@ -112,9 +112,9 @@ public class GridMap extends Map
         int cpt = 0;
         int index = getIndexFromNum(numTable);
         if (index > 0) {
-            for (int i : matriceAdj[index]) {
-                if (matriceAdj[index][i] == 1 && Utilitaire.in(numbersOfTables[i], dispo)) {
-                    voisins[cpt] = numbersOfTables[i];
+            for (int i : adjacencyMatrix[index]) {
+                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], dispo)) {
+                    voisins[cpt] = tableNumber[i];
                     cpt++;
                 }
             }
@@ -124,7 +124,7 @@ public class GridMap extends Map
 
     public Table[] loadMap(String path)
     {
-        Table[] tables = chargerPlanDefaut(path);
+        Table[] tables = loadDefaultMap(path);
         if (tables != null)
         {
             init(tables);
@@ -133,8 +133,8 @@ public class GridMap extends Map
     }
 
     private int getIndexFromNum(int num) {
-        for (int i = 0 ; i < numbersOfTables.length ; i++) {
-            if (num == numbersOfTables[i]) {
+        for (int i = 0; i < tableNumber.length ; i++) {
+            if (num == tableNumber[i]) {
                 return i ;
             }
         }

@@ -1,9 +1,11 @@
 package org.NeoMalokVector.SAE_S3;
 
 public class Table {
-    private static int id = 0;
+    private static int id;
+
     private final int cordX;
     private final int cordY;
+
     private int number;
     private Student student;
 
@@ -13,6 +15,7 @@ public class Table {
     public Table() {
         id++;
         number = id;
+
         cordX = -1;
         cordY = -1;
     }
@@ -20,21 +23,26 @@ public class Table {
     public Table(int x, int y) {
         cordX = x;
         cordY = y;
+
         id++;
         number = id;
     }
 
     public Table(int number, int x, int y) {
         this.number = number;
+
         cordX = x;
         cordY = y;
+
         id = number;
     }
 
     public Table(int number, int x, int y, Student s) {
         this.number = number;
+
         cordX = x;
         cordY = y;
+
         student = s;
         id = number;
     }
@@ -50,25 +58,24 @@ public class Table {
      */
     public String describe() {
         String description = number + "!";
-        if (cordX != -1) {
+
+        if (cordX != -1)
             description += cordX + "!" + cordY + "!";
-        }
-        if (student != null) {
-            description += student.getFullName();
-        } else {
-            description += "aucun etu";
-        }
+
+        description += student != null ? student.getFullName() : "aucun étu";
+
         return description;
     }
 
-    public String inform() {
+    public String getInformations() {
         String information = "" + number;
-        if (cordX != -1) {
+
+        if (cordX != -1)
             information += "!" + cordX + "!" + cordY;
-        }
-        if (student != null) {
+
+        if (student != null)
             information += "!" + student.getId();
-        }
+
         return information;
     }
 
@@ -94,6 +101,6 @@ public class Table {
     }
 
     public int[] getCoordinates() {
-        return new int[]{cordX, cordY};
+        return new int[] { cordX, cordY };
     }
 }

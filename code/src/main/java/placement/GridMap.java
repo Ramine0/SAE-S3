@@ -13,7 +13,7 @@ public class GridMap extends Map {
     private int[][] matriceAdj;
 
     public GridMap() {
-        
+
     }
 
     public GridMap(Table[] tables) {
@@ -33,7 +33,7 @@ public class GridMap extends Map {
                     int y = t.getCoordinates()[1];
                     int cptVois = 0;
                     for (Table vois : tables) {
-                        if (vois != null) {
+                        if (vois != null)
                             if (cptVois > cpt) {
                                 int neighbourX = vois.getCoordinates()[0];
                                 int neighbourY = vois.getCoordinates()[1];
@@ -43,7 +43,6 @@ public class GridMap extends Map {
                                     matriceAdj[cptVois][cptVois] = 1;
                                 }
                             }
-                        }
                         cptVois++;
                     }
                 }
@@ -98,14 +97,12 @@ public class GridMap extends Map {
         int cpt = 0;
         int index = getIndexFromNumber(tableNumber);
 
-        if (index > 0) {
-            for (int i : matriceAdj[index]) {
+        if (index > 0)
+            for (int i : matriceAdj[index])
                 if (matriceAdj[index][i] == 1 && Utilitaire.in(numbersOfTables[i], available)) {
                     neighbours[cpt] = numbersOfTables[i];
                     cpt++;
                 }
-            }
-        }
 
         return neighbours;
     }
@@ -120,10 +117,9 @@ public class GridMap extends Map {
     }
 
     private int getIndexFromNumber(int number) {
-        for (int i = 0; i < numbersOfTables.length; i++) {
+        for (int i = 0; i < numbersOfTables.length; i++)
             if (number == numbersOfTables[i])
                 return i;
-        }
 
         return -1;
     }

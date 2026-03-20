@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet {
-    static String msg = ""; // c a 2000% du debug
+    static String msg = "";
     private static HashMap<String, Room> rooms;
 
     private static void defineMapType(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
@@ -62,9 +62,8 @@ public class CreationServlet extends HttpServlet {
     }
 
     private static boolean userExists(String user) {
-        if (rooms == null) {
+        if (rooms == null)
             return false;
-        }
         return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 
@@ -80,7 +79,7 @@ public class CreationServlet extends HttpServlet {
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     private static void createUser(String user, String path) {
-        if (!userExists(user)) {
+        if (!userExists(user))
             try {
                 Room newData = new Room(path);
                 rooms.put(user, newData);
@@ -89,7 +88,6 @@ public class CreationServlet extends HttpServlet {
                 msg = e.getMessage();
                 getMessage();
             }
-        }
     }
 
     private static void getMessage() {
@@ -107,9 +105,8 @@ public class CreationServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String user = request.getSession().getId();
 
-        if (rooms == null) {
+        if (rooms == null)
             rooms = new HashMap<>();
-        }
 
 
         if (request.getParameter("load") != null) {
@@ -140,11 +137,10 @@ public class CreationServlet extends HttpServlet {
     }
 
     private void loadSession(HttpServletRequest request, String user, PrintWriter out) {
-        if (!request.getParameter("load").isEmpty()) {
-
+        if (!request.getParameter("load").isEmpty())
             loadWithCode(loadSession(request.getParameter("load"), user), out, user);
-
-        } else loadWithCode(userExists(user), out, user);
+        else
+            loadWithCode(userExists(user), out, user);
     }
 
     private void loadWithCode(boolean request, PrintWriter out, String user) {
@@ -186,9 +182,8 @@ public class CreationServlet extends HttpServlet {
         switch (request.getParameter("constraint")) {
 
             case "imposePlace" -> {
-                if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty()) {
+                if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty())
                     out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
-                }
                 out.print("null");
             }
 
@@ -198,23 +193,23 @@ public class CreationServlet extends HttpServlet {
             case "deleteTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
 
-                if (num < crea.minTable())
-                    num = crea.minTable();
-                else if (num > crea.maxTable())
-                    num = crea.maxTable();
+                if (num < crea.minimumTableNumber())
+                    num = crea.minimumTableNumber();
+                else if (num > crea.maximumTableNumber())
+                    num = crea.maximumTableNumber();
 
                 out.print(crea.removeTable(num) + ";" + num);
             }
 
             case "removeDeletedTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
-                crea.unremoveTable(num);
+                crea.undeleteTable(num);
             }
 
             case "separeEtu" -> {
                 String studentId = crea.findStudent(request.getParameter("studentId"));
 
-                String studentInfo = crea.findStudentForGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
+                String studentInfo = crea.separeStudentsPerGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
 
                 if (studentInfo.length() == 1)
                     out.print(studentId + ";" + studentInfo);
@@ -245,12 +240,11 @@ public class CreationServlet extends HttpServlet {
         String visualisationInfos = "null";
         if (room != null) {
             visualisationInfos = "";
-            if (room.getPositioning() != null) {
+            if (room.getPositioning() != null)
                 visualisationInfos += "\n" + room.getPositioning().getTablesForVisu() + "<";
-            }
             // les infos d'etudians mis a distance
 
-            visualisationInfos += room.getCreating().getSeparated();
+            visualisationInfos += room.getCreating().getSeparatedStudents();
             visualisationInfos += "<";
             visualisationInfos += room.getCreating().getStudentList() + "<";
         }

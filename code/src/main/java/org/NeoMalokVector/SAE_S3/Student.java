@@ -3,7 +3,9 @@ package org.NeoMalokVector.SAE_S3;
 public class Student {
     private final String name;
     private final String firstName;
+
     private final String id;
+
     private final String group;
     private final String subGroup;
 
@@ -45,21 +47,19 @@ public class Student {
     }
 
     public boolean sameGroup(Student etu, boolean sub) {
-        if (etu.group.equals(this.group)) {
-            if (sub) {
+        if (etu.group.equals(group)) {
+            if (sub)
                 return subGroup.equals(etu.subGroup);
-            }
             return true;
         }
         return false;
     }
 
     public String textVisualisation() {
-        if (group != null) {
+        if (group != null)
             return getId() + ";" + getName() + " " + getFirstName() + ";" + (group + "." + subGroup);
-        } else {
+        else
             return getId() + ";" + getName() + " " + getFirstName() + ";" + "null";
-        }
     }
 
 

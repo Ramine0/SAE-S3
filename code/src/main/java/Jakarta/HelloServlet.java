@@ -20,8 +20,8 @@ public class HelloServlet {
         crea.createTables(3, 3);
         crea.setDimensions(3, 3);
 
-        System.out.println("add group constr Malik : " + crea.findStudentForGroup("p2406", 1));
-        System.out.println("add group constr Néo : " + crea.findStudentForGroup("p24033", 1));
+        System.out.println("add group constr Malik : " + crea.separeStudentsPerGroup("p2406", 1));
+        System.out.println("add group constr Néo : " + crea.separeStudentsPerGroup("p24033", 1));
 
         System.out.println(salle.generate());
     }

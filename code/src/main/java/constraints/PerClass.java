@@ -3,7 +3,7 @@ package constraints;
 import org.NeoMalokVector.SAE_S3.Student;
 
 public class PerClass extends Constraint {
-    private static boolean subGroup = false;
+    private static boolean subGroup;
 
     public PerClass(boolean sg) {
         subGroup = sg;
@@ -11,14 +11,11 @@ public class PerClass extends Constraint {
 
     @Override
     public boolean validate(Student student, int table, Student[] students) {
-
-
         // on cherche à savoir si les tables voisines de l'étudiant ont la même classe
         // donc on parcourt les voisins
-        for (Student s : students) {
+        for (Student s : students)
             if (s != null && student.sameGroup(s, subGroup))
                 return false;
-        }
 
         return true;
     }

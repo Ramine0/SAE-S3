@@ -57,23 +57,21 @@ public class ConnectionServlet extends HttpServlet {
             return;
         }
 
-        if (data == null && (request.getParameter("action").equals("load") || request.getParameter("action").equals("add"))) {
+        if (data == null && (request.getParameter("action").equals("load") || request.getParameter("action").equals("add")))
             data = new Data();
-        }
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
-            if (request.getParameter("action").equals("connect")) {
+            if (request.getParameter("action").equals("connect"))
                 connect(request, connection, out);
-            } else if (request.getParameter("action").equals("subscribe")) {
+            else if (request.getParameter("action").equals("subscribe"))
                 subscribe(request, connection);
-            } else if (request.getParameter("action").equals("init")) {
+            else if (request.getParameter("action").equals("init"))
                 initPlacements(request, connection, out, user);
-            } else if (request.getParameter("action").equals("load")) {
+            else if (request.getParameter("action").equals("load"))
                 load(request, connection);
-            } else if (request.getParameter("action").equals("add")) {
+            else if (request.getParameter("action").equals("add"))
                 add(request, connection);
-            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -174,12 +172,10 @@ public class ConnectionServlet extends HttpServlet {
                     constraints.append(constraintsData.getString(1)).append(",").append(constraintsData.getString(2)).append(",").append(constraintsData.getString(3)).append(",").append(constraintsData.getString(4));
                 else if (constraintsData.getString(2).equals("G"))
                     constraints.append(constraintsData.getString(1)).append(",").append(constraintsData.getString(2)).append(",").append(constraintsData.getString(5));
-                else {
-                    if (constraintsData.getString(4).equals("true"))
-                        data.changeMode('S');
-                    else
-                        data.changeMode('G');
-                }
+                else if (constraintsData.getString(4).equals("true"))
+                    data.changeMode('S');
+                else
+                    data.changeMode('G');
 
                 if (!constraintsData.getString(1).equals("C") && constraintsData.next())
                     constraints.append(";");
@@ -243,11 +239,11 @@ public class ConnectionServlet extends HttpServlet {
     private void addConstraints(HttpServletRequest request, Connection connection, String addConstraint) throws SQLException {
         int cnt = 0;
 
-        while (cnt != data.getNbConstraint()) {
-            String[] constraint = data.getConstr()[cnt].toDatabase().split(",");
+        while (cnt != data.getConstraintsNumber()) {
+            String[] constraint = data.getConstraints()[cnt].toDatabase().split(",");
 
-            if (constraint[0].equals("G")) {
-                for (int i = 2; i < constraint.length; i++) {
+            if (constraint[0].equals("G"))
+                for (int i = 2; i < constraint.length; i++)
                     try (PreparedStatement addAttempt = connection.prepareStatement(addConstraint)) {
                         addAttempt.setString(1, constraint[0]);
                         addAttempt.setString(2, request.getParameter("idP"));
@@ -258,8 +254,7 @@ public class ConnectionServlet extends HttpServlet {
 
                         addAttempt.executeQuery();
                     }
-                }
-            } else {
+            else
                 try (PreparedStatement addAttempt = connection.prepareStatement(addConstraint)) {
                     if (constraint[0].equals("I")) {
                         addAttempt.setString(1, constraint[0]);
@@ -277,7 +272,6 @@ public class ConnectionServlet extends HttpServlet {
                         addAttempt.setString(6, null);
                     }
                 }
-            }
         }
     }
 }

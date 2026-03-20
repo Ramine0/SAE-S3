@@ -13,27 +13,30 @@ import utilitaire.Utilitaire;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 public class Data {
     private final ArrayList<Student> students = new ArrayList<>();
-    private Constraint[] constraints;
+
     private Table[] tables;
-    private int[] deletedTables;
+    private Constraint[] constraints;
+
     private Map map;
+
     private int idC;
+    private int[] deletedTables;
 
     public Data(String path, String mapType) throws FileNotFoundException {
         loadFile(path);
 
-        if (mapType.charAt(0) == 'R') {
+        if (mapType.charAt(0) == 'R')
             map = new RectangularMap(Character.getNumericValue(mapType.charAt(1)), Character.getNumericValue(mapType.charAt(2)));
-        } else if (mapType.charAt(0) == 'D') {
+        else if (mapType.charAt(0) == 'D') {
             map = new GridMap();
             loadDefaultPlan(path);
         }
-
 
         init();
     }
@@ -41,28 +44,26 @@ public class Data {
     public Data() throws FileNotFoundException {
         map = new GridMap();
         loadDefaultPlan("src/main/webapp/");
+
         loadFile();
         init();
     }
 
     private void init() {
         deletedTables = new int[students.size()];
-
-        if (constraints != null)
-            for (int i = 0; i < constraints.length; i++)
-                if (constraints[i] != null && constraints[i] instanceof PerGroup)
-                    ((PerGroup) constraints[i]).removeStudent(i);
-
         constraints = new Constraint[students.size() + 1];
+
+        for (int i = 0; i < constraints.length; i++)
+            if (constraints[i] != null && constraints[i] instanceof PerGroup)
+                ((PerGroup) constraints[i]).removeStudent(i);
 
         idC = 0;
     }
 
 
     public void placeStudent(int table, String idStudent) {
-        if (getTable(table) == null) {
+        if (getTable(table) == null)
             return;
-        }
         Objects.requireNonNull(getTable(table)).setStudent(getStudentFromId(idStudent));
     }
 
@@ -72,95 +73,58 @@ public class Data {
     }
 
     public String[] freeStudents() {
-
-        String[] place = new String[students.size()];
-        int numPla = 0;
+        List<String> result = new ArrayList<>();
+        List<String> occupiedTables = new ArrayList<>();
 
         for (Table table : tables)
-            if (table.getStudent() != null) {
-                place[numPla] = table.getStudent().getId();
-                numPla++;
-            }
+            if (table.getStudent() != null)
+                occupiedTables.add(table.getStudent().getId());
 
-        String[] rest = new String[students.size() - numPla];
-        int numRest = 0;
-        for (Student s : students) {
-            if (!Utilitaire.in(s.getId(), place)) {
-                rest[numRest] = s.getId();
-                numRest++;
-            }
-        }
-        return rest;
+        for (Student student : students)
+            if (!Utilitaire.in(student.getId(), occupiedTables.toArray()))
+                result.add(student.getId());
+
+        return result.toArray(new String[0]);
     }
 
-    public Student getStuFromTab(int num) {
-        return Objects.requireNonNull(getTable(num)).getStudent();
-    }
-
-    public int nbDeletedTables() {
-        int num = 0;
-        if (tables.length == 1) {
-            return 100;
-        }
-        for (int deletedTable : deletedTables) {
-            if (deletedTable != 0) {
-                num++;
-            }
-        }
-        return num;
+    public Student getStudentFromTable(int tableNumber) {
+        return Objects.requireNonNull(getTable(tableNumber)).getStudent();
     }
 
     public int[] existingTables() {
-        int[] result = new int[tables.length - nbDeletedTables()];
-        int numRes = 0;
-        for (Table table : tables) {
-            if (table != null) {
-                if (!isDeleted(table.getNumber())) {
-                    // si c'est bon, je l'ajoute à la liste
-                    result[numRes] = table.getNumber();
-                    numRes++;
-                }
-            }
-        }
-        return result;
+        List<Integer> result = new ArrayList<>();
+
+        for (Table table : tables)
+            if (table != null && !isDeleted(table.getNumber()))
+                result.add(table.getNumber());
+
+        return result.stream().mapToInt(i -> i).toArray();
     }
 
     public int[] freeTables() {
-        int[] free;
-        int length = 0;
-        int numRes = 0;
+        List<Integer> free = new ArrayList<>();
 
-        for (Table table : tables) {
-            if (Utilitaire.in(table.getNumber(), existingTables()) && table.getStudent() == null) {
-                length++;
-            }
-        }
-        free = new int[length];
-        for (Table table : tables) {
-            if (Utilitaire.in(table.getNumber(), existingTables()) && table.getStudent() == null) {
-                free[numRes] = table.getNumber();
-                numRes++;
-            }
-        }
-        return free;
+        for (Table table : tables)
+            if (Utilitaire.in(table.getNumber(), existingTables()) && table.getStudent() == null)
+                free.add(table.getNumber());
+
+        return free.stream().mapToInt(i -> i).toArray();
     }
 
-    public int removeTable(int num) {
-        for (int i = 0; i < deletedTables.length; i++) {
+    public int deleteTable(int tableNumber) {
+        for (int i = 0; i < deletedTables.length; i++)
             if (deletedTables[i] == 0) {
-                deletedTables[i] = num;
-                return num;
+                deletedTables[i] = tableNumber;
+                return tableNumber;
             }
-        }
+
         return -1;
     }
 
-    public void unremoveTable(int num) {
-        for (int n = 0; n < deletedTables.length; n++) {
-            if (deletedTables[n] == num) {
-                deletedTables[n] = 0;
-            }
-        }
+    public void undeleteTable(int tableNumber) {
+        for (int i = 0; i < deletedTables.length; i++)
+            if (deletedTables[i] == tableNumber)
+                deletedTables[i] = 0;
     }
 
     public Student getStudentFromId(String id) {
@@ -171,45 +135,31 @@ public class Data {
         return null;
     }
 
-    // voir si c'est pas remplaçable
-    public Constraint[] getConstr() {
+    public Constraint[] getConstraints() {
         return constraints;
     }
 
+    public Constraint[] getConstraints(String type) {
+        List<Constraint> result = new ArrayList<>();
 
-    // ne pas supprimer, sauf si on ne lui trouve aucune utilité
-    public Constraint[] getConstr(String type) {
-        int i = 0;
-        Constraint[] constr;
-        if (type.equals("I")) {
-            constr = new Constraint[getNbConstraint("I")];
-            for (Constraint constraint : constraints) {
-                if (constraint instanceof ImposedPlacement) {
-                    constr[i] = constraint;
-                    i++;
-                }
+        for (Constraint constraint : constraints)
+            if ((type.equals("I") && constraint instanceof ImposedPlacement) || (type.equals("G") && constraint instanceof PerGroup))
+                result.add(constraint);
+            else {
+                result.add(constraints[0]);
+                break;
             }
-        } else if (type.equals("G")) {
-            constr = new Constraint[getNbConstraint("G")];
-            for (Constraint constraint : constraints) {
-                if (constraint instanceof PerGroup) {
-                    constr[i] = constraint;
-                    i++;
-                }
-            }
-        } else {
-            constr = new Constraint[1];
-            constr[0] = constraints[0];
-        }
-        return constr;
+
+        return result.toArray(new Constraint[0]);
     }
 
     public int[] getTables() {
-        int[] lesNums = new int[tables.length];
-        for (int i = 0; i < maxNumTable(); i++) {
-            lesNums[i] = tables[i].getNumber();
-        }
-        return lesNums;
+        List<Integer> result = new ArrayList<>();
+
+        for (Table table : tables)
+            result.add(table.getNumber());
+
+        return result.stream().mapToInt(i -> i).toArray();
     }
 
     private void loadFile() throws FileNotFoundException {
@@ -221,115 +171,114 @@ public class Data {
         students.clear();
 
         Scanner sc = new Scanner(new FileReader(path + "resources/etudiants.csv"));
-        String[] line;
 
-        String id, nom, prenom, group, subGroup;
-        int iid, inom, iprenom, igroup, isubgroup;
-        iid = -1;
-        inom = -1;
-        iprenom = -1;
-        igroup = -1;
-        isubgroup = -1;
+        int idIndex = -1;
+
+        int nameIndex = -1;
+        int firstNameIndex = -1;
+
+        int groupIndex = -1;
+        int subgroupIndex = -1;
 
         while (sc.hasNextLine()) {
-            line = sc.nextLine().split(";");
-            id = null;
-            nom = null;
-            prenom = null;
-            group = null;
-            subGroup = null;
-            for (int i = 0; i < line.length; i++) {
-                if (line[i].equals("numero")) {
-                    iid = i;
-                } else if (line[i].equals("nom")) {
-                    inom = i;
-                } else if (line[i].equals("prenom")) {
-                    iprenom = i;
-                } else if (line[i].equals("groupe")) {
-                    igroup = i;
-                } else if (line[i].equals("sous-groupe")) {
-                    isubgroup = i;
-                } else if (iid != -1 && inom != -1 && iprenom != -1 && igroup != -1) {
-                    id = line[iid];
-                    nom = line[inom];
-                    prenom = line[iprenom];
-                    if (isubgroup == -1) {
-                        String[] groupInfo = line[igroup].replace(".", ";").split(";");
+            String[] line = sc.nextLine().split(";");
+
+            String id = null;
+
+            String name = null;
+            String firstName = null;
+
+            String group = null;
+            String subgroup = null;
+
+            for (int i = 0; i < line.length; i++)
+                if (line[i].equals("numero"))
+                    idIndex = i;
+                else if (line[i].equals("name"))
+                    nameIndex = i;
+                else if (line[i].equals("firstName"))
+                    firstNameIndex = i;
+                else if (line[i].equals("groupe"))
+                    groupIndex = i;
+                else if (line[i].equals("sous-groupe"))
+                    subgroupIndex = i;
+                else if (idIndex != -1 && nameIndex != -1 && firstNameIndex != -1 && groupIndex != -1) {
+                    id = line[idIndex];
+                    name = line[nameIndex];
+                    firstName = line[firstNameIndex];
+
+                    if (subgroupIndex == -1) {
+                        String[] groupInfo = line[groupIndex].replace(".", ";").split(";");
+
                         group = groupInfo[0];
-                        if (groupInfo.length > 1) {
-                            subGroup = groupInfo[1];
-                        }
+
+                        if (groupInfo.length > 1)
+                            subgroup = groupInfo[1];
                     } else {
-                        group = line[igroup];
-                        subGroup = line[isubgroup];
+                        group = line[groupIndex];
+                        subgroup = line[subgroupIndex];
                     }
                 }
-            }
-            if (id != null && nom != null && group != null && prenom != null) {
-                students.add(new Student(group, subGroup, nom, prenom, id));
-            }
+
+            if (id != null && name != null && group != null && firstName != null)
+                students.add(new Student(group, subgroup, name, firstName, id));
         }
+
         sc.close();
     }
 
 
-    public String[] descrip() {
-        String[] text = new String[students.size()];
-        int i = 0;
-        for (Student s : students) {
-            text[i] = s.describe(true);
-            i++;
-        }
+    public String[] describe() {
+        List<String> result = new ArrayList<>();
 
-        return text;
+        for (Student s : students)
+            result.add(s.describe(true));
+
+        return result.toArray(new String[0]);
     }
 
-    public void loadStudents(String s) {
-        String[] tab = s.split(";");
-        for (String string : tab) {
-            String[] student = string.replace(",", ";").split(";");
-            students.add(new Student(student[3], student[4], student[1], student[2], student[0]));
+    public void loadStudents(String studentsList) {
+        for (String student : studentsList.split(";")) {
+            String[] studentInfos = student.split(",");
+            students.add(new Student(studentInfos[3], studentInfos[4], studentInfos[1], studentInfos[2], studentInfos[0]));
         }
     }
 
-    public void loadTables(String t) {
-        String[] tab = t.split(";");
-        tables = new Table[tab.length];
-        deletedTables = new int[tab.length];
-        int i = 0;
-        for (String string : tab) {
-            String[] table = string.replace(",", ";").split(";");
-            tables[i] = new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
-            if (Integer.parseInt(table[3]) == 1) {
-                removeTable(Integer.parseInt(table[0]));
+    public void loadTables(String tablesList) {
+        String[] tables = tablesList.split(";");
+
+        this.tables = new Table[tables.length];
+        deletedTables = new int[tables.length];
+
+        for (int i = 0; i < tables.length; i++) {
+            String[] table = tables[i].split(",");
+            this.tables[i] = new Table(Integer.parseInt(table[0]), Integer.parseInt(table[1]), Integer.parseInt(table[2]), getStudentFromId(table[4]));
+
+            if (Integer.parseInt(table[3]) == 1)
+                deleteTable(Integer.parseInt(table[0]));
+        }
+    }
+
+    public void loadConstraints(String constraintsList) {
+        String[] tab = constraintsList.split(";");
+
+        for (String constraint : tab) {
+            String[] constraintInfos = constraint.split(",");
+
+            if (constraintInfos[0].equals("G"))
+                addStudentGroupConstraint(constraintInfos[1], Integer.parseInt(constraintInfos[4]));
+            else
+                imposeStudent(constraintInfos[1], Integer.parseInt(constraintInfos[2]));
+        }
+    }
+
+
+    public void placeImposedStudents() {
+        for (Constraint constraint : constraints)
+            if (constraint instanceof ImposedPlacement) {
+                String[] student = ((ImposedPlacement) constraint).getImposed();
+                placeStudent(Integer.parseInt(student[0]), student[1]);
             }
-            i++;
-        }
-    }
-
-    public void loadConstraints(String c) {
-        String[] tab = c.split(";");
-        for (String string : tab) {
-            String[] contrainte = string.replace(",", ";").split(";");
-            if (contrainte[0].equals("G")) {
-                addStudentGroupConstraint(contrainte[1], Integer.parseInt(contrainte[4]));
-            } else {
-                addImp(contrainte[1], Integer.parseInt(contrainte[2]));
-            }
-        }
-    }
-
-
-    public void placerImposes() {
-        String[] s;
-
-        for (Constraint c : constraints) {
-            if (c instanceof ImposedPlacement) {
-                s = ((ImposedPlacement) c).getImposed();
-                placeStudent(Integer.parseInt(s[0]), s[1]);
-
-            }
-        }
     }
 
     public void setNumberTables(int lon, int lar) {
@@ -337,11 +286,10 @@ public class Data {
 
         Table.reset();
 
-        // il faut que ca soit une rectangular map
         if (map instanceof RectangularMap) {
-            if (deletedTables != null) {
+            if (deletedTables != null)
                 deletedTables = null;
-            }
+
             if (num >= students.size()) {
                 tables = new Table[num];
 
@@ -358,165 +306,128 @@ public class Data {
 
                 deletedTables = new int[students.size()];
             }
-
         }
     }
 
     public void changeMode(char mode) {
-        if (idC == 0) {
+        if (idC == 0)
             idC = 1;
-        }
-        if (mode == 'G') {
+
+        if (mode == 'G')
             constraints[0] = new PerClass(false);
-        } else if (mode == 'S') {
+        else if (mode == 'S')
             constraints[0] = new PerClass(true);
-        } else {
+        else
             constraints[0] = null;
-        }
     }
 
     public PerGroup getPerGroup(int id) {
-        for (Constraint constraint : constraints) {
-            if (constraint instanceof PerGroup) {
-                if (((PerGroup) constraint).getNumber() == id) {
+        for (Constraint constraint : constraints)
+            if (constraint instanceof PerGroup)
+                if (((PerGroup) constraint).getNumber() == id)
                     return (PerGroup) constraint;
-                }
-            }
-        }
+
         return null;
     }
 
     public int getPerGroupIndex() {
         int num = 1;
         boolean valide = false;
-        while (!valide && num < getNbConstraint("G")) {
+        while (!valide && num < getConstraintsNumber("G")) {
             valide = true;
-            for (PerGroup pg : ((PerGroup[]) getConstr("G"))) {
+            for (PerGroup pg : ((PerGroup[]) getConstraints("G")))
                 if (pg.getNumber() == num) {
                     num++;
                     valide = false;
                 }
-            }
         }
-        if (valide) {
+        if (valide)
             return num;
-        } else {
+        else
             return -1;
-        }
     }
 
     public int getIndexConstraint(String type, int id) {
         if (type.equals("I") && getImposedPlacement(id) != null) {
-            for (int i = 0; i < idC; i++) {
-                if (constraints[i] == getImposedPlacement(id)) {
+            for (int i = 0; i < idC; i++)
+                if (constraints[i] == getImposedPlacement(id))
                     return i;
-                }
-            }
-        } else if (type.equals("G") && getPerGroup(id) != null) {
-            for (int i = 0; i < idC; i++) {
-                if (constraints[i] == getPerGroup(id)) {
+        } else if (type.equals("G") && getPerGroup(id) != null)
+            for (int i = 0; i < idC; i++)
+                if (constraints[i] == getPerGroup(id))
                     return i;
-                }
-            }
-        }
+
         return -1;
     }
 
-    public ImposedPlacement getImposedPlacement(int id) {
-        int cnt = 1;
-        for (Constraint c : constraints) {
-            if (c instanceof ImposedPlacement) {
-                if (cnt == id) {
-                    return (ImposedPlacement) c;
-                } else {
-                    cnt++;
-                }
-            }
-        }
+    public ImposedPlacement getImposedPlacement(int constraintId) {
+        for (int i = 0; i < constraints.length; i++)
+            if (constraints[i] instanceof ImposedPlacement && i + 1 == constraintId)
+                return (ImposedPlacement) constraints[i];
+
         return null;
     }
 
     /// Il faudra peut-être modifier tout ça en fonction de la manière dont les contraintes sont indiquées
     public String addStudentGroupConstraint(String numStudent, int idGp) {
-        if (getPerGroup(idGp) != null) {
-            if (getPerGroup(idGp).haveStudent(numStudent)) {
+        if (getPerGroup(idGp) != null)
+            if (getPerGroup(idGp).haveStudent(numStudent))
                 return "2";
-            } else {
+            else {
                 getPerGroup(idGp).addStudent(numStudent);
                 return numStudent + ";" + getFullName(numStudent);
             }
-        } else {
-            if (addConstraint(numStudent, idGp, 'N') == 0) {
-                return numStudent + ";" + getFullName(numStudent);
-            } else {
-                return "1";
-            }
-
-        }
-
+        else
+            return addConstraint(numStudent, idGp, 'N') == 0 ? numStudent + ";" + getFullName(numStudent) : "1";
     }
 
     public void removeConstraint(String constr, int id) {
         if (constr.equals("I")) {
             if (id >= 0 && id < idC && getImposedPlacement(id) != null) {
-                for (int i = getIndexConstraint(constr, id); i < idC; i++) {
-                    if (i == idC - 1) {
-                        constraints[i] = null;
-                    } else {
-                        constraints[i] = constraints[i + 1];
-                    }
-                }
+                for (int i = getIndexConstraint(constr, id); i < idC; i++)
+                    constraints[i] = i == idC - 1 ? null : constraints[i + 1];
+
                 idC--;
             }
         } else if (constr.equals("G")) {
             if (id < idC && getPerGroup(id) != null) {
-                for (int i = getIndexConstraint(constr, id); i < idC; i++) {
-                    if (i == idC - 1) {
+                for (int i = getIndexConstraint(constr, id); i < idC; i++)
+                    if (i == idC - 1)
                         constraints[i] = null;
-                    } else {
+                    else
                         constraints[i] = constraints[i + 1];
-                    }
-                }
                 idC--;
             }
-        } else {
-            if (id >= 0 && id < idC && getPerGroup(id) != null) {
-                getPerGroup(id).removeStudent(Integer.parseInt(constr));
-            }
-        }
+        } else if (id >= 0 && id < idC && getPerGroup(id) != null)
+            getPerGroup(id).removeStudent(Integer.parseInt(constr));
     }
 
-    public int getNbConstraint() {
+    public int getConstraintsNumber() {
         int nb = 0;
-        for (Constraint c : constraints) {
-            if (c != null) {
+
+        for (Constraint c : constraints)
+            if (c != null)
                 nb++;
-            }
-        }
+
         return nb;
     }
 
-    public int getNbConstraint(String type) {
+    public int getConstraintsNumber(String type) {
         int nb = 0;
         switch (type) {
             case "I" -> {
-                for (int i = 0; i < idC; i++) {
-                    if (constraints[i] instanceof ImposedPlacement) {
+                for (int i = 0; i < idC; i++)
+                    if (constraints[i] instanceof ImposedPlacement)
                         nb++;
-                    }
-                }
             }
             case "G" -> {
-                for (int i = 0; i < idC; i++) {
-                    if (constraints[i] instanceof PerGroup) {
+                for (int i = 0; i < idC; i++)
+                    if (constraints[i] instanceof PerGroup)
                         nb++;
-                    }
-                }
             }
             case "M" -> {
-                if (constraints[0] != null) {
+                if (constraints[0] != null)
                     nb++;
-                }
             }
         }
         return nb;
@@ -525,7 +436,7 @@ public class Data {
 
     public int addConstraint(String numStudent, int numTable, char constr) {
         if (constr == 'I') {
-            if (!Utilitaire.in(numStudent, imposedStudents())) {
+            if (!Utilitaire.in(numStudent, imposedStudents()))
                 if (!Utilitaire.in(numTable, imposedTables())) {
                     if (idC != 0) {
                         constraints[idC] = new ImposedPlacement(numTable, numStudent);
@@ -533,54 +444,46 @@ public class Data {
 
                         return 0;
                     }
-                } else {
+                } else
                     return 2;
-                }
-            }
 
 
             return 1;
-        } else if (constr == 'N') {
+        } else if (constr == 'N')
             if (idC != 0) {
                 constraints[idC] = new PerGroup(numStudent, numTable);
                 idC++;
                 return 0;
             }
-        }
 
         return 1;
     }
 
-    // à revoir, la façon dont c'est fait me semble très suspecte
     public void removeStudentGroupConstraint(int idGp, int idStu) {
-        if (getPerGroup(idGp) != null) {
+        if (getPerGroup(idGp) != null)
             getPerGroup(idGp).removeStudent(idStu);
-        }
     }
 
     public String completeId(String incomplet) {
         String result = "";
-        if (incomplet.startsWith("p") && students.getFirst().getId().startsWith("1")) {
+        if (incomplet.startsWith("p") && students.getFirst().getId().startsWith("1"))
             incomplet = "1" + incomplet.substring(1);
-        } else if (incomplet.startsWith("1") && students.getFirst().getId().startsWith("p")) {
+        else if (incomplet.startsWith("1") && students.getFirst().getId().startsWith("p"))
             incomplet = "p" + incomplet.substring(1);
-        }
 
-        for (Student s : students) {
-            if (s.getId().equals(incomplet)) {
+        for (Student s : students)
+            if (s.getId().equals(incomplet))
                 return incomplet;
-            } else if ((!result.isEmpty()) && s.getId().startsWith(incomplet)) {
+            else if ((!result.isEmpty()) && s.getId().startsWith(incomplet))
                 return "";
-            } else if (s.getId().startsWith(incomplet)) {
+            else if (s.getId().startsWith(incomplet))
                 result = s.getId();
-            }
-        }
         return result;
     }
 
 
-    public int addImp(String id, int num) {
-        return addConstraint(id, num, 'I');
+    public int imposeStudent(String studentId, int tableNumber) {
+        return addConstraint(studentId, tableNumber, 'I');
     }
 
     public void setDimensions(int lon, int lar) {
@@ -592,42 +495,36 @@ public class Data {
         ArrayList<Student> voisins = new ArrayList<>();
         // pour tous les voisins de la map
 
-        for (int i : map.neighbours(t, existingTables())) {
-            //je récupère l'étudiant de la table si on a bien une table
-            if (i != -1) {
-                if (getTable(i) != null) {
-                    voisins.add(getStuFromTab(i));
-                }
-            }
-
-        }
+        //je récupère l'étudiant de la table si on a bien une table
+        for (int i : map.neighbours(t, existingTables()))
+            if (i != -1)
+                if (getTable(i) != null)
+                    voisins.add(getStudentFromTable(i));
 
         return voisins.toArray(new Student[0]);
     }
 
 
     public String[] imposedStudents() {
-        String[] result = new String[getNbConstraint("I")];
+        String[] result = new String[getConstraintsNumber("I")];
         int i = 0;
-        for (Constraint c : constraints) {
+        for (Constraint c : constraints)
             if (c instanceof ImposedPlacement) {
                 result[i] = ((ImposedPlacement) c).getStudentNumber();
                 i++;
             }
-        }
 
         return result;
     }
 
     public int[] imposedTables() {
-        int[] result = new int[getNbConstraint("I")];
+        int[] result = new int[getConstraintsNumber("I")];
         int i = 0;
-        for (Constraint c : constraints) {
+        for (Constraint c : constraints)
             if (c instanceof ImposedPlacement) {
                 result[i] = ((ImposedPlacement) c).getTableNumber();
                 i++;
             }
-        }
 
         return result;
     }
@@ -646,30 +543,27 @@ public class Data {
     public String getTablesInfos() {
         StringBuilder tab = new StringBuilder();
         for (Table t : tables) {
-            if (!tab.isEmpty()) {
+            if (!tab.isEmpty())
                 tab.append(";");
-            }
-            tab.append(t.inform());
+            tab.append(t.getInformations());
         }
         return tab.toString();
     }
 
     private Table getTable(int num) {
 
-        for (Table tb : tables) {
-            if (tb.getNumber() == num) {
+        for (Table tb : tables)
+            if (tb.getNumber() == num)
                 return tb;
-            }
-        }
 
         return null;
     }
 
-    public int minNumTable() {
+    public int minimumTableNumber() {
         return Utilitaire.min(freeTables());
     }
 
-    public int maxNumTable() {
+    public int maximumTableNumber() {
         return Utilitaire.max(freeTables());
     }
 
@@ -685,9 +579,9 @@ public class Data {
 
 
     public boolean swap(int numT1, int numT2) {
-        if (getStuFromTab(numT1) != null || getStuFromTab(numT2) != null) {
-            Student temp = getStuFromTab(numT1);
-            Objects.requireNonNull(getTable(numT1)).setStudent(getStuFromTab(numT2));
+        if (getStudentFromTable(numT1) != null || getStudentFromTable(numT2) != null) {
+            Student temp = getStudentFromTable(numT1);
+            Objects.requireNonNull(getTable(numT1)).setStudent(getStudentFromTable(numT2));
             Objects.requireNonNull(getTable(numT2)).setStudent(temp);
             return true;
         }
@@ -696,21 +590,18 @@ public class Data {
 
     public int maxTableID() {
         int max = 0;
-        for (Table t : tables) {
-            if (t.getNumber() > max) {
+        for (Table t : tables)
+            if (t.getNumber() > max)
                 max = t.getNumber();
-            }
-        }
         return max;
     }
 
     public String getInfosForVisu(int num) {
-        if (getTable(num) != null && getStuFromTab(num) != null) {
-            Student etu = getStuFromTab(num);
+        if (getTable(num) != null && getStudentFromTable(num) != null) {
+            Student etu = getStudentFromTable(num);
             return num + ";" + etu.textVisualisation();
-        } else {
+        } else
             return num + ";null;null;null";
-        }
     }
 
     public boolean isImposed(int numTab) {
@@ -730,13 +621,11 @@ public class Data {
     public void changePlanMode(char newMode, String path) {
 
         if (newMode == 'R') {
-            if (map instanceof GridMap) {
+            if (map instanceof GridMap)
                 map = new RectangularMap(4, 4);
-            }
         } else if (newMode == 'G') {
-            if (map instanceof RectangularMap) {
+            if (map instanceof RectangularMap)
                 map = new GridMap(tables);
-            }
         } else if (newMode == 'D') {
             map = new GridMap();
             loadDefaultPlan(path);
@@ -764,16 +653,15 @@ public class Data {
     }
 
     public String getPlanSize() {
-        if (map instanceof GridMap) {
+        if (map instanceof GridMap)
             return maxTableX() + ";" + maxTableY();
-        } else if (map instanceof RectangularMap) {
+        else if (map instanceof RectangularMap)
             return ((RectangularMap) map).getSize();
-        } else {
+        else
             return "";
-        }
     }
 
-    public boolean tableExist(int numTab) {
+    public boolean doesTableExist(int numTab) {
         return Utilitaire.in(numTab, existingTables());
     }
 
@@ -788,9 +676,8 @@ public class Data {
 
     public String studentList() {
         StringBuilder result = new StringBuilder();
-        for (Student s : students) {
+        for (Student s : students)
             result.append(s.getId()).append(" ; ").append(s.getFullName()).append("\n");
-        }
         return result.toString();
     }
 

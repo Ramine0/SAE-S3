@@ -23,18 +23,14 @@ public class ExportServlet extends HttpServlet {
 
         CreatingIntermediate crea = room.getCreating();
         response.setContentType("text/csv;charset=UTF-8");
-        response.setHeader(
-                "Content-Disposition",
-                "attachment; filename=\"students.csv\""
-        );
+        response.setHeader("Content-Disposition", "attachment; filename=\"students.csv\"");
 
         PrintWriter out = response.getWriter();
         out.println("id;nom;table");
 
-        for (int i = 0; i < crea.getNumberTables(); i++) {
-            if (crea.tableExist(i + 1) && crea.stuFromTable(i + 1) != null)
-                out.println(crea.stuFromTable(i + 1).getId() + ";" + crea.stuFromTable(i + 1).getName() + " " + crea.stuFromTable(i + 1).getFirstName() + ";" + (i + 1));
-        }
+        for (int i = 0; i < crea.getNumberOfTables(); i++)
+            if (crea.doesTableExist(i + 1) && crea.getStudentFromTable(i + 1) != null)
+                out.println(crea.getStudentFromTable(i + 1).getId() + ";" + crea.getStudentFromTable(i + 1).getName() + " " + crea.getStudentFromTable(i + 1).getFirstName() + ";" + (i + 1));
 
         out.flush();
     }

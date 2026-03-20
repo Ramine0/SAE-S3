@@ -96,8 +96,7 @@ public class DisplayServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
-        if (pos != null) {
-            // on fait des actions ?!
+        if (pos != null)
             switch (request.getParameter("action")) {
                 // on recup le visuel des tables
                 case "init" -> out.print(pos.getTablesForVisu());
@@ -119,11 +118,8 @@ public class DisplayServlet extends HttpServlet {
                         out.println("1");
                 }
             }
-
-        } else {
-            // on fait rien ?!
+        else
             out.print("rien");
-        }
 
         out.flush();
     }

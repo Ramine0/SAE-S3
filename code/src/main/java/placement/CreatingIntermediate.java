@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
  */
 public class CreatingIntermediate {
     private final Data d;
-    public String msg;
 
     /**
      * Constructeur par défaut de la classe.
@@ -47,7 +46,7 @@ public class CreatingIntermediate {
      *
      * @return le nombre de tables de la salle
      */
-    public int getNumberTables() {
+    public int getNumberOfTables() {
         return d.getTables().length;
     }
 
@@ -56,8 +55,8 @@ public class CreatingIntermediate {
      *
      * @return le numéro de table le plus faible
      */
-    public int minTable() {
-        return d.minNumTable();
+    public int minimumTableNumber() {
+        return d.minimumTableNumber();
     }
 
     /**
@@ -65,88 +64,76 @@ public class CreatingIntermediate {
      *
      * @return le numéro de table le plus important
      */
-    public int maxTable() {
-        return d.maxNumTable();
+    public int maximumTableNumber() {
+        return d.maximumTableNumber();
     }
 
     /**
-     * Fonction de recherche d'un étudiant à partir de l'id
+     * Fonction de recherche d'un étudiant à partir de l'studentId
      *
-     * @param id numéro étudiant, complet ou non
-     * @return l'id complété ou un message adapté
+     * @param studentId numéro étudiant, complet ou non
+     * @return le numéro étudiant complété ou un message adapté
      */
-    public String findStudent(String id) {
-        String trouve = d.completeId(id);
-        if (!trouve.isEmpty()) {
-            return trouve;
-        } else if (id.length() == 8) {
-            return "le num donné n'existe pas";
-        } else {
-            return "1";
-        }
+    public String findStudent(String studentId) {
+        String result = d.completeId(studentId);
 
+        if (!result.isEmpty())
+            return result;
+        else
+            return studentId.length() == 8 ? null : "1";
     }
 
     /**
-     * Vérifie que la table numTab soit dans les tables libres
+     * Vérifie que la table tableNumber soit dans les tables libres
      *
-     * @param numTab le numéro de la table
+     * @param tableNumber le numéro de la table
      * @return true si elle fait partie des tables libres, false sinon
      */
-    public boolean findTable(int numTab) {
-        return Utilitaire.in(numTab, free());
+    public boolean findTable(int tableNumber) {
+        return Utilitaire.in(tableNumber, free());
     }
 
 
     /**
-     * Regarde si les informations id et num sont correctement renseignées, si c'est le cas appelle
+     * Regarde si les informations studentId et tableNumber sont correctement renseignées, si c'est le cas appelle
      * la logique d'ajout de place imposée de Data
      *
-     * @param id  numéro de l'étudiant
-     * @param num numéro de la table
+     * @param studentId   numéro de l'étudiant
+     * @param tableNumber numéro de la table
      * @return un entier correspondant à la situation
      */
-    public int findNumsForImp(String id, int num) {
-        id = findStudent(id);
-        num = findTable(num) ? num : -1;
+    public int imposeStudent(String studentId, int tableNumber) {
+        studentId = findStudent(studentId);
+        tableNumber = findTable(tableNumber) ? tableNumber : -1;
 
-        if (id.equals("le num donné n'existe pas")) {
+        if (studentId == null || studentId.length() > 8 || tableNumber == -1)
             return -1;
-        } else if (id.length() > 8) {
-            return -1;
-        } else if (num == -1) {
-            return -1;
-        } else {
-            return d.addImp(id, num);
-        }
+        else
+            return d.imposeStudent(studentId, tableNumber);
     }
 
     /**
-     * Retire la contrainte de type constr et d'index id
+     * Retire une contrainte
      *
-     * @param constr type de la contrainte
-     * @param id     index de la contrainte
+     * @param type type de la contrainte
+     * @param id   index de la contrainte
      */
-    public void removeConstraint(String constr, int id) {
-        d.removeConstraint(constr, id);
+    public void removeConstraint(String type, int id) {
+        d.removeConstraint(type, id);
     }
 
     /**
      * Vérifie que les informations soient correctement renseignées, si c'est le cas, entre dans
-     * la logique d'ajout d'étudiant au groupe numGrp
+     * la logique d'ajout d'étudiant au groupe groupNumber
      *
-     * @param idPartiel numéro de l'étudiant, complet ou non
-     * @param numGrp    groupe auquel on veut ajouter l'étudiant
+     * @param incompleteId numéro de l'étudiant, complet ou non
+     * @param groupNumber  groupe auquel on veut ajouter l'étudiant
      * @return en cas de succès, le message de la logique dans Data, sinon l'id partiel
      */
-    public String findStudentForGroup(String idPartiel, int numGrp) {
-        String student = findStudent(idPartiel);
+    public String separeStudentsPerGroup(String incompleteId, int groupNumber) {
+        String student = findStudent(incompleteId);
 
-        if (student.length() == 8) {
-            return d.addStudentGroupConstraint(student, numGrp);
-        } else {
-            return student;
-        }
+        return student.length() == 8 ? d.addStudentGroupConstraint(student, groupNumber) : student;
     }
 
     /**
@@ -155,7 +142,7 @@ public class CreatingIntermediate {
      * @return la description des données
      */
     public String[] describeData() {
-        return d.descrip();
+        return d.describe();
     }
 
     /**
@@ -166,35 +153,32 @@ public class CreatingIntermediate {
      */
     public String studentInfo(String num) {
         Student student = d.getStudentFromId(num);
-        if (student == null) {
+
+        if (student == null)
             return null;
-        }
 
         return student.getName() + " " + student.getFirstName();
     }
 
     /**
-     * Cherche la table de numéro num, vérifie si elle est supprimée ou imposée, sinon entre dans
+     * Cherche la table de numéro tableNumber, vérifie si elle est supprimée ou imposée, sinon entre dans
      * la logique de suppression de la table
      *
-     * @param num le numéro de la table
+     * @param tableNumber le numéro de la table
      * @return un entier adapté à la situation (géré côté Servlet et JavaScript)
      */
-    public int removeTable(int num) {
-        num = findTable(num) ? num : -1;
+    public int removeTable(int tableNumber) {
+        tableNumber = findTable(tableNumber) ? tableNumber : -1;
 
-        if (num == -1) {
+        if (tableNumber == -1)
             return -2;
-        } else {
-            if (d.isDeleted(num))
-                return -3;
+        else if (d.isDeleted(tableNumber))
+            return -3;
 
-            else if (d.isImposed(num)) {
-                return -4;
-            } else {
-                return d.removeTable(num);
-            }
-        }
+        else if (d.isImposed(tableNumber))
+            return -4;
+        else
+            return d.deleteTable(tableNumber);
     }
 
     /**
@@ -207,22 +191,22 @@ public class CreatingIntermediate {
     }
 
     /**
-     * Entre dans la logique de réinsertion de table supprimée pour la table num
+     * Entre dans la logique de réinsertion de table supprimée pour la table tableNumber
      *
-     * @param num numéro de la table
+     * @param tableNumber numéro de la table
      */
-    public void unremoveTable(int num) {
-        d.unremoveTable(num);
+    public void undeleteTable(int tableNumber) {
+        d.undeleteTable(tableNumber);
     }
 
     /**
      * Définition des dimensions du plan
      *
-     * @param lon longueur du plan
-     * @param lar largeur du plan
+     * @param width  longueur du plan
+     * @param height largeur du plan
      */
-    public void setDimensions(int lon, int lar) {
-        d.setDimensions(lon, lar);
+    public void setDimensions(int width, int height) {
+        d.setDimensions(width, height);
     }
 
 
@@ -234,13 +218,13 @@ public class CreatingIntermediate {
     }
 
     /**
-     * Fonction de récupération de l'étudiant assis à la table num
+     * Fonction de récupération de l'étudiant assis à la table tableNumber
      *
-     * @param num le numéro de la table
-     * @return l'étudiant assis à la table num
+     * @param tableNumber le numéro de la table
+     * @return l'étudiant assis à la table tableNumber
      */
-    public Student stuFromTable(int num) {
-        return d.getStuFromTab(num);
+    public Student getStudentFromTable(int tableNumber) {
+        return d.getStudentFromTable(tableNumber);
     }
 
 
@@ -284,40 +268,32 @@ public class CreatingIntermediate {
     /**
      * Base pour la vision et modification de la table
      *
-     * @param oldNum ancien numéro de la table
-     * @param newNum nouveau numéro de la table
-     * @param numEtu numéro de l'étudiant
+     * @param oldNumber     ancien numéro de la table
+     * @param newNumber     nouveau numéro de la table
+     * @param studentNumber numéro de l'étudiant
      * @return une chaine de caractères à utiliser sur la vision et modification de la table
      */
-    public String tableValidateButton(int oldNum, int newNum, String numEtu) {
+    public String tableValidateButton(int oldNumber, int newNumber, String studentNumber) {
         String result = "";
-        if (oldNum != 0 && tableExist(oldNum) && newNum > 0 && !tableExist(newNum)) {
-            if (d.changeNumTable(oldNum, newNum)) {
-                result += newNum + ";";
-            } else {
-                result += "error;";
-            }
-        } else if (oldNum != 0) {
-            result += "invalid;";
-        }
 
-        if (!numEtu.isEmpty() && findTable(newNum)) {
-            result += findNumsForImp(numEtu, newNum);
-        } else {
-            result += "";
-        }
+        if (oldNumber != 0 && doesTableExist(oldNumber) && newNumber > 0 && !doesTableExist(newNumber))
+            result += d.changeNumTable(oldNumber, newNumber) ? newNumber + ";" : "error;";
+        else if (oldNumber != 0)
+            result += "invalid;";
+
+        result += !studentNumber.isEmpty() && findTable(newNumber) ? Integer.valueOf(imposeStudent(studentNumber, newNumber)) : "";
 
         return result;
     }
 
     /**
-     * vérifie que la table numTab existe
+     * Vérifie que la table tableNumber existe
      *
-     * @param numTab le numéro de la table
+     * @param tableNumber le numéro de la table
      * @return true si la table existe, false sinon
      */
-    public boolean tableExist(int numTab) {
-        return d.tableExist(numTab);
+    public boolean doesTableExist(int tableNumber) {
+        return d.doesTableExist(tableNumber);
     }
 
     /**
@@ -325,20 +301,23 @@ public class CreatingIntermediate {
      *
      * @return une chaine de caractères contenant les informations des étudiants séparés
      */
-    public String getSeparated() {
+    public String getSeparatedStudents() {
         StringBuilder result = new StringBuilder();
+
         for (int i = 1; i < 10; i++) {
             PerGroup temp = d.getPerGroup(i);
-            if (temp == null) {
+
+            if (temp == null)
                 break;
-            } else {
+            else {
                 String[] students = temp.toString().split(";");
-                for (String s : students) {
+
+                for (String s : students)
                     if (!s.equals("null")) {
                         String id = findStudent(s);
                         result.append(id).append(":").append(d.getFullName(id)).append(";");
                     }
-                }
+
                 result.append("!");
             }
         }

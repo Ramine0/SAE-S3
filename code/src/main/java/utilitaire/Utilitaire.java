@@ -3,38 +3,34 @@ package utilitaire;
 public class Utilitaire {
 
     public static boolean in(Object o, Object[] O) {
-        for (Object i : O) {
+        for (Object i : O)
             if (i == o)
                 return true;
-        }
 
         return false;
     }
 
     public static boolean in(String s, String[] tab) {
-        for (String i : tab) {
+        for (String i : tab)
             if (i != null && i.equals(s))
                 return true;
-        }
 
         return false;
     }
 
     public static int pos(int nb, int[] tab) {
 
-        for (int i = 0; i < tab.length; i++) {
+        for (int i = 0; i < tab.length; i++)
             if (tab[i] == nb)
                 return i;
-        }
 
         return -1;
     }
 
     public static boolean in(int o, int[] O) {
-        for (int i : O) {
+        for (int i : O)
             if (i == o)
                 return true;
-        }
 
         return false;
     }
@@ -42,10 +38,9 @@ public class Utilitaire {
     public static int min(int[] nb) {
         int result = nb[0];
 
-        for (int i : nb) {
+        for (int i : nb)
             if (result > i)
                 result = i;
-        }
 
         return result;
     }
@@ -53,10 +48,9 @@ public class Utilitaire {
     public static int max(int[] nb) {
         int result = nb[0];
 
-        for (int i : nb) {
+        for (int i : nb)
             if (result < i)
                 result = i;
-        }
 
         return result;
     }

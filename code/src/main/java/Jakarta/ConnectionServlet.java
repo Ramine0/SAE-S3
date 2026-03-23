@@ -4,9 +4,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
 import placement.Data;
 
-import javax.annotation.Resource;
+import java.io.PrintWriter;
+
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +22,7 @@ public class ConnectionServlet extends HttpServlet {
     private Data data;
     private String user;
 
-    @Resource(name = "p2403918")
+    @Resource(name="jdbc/p2403918")
     private DataSource dataSource;
 
     private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {

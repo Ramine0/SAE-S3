@@ -18,7 +18,7 @@ public class Utilitaire {
         return false;
     }
 
-    public static int pos(int nb, int[] tab) {
+    public static int indexOf(int nb, int[] tab) {
 
         for (int i = 0; i < tab.length; i++)
             if (tab[i] == nb)

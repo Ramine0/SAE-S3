@@ -15,20 +15,20 @@ public class RectangularMap extends Map {
     }
 
     @Override
-    public int[] neighbours(int table, int[] dispo) {
-        int pos = Utilitaire.pos(table, dispo);
+    public int[] neighbours(int table, int[] available) {
+        int position = Utilitaire.indexOf(table, available);
 
         int[][] offsets = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 } };
 
-        List<Integer> validNeighbors = new ArrayList<>();
+        List<Integer> validNeighbours = new ArrayList<>();
 
         for (int[] offset : offsets) {
-            int neighborIndex = getNeighbour(pos, offset[0], offset[1], dispo.length);
+            int neighborIndex = getNeighbour(position, offset[0], offset[1], available.length);
             if (neighborIndex != -1)
-                validNeighbors.add(dispo[neighborIndex]);
+                validNeighbours.add(available[neighborIndex]);
         }
 
-        return validNeighbors.stream().mapToInt(Integer::intValue).toArray();
+        return validNeighbours.stream().mapToInt(Integer::intValue).toArray();
     }
 
     private int getNeighbour(int index, int xOffset, int yOffset, int maxIndex) {

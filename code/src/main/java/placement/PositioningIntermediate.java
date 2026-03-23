@@ -104,6 +104,6 @@ public class PositioningIntermediate {
     }
 
     public String tabInfoForVisu(int nb) {
-        return donnees.getInfosForVisu(nb);
+        return donnees.getInformationsForVisualisation(nb);
     }
 }

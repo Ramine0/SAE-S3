@@ -38,29 +38,38 @@ public class GridMap extends Map {
                                 int neighbourX = neighbour.getCoordinates()[0];
                                 int neighbourY = neighbour.getCoordinates()[1];
 
-                                if (hasNeighbour(x, neighbourX, y, neighbourY))
-                                {
+                                if (hasNeighbour(x, neighbourX, y, neighbourY)) {
                                     adjacencyMatrix[counter][counterNeighbour] = 1;
                                     adjacencyMatrix[counterNeighbour][counterNeighbour] = 1;
                                 }
                             }
-                        }
-                        counterNeighbour ++ ;
+                        counterNeighbour++;
                     }
                 }
                 counter++;
             }
         }
+    }
 
+    @Override
+    public int[] neighbours(int table, int[] available) {
+        int[] neighbours = new int[9];
+        int cpt = 0;
+        int index = getIndexFromNumber(table);
+
+        if (index > 0)
+            for (int i : adjacencyMatrix[index])
+                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], available)) {
+                    neighbours[cpt] = tableNumber[i];
+                    cpt++;
+                }
+
+        return neighbours;
     }
 
     private boolean hasNeighbour(int x, int neighbourX, int y, int neighbourY)
     {
         return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX)) ;
-    }
-
-    public GridMap()
-    {
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -95,22 +104,6 @@ public class GridMap extends Map {
             return null;
         }
 
-    }
-
-    @Override
-    public int[] neighbours(int tableNumber, int[] available) {
-        int[] neighbours = new int[9];
-        int cpt = 0;
-        int index = getIndexFromNumber(tableNumber);
-
-        if (index > 0)
-            for (int i : adjacencyMatrix[index])
-                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], available)) {
-                    neighbours[cpt] = tableNumber[i];
-                    cpt++;
-                }
-
-        return neighbours;
     }
 
     public Table[] loadMap(String path) {

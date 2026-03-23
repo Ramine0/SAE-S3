@@ -105,7 +105,7 @@ public class GridMap extends Map
     }
 
     @Override
-    public int[] neighbours(int numTable, int[] dispo)
+    public int[] neighbours(int numTable, int[] available)
     {
 
         int[] voisins = new int[9];
@@ -113,7 +113,7 @@ public class GridMap extends Map
         int index = getIndexFromNum(numTable);
         if (index > 0) {
             for (int i : adjacencyMatrix[index]) {
-                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], dispo)) {
+                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], available)) {
                     voisins[cpt] = tableNumber[i];
                     cpt++;
                 }

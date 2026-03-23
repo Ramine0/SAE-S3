@@ -10,9 +10,9 @@ public class RectangularMap extends Map
     private final int height;
 
     @Override
-    public int[] neighbours(int table, int[] dispo)
+    public int[] neighbours(int table, int[] available)
     {
-        int pos = Utilitaire.pos(table, dispo);
+        int position = Utilitaire.indexOf(table, available);
 
         int[][] offsets = {
                 {0, -1},
@@ -25,16 +25,16 @@ public class RectangularMap extends Map
                 {-1, -1}
         };
 
-        List<Integer> validNeighbors = new ArrayList<>();
+        List<Integer> validNeighbours = new ArrayList<>();
 
         for (int[] offset : offsets) {
-            int neighborIndex = getNeighbour(pos, offset[0], offset[1],dispo.length);
+            int neighborIndex = getNeighbour(position, offset[0], offset[1], available.length);
             if (neighborIndex != -1) {
-                validNeighbors.add(dispo[neighborIndex]);
+                validNeighbours.add(available[neighborIndex]);
             }
         }
 
-        return validNeighbors.stream().mapToInt(Integer::intValue).toArray();
+        return validNeighbours.stream().mapToInt(Integer::intValue).toArray();
     }
 
     private int getNeighbour(int index, int xOffset, int yOffset,int maxIndex) {
@@ -51,10 +51,10 @@ public class RectangularMap extends Map
         return newIndex;
     }
 
-    public RectangularMap(int longu, int larg)
+    public RectangularMap(int h, int w)
     {
-        width = larg;
-        height = longu;
+        width = w;
+        height = h;
     }
 
     public String getSize() {return width+";"+ height ;}

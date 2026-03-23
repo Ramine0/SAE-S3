@@ -18,13 +18,15 @@ import java.nio.file.StandardCopyOption;
 
 @WebServlet("/file-upload")
 @MultipartConfig
-public class FileUpload extends HttpServlet
-{
-
+public class FileUpload extends HttpServlet {
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         String uploadPath = request.getServletContext().getRealPath("/") + "/" + getServletContext().getInitParameter("upload.path");
 
         // Retrieve the file part from the request

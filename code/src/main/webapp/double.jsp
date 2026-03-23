@@ -38,7 +38,12 @@
                     <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
                     <button id="exporter"> Exporter </button>
                 </div>
+                <label for="modeHeader">Action</label><select id="modeHeader" name="modeHeader">
+                <option value="create" selected>Paramètres de création</option>
+                <option value="modify">Voir les informations</option>
+            </select>
 
+                <div id="parameters">
                 <div class="modeDouble invisible" id="importArea" >
                     <label for="importCSV"> Format d'import</label>
                     <input type="checkbox" name="importByFile" id="importCSV" value="importByFile"> Fichier CSV
@@ -79,13 +84,14 @@
                             <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
                         </section>
                     </div>
+                </div>
 
                     <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le plan</button>
 
                 </div>
 
                 <div class="modeDouble invisible" id="valuesOfTable">
-                     <span id="TableNumber" >
+                     <span id="TableNumber">
                         <label for="idTabVisu"> Numero de Table </label>
                         <input name="idTabVisu" id="idTabVisu" type="number" disabled>
                     </span>
@@ -112,10 +118,15 @@
                     </div>
                 </div>
 
+                <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier
+                    et le plan
+                </button>
+                <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
+
             </form>
             <form method="post" action="Display">
-                <input type="text" name="sessionCode" id="sessionCode">
-                <button type="button" id="loadSession" onclick="loadData()" > Charger </button>
+                <label for="sessionCode">Code de session</label><input type="text" name="sessionCode" id="sessionCode">
+                <button type="button" id="loadSession" onclick="loadData()"> Charger</button>
                 <button type="submit" id="walid" class="boutWalider" disabled> Générer
                 </button>
             </form>

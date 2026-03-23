@@ -16,7 +16,7 @@ public class PositioningIntermediate {
     }
 
     public boolean creerPlacement() {
-        donnees.placerImposes();
+        donnees.placeImposedStudents();
 
         int i;
         int tableNumber = 0;
@@ -45,7 +45,7 @@ public class PositioningIntermediate {
                     tableNumber++;
             }
 
-            donnees.placeStudent(tableNumber, studentId) ;
+            donnees.placeStudent(tableNumber, studentId);
         }
 
         return donnees.freeStudents().length == 0;
@@ -67,11 +67,10 @@ public class PositioningIntermediate {
             // on prend les tables voisines pour regarder
             Student[] voisins = donnees.neighbours(t);
 
-            for (Constraint c : donnees.getConstr()) {
-                // on vérifie si ça bloque
+            // on vérifie si ça bloque
+            for (Constraint c : donnees.getConstraints())
                 if (c != null && !c.validate(s, t, voisins))
                     return false; // ça bloque
-            }
         }
 
         // sinon tout est bon à moins que la place soit déjà prise
@@ -95,16 +94,16 @@ public class PositioningIntermediate {
         return false;
     }
 
-    public String descripData() {
+    public String describeData() {
         StringBuilder result = new StringBuilder();
 
-        for (String s : donnees.descrip())
+        for (String s : donnees.describe())
             result.append(s).append(";");
 
         return result.toString();
     }
 
     public String tabInfoForVisu(int nb) {
-        return donnees.getInfosForVisu(nb);
+        return donnees.getInformationsForVisualisation(nb);
     }
 }

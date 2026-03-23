@@ -2,38 +2,41 @@ package constraints;
 
 import org.NeoMalokVector.SAE_S3.Student;
 
-public class ImposedPlacement extends Constraint
-{
-    private final int numTable;
-    private final String numEtu ;
+public class ImposedPlacement extends Constraint {
+    private final int tableNumber;
+    private final String studentNumber;
 
-    public ImposedPlacement(int numTable, String numEtu){
-        this.numTable = numTable;
-        this.numEtu = numEtu;
+    public ImposedPlacement(int tableNumber, String studentNumber) {
+        this.tableNumber = tableNumber;
+        this.studentNumber = studentNumber;
 
-        studentsConstraints.add(numEtu);
+        studentsConstraints.add(studentNumber);
     }
 
     @Override
-    public boolean validate(Student student, int table, Student[] etu) {
-        return (student.getId().equals(numEtu) && table==numTable) ;
+    public boolean validate(Student student, int table, Student[] students) {
+        return (student.getId().equals(studentNumber) && table == tableNumber);
     }
 
     /**
      * Fonction permettant d'obtenir l'étudiant avec sa table. On devrait l'utiliser plus tard au début de la génération du placement
+     *
      * @return un tableau de string contenant le numéro de la table et le numéro de l'étudiant
      */
-    public String[] getPaire() {
-        return new String[] {Integer.toString(numTable),numEtu} ;
+    public String[] getImposed() {
+        return new String[] { Integer.toString(tableNumber), studentNumber };
     }
-    public int getNumTable() {
-        return numTable;
+
+    public int getTableNumber() {
+        return tableNumber;
     }
-    public String getNumEtu() {
-        return numEtu;
+
+    public String getStudentNumber() {
+        return studentNumber;
     }
-    public String toDatabase(){
-        return "I,"+numEtu+","+numTable;
+
+    public String toDatabase() {
+        return "I," + studentNumber + "," + tableNumber;
     }
 
 }

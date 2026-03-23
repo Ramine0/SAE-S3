@@ -1,23 +1,23 @@
-let tables=[]
+let tables = []
 let noms = []
-let active ;
-let swap = false ;
-let size ;
+let active;
+let swap = false;
+let size;
 
-function createTable(){
+function createTable() {
     let t = ""
     let table
     let vals
     let name
-    let i = 0 ;
-    for (let hei= 1; hei <= size[1]; hei++){
-        t+="<span>"
+    let i = 0;
+    for (let hei = 1; hei <= size[1]; hei++) {
+        t += "<span>"
         for (let wid = 1; wid <= size[0]; wid++) {
             vals = tables[i]
-            if (vals.length === 4){
+            if (vals.length === 4) {
                 if (parseInt(vals[1]) !== wid || parseInt(vals[2]) !== hei) {
                     t += `<button type="button" class="pasTable" disabled > pas Table <br> aucun etu </button>`
-                }else {
+                } else {
                     table = vals[0];
                     name = vals[3];
                     t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
@@ -26,7 +26,7 @@ function createTable(){
                     i++;
 
                 }
-            }else if (vals.length === 2){
+            } else if (vals.length === 2) {
                 table = vals[0];
                 name = vals[1];
                 t += `<button type="button" id="T${table}" class="table" > Table ${table} <br>${name}</button>`;
@@ -36,13 +36,13 @@ function createTable(){
 
             }
             if (i >= tables.length) {
-                break ;
+                break;
             }
 
         }
         t += "</span>"
         if (i >= tables.length) {
-            break ;
+            break;
         }
     }
     if (t !== "") {
@@ -52,7 +52,7 @@ function createTable(){
                 document.querySelector(`#T${tables[i]}`).addEventListener("click", getInfosTable);
             }
         }
-        if (document.querySelector("#tableExp")!= null ) {
+        if (document.querySelector("#tableExp") != null) {
             document.querySelector("#tableExp").remove();
         }
     }
@@ -86,25 +86,24 @@ function init() {
     initReq.send();
 
 
-
 }
 
 //document.querySelector("#swapForm").addEventListener("click",modeSwap) ;
-init() ;
+init();
 
 //document.querySelector("#exporter").addEventListener("click",exportFile) ;
 
 function getInfosTable(event) {
 
-    if(swap) {
-        activateSwap(event.target.id) ;
+    if (swap) {
+        activateSwap(event.target.id);
     }
-    let numTab = event.target.id.substring(1) ;
-    let reqInfo = new XMLHttpRequest() ;
+    let numTab = event.target.id.substring(1);
+    let reqInfo = new XMLHttpRequest();
     reqInfo.open("GET", `Display?action=${encodeURIComponent("infos")}&number=${encodeURIComponent(numTab)}`, true);
-    reqInfo.onreadystatechange = function (){
-        if (reqInfo.readyState===XMLHttpRequest.DONE){
-            if (reqInfo.status===200){
+    reqInfo.onreadystatechange = function () {
+        if (reqInfo.readyState === XMLHttpRequest.DONE) {
+            if (reqInfo.status === 200) {
                 if (reqInfo.responseText !== "null") {
                     const values = reqInfo.responseText.split(";");
                     if (values.length === 4) {
@@ -127,20 +126,19 @@ function getInfosTable(event) {
 
         }
     };
-    reqInfo.send() ;
+    reqInfo.send();
 }
 
 
-
-function exportFile(){
-    const excel=document.getElementById("Excel").value;
+function exportFile() {
+    const excel = document.getElementById("Excel").value;
     console.log(excel);
-    const excelRequest=new XMLHttpRequest();
+    const excelRequest = new XMLHttpRequest();
     excelRequest.open("GET", `export?format=${encodeURIComponent(excel)}`);
-    excelRequest.responseType="blob";
+    excelRequest.responseType = "blob";
     //excelRequest.onreadystatechange=function (){
-    excelRequest.onload=function (){
-        if (excelRequest.status===200){
+    excelRequest.onload = function () {
+        if (excelRequest.status === 200) {
             const url = window.URL.createObjectURL(excelRequest.response);
             const a = document.createElement("a");
             a.href = url;
@@ -155,44 +153,44 @@ function exportFile(){
 
 
 function modeSwap() {
-    activateSwap('none') ;
+    activateSwap('none');
 }
 
 
 function activateSwap(button) {
 
-    let numt2 = active ;
+    let numt2 = active;
     if (button === "none" && active != null) {
         swap = !swap;
         document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
-    }else if (document.querySelector(`#${button}`)!= null){
+    } else if (document.querySelector(`#${button}`) != null) {
 
-        const swapReq=new XMLHttpRequest();
+        const swapReq = new XMLHttpRequest();
         swapReq.open("GET", `Display?action=${encodeURIComponent("swap")}&number1=${active}&number2=${button.substring(1)}`);
-        swapReq.onreadystatechange=function (){
-            if (swapReq.readyState===XMLHttpRequest.DONE){
-                if (swapReq.status===200){
+        swapReq.onreadystatechange = function () {
+            if (swapReq.readyState === XMLHttpRequest.DONE) {
+                if (swapReq.status === 200) {
                     console.log(numt2)
                     console.log(button)
-                    let numt1 = button.substring(1) ;
-                    let nomt1 = noms[tables.indexOf(numt1)] ;
-                    let nomt2 = noms[tables.indexOf(numt2)] ;
+                    let numt1 = button.substring(1);
+                    let nomt1 = noms[tables.indexOf(numt1)];
+                    let nomt2 = noms[tables.indexOf(numt2)];
 
                     let content = ` Table ${numt1} <br>${nomt2}`
                     console.log(document.querySelector(`#T${numt1}`).innerHTML)
-                    document.querySelector(`#T${numt1}`).innerHTML = content ;
+                    document.querySelector(`#T${numt1}`).innerHTML = content;
 
                     console.log(document.querySelector(`#T${numt2}`).innerHTML)
                     content = ` Table ${numt2} <br>${nomt1}`
-                    document.querySelector(`#T${numt2}`).innerHTML = content ;
+                    document.querySelector(`#T${numt2}`).innerHTML = content;
 
-                    noms[tables.indexOf(numt1)] = nomt2 ;
-                    noms[tables.indexOf(numt2)] = nomt1 ;
-                    swap = false ;
+                    noms[tables.indexOf(numt1)] = nomt2;
+                    noms[tables.indexOf(numt2)] = nomt1;
+                    swap = false;
                 }
             }
         }
-        swapReq.send() ;
+        swapReq.send();
     }
 
 }

@@ -13,19 +13,21 @@ import java.io.PrintWriter;
 
 @WebServlet("/Display")
 @MultipartConfig
-public class DisplayServlet extends HttpServlet
-{
-
-
+public class DisplayServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
         String code = request.getParameter("testVal");
-        if (CreationServlet.getSalle(code) == null) {code = request.getSession().getId();}
+        if (CreationServlet.getRoom(code) == null)
+            code = request.getSession().getId();
 
-        Room salle = CreationServlet.getSalle(code);
+        Room room = CreationServlet.getRoom(code);
 
-        if (salle == null)
+        if (room == null)
             response.sendRedirect("index.jsp");
         else {
             response.setContentType("text/html");
@@ -58,46 +60,48 @@ public class DisplayServlet extends HttpServlet
                     """);
 
 
-                PositioningIntermediate pos = salle.getPositioningIntermediate();
+            PositioningIntermediate pos = room.getPositioning();
 
-                if (salle.generate())
-                    out.println("""
-                            <h4> Génération réussie </h4>
-                            <a href="double.jsp">Voir le résultat</a>
-                            """);
+            if (room.generate())
+                out.println("""
+                        <h4> Génération réussie </h4>
+                        <a href="double.jsp">Voir le résultat</a>
+                        """);
 
-                else {
+            else {
 
-                    out.println("<p>" + pos.getTablesForVisu() + "</p>");
-                    out.println(pos.descripData());
-                    out.println("""
-                            <h4> Erreur de génération </h4>
-                            <a href="creation.jsp"><Retour à la page de création</a>
-                            """);
-                }
+                out.println("<p>" + pos.getTablesForVisu() + "</p>");
+                out.println(pos.describeData());
+                out.println("""
+                        <h4> Erreur de génération </h4>
+                        <a href="creation.jsp"><Retour à la page de création</a>
+                        """);
             }
+        }
 
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        Room salle = CreationServlet.getSalle(request.getSession().getId());
-        PositioningIntermediate pos = null;
-        if (salle != null) {
-            pos = salle.getPositioningIntermediate();
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
         }
+
+        Room room = CreationServlet.getRoom(request.getSession().getId());
+        PositioningIntermediate pos = null;
+
+        if (room != null)
+            pos = room.getPositioning();
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
-        if (pos != null) {
-            // on fait des actions ?!
-            switch (request.getParameter("action"))
-            {
+        if (pos != null)
+            switch (request.getParameter("action")) {
                 // on recup le visuel des tables
                 case "init" -> out.print(pos.getTablesForVisu());
 
-                // on recupere les information de la table
+                // on récupère les information de la table
                 case "infos" -> {
                     try {
                         out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
@@ -106,19 +110,16 @@ public class DisplayServlet extends HttpServlet
                     }
                 }
 
-                // on swap les etus des tables donnees
+                // on swap les étudiants des tables donnees
                 case "swap" -> {
-                    if (salle.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
+                    if (room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
                         out.println("0");
                     else
                         out.println("1");
                 }
             }
-
-        }else {
-            // on fait rien ?!
+        else
             out.print("rien");
-        }
 
         out.flush();
     }

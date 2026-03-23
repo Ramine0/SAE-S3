@@ -11,48 +11,27 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @WebServlet("/export")
-public class ExportServlet extends HttpServlet
-{
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
-        Room salle = CreationServlet.getSalle(request.getSession().getId());
-        assert salle != null;
-        CreatingIntermediate crea = salle.getCrea();
+public class ExportServlet extends HttpServlet {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getHeader("Referer") == null) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+            return;
+        }
+
+        Room room = CreationServlet.getRoom(request.getSession().getId());
+        assert room != null;
+
+        CreatingIntermediate crea = room.getCreating();
         response.setContentType("text/csv;charset=UTF-8");
-        response.setHeader(
-                "Content-Disposition",
-                "attachment; filename=\"students.csv\""
-        );
+        response.setHeader("Content-Disposition", "attachment; filename=\"students.csv\"");
 
         PrintWriter out = response.getWriter();
         out.println("id;nom;table");
 
-        for (int i = 0; i < crea.getNumberTables(); i++) {
-            if (crea.tableExist(i + 1) && crea.StuFromTable(i + 1) != null) {
-                out.println(crea.StuFromTable(i + 1).getId() + ";" + crea.StuFromTable(i + 1).getName() + " " + crea.StuFromTable(i + 1).getFirstName() + ";" + (i + 1));
-            }
-        }
-        /*
-        if (request.getParameter("format").equals("Excel")){
-            out.println(";;;;contrainte;detail");
-            for (int i = 0; i< crea.getNbConstr(); i++){
-                if (crea.getConstr(i+1)!=null){
-                    String type= crea.getConstr(i+1).getClass().getTypeName();
-                    out.print(";;;;"+type);
-                    if (type.equals("PerGroup")){
-                        for (int j = 0; j<((PerGroup) crea.getConstr(i+1)).getNbStudent(); j++){
-                            out.print(";"+((PerGroup) crea.getConstr(i+1)).getNum()+";"+((PerGroup) crea.getConstr(i+1)).getStudent(j));
-                        }
-                    }else if (type.equals("PerClass")){
-                        out.print(";"+((PerClass)crea.getConstr(i+1)).typePerClass());
-                    }else if (type.equals("ImposedPlacement")){
-                        out.print(";"+((ImposedPlacement)crea.getConstr(i+1)).getNumEtu()+";"+((ImposedPlacement)crea.getConstr(i+1)).getNumTable());
-                    }
-                }
-                out.println();
-            }
-        }
-         */
+        for (int i = 0; i < crea.getNumberOfTables(); i++)
+            if (crea.doesTableExist(i + 1) && crea.getStudentFromTable(i + 1) != null)
+                out.println(crea.getStudentFromTable(i + 1).getId() + ";" + crea.getStudentFromTable(i + 1).getName() + " " + crea.getStudentFromTable(i + 1).getFirstName() + ";" + (i + 1));
+
         out.flush();
     }
 }

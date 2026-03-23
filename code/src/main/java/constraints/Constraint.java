@@ -5,18 +5,18 @@ import utilitaire.Utilitaire;
 
 import java.util.ArrayList;
 
-public abstract class Constraint
-{
+public abstract class Constraint {
     public static final ArrayList<String> studentsConstraints = new ArrayList<>();
 
-    public abstract boolean validate(Student student, int table, Student[] etu);
-    public abstract String toDatabase();
-    public static void reset(){
+    public static void reset() {
         studentsConstraints.clear();
     }
 
-    public static boolean contraint(String student)
-    {
+    public static boolean contraint(String student) {
         return Utilitaire.in(student, studentsConstraints.toArray());
     }
+
+    public abstract boolean validate(Student student, int table, Student[] students);
+
+    public abstract String toDatabase();
 }

@@ -1,5 +1,5 @@
-let long = 0
-let larg = 0
+let width = 0
+let height = 0
 
 let groupes = [[1]]
 
@@ -12,18 +12,67 @@ let fileOk = false
 
 loadData()
 
+// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+
+function validerPlaceImposee(event) {
+    let idFind = event.target.id;
+    let numConstr = idFind.charAt(11);
+
+    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
+    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
+
+    if (studentId === "")
+        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
+    else if (tableNumber === "")
+        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
+    else {
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE)
+                if (xhr.status === 200) {
+                    const response = xhr.responseText.split(";");
+
+                    switch (response[2]) {
+                        case "1":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
+                            break;
+                        case "2":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
+                            break;
+                        case "3":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
+                            break;
+                        case "-1":
+                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
+                            break;
+                        default:
+                            validerSectImpose(idFind);
+
+                            document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
+                            document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
+                            break;
+                    }
+                } else
+                    console.error("Error fetching student data");
+        }
+
+        xhr.send();
+    }
+}
 
 window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
 });
 
+// TO MODIFY
+document.querySelector("#classMode").addEventListener("change", changeMode)
 
 function changeMode() {
     const m = document.getElementById("classMode").value;
     const mode = new XMLHttpRequest();
     mode.open("GET", `creation?constraint=${encodeURIComponent("mode")}&mode=${encodeURIComponent(m)}`, true);
-
     mode.onreadystatechange = function () {
         if (mode.readyState === XMLHttpRequest.DONE) {
             if (mode.status === 200) {
@@ -31,8 +80,9 @@ function changeMode() {
                     console.log("table nulle");
                 }
 
-            } else
+            } else {
                 console.log(mode.status);
+            }
         }
     };
     mode.send();
@@ -124,6 +174,7 @@ function enleverEtuGrp(event) {
                 decreaseId(`#E${g}G${numGrp}`);
 
         document.getElementById("ajoutEtuGrp" + numGrp).disabled = false;
+
     }
 
     if (numEtu <= groupes[numGrp.length])
@@ -135,7 +186,7 @@ function enleverEtuGrp(event) {
 function getInfosTable(id) {
 
     if (swap) {
-         activateSwap(id);
+        activateSwap(id);
     }
     let numTab = id.substring(1);
     let reqInfo = new XMLHttpRequest();
@@ -180,7 +231,6 @@ function moveFile(event) {
 
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "file-upload");
-
     xhr.send(data);
 
     fileOk = true;
@@ -214,7 +264,7 @@ function modeSwap() {
 
 function activateSwap(button) {
 
-    let numt2 = active;
+    let table2Number = active;
     if (button === "none" && active != null) {
         swap = !swap;
         document.querySelector(`#T${active}`).style.backgroundColor = "rgba(213,192,55,0.82)";
@@ -225,22 +275,22 @@ function activateSwap(button) {
         swapReq.onreadystatechange = function () {
             if (swapReq.readyState === XMLHttpRequest.DONE) {
                 if (swapReq.status === 200) {
-                    console.log(numt2)
+                    console.log(table2Number)
                     console.log(button)
                     let numt1 = button.substring(1);
                     let nomt1 = noms[tables.indexOf(numt1)];
-                    let nomt2 = noms[tables.indexOf(numt2)];
+                    let nomt2 = noms[tables.indexOf(table2Number)];
 
                     let content = `<span><div class="tableNumber">${numt1}</div><img id="deleteT${numt1}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt2}</p>`
                     console.log(document.querySelector(`#T${numt1}`).innerHTML)
                     document.querySelector(`#T${numt1}`).innerHTML = content;
 
-                    console.log(document.querySelector(`#T${numt2}`).innerHTML)
-                    content = `<span><div class="tableNumber">${numt2}</div><img id="deleteT${numt2}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
-                    document.querySelector(`#T${numt2}`).innerHTML = content;
+                    console.log(document.querySelector(`#T${table2Number}`).innerHTML)
+                    content = `<span><div class="tableNumber">${table2Number}</div><img id="deleteT${table2Number}" class="deleteT" src="resources/img/delete.png" alt="delete"></span><p>${nomt1}</p>`
+                    document.querySelector(`#T${table2Number}`).innerHTML = content;
 
                     noms[tables.indexOf(numt1)] = nomt2;
-                    noms[tables.indexOf(numt2)] = nomt1;
+                    noms[tables.indexOf(table2Number)] = nomt1;
                     swap = false;
                 }
             }
@@ -268,17 +318,18 @@ function setTableNumber() {
                 else if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
                     let l = xhr.responseText.split(";");
 
-                    long = l[0];
+                    width = l[0];
                     document.getElementById("long").value = l[0];
 
-                    larg = l[1];
+                    height = l[1];
                     document.getElementById("larg").value = l[1];
                 }
 
                 document.getElementById("imposedTableId1").max = lon * lar;
                 document.getElementById("numTabSup1").max = lon * lar;
-            } else
+            } else {
                 console.log("error number tables")
+            }
         }
     };
 
@@ -309,7 +360,6 @@ function createGrp() {
         <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" disabled >+</button>
         <h4>Ajouter un étudiant au groupe</h4>
     </div>`
-
     document.querySelector('#ajoutGroup').disabled = true;
     document.querySelector('#ajoutGroup').insertAdjacentHTML("beforebegin", etuGrp);
 
@@ -372,11 +422,9 @@ function enableZone() {
             document.querySelector("#walEtu1G1").disabled = false;
         }
 
-        //le bout generer
-        codeForGeneration(false)
-
-    }else {
-        console.log("pourquoi file pas ok ??!!!")
+        // le bouton générer
+        document.querySelector("#walid").style.backgroundColor = '#ec400b';
+        codeForGeneration()
     }
 }
 
@@ -564,7 +612,9 @@ function setValid(section) {
 
     let numEtu = groupes[numGrp - 1].length;
 
-    if (numEtu < 9) {document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false}
+    if (numEtu < 9) {
+        document.querySelector(`#ajoutEtuGrp${numGrp}`).disabled = false
+    }
 
     document.querySelector(`#idEtu${numEtu}G${numGrp}`).disabled = true
     document.querySelector(`#nomEtu${numEtu}G${numGrp}`).disabled = true
@@ -650,13 +700,13 @@ function loadData() {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                if (xhr.responseText !== "null" && ! xhr.responseText.startsWith("null")) {
+                if (xhr.responseText !== "null" && !xhr.responseText.startsWith("null")) {
                     console.log("user exists here are his informations :")
                     console.log(xhr.responseText)
 
                     let results = xhr.responseText.split("<")
 
-                    if (!results[1] !== "") {
+                    if (results[1] !== "") {
                         results[1].split(";").forEach(student => {
                             students.push(student)
                         })
@@ -686,7 +736,7 @@ function loadData() {
                         tables.push(numbers[i].split("!"));
 
 
-                    createTables() ;
+                    createTables();
                     codeForGeneration(true)
 
                     renduFichierEtu(results[2])
@@ -752,14 +802,14 @@ function importMod() {
 
 document.querySelector("#modeHeader").addEventListener("change", changeHeaderMode)
 
-function changeHeaderMode (event) {
+function changeHeaderMode(event) {
     if (event.target.value === "create") {
         parameterMod()
     }else if (event.target.value === "modify") {
         tableInfoMod()
     }else if (event.target.value === "export"){
         exportMod()
-    }else if (event.target.value === "import"){
+    } else if (event.target.value === "import"){
         importMod()
     }else {
         console.log("ALERTE ALERTE")

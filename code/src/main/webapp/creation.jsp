@@ -63,7 +63,7 @@
         <form method="post" action="Display">
             <label for="testVal"></label>
             <input type="text" name="testVal" id="testVal">
-            <button type="submit" id="walid" class="boutWalider" onclick="enableText()" disabled> Générer</button>
+            <button type="submit" id="walid" class="boutWalider" disabled> Générer</button>
         </form>
 
     </div>
@@ -99,7 +99,7 @@
                     <button class="chercher" id="findImposed1" disabled>find</button>
                 </section>
 
-                <button id="ajoutImpos" class="boutPlus" onclick="createImposed()" disabled>+</button>
+                <button id="ajoutImpos" class="boutPlus" disabled>+</button>
             </div>
 
         </div>

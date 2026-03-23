@@ -1,6 +1,8 @@
 package Jakarta;
 
 
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
 import placement.PositioningIntermediate;
@@ -24,6 +26,9 @@ public class HelloServlet {
         System.out.println("add group constr Néo : " + crea.separeStudentsPerGroup("p24033", 1));
 
         System.out.println(salle.generate());
+
+        ConnectionServlet conn = new ConnectionServlet();
+        
     }
 
 }

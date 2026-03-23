@@ -35,7 +35,7 @@ async function subscribe() {
     if (password === confirm) {
         console.log('confirme');
         const xhr = new XMLHttpRequest()
-        xhr.open('GET', `Connection?action=${encodeURIComponent('subscribe')}&username=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
+        xhr.open('GET', `Connection?action=subscribe&username=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
@@ -68,7 +68,6 @@ async function test() {
 
 test()
 test()
-initPlacements()
 
 
 function initPlacements() {

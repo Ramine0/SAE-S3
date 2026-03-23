@@ -31,12 +31,11 @@ public class ConnectionServlet extends HttpServlet {
         try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
             initialisationAttempt.setString(1, user);
             ResultSet placements = initialisationAttempt.executeQuery();
-
-            while (!placements.wasNull()) {
+            if (placements.next()) {
                 out.print(placements.getString(1));
-
-                if (placements.next())
-                    out.print(";");
+            }
+            while (placements.next()) {
+                out.print(";"+placements.getString(1));
             }
 
             out.flush();
@@ -58,25 +57,28 @@ public class ConnectionServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
             return;
         }
-
         if (data == null && (request.getParameter("action").equals("load") || request.getParameter("action").equals("add")))
             data = new Data();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
-            if (request.getParameter("action").equals("connect"))
+        out.println(dataSource);
+        try (Connection connection = dataSource.getConnection()) {
+            out.print("Entre dans le premier try");
+            if ("connect".equals(request.getParameter("action")))
                 connect(request, connection, out);
-            else if (request.getParameter("action").equals("subscribe"))
-                subscribe(request, connection);
-            else if (request.getParameter("action").equals("init"))
+            else if ("subscribe".equals(request.getParameter("action"))) {
+                out.print("Entre dans le if");
+                subscribe(request, connection, out);
+            }else if ("init".equals(request.getParameter("action")))
                 initPlacements(request, connection, out, user);
-            else if (request.getParameter("action").equals("load"))
+            else if ("load".equals(request.getParameter("action")))
                 load(request, connection);
-            else if (request.getParameter("action").equals("add"))
+            else if ("add".equals(request.getParameter("action")))
                 add(request, connection);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            out.println(e.getMessage());
         }
+        out.flush();
     }
 
     private void connect(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
@@ -89,27 +91,31 @@ public class ConnectionServlet extends HttpServlet {
             connexionAttempt.setString(2, password);
 
             ResultSet login = connexionAttempt.executeQuery();
-            user = login.getString(1);
-
-            out.print(login.getString(1));
-            out.flush();
+            if (login.next()) {
+                user = login.getString(1);
+                out.print(user);
+            }
 
             login.close();
         }
     }
 
-    private void subscribe(HttpServletRequest request, Connection connection) throws SQLException {
+    private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
         String subscribeRequest = "insert into User (name, email, password) values (?, ?, ?)";
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+        out.print("Entre dans le subscribe");
 
         try (PreparedStatement subscribeAttempt = connection.prepareStatement(subscribeRequest)) {
             subscribeAttempt.setString(1, username);
             subscribeAttempt.setString(2, email);
             subscribeAttempt.setString(3, password);
-
-            subscribeAttempt.executeUpdate();
+            out.print("Entre dans le try");
+            System.out.println("Avant requête");
+            int rows=subscribeAttempt.executeUpdate();
+            System.out.println("Après requete : "+rows);
+            out.print("On a "+rows);
         }
     }
 
@@ -129,17 +135,21 @@ public class ConnectionServlet extends HttpServlet {
             loadAttempt.setString(1, idPlacement);
             ResultSet studentsData = loadAttempt.executeQuery();
             StringBuilder students = new StringBuilder();
-
-            while (!studentsData.wasNull()) {
+            if (studentsData.next()) {
                 students.append(studentsData.getString(1)).append(",").append(studentsData.getString(2)).append(",").append(studentsData.getString(3));
                 String[] group = studentsData.getString(4).replace(".", ";").split(";");
                 students.append(group[0]);
 
                 if (group.length > 1)
                     students.append(",").append(group[1]);
+            }
+            while (studentsData.next()) {
+                students.append(studentsData.getString(1)).append(";").append(",").append(studentsData.getString(2)).append(",").append(studentsData.getString(3));
+                String[] group = studentsData.getString(4).replace(".", ";").split(";");
+                students.append(group[0]);
 
-                if (studentsData.next())
-                    students.append(";");
+                if (group.length > 1)
+                    students.append(",").append(group[1]);
             }
 
             data.loadStudents(students.toString());
@@ -152,11 +162,12 @@ public class ConnectionServlet extends HttpServlet {
             ResultSet tablesData = loadAttempt.executeQuery();
             StringBuilder tables = new StringBuilder();
 
-            while (!tablesData.wasNull()) {
+            if (tablesData.next()) {
                 tables.append(tablesData.getString(1)).append(",").append(tablesData.getString(2)).append(",").append(tablesData.getString(3)).append(",").append(tablesData.getString(4)).append(",").append(tablesData.getString(5));
 
-                if (tablesData.next())
-                    tables.append(";");
+            }
+            while (tablesData.next()) {
+                tables.append(tablesData.getString(1)).append(";").append(",").append(tablesData.getString(2)).append(",").append(tablesData.getString(3)).append(",").append(tablesData.getString(4)).append(",").append(tablesData.getString(5));
             }
 
             data.loadTables(tables.toString());
@@ -169,7 +180,7 @@ public class ConnectionServlet extends HttpServlet {
             ResultSet constraintsData = loadAttempt.executeQuery();
             StringBuilder constraints = new StringBuilder();
 
-            while (!constraintsData.wasNull()) {
+            while (constraintsData.next()) {
                 if (constraintsData.getString(2).equals("I"))
                     constraints.append(constraintsData.getString(1)).append(",").append(constraintsData.getString(2)).append(",").append(constraintsData.getString(3)).append(",").append(constraintsData.getString(4));
                 else if (constraintsData.getString(2).equals("G"))
@@ -178,9 +189,7 @@ public class ConnectionServlet extends HttpServlet {
                     data.changeMode('S');
                 else
                     data.changeMode('G');
-
-                if (!constraintsData.getString(1).equals("C") && constraintsData.next())
-                    constraints.append(";");
+                constraints.append(";");
             }
 
             data.loadConstraints(constraints.toString());
@@ -211,6 +220,8 @@ public class ConnectionServlet extends HttpServlet {
                 addAttempt.setString(3, student[1]);
                 addAttempt.setString(4, student[2]);
                 addAttempt.setString(5, student[3]);
+                addAttempt.executeUpdate();
+
             }
 
             cnt++;
@@ -231,7 +242,7 @@ public class ConnectionServlet extends HttpServlet {
                 addAttempt.setString(4, request.getParameter("idP"));
                 addAttempt.setString(5, table[3]);
 
-                addAttempt.executeQuery();
+                addAttempt.executeUpdate();
             }
 
             cnt++;
@@ -254,7 +265,7 @@ public class ConnectionServlet extends HttpServlet {
                         addAttempt.setString(5, null);
                         addAttempt.setString(6, constraint[1]);
 
-                        addAttempt.executeQuery();
+                        addAttempt.executeUpdate();
                     }
             else
                 try (PreparedStatement addAttempt = connection.prepareStatement(addConstraint)) {
@@ -273,6 +284,8 @@ public class ConnectionServlet extends HttpServlet {
                         addAttempt.setString(5, constraint[1]);
                         addAttempt.setString(6, null);
                     }
+                    addAttempt.executeUpdate();
+
                 }
         }
     }

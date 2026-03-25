@@ -157,9 +157,6 @@ public class CreationServlet extends HttpServlet {
 
         CreatingIntermediate crea = room.getCreating();
 
-        int length, width;
-
-
         switch (request.getParameter("action")) {
 
             case "visu" -> {
@@ -170,7 +167,6 @@ public class CreationServlet extends HttpServlet {
                 defineMapType(request, out, room, crea);
             }
 
-            // les dimentions
             case "getDim" -> out.print(crea.getDimensions());
         }
     }
@@ -180,16 +176,15 @@ public class CreationServlet extends HttpServlet {
 
 
         switch (request.getParameter("constraint")) {
-
             case "imposePlace" -> {
                 if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty())
                     out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
+
                 out.print("null");
             }
 
             case "removeImposedPlace" -> crea.removeConstraint("I", Integer.parseInt(request.getParameter("id")) - 1);
 
-            // supprime la table
             case "deleteTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
 

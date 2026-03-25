@@ -33,9 +33,12 @@ public class PerGroup extends Constraint {
     @Override
     public boolean validate(Student student, int table, Student[] students) {
         if (Utilitaire.in(student.getId(), group))
-            for (Student s : students)
+            for (Student s : students) {
+                System.out.println(s.getFullName());
+
                 if (s != null && Utilitaire.in(s.getId(), group))
                     return false;
+            }
 
         return true;
     }

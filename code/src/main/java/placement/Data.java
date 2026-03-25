@@ -194,9 +194,9 @@ public class Data {
             for (int i = 0; i < line.length; i++)
                 if (line[i].equals("numero"))
                     idIndex = i;
-                else if (line[i].equals("name"))
+                else if (line[i].equals("nom"))
                     nameIndex = i;
-                else if (line[i].equals("firstName"))
+                else if (line[i].equals("prenom"))
                     firstNameIndex = i;
                 else if (line[i].equals("groupe"))
                     groupIndex = i;
@@ -498,10 +498,13 @@ public class Data {
     public Student[] neighbours(int tableNumber) {
         ArrayList<Student> result = new ArrayList<>();
 
-        for (int i : map.neighbours(tableNumber, existingTables()))
+        for (int i : map.neighbours(tableNumber, existingTables())) {
+            System.out.println(i);
+
             if (i != -1)
                 if (getTable(i) != null)
                     result.add(getStudentFromTable(i));
+        }
 
         return result.toArray(new Student[0]);
     }
@@ -524,7 +527,7 @@ public class Data {
             if (c instanceof ImposedPlacement)
                 result.add(((ImposedPlacement) c).getTableNumber());
 
-        return result.stream().mapToInt(i->i).toArray();
+        return result.stream().mapToInt(i -> i).toArray();
     }
 
     public void reset() {
@@ -635,7 +638,7 @@ public class Data {
         for (Table table : tables)
             result.add(table.getCoordinates()[0]);
 
-        return Utilitaire.max(result.stream().mapToInt(i->i).toArray());
+        return Utilitaire.max(result.stream().mapToInt(i -> i).toArray());
     }
 
     public int maxTableY() {
@@ -644,7 +647,7 @@ public class Data {
         for (Table table : tables)
             result.add(table.getCoordinates()[1]);
 
-        return Utilitaire.max(result.stream().mapToInt(i->i).toArray());
+        return Utilitaire.max(result.stream().mapToInt(i -> i).toArray());
     }
 
     public String getPlanSize() {

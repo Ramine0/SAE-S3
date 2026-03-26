@@ -97,6 +97,8 @@ public class ConnectionServlet extends HttpServlet {
             }
 
             login.close();
+        }catch (Exception e){
+            out.print(e.getMessage());
         }
     }
 
@@ -111,11 +113,15 @@ public class ConnectionServlet extends HttpServlet {
             subscribeAttempt.setString(1, username);
             subscribeAttempt.setString(2, email);
             subscribeAttempt.setString(3, password);
-            out.print("Entre dans le try");
-            System.out.println("Avant requête");
-            int rows=subscribeAttempt.executeUpdate();
-            System.out.println("Après requete : "+rows);
-            out.print("On a "+rows);
+
+            int result=subscribeAttempt.executeUpdate();
+            if (result>0){
+                out.print("Succès de l'oppération");
+            }else{
+                out.print("Euuuh");
+            }
+        }catch (Exception e){
+            out.print(e.getMessage());
         }
     }
 

@@ -17,6 +17,7 @@ public class GridMap extends Map {
     }
 
     public GridMap(Table[] tables) {
+
         init(tables);
     }
 
@@ -45,6 +46,8 @@ public class GridMap extends Map {
                             }
                         counterNeighbour++;
                     }
+                }else{
+                    System.out.println("TABLE NULL");
                 }
                 counter++;
             }
@@ -52,24 +55,25 @@ public class GridMap extends Map {
     }
 
     @Override
-    public int[] neighbours(int table, int[] available) {
+    public int[] neighbours(int table, int[] existing) {
         int[] neighbours = new int[9];
         int cpt = 0;
         int index = getIndexFromNumber(table);
 
         if (index > 0)
-            for (int i : adjacencyMatrix[index])
-                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], available)) {
+            for (int i = 0; i < adjacencyMatrix[index].length; i++) {
+                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], existing)) {
                     neighbours[cpt] = tableNumber[i];
                     cpt++;
                 }
+            }
 
         return neighbours;
     }
 
     private boolean hasNeighbour(int x, int neighbourX, int y, int neighbourY)
     {
-        return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX)) ;
+        return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX) || ((x - neighbourX) * (x - neighbourX) == 1) && ((y - neighbourY) * (y - neighbourY) == 1)) ;
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -99,7 +103,6 @@ public class GridMap extends Map {
             return result;
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("je me disais aussi");
 
             return null;
         }
@@ -109,9 +112,9 @@ public class GridMap extends Map {
     public Table[] loadMap(String path) {
         Table[] result = loadDefaultMap(path);
 
-        if (result != null)
+        if (result != null) {
             init(result);
-
+        }
         return result;
     }
 

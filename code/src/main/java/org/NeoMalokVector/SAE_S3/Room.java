@@ -29,7 +29,7 @@ public class Room {
     }
 
     public void positioningMode() {
-        positioning = creating.generatePos();
+        positioning = creating.generatePositioning();
     }
 
 

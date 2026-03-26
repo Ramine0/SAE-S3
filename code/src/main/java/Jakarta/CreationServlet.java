@@ -20,8 +20,6 @@ public class CreationServlet extends HttpServlet {
     private static HashMap<String, Room> rooms;
 
     private static void defineMapType(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
-        crea.setMode(0);
-
         if (request.getParameter("planType").equals("defaultPlan")) {
             crea.changeMapMode('D', request.getServletContext().getRealPath("/") + "/");
             crea.loadDefaultMap(request.getServletContext().getRealPath("/") + "/");

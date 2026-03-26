@@ -46,6 +46,8 @@ public class GridMap extends Map {
                             }
                         counterNeighbour++;
                     }
+                }else{
+                    System.out.println("TABLE NULL");
                 }
                 counter++;
             }
@@ -108,9 +110,10 @@ public class GridMap extends Map {
     public Table[] loadMap(String path) {
         Table[] result = loadDefaultMap(path);
 
-        if (result != null)
+        if (result != null) {
+            System.out.println("Result pas null");
             init(result);
-
+        }
         return result;
     }
 

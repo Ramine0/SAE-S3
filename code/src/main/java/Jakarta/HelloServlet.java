@@ -18,7 +18,7 @@ public class HelloServlet {
         crea.changeMapMode('D', "src/main/webapp/");
 
       crea.separeStudentsPerGroup("p2406", 1);
-       crea.separeStudentsPerGroup("p24033", 1);
+      crea.separeStudentsPerGroup("p24033", 1);
 
         room.generate();
 

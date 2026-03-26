@@ -46,6 +46,8 @@ public class GridMap extends Map {
                             }
                         counterNeighbour++;
                     }
+                }else{
+                    System.out.println("TABLE NULL");
                 }
                 counter++;
             }
@@ -112,7 +114,6 @@ public class GridMap extends Map {
         if (result != null) {
             init(result);
         }
-
         return result;
     }
 

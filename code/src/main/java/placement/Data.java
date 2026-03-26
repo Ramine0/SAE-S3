@@ -499,7 +499,7 @@ public class Data {
         ArrayList<Student> result = new ArrayList<>();
 
         for (int i : map.neighbours(tableNumber, existingTables())) {
-            System.out.println(i);
+
 
             if (i != -1)
                 if (getTable(i) != null)
@@ -615,7 +615,7 @@ public class Data {
     }
 
     public void loadDefaultPlan(String filePath) {
-        tables = (new GridMap()).loadMap(filePath);
+        tables = ((GridMap) map).loadMap(filePath);
     }
 
     public void changePlanMode(char newMode, String filePath) {
@@ -623,8 +623,8 @@ public class Data {
             if (map instanceof GridMap)
                 map = new RectangularMap(4, 4);
         } else if (newMode == 'D') {
+            map = new GridMap();
             loadDefaultPlan(filePath);
-            map = new GridMap(tables);
         }
     }
 

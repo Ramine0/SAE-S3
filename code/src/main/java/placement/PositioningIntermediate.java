@@ -21,6 +21,8 @@ public class PositioningIntermediate {
         int i;
         int tableNumber = 0;
 
+        int freeStudentsNumber = -1;
+
         while (!isGenerationDone(tableNumber)) {
             tableNumber++;
 
@@ -30,6 +32,9 @@ public class PositioningIntermediate {
             String[] freeStudents = data.freeStudents();
             String studentId = freeStudents[random.nextInt(freeStudents.length)];
 
+            if (freeStudentsNumber == -1)
+                freeStudentsNumber = freeStudents.length;
+
             i = 0;
 
             while (!walid(data.getStudentFromId(studentId), tableNumber)) {
@@ -37,7 +42,7 @@ public class PositioningIntermediate {
 
                 i++;
 
-                if (i > freeStudents.length / 2)
+                if (i > freeStudentsNumber / 2)
                     tableNumber++;
             }
 
@@ -58,9 +63,13 @@ public class PositioningIntermediate {
         if (Constraint.contain(student.getId()) || data.hasMode()) {
             Student[] neighbours = data.neighbours(table);
 
-            for (Constraint c : data.getConstraints())
+            for (Constraint c : data.getConstraints()) {
+                if (c != null)
+                    System.out.println(student.getFullName() + " " + c.validate(student, table, neighbours));
+
                 if (c != null && !c.validate(student, table, neighbours))
                     return false;
+            }
         }
 
         return true;

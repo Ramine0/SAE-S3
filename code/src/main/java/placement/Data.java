@@ -499,7 +499,7 @@ public class Data {
         ArrayList<Student> result = new ArrayList<>();
 
         for (int i : map.neighbours(tableNumber, existingTables())) {
-            System.out.println(i);
+
 
             if (i != -1)
                 if (getTable(i) != null)

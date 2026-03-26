@@ -67,9 +67,7 @@ public class DisplayServlet extends HttpServlet {
                         <h4> Génération réussie </h4>
                         <a href="double.jsp">Voir le résultat</a>
                         """);
-
             else {
-
                 out.println("<p>" + pos.getTablesForVisu() + "</p>");
                 out.println(pos.describeData());
                 out.println("""
@@ -93,15 +91,14 @@ public class DisplayServlet extends HttpServlet {
 
         if (room != null)
             pos = room.getPositioning();
+
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
         if (pos != null)
             switch (request.getParameter("action")) {
-                // on recup le visuel des tables
                 case "init" -> out.print(pos.getTablesForVisu());
 
-                // on récupère les information de la table
                 case "infos" -> {
                     try {
                         out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
@@ -110,7 +107,6 @@ public class DisplayServlet extends HttpServlet {
                     }
                 }
 
-                // on swap les étudiants des tables donnees
                 case "swap" -> {
                     if (room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
                         out.println("0");

@@ -3,6 +3,8 @@ package constraints;
 import org.NeoMalokVector.SAE_S3.Student;
 import utilitaire.Utilitaire;
 
+import java.util.Arrays;
+
 public class PerGroup extends Constraint {
     private final int number;
     private final String[] group;
@@ -12,7 +14,6 @@ public class PerGroup extends Constraint {
         group = new String[9];
 
         addStudent(student);
-
     }
 
     public void addStudent(String studentNumber) {
@@ -33,12 +34,9 @@ public class PerGroup extends Constraint {
     @Override
     public boolean validate(Student student, int table, Student[] neighbours) {
         if (Utilitaire.in(student.getId(), group))
-            for (Student s : neighbours) {
-                System.out.println(s.getFullName());
-
+            for (Student s : neighbours)
                 if (Utilitaire.in(s.getId(), group))
                     return false;
-            }
 
         return true;
     }

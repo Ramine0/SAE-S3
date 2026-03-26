@@ -13,15 +13,13 @@ public class HelloServlet {
     static void main(String[] args) throws FileNotFoundException {
         Room room = new Room();
         CreatingIntermediate crea = room.getCreating();
-        crea.setMode(0);
+        crea.setMode(1);
 
-        crea.changeMapMode('D', "src/main/webapp/");
-
-      crea.separeStudentsPerGroup("p2406", 1);
-      crea.separeStudentsPerGroup("p24033", 1);
+//        crea.changeMapMode('D', "src/main/webapp/");
 
         room.generate();
 
+        System.out.println(room.getPositioning().getTablesForVisu());
 
     }
 

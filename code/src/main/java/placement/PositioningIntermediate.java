@@ -55,7 +55,7 @@ public class PositioningIntermediate {
         if (!Utilitaire.in(table, data.freeTables()))
             return false;
 
-        if (Constraint.contraint(student.getId()) || data.hasMode()) {
+        if (Constraint.contain(student.getId()) || data.hasMode()) {
             Student[] neighbours = data.neighbours(table);
 
             for (Constraint c : data.getConstraints())

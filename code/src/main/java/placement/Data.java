@@ -615,20 +615,16 @@ public class Data {
     }
 
     public void loadDefaultPlan(String filePath) {
-        if (map instanceof GridMap)
-            tables = ((GridMap) map).loadMap(filePath);
+        tables = (new GridMap()).loadMap(filePath);
     }
 
     public void changePlanMode(char newMode, String filePath) {
         if (newMode == 'R') {
             if (map instanceof GridMap)
                 map = new RectangularMap(4, 4);
-        } else if (newMode == 'G') {
-            if (map instanceof RectangularMap)
-                map = new GridMap(tables);
         } else if (newMode == 'D') {
-            map = new GridMap();
             loadDefaultPlan(filePath);
+            map = new GridMap(tables);
         }
     }
 

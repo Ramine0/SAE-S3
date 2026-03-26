@@ -38,9 +38,6 @@
                     <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
                     <button id="exporter"> Exporter </button>
                 </div>
-                <label for="modeHeader">Action</label><select id="modeHeader" name="modeHeader">
-                <option value="create" selected>Paramètres de création</option>
-                <option value="modify">Voir les informations</option>
             </select>
 
                 <div id="parameters">

@@ -276,7 +276,7 @@ public class CreatingIntermediate {
     public String tableValidateButton(int oldNumber, int newNumber, String studentNumber) {
         String result = "";
 
-        if (oldNumber != 0 && doesTableExist(oldNumber) && newNumber > 0 && !doesTableExist(newNumber))
+        if (oldNumber != 0 && doesTableExist(oldNumber) && newNumber > 0 && doesTableExist(newNumber))
             result += d.changeNumTable(oldNumber, newNumber) ? newNumber + ";" : "error;";
         else if (oldNumber != 0)
             result += "invalid;";

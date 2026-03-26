@@ -579,7 +579,7 @@ function init() {
                     }
 
                     createTables()
-                }else {
+                } else {
                     console.log(initReq.responseText)
                 }
             }
@@ -666,7 +666,7 @@ function codeForGeneration(loadOnly) {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 code.value = xhr.responseText;
-                if (! loadOnly) {
+                if (!loadOnly) {
                     changeMode()
                     init()
                 }
@@ -804,13 +804,13 @@ document.querySelector("#modeHeader").addEventListener("change", changeHeaderMod
 function changeHeaderMode(event) {
     if (event.target.value === "create") {
         parameterMod()
-    }else if (event.target.value === "modify") {
+    } else if (event.target.value === "modify") {
         tableInfoMod()
-    }else if (event.target.value === "export"){
+    } else if (event.target.value === "export") {
         exportMod()
-    } else if (event.target.value === "import"){
+    } else if (event.target.value === "import") {
         importMod()
-    }else {
+    } else {
         console.log("ALERTE ALERTE")
     }
 }
@@ -818,7 +818,7 @@ function changeHeaderMode(event) {
 // TODO
 function setTableInfos() {
 
-    if (active != null ) {
+    if (active != null) {
         let oldNum = active;
         let newNum = document.querySelector("#idTabVisu").value;
         let numEtu = document.getElementById("numEtuVisu").value;
@@ -832,20 +832,22 @@ function setTableInfos() {
                     let resp = xhr.responseText.split(";")
                     if (resp[0].startsWith("invalid")) {
                         console.log(xhr.responseText)
-                    }else if(resp[0] === "error") {
+                    } else if (resp[0] === "error") {
                         console.log("une erreur")
-                    }else {
+                    } else {
                         console.log(resp[0])
                         try {
                             document.querySelector(`#T${oldNum}`).children[0].children[0].innerHTML = resp[0]
 
-                        }catch(e) {console.log(e.message)}
+                        } catch (e) {
+                            console.log(e.message)
+                        }
 
                         document.querySelector("#idTabVisu").value = resp[0]
                     }
                     if (resp[1] === "") {
                         console.log("echec de l'imposition de l'etudiant")
-                    }else {
+                    } else {
                         console.log(resp[1])
                     }
 

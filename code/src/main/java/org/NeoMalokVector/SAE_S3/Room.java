@@ -5,58 +5,42 @@ import placement.PositioningIntermediate;
 
 import java.io.FileNotFoundException;
 
-public class Room
-{
-
-    private final CreatingIntermediate creating;
+public class Room {
     private PositioningIntermediate positioning;
-    public String debugMessage;
-
-    private boolean generated;
+    private final CreatingIntermediate creating;
 
 
-    public Room() throws FileNotFoundException
-    {
+    public Room() throws FileNotFoundException {
         creating = new CreatingIntermediate();
         positioningMode();
     }
 
-    public Room(String path) throws FileNotFoundException
-    {
+    public Room(String path) throws FileNotFoundException {
         creating = new CreatingIntermediate(path);
         positioningMode();
     }
 
-    public CreatingIntermediate getCreating()
-    {
+    public CreatingIntermediate getCreating() {
         return creating;
     }
 
-    public PositioningIntermediate getPositioning()
-    {
+    public PositioningIntermediate getPositioning() {
         return positioning;
     }
 
     public void positioningMode() {
-        positioning = creating.generatePositioning();}
-
-
-    public boolean generate()
-    {
-        generated = positioning.creerPlacement();
-        return generated;
+        positioning = creating.generatePositioning();
     }
 
-    public boolean swapPlaces(int num1, int num2)
-    {
+
+    public boolean generate() {
+       return positioning.creerPlacement();
+    }
+
+    public boolean swapPlaces(int num1, int num2) {
         if (positioning != null)
-        {
             return positioning.swapPlaces(num1, num2);
-        }
-        return false;
-    }
 
-    public boolean isGenerated() {
-        return generated;
+        return false;
     }
 }

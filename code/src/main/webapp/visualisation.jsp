@@ -25,14 +25,14 @@
         <label for="Excel"></label>
         <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
 
-        <button id="exporter"> Exporter </button>
+        <button id="exporter"> Exporter</button>
     </div>
 </header>
 <div class="reverseLigne" id="content">
     <main>
         <h4 id="here"> Les tables : </h4>
-        <section class = "lesTables">
-            <button id="tableExp" class="table" > Table </button>
+        <section class="lesTables">
+            <button id="tableExp" class="table"> Table</button>
         </section>
     </main>
 
@@ -40,21 +40,21 @@
 
         <span class="separateur"></span>
         <div class="valuesOfTable">
-             <span id="TableNumber" >
+             <span id="TableNumber">
                 <label for="idTabVisu"> Numero de Table </label>
                 <input name="idTabVisu" id="idTabVisu" type="number" disabled>
             </span>
             <section id="studentInfo">
 
-                <div >
+                <div>
                     <label for="numEtuVisu"> Numero Etudiant </label>
                     <input name="numEtuVisu" id="numEtuVisu" type="text" disabled>
                 </div>
-                <div >
+                <div>
                     <label for="nomEtuVisu"> Nom de l'etudiant </label>
                     <input name="nomEtuVisu" id="nomEtuVisu" type="text" disabled>
                 </div>
-                <div >
+                <div>
                     <label for="grpEtuVisu"> Groupe classe l'etudiant </label>
                     <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
                 </div>
@@ -62,15 +62,15 @@
             </section>
         </div>
 
-        <button class="modif" type="button" id="swapForm" >
+        <button class="modif" type="button" id="swapForm">
             <img src="resources/img/swap.png" alt="Échanger">
-<%--            <h2>&Eacute;changer</h2>--%>
+            <%--            <h2>&Eacute;changer</h2>--%>
         </button>
 
     </aside>
 </div>
 <footer>
-    <div> &copy; Copyright </div>
+    <div> &copy; Copyright</div>
 </footer>
 <script type="module" src="resources/JS/scriptVisu.js.old">
 </script>

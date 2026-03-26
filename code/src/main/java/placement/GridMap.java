@@ -7,139 +7,117 @@ import utilitaire.Utilitaire;
 import java.io.FileReader;
 import java.util.Scanner;
 
-public class GridMap extends Map
-{
+public class GridMap extends Map {
 
-    private int[] numbersOfTables ;
-    private int[][] matriceAdj;
+    private int[] tableNumber;
+    private int[][] adjacencyMatrix;
 
-    public GridMap(Table[] tables)
-    {
+    public GridMap() {
+
+    }
+
+    public GridMap(Table[] tables) {
         init(tables);
     }
 
-    // initialise la matrice d'adjacence qui contient les voisins de chaque table
-    private void init(Table[] tables)
-    {
 
-        matriceAdj = new int[tables.length + 1][tables.length + 1];
-        if (tables[0].getCoordinates()[0] != -1)
-        {
+    private void init(Table[] tables) {
 
-            int cpt = 0 ;
-            for (Table t : tables)
-            {
-                if (t != null)
-                {
-                    int x = t.getCoordinates()[0];
-                    int y = t.getCoordinates()[1];
-                    int cptVois = 0;
-                    for (Table vois : tables)
-                    {
-                        if (vois != null)
-                        {
-                            if (cptVois > cpt)
-                            {
-                                int neighbourX = vois.getCoordinates()[0];
-                                int neighbourY = vois.getCoordinates()[1];
+        adjacencyMatrix = new int[tables.length + 1][tables.length + 1];
+        if (tables[0].getCoordinates()[0] != -1) {
 
-                                if (hasNeighbour(x, neighbourX, y, neighbourY))
-                                {
-                                    matriceAdj[cpt][cptVois] = 1;
-                                    matriceAdj[cptVois][cptVois] = 1;
+            int counter = 0;
+            for (Table table : tables) {
+                if (table != null) {
+                    int x = table.getCoordinates()[0];
+                    int y = table.getCoordinates()[1];
+                    int counterNeighbour = 0;
+                    for (Table neighbour : tables) {
+                        if (neighbour != null)
+                            if (counterNeighbour > counter) {
+                                int neighbourX = neighbour.getCoordinates()[0];
+                                int neighbourY = neighbour.getCoordinates()[1];
+
+                                if (hasNeighbour(x, neighbourX, y, neighbourY)) {
+                                    adjacencyMatrix[counter][counterNeighbour] = 1;
+                                    adjacencyMatrix[counterNeighbour][counterNeighbour] = 1;
                                 }
                             }
-                        }
-                        cptVois ++ ;
+                        counterNeighbour++;
                     }
                 }
-                cpt ++ ;
+                counter++;
             }
         }
-
     }
 
-    private boolean hasNeighbour(int x, int neighbourX, int y, int neighbourY)
-    {
-        return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX)) ;
+    @Override
+    public int[] neighbours(int table, int[] available) {
+        int[] neighbours = new int[9];
+        int cpt = 0;
+        int index = getIndexFromNumber(table);
+
+        if (index > 0)
+            for (int i : adjacencyMatrix[index])
+                if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], available)) {
+                    neighbours[cpt] = tableNumber[i];
+                    cpt++;
+                }
+
+        return neighbours;
     }
 
-    public GridMap()
-    {
+    private boolean hasNeighbour(int x, int neighbourX, int y, int neighbourY) {
+        return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX));
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    private Table[] chargerPlanDefaut(String path)
-    {
+    private Table[] loadDefaultMap(String path) {
         Table.reset();
-        Table[] lesTables;
-        try
-        {
+        Table[] result;
+
+        try {
             Scanner scan = new Scanner(new FileReader(path + "resources/planDefaut.csv"));
-            lesTables = new Table[scan.nextInt()];
-            numbersOfTables = new int[lesTables.length] ;
+            result = new Table[scan.nextInt()];
+            tableNumber = new int[result.length];
             String[] line;
             int cpt = 0;
-            while (scan.hasNextLine())
-            {
+
+            while (scan.hasNextLine()) {
                 line = scan.nextLine().split(";");
-                if (!line[0].isEmpty())
-                {
-                    lesTables[cpt] = new Table(Integer.parseInt(line[0]), Integer.parseInt(line[1]),Integer.parseInt(line[2]));
-                    numbersOfTables[cpt] = lesTables[cpt].getNumber() ;
+
+                if (!line[0].isEmpty()) {
+                    result[cpt] = new Table(Integer.parseInt(line[0]), Integer.parseInt(line[1]), Integer.parseInt(line[2]));
+                    tableNumber[cpt] = result[cpt].getNumber();
                     cpt++;
                 }
             }
 
             scan.close();
 
-            return lesTables;
-        } catch (Exception e)
-        {
+            return result;
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-            System.out.println("je me disais aussi");
 
             return null;
         }
 
     }
 
-    @Override
-    public int[] neighbours(int numTable, int[] dispo)
-    {
+    public Table[] loadMap(String path) {
+        Table[] result = loadDefaultMap(path);
 
-        int[] voisins = new int[9];
-        int cpt = 0;
-        int index = getIndexFromNum(numTable);
-        if (index > 0) {
-            for (int i : matriceAdj[index]) {
-                if (matriceAdj[index][i] == 1 && Utilitaire.in(numbersOfTables[i], dispo)) {
-                    voisins[cpt] = numbersOfTables[i];
-                    cpt++;
-                }
-            }
-        }
-        return voisins;
+        if (result != null)
+            init(result);
+
+        return result;
     }
 
-    public Table[] loadMap(String path)
-    {
-        Table[] tables = chargerPlanDefaut(path);
-        if (tables != null)
-        {
-            init(tables);
-        }
-        return tables;
+    private int getIndexFromNumber(int number) {
+        for (int i = 0; i < tableNumber.length; i++)
+            if (number == tableNumber[i])
+                return i;
+
+        return -1;
     }
-
-    private int getIndexFromNum(int num) {
-        for (int i = 0 ; i < numbersOfTables.length ; i++) {
-            if (num == numbersOfTables[i]) {
-                return i ;
-            }
-        }
-        return -1 ;
-    }
-
-
 }

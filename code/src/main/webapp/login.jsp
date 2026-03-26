@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="resources/css/styles.css">
 </head>
 <body class="connect">
-        <label for="email"> Adresse mail </label>
-        <input type="email" id="email">
-        <label for="password"> Mot de passe </label>
-        <input type="password" id="password">
-        <button type="button" onclick="login()"> Valider </button>
-        <input type="button" value="S'inscrire" onclick="window.location.href='subscribe.jsp';" />
-    <script src="resources/JS/scriptLogin.js"></script>
+<label for="email"> Adresse mail </label>
+<input type="email" id="email">
+<label for="password"> Mot de passe </label>
+<input type="password" id="password">
+<button type="button" onclick="login()"> Valider</button>
+<input type="button" value="S'inscrire" onclick="window.location.href='subscribe.jsp';"/>
+<script src="resources/JS/scriptLogin.js"></script>
 </body>
 </html>

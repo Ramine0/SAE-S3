@@ -24,9 +24,9 @@
         <div class="general">
             <form class="column" method="post" enctype="multipart/form-data" id="fileUploadForm">
                 <label for="modeHeader">Action</label><select id="modeHeader" name="modeHeader">
-                    <option value="create" selected>Paramètres de création</option>
-                    <option value="modify">Voir les informations</option>
-                </select>
+                <option value="create" selected>Paramètres de création</option>
+                <option value="modify">Voir les informations</option>
+            </select>
 
                 <div id="parameters">
                     <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
@@ -64,8 +64,8 @@
                     </div>
                 </div>
 
-                <div id="valuesOfTable"  style ="visibility : hidden; height: 0; ">
-                     <span id="TableNumber" >
+                <div id="valuesOfTable" style="visibility : hidden; height: 0; ">
+                     <span id="TableNumber">
                         <label for="idTabVisu"> Numero de Table </label>
                         <input name="idTabVisu" id="idTabVisu" type="number" disabled>
                     </span>
@@ -92,14 +92,15 @@
                     </span>
                 </div>
 
-                <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le plan
+                <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier
+                    et le plan
                 </button>
                 <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
 
             </form>
             <form method="post" action="Display">
                 <label for="sessionCode">Code de session</label><input type="text" name="sessionCode" id="sessionCode">
-                <button type="button" id="loadSession" onclick="loadData()" > Charger </button>
+                <button type="button" id="loadSession" onclick="loadData()"> Charger</button>
                 <button type="submit" id="walid" class="boutWalider" disabled> Générer
                 </button>
             </form>

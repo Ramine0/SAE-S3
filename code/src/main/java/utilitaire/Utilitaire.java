@@ -1,86 +1,57 @@
 package utilitaire;
 
-public class Utilitaire
-{
+public class Utilitaire {
 
-    public static boolean in(Object o, Object[] O)
-    {
+    public static boolean in(Object o, Object[] O) {
         for (Object i : O)
-        {
             if (i == o)
-            {
                 return true;
-            }
-        }
+
         return false;
     }
 
-    public static boolean in(String s, String[] tab)
-    {
+    public static boolean in(String s, String[] tab) {
         for (String i : tab)
-        {
-            if (i != null)
-            {
-                if (i.equals(s))
-                {
-                    return true;
-                }
-            }
-        }
+            if (i != null && i.equals(s))
+                return true;
+
         return false;
     }
 
-    public static int pos(int nb, int[] tab)
-    {
+    public static int pos(int nb, int[] tab) {
 
         for (int i = 0; i < tab.length; i++)
-        {
             if (tab[i] == nb)
-            {
                 return i;
-            }
-        }
 
         return -1;
     }
 
-    public static boolean in(int o, int[] O)
-    {
+    public static boolean in(int o, int[] O) {
         for (int i : O)
-        {
             if (i == o)
-            {
                 return true;
-            }
-        }
+
         return false;
     }
 
-    public static int min(int[] nb)
-    {
+    public static int min(int[] nb) {
         int result = nb[0];
+
         for (int i : nb)
-        {
             if (result > i)
-            {
                 result = i;
-            }
-        }
+
         return result;
     }
 
-    public static int max(int[] nb)
-    {
+    public static int max(int[] nb) {
         int result = nb[0];
+
         for (int i : nb)
-        {
             if (result < i)
-            {
                 result = i;
-            }
-        }
+
         return result;
     }
-
-
 }

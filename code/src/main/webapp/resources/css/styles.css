@@ -147,7 +147,7 @@ h1 {
 
 footer {
     height: 3em;
-    margin : 0 ;
+    margin: 0;
 
     position: relative;
     width: 100%;
@@ -200,13 +200,13 @@ hr {
     display: flex;
     flex-direction: row;
     justify-content: left;
-    margin : 0;
+    margin: 0;
 }
 
-.mainDouble{
+.mainDouble {
     max-width: 100vw;
     overflow-x: auto;
-    overflow-y:visible;
+    overflow-y: visible;
     margin-bottom: 10px;
 
 }
@@ -280,9 +280,11 @@ section {
     display: flex;
     flex-direction: column;
 }
-.connect{
+
+.connect {
     background: linear-gradient(white, #5271ff, #5271ff, white);
 }
+
 .login, .subscribe {
     display: flex;
     flex-direction: column;
@@ -312,7 +314,7 @@ section {
 
 .pasTable {
     visibility: hidden;
-    min-width: 132px;
+    min-width: 66px;
     min-height: 132px;
 }
 

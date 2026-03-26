@@ -3,6 +3,7 @@ package Jakarta;
 
 import org.NeoMalokVector.SAE_S3.Room;
 import placement.CreatingIntermediate;
+import placement.Data;
 import placement.PositioningIntermediate;
 
 import java.io.FileNotFoundException;
@@ -10,20 +11,16 @@ import java.io.FileNotFoundException;
 public class HelloServlet {
 
     static void main(String[] args) throws FileNotFoundException {
-        Room salle = new Room();
-        CreatingIntermediate crea = salle.getCreating();
-        PositioningIntermediate pos = crea.generatePos();
-        crea.setMode(0);
+        Room room = new Room();
+        CreatingIntermediate crea = room.getCreating();
+        crea.setMode(1);
 
-        crea.changeMapMode('R', "src/main/webapp/");
+//        crea.changeMapMode('D', "src/main/webapp/");
 
-        crea.createTables(3, 3);
-        crea.setDimensions(3, 3);
+        room.generate();
 
-        System.out.println("add group constr Malik : " + crea.separeStudentsPerGroup("p2406", 1));
-        System.out.println("add group constr Néo : " + crea.separeStudentsPerGroup("p24033", 1));
+        System.out.println(room.getPositioning().getTablesForVisu());
 
-        System.out.println(salle.generate());
     }
 
 }

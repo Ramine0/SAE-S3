@@ -63,11 +63,14 @@ public class ConnectionServlet extends HttpServlet {
             data = new Data();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
+        if (dataSource==null){
+            out.print("WTF");
+        }
         try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
             if (request.getParameter("action").equals("connect"))
                 connect(request, connection, out);
             else if (request.getParameter("action").equals("subscribe"))
-                subscribe(request, connection);
+                subscribe(request, connection, out);
             else if (request.getParameter("action").equals("init"))
                 initPlacements(request, connection, out, user);
             else if (request.getParameter("action").equals("load"))
@@ -95,10 +98,12 @@ public class ConnectionServlet extends HttpServlet {
             out.flush();
 
             login.close();
+        }catch (Exception e){
+            out.print(e.getMessage());
         }
     }
 
-    private void subscribe(HttpServletRequest request, Connection connection) throws SQLException {
+    private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
         String subscribeRequest = "insert into User (name, email, password) values (?, ?, ?)";
         String username = request.getParameter("username");
         String email = request.getParameter("email");
@@ -109,7 +114,14 @@ public class ConnectionServlet extends HttpServlet {
             subscribeAttempt.setString(2, email);
             subscribeAttempt.setString(3, password);
 
-            subscribeAttempt.executeUpdate();
+            int result=subscribeAttempt.executeUpdate();
+            if (result>0){
+                out.print("Succès de l'oppération");
+            }else{
+                out.print("Euuuh");
+            }
+        }catch (Exception e){
+            out.print(e.getMessage());
         }
     }
 

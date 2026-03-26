@@ -7,89 +7,87 @@ import utilitaire.Utilitaire;
 import java.util.Random;
 
 public class PositioningIntermediate {
-    private final Data donnees;
+    private final Data data;
 
     private final Random random = new Random();
 
     public PositioningIntermediate(Data d) {
-        donnees = d;
+        data = d;
     }
 
     public boolean creerPlacement() {
-        donnees.placeImposedStudents();
+        data.placeImposedStudents();
 
         int i;
         int tableNumber = 0;
 
+        int freeStudentsNumber = -1;
+
         while (!isGenerationDone(tableNumber)) {
             tableNumber++;
 
-            if (!Utilitaire.in(tableNumber, donnees.freeTables()))
+            if (!Utilitaire.in(tableNumber, data.freeTables()))
                 continue;
 
-            String[] freeStudents = donnees.freeStudents();
+            String[] freeStudents = data.freeStudents();
             String studentId = freeStudents[random.nextInt(freeStudents.length)];
+
+            if (freeStudentsNumber == -1)
+                freeStudentsNumber = freeStudents.length;
 
             i = 0;
 
-            // si on peut pas placer l'étudiant d'id studentId
-            while (!walid(donnees.getStudentFromId(studentId), tableNumber)) {
-                // on teste un autre étudiant
+            while (!walid(data.getStudentFromId(studentId), tableNumber)) {
                 studentId = freeStudents[random.nextInt(freeStudents.length)];
 
-                // on compte le nombre d'itérations de la boucle
                 i++;
 
-                // on passe à la table suivante si on a fait trop d'itérations
-                if (i > freeStudents.length / 2)
+                if (i > freeStudentsNumber / 2)
                     tableNumber++;
             }
 
-            donnees.placeStudent(tableNumber, studentId);
+            data.placeStudent(tableNumber, studentId);
         }
 
-        return donnees.freeStudents().length == 0;
+        return data.freeStudents().length == 0;
     }
 
     private boolean isGenerationDone(int tableNumber) {
-        return donnees.freeStudents().length == 0 || tableNumber > donnees.maxTableID();
+        return data.freeStudents().length == 0 || tableNumber > data.maxTableID();
     }
 
-    // valide ou non le placement
-    private boolean walid(Student s, int t) {
-        System.out.println(s.getFullName());
-
-        if (!Utilitaire.in(t, donnees.freeTables()))
+    private boolean walid(Student student, int table) {
+        if (!Utilitaire.in(table, data.freeTables()))
             return false;
 
-        // si on sait que l'étudiant a des contraintes
-        if (Constraint.contraint(s.getId()) || donnees.hasMode()) {
-            // on prend les tables voisines pour regarder
-            Student[] voisins = donnees.neighbours(t);
+        if (Constraint.contain(student.getId()) || data.hasMode()) {
+            Student[] neighbours = data.neighbours(table);
 
-            // on vérifie si ça bloque
-            for (Constraint c : donnees.getConstraints())
-                if (c != null && !c.validate(s, t, voisins))
-                    return false; // ça bloque
+            for (Constraint c : data.getConstraints()) {
+                if (c != null)
+                    System.out.println(student.getFullName() + " " + c.validate(student, table, neighbours));
+
+                if (c != null && !c.validate(student, table, neighbours))
+                    return false;
+            }
         }
 
-        // sinon tout est bon à moins que la place soit déjà prise
         return true;
     }
 
     public String getTablesForVisu() {
-        StringBuilder result = new StringBuilder(donnees.getPlanSize() + "/");
+        StringBuilder result = new StringBuilder(data.getPlanSize() + "/");
 
-        for (int t : donnees.existingTables())
-            if (!donnees.isDeleted(t))
-                result.append(donnees.getTableInfos(t)).append(";");
+        for (int t : data.existingTables())
+            if (!data.isDeleted(t))
+                result.append(data.getTableInfos(t)).append(";");
 
         return result.toString();
     }
 
     public boolean swapPlaces(int numT1, int numT2) {
-        if (Utilitaire.in(numT1, donnees.existingTables()) && Utilitaire.in(numT2, donnees.existingTables()))
-            return donnees.swap(numT1, numT2);
+        if (Utilitaire.in(numT1, data.existingTables()) && Utilitaire.in(numT2, data.existingTables()))
+            return data.swap(numT1, numT2);
 
         return false;
     }
@@ -97,13 +95,13 @@ public class PositioningIntermediate {
     public String describeData() {
         StringBuilder result = new StringBuilder();
 
-        for (String s : donnees.describe())
+        for (String s : data.describe())
             result.append(s).append(";");
 
         return result.toString();
     }
 
     public String tabInfoForVisu(int nb) {
-        return donnees.getInformationsForVisualisation(nb);
+        return data.getInformationsForVisualisation(nb);
     }
 }

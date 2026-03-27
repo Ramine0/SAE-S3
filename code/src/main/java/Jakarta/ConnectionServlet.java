@@ -64,12 +64,14 @@ public class ConnectionServlet extends HttpServlet {
         out.println(dataSource);
         try (Connection connection = dataSource.getConnection()) {
             out.print("Entre dans le premier try");
-            if ("connect".equals(request.getParameter("action")))
-                connect(request, connection, out);
-            else if ("subscribe".equals(request.getParameter("action"))) {
+            if ("connect".equals(request.getParameter("action"))){
                 out.print("Entre dans le if");
+                connect(request, connection, out);
+            }
+
+            else if ("subscribe".equals(request.getParameter("action")))
                 subscribe(request, connection, out);
-            }else if ("init".equals(request.getParameter("action")))
+            else if ("init".equals(request.getParameter("action")))
                 initPlacements(request, connection, out, user);
             else if ("load".equals(request.getParameter("action")))
                 load(request, connection);
@@ -85,15 +87,18 @@ public class ConnectionServlet extends HttpServlet {
         String connectRequest = "Select id from User where name=? and password=? limit 1";
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
+        out.print("Entre dans le connect");
         try (PreparedStatement connexionAttempt = connection.prepareStatement(connectRequest)) {
             connexionAttempt.setString(1, username);
             connexionAttempt.setString(2, password);
 
             ResultSet login = connexionAttempt.executeQuery();
             if (login.next()) {
+                out.print("Succes de la connexion");
                 user = login.getString(1);
                 out.print(user);
+            }else{
+                out.print("PROBLEME");
             }
 
             login.close();

@@ -27,10 +27,10 @@ async function subscribe() {
     let password = await sha256(document.getElementById("password").value).then(hash => {
         return hash
     });
-    let confirm= await sha256(document.getElementById("confirm").value).then(hash => {
+    let confirm = await sha256(document.getElementById("confirm").value).then(hash => {
         return hash
     })
-    if (email!=="" && password!=="" && password===confirm){
+    if (email !== "" && password !== "" && password === confirm) {
         console.log('confirme');
         const xhr = new XMLHttpRequest()
         xhr.open('GET', `Connection?action=subscribe&username=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)

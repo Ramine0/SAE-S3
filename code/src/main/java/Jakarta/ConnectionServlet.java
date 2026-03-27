@@ -1,13 +1,11 @@
 package Jakarta;
 
+import jakarta.annotation.Resource;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.annotation.Resource;
 import placement.Data;
-
-import java.io.PrintWriter;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -22,7 +20,7 @@ public class ConnectionServlet extends HttpServlet {
     private Data data;
     private String user;
 
-    @Resource(name="jdbc/p2403918")
+    @Resource(name = "jdbc/p2403918")
     private DataSource dataSource;
 
     private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {
@@ -35,7 +33,7 @@ public class ConnectionServlet extends HttpServlet {
                 out.print(placements.getString(1));
             }
             while (placements.next()) {
-                out.print(";"+placements.getString(1));
+                out.print(";" + placements.getString(1));
             }
 
             out.flush();
@@ -69,7 +67,7 @@ public class ConnectionServlet extends HttpServlet {
             else if ("subscribe".equals(request.getParameter("action"))) {
                 out.print("Entre dans le if");
                 subscribe(request, connection, out);
-            }else if ("init".equals(request.getParameter("action")))
+            } else if ("init".equals(request.getParameter("action")))
                 initPlacements(request, connection, out, user);
             else if ("load".equals(request.getParameter("action")))
                 load(request, connection);
@@ -97,7 +95,7 @@ public class ConnectionServlet extends HttpServlet {
             }
 
             login.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             out.print(e.getMessage());
         }
     }
@@ -114,13 +112,13 @@ public class ConnectionServlet extends HttpServlet {
             subscribeAttempt.setString(2, email);
             subscribeAttempt.setString(3, password);
 
-            int result=subscribeAttempt.executeUpdate();
-            if (result>0){
+            int result = subscribeAttempt.executeUpdate();
+            if (result > 0) {
                 out.print("Succès de l'oppération");
-            }else{
+            } else {
                 out.print("Euuuh");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             out.print(e.getMessage());
         }
     }

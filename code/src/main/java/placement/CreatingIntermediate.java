@@ -182,12 +182,21 @@ public class CreatingIntermediate {
     }
 
     /**
-     * tables libres
+     * Tables libres
      *
      * @return les tables libres (non supprimées et sans étudiant/contrainte de place imposée)
      */
     public int[] free() {
         return d.freeTables();
+    }
+
+    /**
+     * Tables pas libres
+     *
+     * @return les tables pas libres (celles sur lesquelles un étudiant est déjà imposé)
+     */
+    public int[] nonfreeTables() {
+        return d.nonfreeTables();
     }
 
     /**

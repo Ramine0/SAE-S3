@@ -24,7 +24,7 @@ public class ImposedPlacement extends Constraint {
      * @return un tableau de string contenant le numéro de la table et le numéro de l'étudiant
      */
     public String[] getImposed() {
-        return new String[] { Integer.toString(tableNumber), studentNumber };
+        return new String[]{Integer.toString(tableNumber), studentNumber};
     }
 
     public int getTableNumber() {

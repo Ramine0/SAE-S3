@@ -11,8 +11,29 @@ let swap = false
 let fileOk = false
 
 loadData()
-
+initPlacements()
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+
+function initPlacements() {
+    const mapList = document.getElementById("planType")
+    const init = new XMLHttpRequest()
+    init.open('POST', 'Connection?action=init')
+    init.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                const placements = xhr.responseText.split(";")
+                for (let i = 0; i < placements.length; i++) {
+                    const info = placements[i].split(",")
+                    let p = document.createElement("option");
+                    p.value = `${info[0]}${info[1]}`
+                    p.text = info[1]
+                    mapList.appendChild(p)
+                }
+            }
+        }
+    }
+    init.send()
+}
 
 function validerPlaceImposee(event) {
     let idFind = event.target.id;

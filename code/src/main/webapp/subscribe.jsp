@@ -13,17 +13,18 @@
 
 </head>
 <body class="connect">
-
-<label for="name"> Nom </label>
-<input type="text" id="name">
-<label for="email"> Adresse mail </label>
-<input type="email" id="email">
-<label for="password"> Mot de passe </label>
-<input type="password" id="password">
-<label for="confirm"> Confirmation du mot de passe </label>
-<input type="password" id="confirm">
-<button type="button" onclick="subscribe()"> Enregistrer</button>
-<input type="button" value="Se connecter" onclick="window.location.href='login.jsp';"/>
+<form class="login">
+    <label for="name"> Nom </label>
+    <input type="text" id="name">
+    <label for="email"> Adresse mail </label>
+    <input type="email" id="email">
+    <label for="password"> Mot de passe </label>
+    <input type="password" id="password">
+    <label for="confirm"> Confirmation du mot de passe </label>
+    <input type="password" id="confirm">
+    <button type="submit" onclick="subscribe()"> Enregistrer</button>
+    <input type="button" value="Se connecter" onclick="window.location.href='login.jsp';"/>
+</form>
 
 <script src="resources/JS/scriptLogin.js"></script>
 </body>

@@ -61,14 +61,9 @@ public class ConnectionServlet extends HttpServlet {
             data = new Data();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println(dataSource);
         try (Connection connection = dataSource.getConnection()) {
-            out.print("Entre dans le premier try");
-            if ("connect".equals(request.getParameter("action"))){
-                out.print("Entre dans le if");
+            if ("connect".equals(request.getParameter("action")))
                 connect(request, connection, out);
-            }
-
             else if ("subscribe".equals(request.getParameter("action")))
                 subscribe(request, connection, out);
             else if ("init".equals(request.getParameter("action")))
@@ -84,21 +79,19 @@ public class ConnectionServlet extends HttpServlet {
     }
 
     private void connect(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
-        String connectRequest = "Select id from User where name=? and password=? limit 1";
-        String username = request.getParameter("username");
+        String connectRequest = "Select id from User where email=? and password=? limit 1";
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-        out.print("Entre dans le connect");
         try (PreparedStatement connexionAttempt = connection.prepareStatement(connectRequest)) {
-            connexionAttempt.setString(1, username);
+            connexionAttempt.setString(1, email);
             connexionAttempt.setString(2, password);
 
             ResultSet login = connexionAttempt.executeQuery();
             if (login.next()) {
-                out.print("Succes de la connexion");
                 user = login.getString(1);
                 out.print(user);
             }else{
-                out.print("PROBLEME");
+                out.print("Adresse mail ou mot de passe incorrect");
             }
 
             login.close();
@@ -109,24 +102,35 @@ public class ConnectionServlet extends HttpServlet {
 
     private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
         String subscribeRequest = "insert into User (name, email, password) values (?, ?, ?)";
+        String existRequest= "Select * from User where email=? limit 1";
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        out.print("Entre dans le subscribe");
-
-        try (PreparedStatement subscribeAttempt = connection.prepareStatement(subscribeRequest)) {
-            subscribeAttempt.setString(1, username);
-            subscribeAttempt.setString(2, email);
-            subscribeAttempt.setString(3, password);
-
-            int result=subscribeAttempt.executeUpdate();
-            if (result>0){
-                out.print("Succès de l'oppération");
-            }else{
-                out.print("Euuuh");
+        boolean exist = false;
+        try (PreparedStatement existingCheckAttempt = connection.prepareStatement(existRequest)) {
+            existingCheckAttempt.setString(1, email);
+            ResultSet existingCheck = existingCheckAttempt.executeQuery();
+            if (existingCheck.next()) {
+                exist = true;
             }
-        }catch (Exception e){
-            out.print(e.getMessage());
+        }
+        if (!exist) {
+            try (PreparedStatement subscribeAttempt = connection.prepareStatement(subscribeRequest)) {
+                subscribeAttempt.setString(1, username);
+                subscribeAttempt.setString(2, email);
+                subscribeAttempt.setString(3, password);
+
+                int result=subscribeAttempt.executeUpdate();
+                if (result>0){
+                    out.print("Abonnement réussi");
+                }else{
+                    out.print("Echec de l'abonnement");
+                }
+            }catch (Exception e){
+                out.print(e.getMessage());
+            }
+        }else{
+            out.print("Un compte similaire existe déjà");
         }
     }
 

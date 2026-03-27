@@ -1,18 +1,32 @@
-let user
+document.querySelector("form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    console.log("Submit intercepté !");
+});
 
 async function login() {
     let email = document.getElementById('email').value
     let password = await sha256(document.getElementById('password').value).then(hash => {return hash})
-    console.log(password);
-    console.log(await sha256("hell").then(hash => {return hash}));
     const xhr = new XMLHttpRequest()
     xhr.open('GET', `Connection?action=connect&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                user = xhr.responseText
                 console.log(xhr.responseText);
+                let valid=true;
+                console.log(xhr.responseText.length);
+                for (let i=0; i<xhr.responseText.length; i++){
+                    if (!"0123456789".includes(xhr.responseText[i])){
+                        valid=false;
+                        break;
+                    }
+                }
+                if (valid){
+                    window.location.href='/SAE_S3_war_exploded/double.jsp';
+                }else{
+                    console.log("Pas valide");
+                }
             }
         }
     }
@@ -30,14 +44,15 @@ async function subscribe() {
         return hash
     })
     if (email!=="" && password!=="" && password===confirm){
-        console.log('confirme');
         const xhr = new XMLHttpRequest()
         xhr.open('GET', `Connection?action=subscribe&username=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
         xhr.onreadystatechange = function () {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    console.log("working")
                     console.log(xhr.responseText)
+                    if (xhr.responseText==="Abonnement réussi"){
+                        window.location.href='/SAE_S3_war_exploded/login.jsp';
+                    }
                 }
             }
         }
@@ -67,23 +82,3 @@ test()
 test()
 
 
-function initPlacements() {
-    const mapList = document.getElementById("planType")
-    const init = new XMLHttpRequest()
-    init.open('POST', 'Connection?action=init')
-    init.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                const placements = xhr.responseText.split(";")
-                for (let i = 0; i < placements.length; i++) {
-                    const info = placements[i].split(",")
-                    let p = document.createElement("option");
-                    p.value = `${info[0]}${info[1]}`
-                    p.text = info[1]
-                    mapList.appendChild(p)
-                }
-            }
-        }
-    }
-    init.send()
-}

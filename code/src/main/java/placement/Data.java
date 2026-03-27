@@ -662,7 +662,7 @@ public class Data {
 
     public boolean changeNumTable(int oldNumber, int newNumber) {
         if (getTable(oldNumber) != null) {
-            getTable(oldNumber).setNumber(newNumber);
+            Objects.requireNonNull(getTable(oldNumber)).setNumber(newNumber);
             return true;
         }
 

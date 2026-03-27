@@ -38,7 +38,6 @@
                     <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
                     <button id="exporter"> Exporter</button>
                 </div>
-                </select>
 
                 <div id="parameters">
                     <div class="modeDouble invisible" id="importArea">

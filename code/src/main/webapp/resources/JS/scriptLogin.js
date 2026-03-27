@@ -3,6 +3,8 @@ let user
 async function login() {
     let email = document.getElementById('email').value
     let password = await sha256(document.getElementById('password').value).then(hash => {return hash})
+    console.log(password);
+    console.log(await sha256("hell").then(hash => {return hash}));
     const xhr = new XMLHttpRequest()
     xhr.open('GET', `Connection?action=connect&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`, true)
 

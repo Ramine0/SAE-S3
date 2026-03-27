@@ -182,12 +182,21 @@ public class CreatingIntermediate {
     }
 
     /**
-     * tables libres
+     * Tables libres
      *
      * @return les tables libres (non supprimées et sans étudiant/contrainte de place imposée)
      */
     public int[] free() {
         return d.freeTables();
+    }
+
+    /**
+     * Tables pas libres
+     *
+     * @return les tables pas libres (celles sur lesquelles un étudiant est déjà imposé)
+     */
+    public int[] nonfreeTables() {
+        return d.nonfreeTables();
     }
 
     /**
@@ -276,10 +285,16 @@ public class CreatingIntermediate {
     public String tableValidateButton(int oldNumber, int newNumber, String studentNumber) {
         String result = "";
 
-        if (oldNumber != 0 && doesTableExist(oldNumber) && newNumber > 0 && doesTableExist(newNumber))
+        if (oldNumber != 0 && doesTableExist(oldNumber) && newNumber > 0 && !doesTableExist(newNumber))
             result += d.changeNumTable(oldNumber, newNumber) ? newNumber + ";" : "error;";
-        else if (oldNumber != 0)
-            result += "invalid;";
+        else if (oldNumber == 0)
+            result += "invalid;oldNumber equals 0;";
+        else if (!doesTableExist(oldNumber))
+            result += "invalid;old table doesn't exist;";
+        else if (newNumber <= 0)
+            result += "invalid;newNumber is <= 0;";
+        else if (doesTableExist(newNumber))
+            result += "invalid;new table exists;";
 
         result += !studentNumber.isEmpty() && findTable(newNumber) ? Integer.valueOf(imposeStudent(studentNumber, newNumber)) : "";
 

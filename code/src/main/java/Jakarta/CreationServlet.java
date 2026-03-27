@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.NeoMalokVector.SAE_S3.Room;
+import org.NeoMalokVector.SAE_S3.Student;
 import placement.CreatingIntermediate;
 import utilitaire.Utilitaire;
 
@@ -26,8 +27,8 @@ public class CreationServlet extends HttpServlet {
 
             out.print(room.getPositioning().getTablesForVisu());
         } else {
-            int width = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-            int height = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+            int width = Math.clamp(Integer.parseInt(request.getParameter("long")), 0, 20);
+            int height = Math.clamp(Integer.parseInt(request.getParameter("larg")), 0, 8);
 
             crea.changeMapMode('R', request.getServletContext().getRealPath("/") + "/");
 
@@ -39,8 +40,8 @@ public class CreationServlet extends HttpServlet {
     }
 
     private static void returnTables(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
-        int width = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-        int height = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+        int width = Math.clamp(Integer.parseInt(request.getParameter("long")), 0, 20);
+        int height = Math.clamp(Integer.parseInt(request.getParameter("larg")), 0, 8);
 
         crea.createTables(width, height);
         crea.setDimensions(width, height);
@@ -172,11 +173,33 @@ public class CreationServlet extends HttpServlet {
         CreatingIntermediate crea = room.getCreating();
 
         switch (request.getParameter("constraint")) {
-            case "imposePlace" -> {
+            case "changeTableNumber" -> {
                 if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty())
                     out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
 
                 out.print("null");
+            }
+
+            case "imposePlace" -> {
+                int tableNumber = Integer.parseInt(request.getParameter("oldNum"));
+                String studentId = crea.findStudent(request.getParameter("numEtu"));
+
+                boolean swap = false;
+
+                for (int nonfreeTable : crea.nonfreeTables()) {
+                    Student student = crea.getStudentFromTable(nonfreeTable);
+
+                    if (student != null && student.getId().equals(studentId)) {
+                        room.swapPlaces(tableNumber, nonfreeTable);
+                        out.print("swap;" + tableNumber + ";" + nonfreeTable);
+
+                        swap = true;
+                        break;
+                    }
+                }
+
+                if (!swap)
+                    out.print(crea.studentInfo(studentId) + ";" + crea.imposeStudent(studentId, tableNumber));
             }
 
             case "removeImposedPlace" -> crea.removeConstraint("I", Integer.parseInt(request.getParameter("id")) - 1);

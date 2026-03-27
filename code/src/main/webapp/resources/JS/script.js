@@ -1,6 +1,3 @@
-let width = 0
-let height = 0
-
 let groupes = [[1]]
 
 let noms = []
@@ -11,6 +8,7 @@ let swap = false
 let fileOk = false
 
 loadData()
+
 initPlacements()
 // document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
 
@@ -33,53 +31,6 @@ function initPlacements() {
         }
     }
     init.send()
-}
-
-function validerPlaceImposee(event) {
-    let idFind = event.target.id;
-    let numConstr = idFind.charAt(11);
-
-    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
-    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
-
-    if (studentId === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-    else if (tableNumber === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-    else {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE)
-                if (xhr.status === 200) {
-                    const response = xhr.responseText.split(";");
-
-                    switch (response[2]) {
-                        case "1":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
-                            break;
-                        case "2":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
-                            break;
-                        case "3":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
-                            break;
-                        case "-1":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
-                            break;
-                        default:
-                            validerSectImpose(idFind);
-
-                            document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
-                            document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
-                            break;
-                    }
-                } else
-                    console.error("Error fetching student data");
-        }
-
-        xhr.send();
-    }
 }
 
 window.addEventListener("scroll", () => {
@@ -318,43 +269,6 @@ function activateSwap(button) {
 
 }
 
-// TO MODIFY
-function setTableNumber() {
-    let lon = document.getElementById("long").value;
-    let lar = document.getElementById("larg").value;
-
-    let planType = document.getElementById("planType").value;
-
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            if (xhr.status === 200) {
-                if (planType === "defaultPlan")
-                    console.log("Default plan generated : " + xhr.responseText);
-                else if (xhr.responseText !== "-1" || xhr.responseText !== "0") {
-                    let l = xhr.responseText.split(";");
-
-                    width = l[0];
-                    document.getElementById("long").value = l[0];
-
-                    height = l[1];
-                    document.getElementById("larg").value = l[1];
-                }
-
-                document.getElementById("imposedTableId1").max = lon * lar;
-                document.getElementById("numTabSup1").max = lon * lar;
-            } else {
-                console.log("error number tables")
-            }
-        }
-    };
-
-    xhr.send();
-}
-
-
 function createGrp() {
     groupes.push([0]);
 
@@ -428,11 +342,8 @@ function createEtuGrpFromString(numGrp) {
 function enableZone() {
 
     if (fileOk) {
-
-        // les tables
         document.getElementById("visuofDouble").style.visibility = "visible";
 
-        // les groupes
         if (document.querySelector("#idEtu1G1") != null) {
             document.querySelector("#idEtu1G1").disabled = false;
             document.querySelector("#nomEtu1G1").disabled = false;
@@ -440,7 +351,6 @@ function enableZone() {
             document.querySelector("#walEtu1G1").disabled = false;
         }
 
-        // le bouton générer
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
     }
@@ -836,50 +746,60 @@ function changeHeaderMode(event) {
     }
 }
 
-// TODO
 function setTableInfos() {
+    let oldNum = active;
+    let newNum = document.querySelector("#idTabVisu").value;
+    let numEtu = document.getElementById("numEtuVisu").value;
 
-    if (active != null) {
-        let oldNum = active;
-        let newNum = document.querySelector("#idTabVisu").value;
-        let numEtu = document.getElementById("numEtuVisu").value;
-
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", `creation?constraint=imposePlace&oldNum=${oldNum}&newNum=${newNum}&numEtu=${numEtu}`, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
+    function changeTableNumberAndImposePlace(constraintNumber) {
+        if (active != null) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", `creation?constraint=${encodeURIComponent(constraintNumber === 0 ? "changeTableNumber" : "imposePlace")}&oldNum=${oldNum}&newNum=${newNum}&numEtu=${numEtu}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) if (xhr.status === 200) {
                     let resp = xhr.responseText.split(";")
                     if (resp[0].startsWith("invalid")) {
                         console.log(xhr.responseText)
                     } else if (resp[0] === "error") {
                         console.log("une erreur")
                     } else {
-                        console.log(resp[0])
-                        try {
+                        console.log(resp)
+
+                        if (constraintNumber === 0) {
                             document.querySelector(`#T${oldNum}`).children[0].children[0].innerHTML = resp[0]
+                            document.querySelector(`#T${oldNum}`).id = "T" + newNum
+                            document.querySelector("#idTabVisu").value = resp[0]
 
-                        } catch (e) {
-                            console.log(e.message)
+                            active = newNum
+                        } else {
+                            if (resp[0] !== "swap") {
+                                document.querySelector(`#T${oldNum}`).children[1].innerHTML = resp[0]
+                                document.querySelector(`#T${oldNum}`).children[1].innerHTML = resp[0]
+                            } else {
+                                const temp = document.getElementById("T" + resp[1]).children[1].innerHTML;
+                                document.getElementById("T" + resp[1]).children[1].innerHTML = document.getElementById("T" + resp[2]).children[1].innerHTML;
+                                document.getElementById("T" + resp[2]).children[1].innerHTML = temp;
+
+                                getInfosTable("T" + resp[2])
+                                getInfosTable("T" + resp[1])
+                            }
                         }
-
-                        document.querySelector("#idTabVisu").value = resp[0]
                     }
-                    if (resp[1] === "") {
-                        console.log("echec de l'imposition de l'etudiant")
-                    } else {
-                        console.log(resp[1])
-                    }
-
                 }
             }
+
+            xhr.send();
+
+
         }
-
-        xhr.send();
-
     }
+
+    if (newNum !== oldNum)
+        changeTableNumberAndImposePlace(0);
+    else if (document.getElementById("T" + oldNum).children[1].value !== "null")
+        changeTableNumberAndImposePlace(1);
 }
+
 
 
 

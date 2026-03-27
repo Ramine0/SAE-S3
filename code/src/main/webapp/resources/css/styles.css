@@ -74,7 +74,6 @@ body {
 }
 
 
-
 .headerCentre {
     text-align: center;
     margin-left: auto;
@@ -326,16 +325,16 @@ section {
 }
 
 .selecteur {
-    margin : 2% 1%;
+    margin: 2% 1%;
 }
 
 header > * {
-    padding-left: 3% ;
+    padding-left: 3%;
 }
 
 .modeDouble * {
-    margin : 5% 0;
-    padding : 0;
+    margin: 5% 0;
+    padding: 0;
 }
 
 .pasTable {
@@ -349,24 +348,24 @@ main {
 }
 
 
-label+input {
-    margin-bottom: 1.5em ;
+label + input {
+    margin-bottom: 1.5em;
 }
 
 .invisible {
-    width : 0 ;
-    height : 0 ;
+    width: 0;
+    height: 0;
     margin: 0;
     padding: 0;
     visibility: hidden;
 }
 
 select {
-    padding : 1px;
+    padding: 1px;
 }
 
 #parameters * {
-    padding-top: 1% ;
+    padding-top: 1%;
 }
 
 

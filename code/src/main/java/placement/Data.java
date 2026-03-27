@@ -64,6 +64,7 @@ public class Data {
     public void placeStudent(int table, String idStudent) {
         if (getTable(table) == null)
             return;
+
         Objects.requireNonNull(getTable(table)).setStudent(getStudentFromId(idStudent));
     }
 
@@ -109,6 +110,16 @@ public class Data {
                 free.add(table.getNumber());
 
         return free.stream().mapToInt(i -> i).toArray();
+    }
+
+    public int[] nonfreeTables() {
+        List<Integer> result = new ArrayList<>();
+
+        for (Table table : tables)
+            if (Utilitaire.in(table.getNumber(), existingTables()) && table.getStudent() != null)
+                result.add(table.getNumber());
+
+        return result.stream().mapToInt(i -> i).toArray();
     }
 
     public int deleteTable(int tableNumber) {
@@ -662,9 +673,7 @@ public class Data {
 
     public boolean changeNumTable(int oldNumber, int newNumber) {
         if (getTable(oldNumber) != null) {
-            Student temp = Objects.requireNonNull(getTable(oldNumber)).getStudent();
-            Objects.requireNonNull(getTable(oldNumber)).setStudent(null);
-            Objects.requireNonNull(getTable(newNumber)).setStudent(temp);
+            Objects.requireNonNull(getTable(oldNumber)).setNumber(newNumber);
             return true;
         }
 

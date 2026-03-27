@@ -33,58 +33,54 @@
                     </select>
                 </div>
 
-                <div class="modeDouble invisible" id="exportArea" >
+                <div class="modeDouble invisible" id="exportArea">
                     <label for="Excel"> Format d'export</label>
                     <input type="checkbox" name="export" id="Excel" value="Excel"> Excel
-                    <button id="exporter"> Exporter </button>
+                    <button id="exporter"> Exporter</button>
                 </div>
-            </select>
 
                 <div id="parameters">
-                <div class="modeDouble invisible" id="importArea" >
-                    <label for="importCSV"> Format d'import</label>
-                    <input type="checkbox" name="importByFile" id="importCSV" value="importByFile"> Fichier CSV
-                    <button id="import"> Importer </button>
-                </div>
-
-                <div class="modeDouble" id="parameters">
-                    <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
-                    <input type="file" name="studentFile" id="studentFile" accept="text/csv">
-
-                    <br>
-
-                    <label for="classMode">Type de séparation</label>
-                    <select id="classMode" name="classMode">
-                        <option value="normal" selected>Placement basique</option>
-                        <option value="group">Par groupe</option>
-                        <option value="sub-group">Par sous-groupe</option>
-                    </select>
-
-                    <br>
-
-                    <label for="planType">Type de plan</label>
-
-                    <select id="planType" name="planType">
-                        <option value="defaultPlan" selected>Plan par défaut</option>
-                        <option value="rectangularPlan">Plan rectangulaire</option>
-                    </select>
-
-
-                    <div id="infoRect" class="invisible">
-                        <section class="ligne">
-                            <label for="long">Nombre de tables par colonne</label>
-                            <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
-                        </section>
-
-                        <section class="ligne">
-                            <label for="larg">Nombre de tables par ligne</label>
-                            <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
-                        </section>
+                    <div class="modeDouble invisible" id="importArea">
+                        <label for="importCSV"> Format d'import</label>
+                        <input type="checkbox" name="importByFile" id="importCSV" value="importByFile"> Fichier CSV
+                        <button id="import"> Importer</button>
                     </div>
-                </div>
 
-                    <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier et le plan</button>
+                    <div class="modeDouble" id="parameters">
+                        <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
+                        <input type="file" name="studentFile" id="studentFile" accept="text/csv">
 
+                        <br>
+
+                        <label for="classMode">Type de séparation</label>
+                        <select id="classMode" name="classMode">
+                            <option value="normal" selected>Placement basique</option>
+                            <option value="group">Par groupe</option>
+                            <option value="sub-group">Par sous-groupe</option>
+                        </select>
+
+                        <br>
+
+                        <label for="planType">Type de plan</label>
+
+                        <select id="planType" name="planType">
+                            <option value="defaultPlan" selected>Plan par défaut</option>
+                            <option value="rectangularPlan">Plan rectangulaire</option>
+                        </select>
+
+
+                        <div id="infoRect" class="invisible">
+                            <section class="ligne">
+                                <label for="long">Nombre de tables par colonne</label>
+                                <input type="number" name="long" id="long" min="4" max="20" step="1" value="10">
+                            </section>
+
+                            <section class="ligne">
+                                <label for="larg">Nombre de tables par ligne</label>
+                                <input type="number" name="larg" id="larg" min="4" max="8" step="1" value="4">
+                            </section>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="modeDouble invisible" id="valuesOfTable">

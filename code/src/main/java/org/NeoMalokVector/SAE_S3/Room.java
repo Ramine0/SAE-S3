@@ -6,8 +6,8 @@ import placement.PositioningIntermediate;
 import java.io.FileNotFoundException;
 
 public class Room {
-    private PositioningIntermediate positioning;
     private final CreatingIntermediate creating;
+    private PositioningIntermediate positioning;
 
 
     public Room() throws FileNotFoundException {
@@ -34,7 +34,7 @@ public class Room {
 
 
     public boolean generate() {
-       return positioning.creerPlacement();
+        return positioning.creerPlacement();
     }
 
     public boolean swapPlaces(int num1, int num2) {

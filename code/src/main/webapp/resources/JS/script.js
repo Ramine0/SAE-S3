@@ -817,12 +817,10 @@ function changeHeaderMode(event) {
 
 // TODO
 function setTableInfos() {
-
     if (active != null) {
         let oldNum = active;
         let newNum = document.querySelector("#idTabVisu").value;
         let numEtu = document.getElementById("numEtuVisu").value;
-
 
         const xhr = new XMLHttpRequest();
         xhr.open("GET", `creation?constraint=imposePlace&oldNum=${oldNum}&newNum=${newNum}&numEtu=${numEtu}`, true);
@@ -838,6 +836,9 @@ function setTableInfos() {
                         console.log(resp[0])
                         try {
                             document.querySelector(`#T${oldNum}`).children[0].children[0].innerHTML = resp[0]
+                            document.querySelector(`#T${oldNum}`).id = "T" + newNum
+
+                            active = newNum
 
                         } catch (e) {
                             console.log(e.message)

@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.the_disabled.sae_s3.Room;
 import placement.Data;
 
 import javax.sql.DataSource;
@@ -99,7 +100,7 @@ public class ConnectionServlet extends HttpServlet {
         }
     }
 
-    private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) {
+    private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException{
         String subscribeRequest = "insert into User (name, email, password) values (?, ?, ?)";
         String existRequest= "Select * from User where email=? limit 1";
         String username = request.getParameter("username");
@@ -142,7 +143,7 @@ public class ConnectionServlet extends HttpServlet {
         loadStudents(connection, loadStudentsRequest, idPlacement);
         loadTables(connection, loadSeatsRequest, idPlacement);
         loadConstraints(connection, loadConstraintsRequest, idPlacement);
-        out.println(room.getPositioning().getTablesForVisu());
+        out.println(room.getPositioning().getTablesForVisualisation());
     }
 
     private void loadStudents(Connection connection, String loadStudents, String idPlacement) throws SQLException {

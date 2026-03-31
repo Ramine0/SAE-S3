@@ -9,16 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7046526-8ecb-4149-b894-6a9117a03554" name="Changes" comment="">
+    <list default="true" id="f7046526-8ecb-4149-b894-6a9117a03554" name="Changes" comment="Correction du CSS et quelques améliorations">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SAE-S3.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/pom.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/jakarta/ConnectionServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/ConnectionServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jakarta/CreationServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/CreationServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/placement/GridMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/GridMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/double.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/double.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/JS/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/JS/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/css/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -217,6 +210,15 @@
       <workItem from="1763716031672" duration="13000" />
       <workItem from="1774941708482" duration="75000" />
     </task>
+    <task id="LOCAL-00001" summary="Correction du CSS et quelques améliorations">
+      <option name="closed" value="true" />
+      <created>1774949731172</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774949731172</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -235,6 +237,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Nouveau .gitignore" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nouveau .gitignore" />
+    <MESSAGE value="Correction du CSS et quelques améliorations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Correction du CSS et quelques améliorations" />
   </component>
 </project>

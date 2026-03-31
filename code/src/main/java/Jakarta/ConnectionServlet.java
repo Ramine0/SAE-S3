@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.NeoMalokVector.SAE_S3.Room;
 import placement.Data;
 
 import javax.sql.DataSource;
@@ -17,6 +18,7 @@ import java.sql.SQLException;
 
 @WebServlet("/Connection")
 public class ConnectionServlet extends HttpServlet {
+    private Room room;
     private Data data;
     private String user;
 
@@ -24,16 +26,16 @@ public class ConnectionServlet extends HttpServlet {
     private DataSource dataSource;
 
     private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {
-        String initRequest = "Select name from Placement where idUser=?";
+        String initRequest = "Select id, name from Placement where idUser=?";
 
         try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
             initialisationAttempt.setString(1, user);
             ResultSet placements = initialisationAttempt.executeQuery();
             if (placements.next()) {
-                out.print(placements.getString(1));
+                out.print(placements.getString(1)+","+placements.getString(2));
             }
             while (placements.next()) {
-                out.print(";" + placements.getString(1));
+                out.print(";" + placements.getString(1)+","+placements.getString(2));
             }
 
             out.flush();
@@ -67,7 +69,7 @@ public class ConnectionServlet extends HttpServlet {
              else if ("init".equals(request.getParameter("action")))
                 initPlacements(request, connection, out, user);
             else if ("load".equals(request.getParameter("action")))
-                load(request, connection);
+                load(request, connection, out);
             else if ("add".equals(request.getParameter("action")))
                 add(request, connection);
         } catch (Exception e) {
@@ -132,7 +134,7 @@ public class ConnectionServlet extends HttpServlet {
         }
     }
 
-    private void load(HttpServletRequest request, Connection connection) throws SQLException {
+    private void load(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
         String loadStudentsRequest = "select number, name, firstname, grp from Student where idPlacement=?";
         String loadSeatsRequest = "select num, x, y, suppr, number from Seat p left join Student s on p.idStudent=s.number where p.idPlacement=?";
         String loadConstraintsRequest = "select type, number, num, subgrp, numGrp from Constr c left join Student s on c.idStudent = s.number left join Seat p on c.idSeat=p.num where c.idPlacement=?";
@@ -141,6 +143,7 @@ public class ConnectionServlet extends HttpServlet {
         loadStudents(connection, loadStudentsRequest, idPlacement);
         loadTables(connection, loadSeatsRequest, idPlacement);
         loadConstraints(connection, loadConstraintsRequest, idPlacement);
+        out.println(room.getPositioning().getTablesForVisu());
     }
 
     private void loadStudents(Connection connection, String loadStudents, String idPlacement) throws SQLException {

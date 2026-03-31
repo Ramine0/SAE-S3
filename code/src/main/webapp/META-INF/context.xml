@@ -1,9 +1,0 @@
-<Context>
-    <Resource name="jdbc/p2403918"
-              auth="Container"
-              type="javax.sql.DataSource"
-              username="p2403918"
-              password="12403918"
-              driverClassName="org.mariadb.jdbc.Driver"
-              url="jdbc:mariadb://iutbg-lamp.univ-lyon1.fr:3306/p2403918"/>
-</Context>

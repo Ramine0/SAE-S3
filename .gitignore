@@ -37,3 +37,11 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### Other files ###
+/mvnw
+/mvnw.cmd
+/Placement aléatoire via DSRoomMaker.pdf
+/pom.xml
+/etuS3.csv
+/src/main/webapp/resources/etudiants.csv

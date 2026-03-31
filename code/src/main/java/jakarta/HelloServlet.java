@@ -1,10 +1,8 @@
-package Jakarta;
+package jakarta;
 
 
-import org.NeoMalokVector.SAE_S3.Room;
+import org.the_disabled.sae_s3.Room;
 import placement.CreatingIntermediate;
-import placement.Data;
-import placement.PositioningIntermediate;
 
 import java.io.FileNotFoundException;
 
@@ -15,7 +13,7 @@ public class HelloServlet {
         CreatingIntermediate crea = room.getCreating();
         crea.setMode(1);
 
-//        crea.changeMapMode('D', "src/main/webapp/");
+        //        crea.changeMapMode('D', "src/main/webapp/");
 
         room.generate();
 

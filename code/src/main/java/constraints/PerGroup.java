@@ -1,9 +1,7 @@
 package constraints;
 
-import org.NeoMalokVector.SAE_S3.Student;
+import org.the_disabled.sae_s3.Student;
 import utilitaire.Utilitaire;
-
-import java.util.Arrays;
 
 public class PerGroup extends Constraint {
     private final int number;

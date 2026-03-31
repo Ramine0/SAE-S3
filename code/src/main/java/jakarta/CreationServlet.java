@@ -1,11 +1,11 @@
-package Jakarta;
+package jakarta;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
-import org.NeoMalokVector.SAE_S3.Room;
+import org.the_disabled.sae_s3.Room;
 import placement.CreatingIntermediate;
 import utilitaire.Utilitaire;
 
@@ -28,8 +28,8 @@ public class CreationServlet extends HttpServlet {
 
             out.print(room.getPositioning().getTablesForVisualisation());
         } else {
-            int width = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-            int height = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+            int width = Math.clamp(Integer.parseInt(request.getParameter("long")), 0, 20);
+            int height = Math.clamp(Integer.parseInt(request.getParameter("larg")), 0, 8);
 
             crea.changeMapMode('R', request.getServletContext().getRealPath("/") + "/");
 
@@ -41,8 +41,8 @@ public class CreationServlet extends HttpServlet {
     }
 
     private static void returnTables(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
-        int width = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-        int height = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+        int width = Math.clamp(Integer.parseInt(request.getParameter("long")), 0, 20);
+        int height = Math.clamp(Integer.parseInt(request.getParameter("larg")), 0, 8);
 
         crea.createTables(width, height);
         crea.setDimensions(width, height);
@@ -117,7 +117,7 @@ public class CreationServlet extends HttpServlet {
         Room room = rooms.get(user);
         CreatingIntermediate crea = room.getCreating();
 
-        if (request.getParameter("mode") != null) {
+        if (request.getParameter("mode") != null)
             if (request.getParameter("mode").equals("normal"))
                 crea.setMode(0);
 
@@ -126,7 +126,6 @@ public class CreationServlet extends HttpServlet {
 
             else if (request.getParameter("mode").equals("sub-group"))
                 crea.setMode(2);
-        }
 
         if (request.getParameter("action") != null)
             tableRequests(request, out, room);

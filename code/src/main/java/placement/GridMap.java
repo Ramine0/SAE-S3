@@ -1,7 +1,7 @@
 package placement;
 
 import jakarta.transaction.Transactional;
-import org.NeoMalokVector.SAE_S3.Table;
+import org.the_disabled.sae_s3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileReader;
@@ -46,9 +46,8 @@ public class GridMap extends Map {
                             }
                         counterNeighbour++;
                     }
-                }else{
+                } else
                     System.out.println("TABLE NULL");
-                }
                 counter++;
             }
         }
@@ -61,12 +60,11 @@ public class GridMap extends Map {
         int index = getIndexFromNumber(table);
 
         if (index > 0)
-            for (int i = 0; i < adjacencyMatrix[index].length; i++) {
+            for (int i = 0; i < adjacencyMatrix[index].length; i++)
                 if (adjacencyMatrix[index][i] == 1 && Utilitaire.in(tableNumber[i], existing)) {
                     neighbours[cpt] = tableNumber[i];
                     cpt++;
                 }
-            }
 
         return neighbours;
     }
@@ -111,9 +109,9 @@ public class GridMap extends Map {
     public Table[] loadMap(String path) {
         Table[] result = loadDefaultMap(path);
 
-        if (result != null) {
+        if (result != null)
             init(result);
-        }
+
         return result;
     }
 

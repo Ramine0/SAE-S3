@@ -1,4 +1,4 @@
-package Jakarta;
+package jakarta;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -32,7 +32,7 @@ public class FileUpload extends HttpServlet {
 
         Part filePart = request.getPart("studentFile");
         String fileName = "etudiants.csv";
-        
+
         InputStream inputStream = filePart.getInputStream();
         Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);
 

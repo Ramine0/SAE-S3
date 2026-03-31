@@ -1,4 +1,4 @@
-package org.NeoMalokVector.SAE_S3;
+package org.the_disabled.sae_s3;
 
 public class Student {
     private final String id;

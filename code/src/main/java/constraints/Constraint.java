@@ -1,6 +1,6 @@
 package constraints;
 
-import org.NeoMalokVector.SAE_S3.Student;
+import org.the_disabled.sae_s3.Student;
 import utilitaire.Utilitaire;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public abstract class Constraint {
         studentsConstraints.clear();
     }
 
-    public static boolean contain(String student) {
+    public static boolean contains(String student) {
         return Utilitaire.in(student, studentsConstraints.toArray());
     }
 

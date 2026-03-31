@@ -1,11 +1,11 @@
-package Jakarta;
+package jakarta;
 
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.NeoMalokVector.SAE_S3.Room;
+import org.the_disabled.sae_s3.Room;
 import placement.PositioningIntermediate;
 
 import java.io.IOException;
@@ -107,7 +107,8 @@ public class DisplayServlet extends HttpServlet {
                     }
                 }
 
-                case "swap" -> out.println(room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))) ? "0" : "1");
+                case "swap" ->
+                        out.println(room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))) ? "0" : "1");
             }
         else
             out.print("rien");

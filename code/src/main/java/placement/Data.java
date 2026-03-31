@@ -6,8 +6,8 @@ import constraints.ImposedPlacement;
 import constraints.PerClass;
 import constraints.PerGroup;
 import jakarta.transaction.Transactional;
-import org.NeoMalokVector.SAE_S3.Student;
-import org.NeoMalokVector.SAE_S3.Table;
+import org.the_disabled.sae_s3.Student;
+import org.the_disabled.sae_s3.Table;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
@@ -498,12 +498,9 @@ public class Data {
     public Student[] neighbours(int tableNumber) {
         ArrayList<Student> result = new ArrayList<>();
 
-        for (int i : map.neighbours(tableNumber, existingTables())) {
-
-
+        for (int i : map.neighbours(tableNumber, existingTables()))
             if (i != -1 && getTable(i) != null)
-                    result.add(getStudentFromTable(i));
-        }
+                result.add(getStudentFromTable(i));
 
         return result.toArray(new Student[0]);
     }

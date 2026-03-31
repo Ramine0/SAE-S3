@@ -1,4 +1,4 @@
-package Jakarta;
+package jakarta;
 
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,7 +23,7 @@ public class ConnectionServlet extends HttpServlet {
     @Resource(name = "p2403918")
     private DataSource dataSource;
 
-    private static void initPlacements(HttpServletRequest request, Connection connection, PrintWriter out, String user) throws SQLException {
+    private static void initPlacements(Connection connection, PrintWriter out, String user) throws SQLException {
         String initRequest = "Select name from Placement where idUser=?";
 
         try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
@@ -61,16 +61,15 @@ public class ConnectionServlet extends HttpServlet {
             data = new Data();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        if (dataSource==null){
+        if (dataSource == null)
             out.print("WTF");
-        }
         try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
             if (request.getParameter("action").equals("connect"))
                 connect(request, connection, out);
             else if (request.getParameter("action").equals("subscribe"))
                 subscribe(request, connection, out);
             else if (request.getParameter("action").equals("init"))
-                initPlacements(request, connection, out, user);
+                initPlacements(connection, out, user);
             else if (request.getParameter("action").equals("load"))
                 load(request, connection);
             else if (request.getParameter("action").equals("add"))
@@ -80,7 +79,7 @@ public class ConnectionServlet extends HttpServlet {
         }
     }
 
-    private void connect(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
+    private void connect(HttpServletRequest request, Connection connection, PrintWriter out) {
         String connectRequest = "Select id from User where name=? and password=? limit 1";
         String username = request.getParameter("username");
         String password = request.getParameter("password");
@@ -96,12 +95,12 @@ public class ConnectionServlet extends HttpServlet {
             out.flush();
 
             login.close();
-        }catch (Exception e){
+        } catch (Exception e) {
             out.print(e.getMessage());
         }
     }
 
-    private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
+    private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) {
         String subscribeRequest = "insert into User (name, email, password) values (?, ?, ?)";
         String username = request.getParameter("username");
         String email = request.getParameter("email");
@@ -112,13 +111,12 @@ public class ConnectionServlet extends HttpServlet {
             subscribeAttempt.setString(2, email);
             subscribeAttempt.setString(3, password);
 
-            int result=subscribeAttempt.executeUpdate();
-            if (result>0){
-                out.print("Succès de l'oppération");
-            }else{
+            int result = subscribeAttempt.executeUpdate();
+            if (result > 0)
+                out.print("Succès de l'opération");
+            else
                 out.print("Euuuh");
-            }
-        }catch (Exception e){
+        } catch (Exception e) {
             out.print(e.getMessage());
         }
     }

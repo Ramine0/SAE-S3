@@ -12,55 +12,6 @@ let fileOk = false
 
 loadData()
 
-// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
-
-function validerPlaceImposee(event) {
-    let idFind = event.target.id;
-    let numConstr = idFind.charAt(11);
-
-    const studentId = document.getElementById(`imposedStudentId${numConstr}`).value;
-    const tableNumber = document.getElementById(`imposedTableId${numConstr}`).value;
-
-    if (studentId === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant non trouvé";
-    else if (tableNumber === "")
-        document.getElementById(`imposedStudentName${numConstr}`).value = "Choisissez une table";
-    else {
-        const xhr = new XMLHttpRequest();
-        xhr.open("GET", `creation?constraint=${encodeURIComponent("imposePlace")}&studentId=${encodeURIComponent(studentId)}&tableNumber=${encodeURIComponent(tableNumber)}`, true);
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE)
-                if (xhr.status === 200) {
-                    const response = xhr.responseText.split(";");
-
-                    switch (response[2]) {
-                        case "1":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Etudiant déjà pris";
-                            break;
-                        case "2":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table déjà prise";
-                            break;
-                        case "3":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Numéro impossible";
-                            break;
-                        case "-1":
-                            document.getElementById(`imposedStudentName${numConstr}`).value = "Table supprimée";
-                            break;
-                        default:
-                            validerSectImpose(idFind);
-
-                            document.getElementById(`imposedStudentId${numConstr}`).value = response[0];
-                            document.getElementById(`imposedStudentName${numConstr}`).value = response[1];
-                            break;
-                    }
-                } else
-                    console.error("Error fetching student data");
-        }
-
-        xhr.send();
-    }
-}
-
 window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
         `translateX(${window.scrollX}px)`;
@@ -107,11 +58,11 @@ function validerEtuGrp(event) {
 
                 switch (response[1]) {
                     case "1":
-                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant non trouvé";
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Étudiant non trouvé";
                         break;
 
                     case "2":
-                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Etudiant déjà pris";
+                        document.getElementById(`nomEtu${numEtu}G${numGrp}`).value = "Étudiant déjà pris";
                         break;
 
                     default:
@@ -405,7 +356,7 @@ function createEtuGrpFromString(numGrp) {
 function enableZone() {
     if (fileOk) {
         // les tables
-        document.getElementById("visuofDouble").style.visibility = "visible";
+        document.getElementById("visuOfDouble").style.visibility = "visible";
 
         // les groupes
         document.querySelector("#idEtu1G1").disabled = false;
@@ -555,7 +506,7 @@ function init() {
 
     const initReq = new XMLHttpRequest();
 
-    initReq.open("GET", `creation?action=${"define"}&long=${lon}&larg=${lar}&planType=${encodeURIComponent(planType)}`, true);
+    initReq.open("GET", `creation?action=define&long=${lon}&larg=${lar}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {

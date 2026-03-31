@@ -83,13 +83,6 @@ header * {
     margin-right: auto;
 }
 
-#visualisationHeader {
-    border: none;
-    background-color: white;
-    width: 100%;
-    display: flex;
-}
-
 .logo {
     border: 3px solid #5271ff;
 }
@@ -219,18 +212,6 @@ hr {
     font-size: medium;
 
 }
-
-.topAsside {
-    background-color: #cccccc;
-    border: 3px solid #5271ff;
-
-    border-radius: 20px;
-}
-
-.pageCrea {
-    display: inline-flex;
-}
-
 
 .boutPlus {
     font-size: large;

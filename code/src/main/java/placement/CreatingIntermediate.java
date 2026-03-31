@@ -1,7 +1,7 @@
 package placement;
 
 import constraints.PerGroup;
-import org.NeoMalokVector.SAE_S3.Student;
+import org.the_disabled.sae_s3.Student;
 import utilitaire.Utilitaire;
 
 import java.io.FileNotFoundException;
@@ -178,7 +178,7 @@ public class CreatingIntermediate {
     }
 
     /**
-     * tables libres
+     * Tables libres
      *
      * @return les tables libres (non supprimées et sans étudiant/contrainte de place imposée)
      */

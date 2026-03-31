@@ -1,6 +1,6 @@
 package constraints;
 
-import org.NeoMalokVector.SAE_S3.Student;
+import org.the_disabled.sae_s3.Student;
 
 public class ImposedPlacement extends Constraint {
     private final int tableNumber;

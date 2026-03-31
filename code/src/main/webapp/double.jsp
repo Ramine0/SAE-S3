@@ -72,21 +72,21 @@
                     <div id="studentInfo">
 
                         <div>
-                            <label for="numEtuVisu"> Numero Etudiant </label>
+                            <label for="numEtuVisu">Numero étudiant</label>
                             <input name="numEtuVisu" id="numEtuVisu" type="text" disabled>
                         </div>
                         <div>
-                            <label for="nomEtuVisu"> Nom de l'etudiant </label>
+                            <label for="nomEtuVisu">Nom de l'étudiant</label>
                             <input name="nomEtuVisu" id="nomEtuVisu" type="text" disabled>
                         </div>
                         <div>
-                            <label for="grpEtuVisu"> Groupe classe l'etudiant </label>
+                            <label for="grpEtuVisu">Groupe classe l'étudiant</label>
                             <input name="grpEtuVisu" id="grpEtuVisu" type="text" disabled>
                         </div>
 
                         <span>
                             <input type="button" onclick="setTableInfos()" value="appliquer">
-                            <input type="button" onclick="modeSwap()" value="echanger">
+                            <input type="button" onclick="modeSwap()" value="échanger">
                         </span>
 
                     </div>
@@ -95,13 +95,12 @@
                 <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier
                     et le plan
                 </button>
-                <%-- faudra que ça valide le nombre de table. Faut ça avant de faire la génération --%>
 
             </form>
             <form method="post" action="Display">
                 <label for="sessionCode">Code de session</label><input type="text" name="sessionCode" id="sessionCode">
-                <button type="button" id="loadSession" onclick="loadData()"> Charger</button>
-                <button type="submit" id="walid" class="boutWalider" disabled> Générer
+                <button type="button" id="loadSession" onclick="loadData()">Charger</button>
+                <button type="submit" id="walid" class="boutWalider" disabled>Générer
                 </button>
             </form>
 
@@ -110,17 +109,16 @@
     </header>
 
     <main class="mainDouble">
-        <!-- on va utiliser les maquettes pour faire un truc cool -->
         <div class="le_Form">
-            <div id="visuofDouble" style="visibility: hidden">
-                <h4 id="here"> Les tables : </h4>
+            <div id="visuOfDouble" style="visibility: hidden">
+                <h4 id="here">Les tables :</h4>
                 <section id="lesTables">
                 </section>
             </div>
 
             <div id="EtuDist">
 
-                <h2>Etudiants mis à distance</h2>
+                <h2>Étudiants mis à distance</h2>
                 <section>
                     <div class="ligne" id="Gp1">
                         <section id="E1G1" class="invalid">
@@ -135,8 +133,8 @@
                                     <input name="nomEtu1G1" id="nomEtu1G1" type="text" disabled>
                                 </div>
                             </div>
-                            <button class="remove" id="supEtu1G1" disabled>remove</button>
-                            <button class="chercher" id="walEtu1G1" disabled>find</button>
+                            <button class="remove" id="supEtu1G1" disabled>supprimer</button>
+                            <button class="chercher" id="walEtu1G1" disabled>chercher</button>
                         </section>
 
                         <button id="ajoutEtuGrp1" class="boutPlus" disabled>+</button>

@@ -1,7 +1,7 @@
 package placement;
 
 import constraints.Constraint;
-import org.NeoMalokVector.SAE_S3.Student;
+import org.the_disabled.sae_s3.Student;
 import utilitaire.Utilitaire;
 
 import java.util.Random;
@@ -59,7 +59,7 @@ public class PositioningIntermediate {
         if (!Utilitaire.in(tableNumber, data.freeTables()))
             return false;
 
-        if (Constraint.contraint(student.getId()) || data.hasMode()) {
+        if (Constraint.contains(student.getId()) || data.hasMode()) {
             Student[] neighbours = data.neighbours(tableNumber);
 
             for (Constraint c : data.getConstraints())

@@ -12,7 +12,7 @@ public abstract class Constraint {
         studentsConstraints.clear();
     }
 
-    public static boolean contraint(String student) {
+    public static boolean contain(String student) {
         return Utilitaire.in(student, studentsConstraints.toArray());
     }
 

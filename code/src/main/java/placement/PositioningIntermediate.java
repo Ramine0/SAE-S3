@@ -17,8 +17,10 @@ public class PositioningIntermediate {
     public boolean creerPlacement() {
         data.placeImposedStudents();
 
-        int loopNumber;
+        int i;
         int tableNumber = 0;
+
+        int freeStudentsNumber = -1;
 
         while (!isGenerationDone(tableNumber)) {
             tableNumber++;
@@ -29,13 +31,17 @@ public class PositioningIntermediate {
             String[] freeStudents = data.freeStudents();
             String studentId = freeStudents[random.nextInt(freeStudents.length)];
 
-            loopNumber = 0;
+            if (freeStudentsNumber == -1)
+                freeStudentsNumber = freeStudents.length;
+
+            i = 0;
 
             while (!validateStudentPlacement(data.getStudentFromId(studentId), tableNumber)) {
                 studentId = freeStudents[random.nextInt(freeStudents.length)];
 
-                loopNumber++;
-                if (loopNumber > freeStudents.length / 2)
+                i++;
+
+                if (i > freeStudentsNumber / 2)
                     tableNumber++;
             }
 

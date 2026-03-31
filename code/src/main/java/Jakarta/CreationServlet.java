@@ -66,6 +66,7 @@ public class CreationServlet extends HttpServlet {
 
             return true;
         }
+
         return newId.equals(oldId);
     }
 
@@ -106,7 +107,6 @@ public class CreationServlet extends HttpServlet {
             return;
         }
 
-
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/");
 
@@ -115,6 +115,18 @@ public class CreationServlet extends HttpServlet {
         }
 
         Room room = rooms.get(user);
+        CreatingIntermediate crea = room.getCreating();
+
+        if (request.getParameter("mode") != null) {
+            if (request.getParameter("mode").equals("normal"))
+                crea.setMode(0);
+
+            else if (request.getParameter("mode").equals("group"))
+                crea.setMode(1);
+
+            else if (request.getParameter("mode").equals("sub-group"))
+                crea.setMode(2);
+        }
 
         if (request.getParameter("action") != null)
             tableRequests(request, out, room);
@@ -175,10 +187,7 @@ public class CreationServlet extends HttpServlet {
                 out.print(crea.removeTable(num) + ";" + num);
             }
 
-            case "removeDeletedTable" -> {
-                int num = Integer.parseInt(request.getParameter("tableNumber"));
-                crea.undeleteTable(num);
-            }
+            case "removeDeletedTable" -> crea.undeleteTable(Integer.parseInt(request.getParameter("tableNumber")));
 
             case "separeEtu" -> {
                 String studentId = crea.findStudent(request.getParameter("studentId"));
@@ -187,15 +196,10 @@ public class CreationServlet extends HttpServlet {
                 out.print(studentInfo.length() == 1 ? studentId + ";" + studentInfo : studentId + ";" + studentInfo.split(";")[1]);
             }
 
-            case "deleteSepareEtu" -> crea.removeConstraint("G", Integer.parseInt(request.getParameter("constraintId").substring(2)));
+            case "deleteSepareEtu" ->
+                    crea.removeConstraint("G", Integer.parseInt(request.getParameter("constraintId").substring(2)));
 
             case "mode" -> {
-                if (request.getParameter("mode").equals("normal"))
-                    crea.setMode(0);
-                else if (request.getParameter("mode").equals("group"))
-                    crea.setMode(1);
-                else if (request.getParameter("mode").equals("sub-group"))
-                    crea.setMode(2);
             }
         }
     }

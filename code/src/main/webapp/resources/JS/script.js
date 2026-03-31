@@ -66,9 +66,6 @@ window.addEventListener("scroll", () => {
         `translateX(${window.scrollX}px)`;
 });
 
-// TO MODIFY
-document.querySelector("#classMode").addEventListener("change", changeMode)
-
 function changeMode() {
     const m = document.getElementById("classMode").value;
     const mode = new XMLHttpRequest();
@@ -653,7 +650,9 @@ function codeForGeneration() {
     let code = document.querySelector("#sessionCode");
     const xhr = new XMLHttpRequest();
 
-    xhr.open("GET", `creation?generate=${encodeURIComponent("n'importe quoi")}`, true);
+    const m = document.getElementById("classMode").value;
+
+    xhr.open("GET", `creation?generate=${encodeURIComponent("n'importe quoi")}&mode=${encodeURIComponent(m)}`, true);
 
     xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {

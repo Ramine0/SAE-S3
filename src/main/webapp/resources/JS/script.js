@@ -6,8 +6,44 @@ let tables = []
 
 let swap = false
 let fileOk = false
+let idPlacement=0
 
 loadData()
+
+initPlacements()
+// document.getElementById("findImposed1").addEventListener("click", validerPlaceImposee);
+
+function initPlacements() {
+    const mapList = document.getElementById("planType")
+    const init = new XMLHttpRequest()
+    init.open('GET', 'Connection?action=init', true)
+    init.onreadystatechange = function () {
+        if (init.readyState === XMLHttpRequest.DONE) {
+            if (init.status === 200) {
+                const placements = init.responseText.split(";")
+                if (placements[0]!==""){
+                    for (let i = 0; i < placements.length; i++) {
+                        console.log(placements[i]);
+                        const info = placements[i].split(",")
+                        let p = document.createElement("option");
+                        p.value = `${info[0]}`
+                        p.text = info[1]
+                        mapList.appendChild(p)
+                    }
+                }
+            }
+        }
+    }
+    init.send()
+}
+
+document.getElementById("planType").addEventListener("change", (e)=>{
+    if (e.target.selectedIndex>1){
+        idPlacement=parseInt(e.target.options[e.target.selectedIndex].value);
+    }else{
+        idPlacement=0;
+    }
+})
 
 window.addEventListener("scroll", () => {
     document.querySelector("footer").style.transform =
@@ -265,7 +301,7 @@ function createGrp() {
             <button class="remove" id="supEtu1G${groupes.length}" >remove</button>
             <button class="chercher" id="walEtu1G${groupes.length}" >find</button>
         </section>
-        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus" disabled >+</button>
+        <button id="ajoutEtuGrp${groupes.length}" class="boutPlus">+</button>
         <h4>Ajouter un étudiant au groupe</h4>
     </div>`
     document.querySelector('#ajoutGroup').disabled = true;
@@ -287,6 +323,7 @@ function createEtuGrp(event) {
 }
 
 function createEtuGrpFromString(numGrp) {
+    console.log("createEtuGrpFromString");
     groupes[numGrp - 1].push(groupes[numGrp - 1].length);
     let numEtu = groupes[numGrp - 1].length;
     if (numEtu < 10) {
@@ -316,8 +353,7 @@ function createEtuGrpFromString(numGrp) {
 }
 
 function enableZone() {
-
-    if (fileOk) {
+    if (fileOk || idPlacement!=0) {
         document.getElementById("visuOfDouble").style.visibility = "visible";
 
         if (document.querySelector("#idEtu1G1") != null) {
@@ -458,43 +494,73 @@ function handleTable(event) {
 
 
 function init() {
-    let lon = document.getElementById("long");
-    let lar = document.getElementById("larg");
-
-    lon.value = Math.min(20, Math.max(0, lon.value));
-    lar.value = Math.min(8, Math.max(0, lar.value));
-
-    let planType = document.getElementById("planType").value;
-
-    const initReq = new XMLHttpRequest();
-
-    initReq.open("GET", `creation?action=define&long=${lon.value}&larg=${lar.value}&planType=${encodeURIComponent(planType)}`, true);
-    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon.value)}&larg=${encodeURIComponent(lar.value)}&planType=${encodeURIComponent(planType)}`, true);
-
-    initReq.onreadystatechange = function () {
-        if (initReq.readyState === XMLHttpRequest.DONE) {
-            if (initReq.status === 200) {
-                tables = []
-                let elem = initReq.responseText.split("/");
-                if (initReq.responseText !== "rien" && !initReq.responseText.includes("erreur")) {
+    if (idPlacement!==0){
+        const load=new XMLHttpRequest()
+        load.open("GET", `Connection?action=load&idPlacement=${encodeURIComponent(idPlacement)}`)
+        load.onreadystatechange = function () {
+            if (load.readyState === XMLHttpRequest.DONE) {
+                console.log(load.status);
+                if (load.status === 200) {
                     tables = []
+                    let elem = load.responseText.split("/");
+                    if (load.responseText !== "rien" && !load.responseText.includes("erreur")) {
+                        tables = []
 
-                    size = elem[0].split(";");
-                    const numbers = elem[1].split(";");
+                        size = elem[0].split(";");
+                        const numbers = elem[1].split(";");
 
-                    for (let i = 0; i < numbers.length - 1; i++) {
-                        tables.push(numbers[i].split("!"))
+                        for (let i = 0; i < numbers.length - 1; i++) {
+                            tables.push(numbers[i].split("!"))
+                        }
+
+                        createTables()
+                    } else {
+                        console.log(load.responseText)
                     }
-
-                    createTables()
-                } else {
-                    console.log(initReq.responseText)
                 }
             }
         }
+        load.send();
+    }else{
+        let lon = document.getElementById("long");
+        let lar = document.getElementById("larg");
+
+        lon.value = Math.min(20, Math.max(0, lon.value));
+        lar.value = Math.min(8, Math.max(0, lar.value));
+
+        let planType = document.getElementById("planType").value;
+
+        const initReq = new XMLHttpRequest();
+
+        initReq.open("GET", `creation?action=define&long=${lon.value}&larg=${lar.value}&planType=${encodeURIComponent(planType)}`, true);
+    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon.value)}&larg=${encodeURIComponent(lar.value)}&planType=${encodeURIComponent(planType)}`, true);
+
+        initReq.onreadystatechange = function () {
+            if (initReq.readyState === XMLHttpRequest.DONE) {
+                if (initReq.status === 200) {
+                    tables = []
+                    let elem = initReq.responseText.split("/");
+                    if (initReq.responseText !== "rien" && !initReq.responseText.includes("erreur")) {
+                        tables = []
+
+                        size = elem[0].split(";");
+                        const numbers = elem[1].split(";");
+
+                        for (let i = 0; i < numbers.length - 1; i++) {
+                            tables.push(numbers[i].split("!"))
+                        }
+
+                        createTables()
+                    } else {
+                        console.log(initReq.responseText)
+                    }
+                }
+            }
+        }
+
+        initReq.send();
     }
 
-    initReq.send();
 }
 
 function setValid(section) {

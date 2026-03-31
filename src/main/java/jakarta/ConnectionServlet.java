@@ -17,6 +17,7 @@ import java.sql.SQLException;
 
 @WebServlet("/Connection")
 public class ConnectionServlet extends HttpServlet {
+    private Room room;
     private Data data;
     private String user;
 
@@ -24,16 +25,16 @@ public class ConnectionServlet extends HttpServlet {
     private DataSource dataSource;
 
     private static void initPlacements(Connection connection, PrintWriter out, String user) throws SQLException {
-        String initRequest = "Select name from Placement where idUser=?";
+        String initRequest = "Select id, name from Placement where idUser=?";
 
         try (PreparedStatement initialisationAttempt = connection.prepareStatement(initRequest)) {
             initialisationAttempt.setString(1, user);
             ResultSet placements = initialisationAttempt.executeQuery();
             if (placements.next()) {
-                out.print(placements.getString(1));
+                out.print(placements.getString(1)+","+placements.getString(2));
             }
             while (placements.next()) {
-                out.print(";" + placements.getString(1));
+                out.print(";" + placements.getString(1)+","+placements.getString(2));
             }
 
             out.flush();
@@ -59,18 +60,15 @@ public class ConnectionServlet extends HttpServlet {
             data = new Data();
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        out.println(dataSource);
         try (Connection connection = dataSource.getConnection()) {
-            out.print("Entre dans le premier try");
             if ("connect".equals(request.getParameter("action")))
                 connect(request, connection, out);
-            else if ("subscribe".equals(request.getParameter("action"))) {
-                out.print("Entre dans le if");
+            else if ("subscribe".equals(request.getParameter("action")))
                 subscribe(request, connection, out);
-            } else if ("init".equals(request.getParameter("action")))
+             else if ("init".equals(request.getParameter("action")))
                 initPlacements(connection, out, user);
             else if ("load".equals(request.getParameter("action")))
-                load(request, connection);
+                load(request, connection, out);
             else if ("add".equals(request.getParameter("action")))
                 add(request, connection);
         } catch (Exception e) {
@@ -80,18 +78,19 @@ public class ConnectionServlet extends HttpServlet {
     }
 
     private void connect(HttpServletRequest request, Connection connection, PrintWriter out) {
-        String connectRequest = "Select id from User where name=? and password=? limit 1";
-        String username = request.getParameter("username");
+        String connectRequest = "Select id from User where email=? and password=? limit 1";
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
-
         try (PreparedStatement connexionAttempt = connection.prepareStatement(connectRequest)) {
-            connexionAttempt.setString(1, username);
+            connexionAttempt.setString(1, email);
             connexionAttempt.setString(2, password);
 
             ResultSet login = connexionAttempt.executeQuery();
             if (login.next()) {
                 user = login.getString(1);
                 out.print(user);
+            }else{
+                out.print("Adresse mail ou mot de passe incorrect");
             }
 
             login.close();
@@ -102,27 +101,39 @@ public class ConnectionServlet extends HttpServlet {
 
     private void subscribe(HttpServletRequest request, Connection connection, PrintWriter out) {
         String subscribeRequest = "insert into User (name, email, password) values (?, ?, ?)";
+        String existRequest= "Select * from User where email=? limit 1";
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        out.print("Entre dans le subscribe");
+        boolean exist = false;
+        try (PreparedStatement existingCheckAttempt = connection.prepareStatement(existRequest)) {
+            existingCheckAttempt.setString(1, email);
+            ResultSet existingCheck = existingCheckAttempt.executeQuery();
+            if (existingCheck.next()) {
+                exist = true;
+            }
+        }
+        if (!exist) {
+            try (PreparedStatement subscribeAttempt = connection.prepareStatement(subscribeRequest)) {
+                subscribeAttempt.setString(1, username);
+                subscribeAttempt.setString(2, email);
+                subscribeAttempt.setString(3, password);
 
-        try (PreparedStatement subscribeAttempt = connection.prepareStatement(subscribeRequest)) {
-            subscribeAttempt.setString(1, username);
-            subscribeAttempt.setString(2, email);
-            subscribeAttempt.setString(3, password);
-
-            int result = subscribeAttempt.executeUpdate();
-            if (result > 0)
-                out.print("Succès de l'opération");
-             else
-                out.print("Euuuh");
-        }  catch (Exception e) {
-            out.print(e.getMessage());
+                int result = subscribeAttempt.executeUpdate();
+                if (result > 0) {
+                    out.print("Abonnement réussi");
+                } else {
+                    out.print("Echec de l'abonnement");
+                }
+            } catch (Exception e) {
+                out.print(e.getMessage());
+            }
+        }else{
+            out.print("Un compte similaire existe déjà");
         }
     }
 
-    private void load(HttpServletRequest request, Connection connection) throws SQLException {
+    private void load(HttpServletRequest request, Connection connection, PrintWriter out) throws SQLException {
         String loadStudentsRequest = "select number, name, firstname, grp from Student where idPlacement=?";
         String loadSeatsRequest = "select num, x, y, suppr, number from Seat p left join Student s on p.idStudent=s.number where p.idPlacement=?";
         String loadConstraintsRequest = "select type, number, num, subgrp, numGrp from Constr c left join Student s on c.idStudent = s.number left join Seat p on c.idSeat=p.num where c.idPlacement=?";
@@ -131,6 +142,7 @@ public class ConnectionServlet extends HttpServlet {
         loadStudents(connection, loadStudentsRequest, idPlacement);
         loadTables(connection, loadSeatsRequest, idPlacement);
         loadConstraints(connection, loadConstraintsRequest, idPlacement);
+        out.println(room.getPositioning().getTablesForVisu());
     }
 
     private void loadStudents(Connection connection, String loadStudents, String idPlacement) throws SQLException {

@@ -5,13 +5,7 @@ target/
 .kotlin
 
 ### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
+.idea/
 
 ### Eclipse ###
 .apt_generated
@@ -45,3 +39,4 @@ build/
 /pom.xml
 /etuS3.csv
 /src/main/webapp/resources/etudiants.csv
+/.idea/

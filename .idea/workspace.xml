@@ -9,9 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f7046526-8ecb-4149-b894-6a9117a03554" name="Changes" comment="Correction du CSS et quelques améliorations">
+    <list default="true" id="f7046526-8ecb-4149-b894-6a9117a03554" name="Changes" comment="Corrections d'erreurs après le merge">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/jakarta/ConnectionServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/ConnectionServlet.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -218,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1774949731172</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Corrections d'erreurs après le merge">
+      <option name="closed" value="true" />
+      <created>1774949885329</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1774949885329</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -238,6 +246,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Nouveau .gitignore" />
     <MESSAGE value="Correction du CSS et quelques améliorations" />
-    <option name="LAST_COMMIT_MESSAGE" value="Correction du CSS et quelques améliorations" />
+    <MESSAGE value="Corrections d'erreurs après le merge" />
+    <option name="LAST_COMMIT_MESSAGE" value="Corrections d'erreurs après le merge" />
   </component>
 </project>

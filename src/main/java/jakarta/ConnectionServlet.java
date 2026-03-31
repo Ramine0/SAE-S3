@@ -63,10 +63,6 @@ public class ConnectionServlet extends HttpServlet {
         try (Connection connection = dataSource.getConnection()) {
             out.print("Entre dans le premier try");
             if ("connect".equals(request.getParameter("action")))
-        if (dataSource == null)
-            out.print("WTF");
-        try (Connection connection = dataSource.getConnection("p2403918", "12403918")) {
-            if (request.getParameter("action").equals("connect"))
                 connect(request, connection, out);
             else if ("subscribe".equals(request.getParameter("action"))) {
                 out.print("Entre dans le if");

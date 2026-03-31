@@ -664,6 +664,7 @@ function loadData() {
     xhr.send()
 
     document.querySelector("#modeHeader").selectedIndex = 0
+    showCreationSettings()
 }
 
 
@@ -675,52 +676,33 @@ document.querySelector("#planType").addEventListener("change", (e) => {
     }
 })
 
-function tableInfoMod() {
-    document.getElementById("valuesOfTable").classList.remove("invisible")
-    document.getElementById("parameters").classList.add("invisible")
-    document.getElementById("exportArea").classList.add("invisible")
-    document.getElementById("importArea").classList.add("invisible")
-
-}
-
-function parameterMod() {
+function showCreationSettings() {
     document.getElementById("parameters").classList.remove("invisible")
     document.getElementById("valuesOfTable").classList.add("invisible")
     document.getElementById("exportArea").classList.add("invisible")
-    document.getElementById("importArea").classList.add("invisible")
-
 }
 
-function exportMod() {
+function showTableInformationsSettings() {
+    document.getElementById("valuesOfTable").classList.remove("invisible")
+    document.getElementById("parameters").classList.add("invisible")
+    document.getElementById("exportArea").classList.add("invisible")
+}
+
+function showExportSettings() {
     document.getElementById("parameters").classList.add("invisible")
     document.getElementById("valuesOfTable").classList.add("invisible")
     document.getElementById("exportArea").classList.remove("invisible")
-    document.getElementById("importArea").classList.add("invisible")
-
-}
-
-
-function importMod() {
-    document.getElementById("parameters").classList.add("invisible")
-    document.getElementById("valuesOfTable").classList.add("invisible")
-    document.getElementById("exportArea").classList.add("invisible")
-    document.getElementById("importArea").classList.remove("invisible")
 }
 
 document.querySelector("#modeHeader").addEventListener("change", changeHeaderMode)
 
 function changeHeaderMode(event) {
-    if (event.target.value === "create") {
-        parameterMod()
-    } else if (event.target.value === "modify") {
-        tableInfoMod()
-    } else if (event.target.value === "export") {
-        exportMod()
-    } else if (event.target.value === "import") {
-        importMod()
-    } else {
-        console.log("ALERTE ALERTE")
-    }
+    if (event.target.value === "create")
+        showCreationSettings()
+    else if (event.target.value === "tableInformations")
+        showTableInformationsSettings()
+    else if (event.target.value === "export")
+        showExportSettings()
 }
 
 function setTableInfos() {

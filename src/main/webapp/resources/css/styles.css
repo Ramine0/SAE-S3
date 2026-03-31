@@ -5,7 +5,7 @@ html {
 
 header, aside {
 
-    border: 2px solid #5271ff;
+    border: 3px solid #5271ff;
     background-color: #cccccc;
     width: 50%;
     margin: 0;
@@ -22,8 +22,8 @@ body {
     margin: 15px;
     padding: 15px;
     background-color: #cccccc;
-    border-radius: 10px;
-    border: 2px solid #5271ff;
+    border-radius: 20px;
+    border: 3px solid #5271ff;
 }
 
 #lesTables span {
@@ -46,7 +46,7 @@ body {
 .deleteT {
     background-color: red;
 
-    border: 2px solid #5271ff;
+    border: 3px solid #5271ff;
     border-radius: 20px;
 
     height: 2em;
@@ -73,6 +73,9 @@ body {
     line-height: 1.25em;
 }
 
+header * {
+    margin: 1em;
+}
 
 .headerCentre {
     text-align: center;
@@ -81,21 +84,7 @@ body {
 }
 
 .logo {
-    border: 2px solid #5271ff;
-}
-
-
-.topMenu {
-    display: flex;
-
-    width: 50%;
-    background-color: #cccccc;
-    border: 2px solid #5271ff;
-
-    margin-left: auto;
-    margin-right: auto;
-
-    justify-content: space-around;
+    border: 3px solid #5271ff;
 }
 
 .topMenu div {
@@ -135,7 +124,7 @@ h1 {
 
 #butts a, #tutorial a {
     font-size: 150%;
-    border: 2px solid #5271ff;
+    border: 3px solid #5271ff;
     border-radius: 25px;
 
     background-color: #cccccc;
@@ -157,7 +146,7 @@ footer {
     width: 100%;
     background-color: #cccccc;
 
-    border: 2px solid #5271ff;
+    border: 3px solid #5271ff;
 }
 
 footer div {
@@ -190,13 +179,13 @@ hr {
 
 .logoPageSec {
     border-radius: 15px;
-    border: 2px solid #5271ff;
+    border: 3px solid #5271ff;
     width: 50%;
     height: 50%;
 }
 
 #import, select {
-    border: 2px solid #5271ff;
+    border: 3px solid #5271ff;
     background-color: #cccccc;
 }
 
@@ -300,22 +289,8 @@ section {
     margin: 2px;
 }
 
-.modeDouble {
-    margin: 2%;
-    padding: 1%;
-}
-
-.selecteur {
-    margin: 2% 1%;
-}
-
-header > * {
-    padding-left: 3%;
-}
-
-.modeDouble * {
-    margin: 5% 0;
-    padding: 0;
+.valuesOfTable {
+    margin: 10px 5px;
 }
 
 .pasTable {
@@ -348,5 +323,3 @@ select {
 #parameters * {
     padding-top: 1%;
 }
-
-

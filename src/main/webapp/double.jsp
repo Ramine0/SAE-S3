@@ -27,9 +27,8 @@
                     <label for="modeHeader">Mode d'utilisation </label>
                     <select id="modeHeader" name="modeHeader">
                         <option value="create" selected>Paramètres de création</option>
-                        <option value="modify">Voir les informations</option>
+                        <option value="tableInformations">Voir les informations</option>
                         <option value="export">Fonctions d'export</option>
-                        <option value="import">Fonctions d'import</option>
                     </select>
                 </div>
 
@@ -40,12 +39,6 @@
                 </div>
 
                 <div id="parameters">
-                    <div class="modeDouble invisible" id="importArea">
-                        <label for="importCSV"> Format d'import</label>
-                        <input type="checkbox" name="importByFile" id="importCSV" value="importByFile"> Fichier CSV
-                        <button id="import"> Importer</button>
-                    </div>
-
                     <div class="modeDouble" id="parameters">
                         <label for="studentFile">Déposez votre fichier d'étudiants (CSV) </label>
                         <input type="file" name="studentFile" id="studentFile" accept="text/csv">

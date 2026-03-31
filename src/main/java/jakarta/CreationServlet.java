@@ -6,14 +6,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import org.the_disabled.sae_s3.Room;
-import org.NeoMalokVector.SAE_S3.Student;
+import org.the_disabled.sae_s3.Student;
 import placement.CreatingIntermediate;
 import utilitaire.Utilitaire;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-
 
 @WebServlet("/creation")
 public class CreationServlet extends HttpServlet {

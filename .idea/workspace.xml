@@ -10,88 +10,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f7046526-8ecb-4149-b894-6a9117a03554" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Diagrammes/Diag-Cas-Utilisation.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Diagrammes/Diag-Etat-trans.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Diagrammes/Diagramme de séquence DS final.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Diagrammes/Diagramme de séquence DS final.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Diagrammes/diag-Classe.PNG" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Homepage (paysage).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Homepage.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Page de génération (paysage).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Page de génération.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Page de génération (paysage).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Page de génération.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Page de visualisation (paysage).png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Page visualisationmodification.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Maquettes/Plan DSRoomMaker.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Diargrammes/Diag-Cas-Utilisation.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Diargrammes/Diag-Etat-trans.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Diargrammes/Diagramme de séquence DS final.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Diargrammes/Diagramme de séquence DS final.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Diargrammes/diag-Classe.PNG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Homepage (paysage).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Homepage.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Page de génération (paysage).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Page de génération.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Page de génération (paysage).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Page de génération.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Page de visualisation (paysage).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maquette/Page visualisationmodification.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/.idea/php.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/.idea/webContexts.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/.mvn/wrapper/maven-wrapper.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/mvnw" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/mvnw.cmd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/constraints/Constraint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/Constraint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/constraints/ImposedPlacement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/ImposedPlacement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/constraints/PerClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/PerClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/constraints/PerGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/constraints/PerGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/jakarta/ConnectionServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/ConnectionServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/jakarta/CreationServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/CreationServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/jakarta/DisplayServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/DisplayServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/jakarta/ExportServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/ExportServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/jakarta/FileUpload.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/FileUpload.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/jakarta/HelloServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/HelloServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/org/the_disabled/sae_s3/Room.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/the_disabled/sae_s3/Room.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/org/the_disabled/sae_s3/Student.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/the_disabled/sae_s3/Student.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/org/the_disabled/sae_s3/Table.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/the_disabled/sae_s3/Table.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/placement/CreatingIntermediate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/CreatingIntermediate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/placement/Data.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/Data.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/placement/GridMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/GridMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/placement/Map.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/Map.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/placement/PositioningIntermediate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/PositioningIntermediate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/placement/RectangularMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/RectangularMap.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/java/utilitaire/Utilitaire.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/utilitaire/Utilitaire.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/double.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/double.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/login.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/JS/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/JS/script.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/JS/scriptLogin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/JS/scriptLogin.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/Notes BUT INFO 2A S3 20252026.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Notes BUT INFO 2A S3 20252026.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/Plan.odg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/Plan.odg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/css/styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/etuS3 2.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/etudiants.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/img/Logo_DSRoomMaker.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/Logo_DSRoomMaker.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/img/delete.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/delete.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/img/lock.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/lock.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/img/logo.gif" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/logo.gif" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/img/logo.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/logo.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/img/logo2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/logo2.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/img/swap.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/img/swap.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/notes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/notes.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/planDefaut.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/planDefaut.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/resources/tuto.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/tuto.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/code/src/main/webapp/subscribe.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/subscribe.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SAE-S3.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/code/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jakarta/ConnectionServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/ConnectionServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/jakarta/CreationServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/jakarta/CreationServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/placement/GridMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/placement/GridMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/double.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/double.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/JS/script.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/JS/script.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/resources/css/styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/resources/css/styles.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="develop" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -140,7 +75,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/media/neo/Data/IUT Works/SAE S3",
     "project.structure.last.edited": "Modules",
@@ -154,6 +89,19 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationStatuses">
+      <map>
+        <entry key="GlassfishConfiguration">
+          <value>
+            <map>
+              <entry key="GlassFish 7.0.25" value="STOPPED" />
+            </map>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="RunManager" selected="GlassFish Server.GlassFish 7.0.25">
     <configuration name="HelloServlet" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">

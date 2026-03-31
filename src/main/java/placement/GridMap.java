@@ -72,7 +72,10 @@ public class GridMap extends Map {
     }
 
     private boolean hasNeighbour(int x, int neighbourX, int y, int neighbourY) {
-        return (((x - neighbourX) * (x - neighbourX) == 1) && y == neighbourY || ((y - neighbourY) * (y - neighbourY) == 1) && (x == neighbourX) || ((x - neighbourX) * (x - neighbourX) == 1) && ((y - neighbourY) * (y - neighbourY) == 1));
+        boolean hasNeighbourX = (x - neighbourX) * (x - neighbourX) == 1;
+        boolean hasNeighbourY = (y - neighbourY) * (y - neighbourY) == 1;
+
+        return (hasNeighbourX && y == neighbourY || hasNeighbourY && (x == neighbourX) || hasNeighbourX && hasNeighbourY);
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)

@@ -101,6 +101,6 @@ public class Table {
     }
 
     public int[] getCoordinates() {
-        return new int[] { cordX, cordY };
+        return new int[]{cordX, cordY};
     }
 }

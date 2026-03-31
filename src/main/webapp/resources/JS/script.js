@@ -437,7 +437,7 @@ function createTables() {
             if (tables[i] !== "")
                 document.getElementById("T" + tables[i]).addEventListener("click", handleTable);
     }
-    document.getElementById("visuofDouble").style.visibility = "visible";
+    document.getElementById("visuOfDouble").style.visibility = "visible";
 }
 
 function handleTable(event) {
@@ -506,7 +506,7 @@ function init() {
 
     const initReq = new XMLHttpRequest();
 
-    initReq.open("GET", `creation?action=define&long=${lon}&larg=${lar}&planType=${encodeURIComponent(planType)}`, true);
+    initReq.open("GET", `creation?action=define&long=${lon.value}&larg=${lar.value}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {

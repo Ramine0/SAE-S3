@@ -64,7 +64,6 @@ public class Data {
     public void placeStudent(int table, String idStudent) {
         if (getTable(table) == null)
             return;
-
         Objects.requireNonNull(getTable(table)).setStudent(getStudentFromId(idStudent));
     }
 
@@ -116,7 +115,6 @@ public class Data {
         for (int i = 0; i < deletedTables.length; i++)
             if (deletedTables[i] == 0) {
                 deletedTables[i] = tableNumber;
-
                 return tableNumber;
             }
 
@@ -149,7 +147,6 @@ public class Data {
                 result.add(constraint);
             else {
                 result.add(constraints[0]);
-
                 break;
             }
 
@@ -263,7 +260,9 @@ public class Data {
     }
 
     public void loadConstraints(String constraintsList) {
-        for (String constraint : constraintsList.split(";")) {
+        String[] tab = constraintsList.split(";");
+
+        for (String constraint : tab) {
             String[] constraintInfos = constraint.split(",");
 
             if (constraintInfos[0].equals("G"))
@@ -282,8 +281,8 @@ public class Data {
             }
     }
 
-    public void setNumberTables(int width, int height) {
-        int numberOfTables = width * height;
+    public void setNumberTables(int lon, int lar) {
+        int num = lon * lar;
 
         Table.reset();
 
@@ -291,19 +290,19 @@ public class Data {
             if (deletedTables != null)
                 deletedTables = null;
 
-            if (numberOfTables >= students.size()) {
-                tables = new Table[numberOfTables];
+            if (num >= students.size()) {
+                tables = new Table[num];
 
                 for (int i = 0; i < tables.length; i++)
-                    tables[i] = new Table(i % height + 1, i / height + 1);
+                    tables[i] = new Table(i % lar + 1, i / lar + 1);
 
-                deletedTables = new int[numberOfTables];
+                deletedTables = new int[num];
 
             } else {
                 tables = new Table[students.size()];
 
                 for (int i = 0; i < tables.length; i++)
-                    tables[i] = new Table(i % height + 1, i / height + 1);
+                    tables[i] = new Table(i % lar + 1, i / lar + 1);
 
                 deletedTables = new int[students.size()];
             }
@@ -404,13 +403,13 @@ public class Data {
     }
 
     public int getConstraintsNumber() {
-        int result = 0;
+        int nb = 0;
 
         for (Constraint c : constraints)
             if (c != null)
-                result++;
+                nb++;
 
-        return result;
+        return nb;
     }
 
     public int getConstraintsNumber(String type) {
@@ -435,6 +434,7 @@ public class Data {
 
         return result;
     }
+
 
     public int addConstraint(String studentNumber, int tableNumber, char constraint) {
         if (constraint == 'I') {
@@ -498,9 +498,13 @@ public class Data {
     public Student[] neighbours(int tableNumber) {
         ArrayList<Student> result = new ArrayList<>();
 
-        for (int i : map.neighbours(tableNumber, existingTables()))
-            if (i != -1 && getTable(i) != null)
-                result.add(getStudentFromTable(i));
+        for (int i : map.neighbours(tableNumber, existingTables())) {
+
+
+            if (i != -1)
+                if (getTable(i) != null)
+                    result.add(getStudentFromTable(i));
+        }
 
         return result.toArray(new Student[0]);
     }
@@ -537,19 +541,20 @@ public class Data {
     }
 
     public String getTablesInfos() {
-        StringBuilder result = new StringBuilder();
+        StringBuilder tab = new StringBuilder();
 
-        for (Table table : tables) {
-            if (!result.isEmpty())
-                result.append(";");
+        for (Table t : tables) {
+            if (!tab.isEmpty())
+                tab.append(";");
 
-            result.append(table.getInformations());
+            tab.append(t.getInformations());
         }
 
-        return result.toString();
+        return tab.toString();
     }
 
     private Table getTable(int tableNumber) {
+
         for (Table table : tables)
             if (table.getNumber() == tableNumber)
                 return table;
@@ -574,6 +579,7 @@ public class Data {
         return (!isDeleted(tab)) && (Objects.requireNonNull(getTable(tab)).getStudent() != null);
     }
 
+
     public boolean swap(int numT1, int numT2) {
         if (getStudentFromTable(numT1) != null || getStudentFromTable(numT2) != null) {
             Student temp = getStudentFromTable(numT1);
@@ -587,13 +593,13 @@ public class Data {
     }
 
     public int maxTableID() {
-        int result = 0;
+        int max = 0;
 
-        for (Table table : tables)
-            if (table.getNumber() > result)
-                result = table.getNumber();
+        for (Table t : tables)
+            if (t.getNumber() > max)
+                max = t.getNumber();
 
-        return result;
+        return max;
     }
 
     public String getInformationsForVisualisation(int tableNumber) {
@@ -657,7 +663,6 @@ public class Data {
     public boolean changeNumTable(int oldNumber, int newNumber) {
         if (getTable(oldNumber) != null) {
             Objects.requireNonNull(getTable(oldNumber)).setNumber(newNumber);
-
             return true;
         }
 
@@ -666,10 +671,8 @@ public class Data {
 
     public String studentList() {
         StringBuilder result = new StringBuilder();
-
-        for (Student student : students)
-            result.append(student.getId()).append(" ; ").append(student.getFullName()).append("\n");
-
+        for (Student s : students)
+            result.append(s.getId()).append(" ; ").append(s.getFullName()).append("\n");
         return result.toString();
     }
 

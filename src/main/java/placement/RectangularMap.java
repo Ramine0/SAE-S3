@@ -18,7 +18,7 @@ public class RectangularMap extends Map {
     public int[] neighbours(int table, int[] dispo) {
         int pos = Utilitaire.pos(table, dispo);
 
-        int[][] offsets = { { 0, -1 }, { 1, -1 }, { 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 } };
+        int[][] offsets = {{0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}};
 
         List<Integer> validNeighbors = new ArrayList<>();
 

@@ -8,10 +8,11 @@ import java.util.Random;
 
 public class PositioningIntermediate {
     private final Data data;
+
     private final Random random = new Random();
 
-    public PositioningIntermediate(Data data) {
-        this.data = data;
+    public PositioningIntermediate(Data d) {
+        data = d;
     }
 
     public boolean creerPlacement() {
@@ -36,7 +37,7 @@ public class PositioningIntermediate {
 
             i = 0;
 
-            while (!validateStudentPlacement(data.getStudentFromId(studentId), tableNumber)) {
+            while (!walid(data.getStudentFromId(studentId), tableNumber)) {
                 studentId = freeStudents[random.nextInt(freeStudents.length)];
 
                 i++;
@@ -55,16 +56,20 @@ public class PositioningIntermediate {
         return data.freeStudents().length == 0 || tableNumber > data.maxTableID();
     }
 
-    private boolean validateStudentPlacement(Student student, int tableNumber) {
-        if (!Utilitaire.in(tableNumber, data.freeTables()))
+    private boolean walid(Student student, int table) {
+        if (!Utilitaire.in(table, data.freeTables()))
             return false;
 
         if (Constraint.contains(student.getId()) || data.hasMode()) {
-            Student[] neighbours = data.neighbours(tableNumber);
+            Student[] neighbours = data.neighbours(table);
 
-            for (Constraint c : data.getConstraints())
-                if (c != null && !c.validate(student, tableNumber, neighbours))
+            for (Constraint c : data.getConstraints()) {
+                if (c != null)
+                    System.out.println(student.getFullName() + " " + c.validate(student, table, neighbours));
+
+                if (c != null && !c.validate(student, table, neighbours))
                     return false;
+            }
         }
 
         return true;
@@ -73,16 +78,16 @@ public class PositioningIntermediate {
     public String getTablesForVisualisation() {
         StringBuilder result = new StringBuilder(data.getPlanSize() + "/");
 
-        for (int table : data.existingTables())
-            if (!data.isDeleted(table))
-                result.append(data.getTableInfos(table)).append(";");
+        for (int t : data.existingTables())
+            if (!data.isDeleted(t))
+                result.append(data.getTableInfos(t)).append(";");
 
         return result.toString();
     }
 
-    public boolean swapPlaces(int table1Number, int table2Number) {
-        if (Utilitaire.in(table1Number, data.existingTables()) && Utilitaire.in(table2Number, data.existingTables()))
-            return data.swap(table1Number, table2Number);
+    public boolean swapPlaces(int numT1, int numT2) {
+        if (Utilitaire.in(numT1, data.existingTables()) && Utilitaire.in(numT2, data.existingTables()))
+            return data.swap(numT1, numT2);
 
         return false;
     }
@@ -90,13 +95,13 @@ public class PositioningIntermediate {
     public String describeData() {
         StringBuilder result = new StringBuilder();
 
-        for (String student : data.describe())
-            result.append(student).append(";");
+        for (String s : data.describe())
+            result.append(s).append(";");
 
         return result.toString();
     }
 
-    public String tableInfoForVisualisation(int tableNumber) {
-        return data.getInformationsForVisualisation(tableNumber);
+    public String tableInfoForVisualisation(int nb) {
+        return data.getInformationsForVisualisation(nb);
     }
 }

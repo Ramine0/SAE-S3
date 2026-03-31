@@ -16,7 +16,7 @@ public abstract class Constraint {
         return Utilitaire.in(student, studentsConstraints.toArray());
     }
 
-    public abstract boolean validate(Student student, int table, Student[] students);
+    public abstract boolean validate(Student student, int tableNumber, Student[] students);
 
     public abstract String toDatabase();
 }

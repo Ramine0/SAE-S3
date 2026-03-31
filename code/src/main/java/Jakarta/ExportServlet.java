@@ -15,6 +15,7 @@ public class ExportServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getHeader("Referer") == null) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+
             return;
         }
 

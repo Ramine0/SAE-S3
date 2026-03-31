@@ -1,22 +1,22 @@
 package org.NeoMalokVector.SAE_S3;
 
 public class Student {
+    private final String id;
+
     private final String name;
     private final String firstName;
 
-    private final String id;
-
     private final String group;
-    private final String subGroup;
+    private final String subgroup;
 
-    public Student(String group, String subGroup, String name, String firstName, String id) {
+    public Student(String group, String subgroup, String name, String firstName, String id) {
+        this.id = id;
 
-        this.group = group;
-        this.subGroup = subGroup;
         this.name = name;
         this.firstName = firstName;
 
-        this.id = id;
+        this.group = group;
+        this.subgroup = subgroup;
     }
 
     public String describe(boolean inline) {
@@ -24,7 +24,7 @@ public class Student {
         description += inline ? "\n" : ";";
         description += "est " + name + " " + firstName;
         description += inline ? "\n" : ";";
-        description += "du groupe " + (group == null ? "groupe introuvable" : group) + "." + (subGroup == null ? "groupe introuvable" : subGroup);
+        description += "du groupe " + (group == null ? "groupe introuvable" : group) + "." + (subgroup == null ? "groupe introuvable" : subgroup);
 
         return description;
 
@@ -49,18 +49,18 @@ public class Student {
     public boolean sameGroup(Student etu, boolean sub) {
         if (etu.group.equals(group)) {
             if (sub)
-                return subGroup.equals(etu.subGroup);
+                return subgroup.equals(etu.subgroup);
+
             return true;
         }
+
         return false;
     }
 
     public String textVisualisation() {
         if (group != null)
-            return getId() + ";" + getName() + " " + getFirstName() + ";" + (group + "." + subGroup);
+            return getId() + ";" + getName() + " " + getFirstName() + ";" + (group + "." + subgroup);
         else
             return getId() + ";" + getName() + " " + getFirstName() + ";" + "null";
     }
-
-
 }

@@ -20,51 +20,42 @@ public class CreationServlet extends HttpServlet {
     private static HashMap<String, Room> rooms;
 
     private static void defineMapType(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
-        int length;
-        int width;
         crea.setMode(0);
 
         if (request.getParameter("planType").equals("defaultPlan")) {
             crea.changeMapMode('D', request.getServletContext().getRealPath("/") + "/");
             crea.loadDefaultMap(request.getServletContext().getRealPath("/") + "/");
 
-            out.print(room.getPositioning().getTablesForVisu());
+            out.print(room.getPositioning().getTablesForVisualisation());
         } else {
-            length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-            width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+            int width = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+            int height = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
             crea.changeMapMode('R', request.getServletContext().getRealPath("/") + "/");
 
-            crea.createTables(length, width);
-            crea.setDimensions(length, width);
+            crea.createTables(width, height);
+            crea.setDimensions(width, height);
 
-            out.print(room.getPositioning().getTablesForVisu());
+            out.print(room.getPositioning().getTablesForVisualisation());
         }
     }
 
     private static void returnTables(HttpServletRequest request, PrintWriter out, Room room, CreatingIntermediate crea) {
-        int width;
-        int length;
-        length = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
-        width = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
+        int width = Math.min(20, Math.max(0, Integer.parseInt(request.getParameter("long"))));
+        int height = Math.min(8, Math.max(0, Integer.parseInt(request.getParameter("larg"))));
 
-        crea.createTables(length, width);
-        crea.setDimensions(length, width);
+        crea.createTables(width, height);
+        crea.setDimensions(width, height);
 
-        out.print(room.getPositioning().getTablesForVisu());
+        out.print(room.getPositioning().getTablesForVisualisation());
     }
 
     public static Room getRoom(String code) {
-        if (userExists(code))
-            return rooms.get(code);
-        else
-            return null;
+        return userExists(code) ? rooms.get(code) : null;
     }
 
     private static boolean userExists(String user) {
-        if (rooms == null)
-            return false;
-        return Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
+        return rooms != null && Utilitaire.in(user, rooms.keySet().toArray(new String[0]));
     }
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
@@ -72,6 +63,7 @@ public class CreationServlet extends HttpServlet {
         if ((!newId.equals(oldId)) && userExists(oldId)) {
             rooms.put(newId, rooms.get(oldId));
             rooms.remove(oldId);
+
             return true;
         }
         return newId.equals(oldId);
@@ -83,7 +75,6 @@ public class CreationServlet extends HttpServlet {
             try {
                 Room newData = new Room(path);
                 rooms.put(user, newData);
-
             } catch (Exception e) {
                 msg = e.getMessage();
                 getMessage();
@@ -98,6 +89,7 @@ public class CreationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getHeader("Referer") == null) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+
             return;
         }
 
@@ -108,24 +100,21 @@ public class CreationServlet extends HttpServlet {
         if (rooms == null)
             rooms = new HashMap<>();
 
-
         if (request.getParameter("load") != null) {
-
             loadSession(request, user, out);
-            return;
 
+            return;
         }
 
 
         if (request.getParameter("generate") != null) {
             createUser(user, request.getServletContext().getRealPath("/") + "/");
+
             out.print(user);
             out.print(msg);
         }
 
-
         Room room = rooms.get(user);
-
 
         if (request.getParameter("action") != null)
             tableRequests(request, out, room);
@@ -137,10 +126,7 @@ public class CreationServlet extends HttpServlet {
     }
 
     private void loadSession(HttpServletRequest request, String user, PrintWriter out) {
-        if (!request.getParameter("load").isEmpty())
-            loadWithCode(loadSession(request.getParameter("load"), user), out, user);
-        else
-            loadWithCode(userExists(user), out, user);
+        loadWithCode(!request.getParameter("load").isEmpty() ? loadSession(request.getParameter("load"), user) : userExists(user), out, user);
     }
 
     private void loadWithCode(boolean request, PrintWriter out, String user) {
@@ -154,23 +140,13 @@ public class CreationServlet extends HttpServlet {
     }
 
     private void tableRequests(HttpServletRequest request, PrintWriter out, Room room) {
-
         CreatingIntermediate crea = room.getCreating();
 
-        int length, width;
-
-
         switch (request.getParameter("action")) {
+            case "visu" -> returnTables(request, out, room, crea);
 
-            case "visu" -> {
-                returnTables(request, out, room, crea);
-            }
+            case "define" -> defineMapType(request, out, room, crea);
 
-            case "define" -> {
-                defineMapType(request, out, room, crea);
-            }
-
-            // les dimentions
             case "getDim" -> out.print(crea.getDimensions());
         }
     }
@@ -178,18 +154,16 @@ public class CreationServlet extends HttpServlet {
     private void constraintRequests(HttpServletRequest request, PrintWriter out, Room room) {
         CreatingIntermediate crea = room.getCreating();
 
-
         switch (request.getParameter("constraint")) {
-
             case "imposePlace" -> {
                 if (request.getParameter("oldNum") != null && request.getParameter("newNum") != null && request.getParameter("numEtu") != null && !request.getParameter("oldNum").isEmpty() && !request.getParameter("newNum").isEmpty() && !request.getParameter("numEtu").isEmpty())
                     out.print(crea.tableValidateButton(Integer.parseInt(request.getParameter("oldNum")), Integer.parseInt(request.getParameter("newNum")), request.getParameter("numEtu")));
+
                 out.print("null");
             }
 
             case "removeImposedPlace" -> crea.removeConstraint("I", Integer.parseInt(request.getParameter("id")) - 1);
 
-            // supprime la table
             case "deleteTable" -> {
                 int num = Integer.parseInt(request.getParameter("tableNumber"));
 
@@ -208,27 +182,18 @@ public class CreationServlet extends HttpServlet {
 
             case "separeEtu" -> {
                 String studentId = crea.findStudent(request.getParameter("studentId"));
-
                 String studentInfo = crea.separeStudentsPerGroup(studentId, Integer.parseInt(request.getParameter("numGrp")));
 
-                if (studentInfo.length() == 1)
-                    out.print(studentId + ";" + studentInfo);
-                else
-                    out.print(studentId + ";" + studentInfo.split(";")[1]);
+                out.print(studentInfo.length() == 1 ? studentId + ";" + studentInfo : studentId + ";" + studentInfo.split(";")[1]);
             }
 
-            case "deleteSepareEtu" -> {
-                int constraintId = Integer.parseInt(request.getParameter("constraintId").substring(2));
-                crea.removeConstraint("G", constraintId);
-            }
+            case "deleteSepareEtu" -> crea.removeConstraint("G", Integer.parseInt(request.getParameter("constraintId").substring(2)));
 
             case "mode" -> {
                 if (request.getParameter("mode").equals("normal"))
                     crea.setMode(0);
-
                 else if (request.getParameter("mode").equals("group"))
                     crea.setMode(1);
-
                 else if (request.getParameter("mode").equals("sub-group"))
                     crea.setMode(2);
             }
@@ -238,11 +203,12 @@ public class CreationServlet extends HttpServlet {
     public String getUserData(String user) {
         Room room = getRoom(user);
         String visualisationInfos = "null";
+
         if (room != null) {
             visualisationInfos = "";
+
             if (room.getPositioning() != null)
-                visualisationInfos += "\n" + room.getPositioning().getTablesForVisu() + "<";
-            // les infos d'etudians mis a distance
+                visualisationInfos += "\n" + room.getPositioning().getTablesForVisualisation() + "<";
 
             visualisationInfos += room.getCreating().getSeparatedStudents();
             visualisationInfos += "<";
@@ -251,6 +217,4 @@ public class CreationServlet extends HttpServlet {
 
         return visualisationInfos;
     }
-
-
 }

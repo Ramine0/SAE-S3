@@ -12,7 +12,6 @@ public class PerGroup extends Constraint {
         group = new String[9];
 
         addStudent(student);
-
     }
 
     public void addStudent(String studentNumber) {
@@ -31,7 +30,7 @@ public class PerGroup extends Constraint {
     }
 
     @Override
-    public boolean validate(Student student, int table, Student[] students) {
+    public boolean validate(Student student, int tableNumber, Student[] students) {
         if (Utilitaire.in(student.getId(), group))
             for (Student s : students)
                 if (s != null && Utilitaire.in(s.getId(), group))
@@ -45,12 +44,12 @@ public class PerGroup extends Constraint {
     }
 
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         for (String s : group)
-            result = result + s + ";";
+            result.append(s).append(";");
 
-        return result;
+        return result.toString();
     }
 
     public String toDatabase() {

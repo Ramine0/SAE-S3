@@ -416,7 +416,7 @@ function enableZone() {
         document.querySelector("#supEtu1G1").disabled = false;
         document.querySelector("#walEtu1G1").disabled = false;
 
-        // le bouton générer
+        // le bouton "générer"
         document.querySelector("#walid").style.backgroundColor = '#ec400b';
         codeForGeneration()
     }
@@ -558,7 +558,7 @@ function init() {
 
     const initReq = new XMLHttpRequest();
 
-    initReq.open("GET", `creation?action=${encodeURIComponent("define")}&long=${encodeURIComponent(lon)}&larg=${encodeURIComponent(lar)}&planType=${encodeURIComponent(planType)}`, true);
+    initReq.open("GET", `creation?action=${"define"}&long=${lon}&larg=${lar}&planType=${encodeURIComponent(planType)}`, true);
 
     initReq.onreadystatechange = function () {
         if (initReq.readyState === XMLHttpRequest.DONE) {

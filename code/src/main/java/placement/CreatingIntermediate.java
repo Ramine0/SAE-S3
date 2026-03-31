@@ -69,7 +69,7 @@ public class CreatingIntermediate {
     }
 
     /**
-     * Fonction de recherche d'un étudiant à partir de l'studentId
+     * Fonction de recherche d'un étudiant à partir de son identifiant
      *
      * @param studentId numéro étudiant, complet ou non
      * @return le numéro étudiant complété ou un message adapté
@@ -106,10 +106,7 @@ public class CreatingIntermediate {
         studentId = findStudent(studentId);
         tableNumber = findTable(tableNumber) ? tableNumber : -1;
 
-        if (studentId == null || studentId.length() > 8 || tableNumber == -1)
-            return -1;
-        else
-            return d.imposeStudent(studentId, tableNumber);
+        return studentId == null || studentId.length() > 8 || tableNumber == -1 ? -1 : d.imposeStudent(studentId, tableNumber);
     }
 
     /**
@@ -174,7 +171,6 @@ public class CreatingIntermediate {
             return -2;
         else if (d.isDeleted(tableNumber))
             return -3;
-
         else if (d.isImposed(tableNumber))
             return -4;
         else

@@ -14,8 +14,8 @@ public class ImposedPlacement extends Constraint {
     }
 
     @Override
-    public boolean validate(Student student, int table, Student[] students) {
-        return (student.getId().equals(studentNumber) && table == tableNumber);
+    public boolean validate(Student student, int tableNumber, Student[] students) {
+        return (student.getId().equals(studentNumber) && tableNumber == this.tableNumber);
     }
 
     /**

@@ -32,7 +32,6 @@ public class Room {
         positioning = creating.generatePos();
     }
 
-
     public boolean generate() {
        return positioning.creerPlacement();
     }

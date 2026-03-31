@@ -10,8 +10,8 @@ public class RectangularMap extends Map {
     private final int height;
 
     public RectangularMap(int width, int height) {
-        this.width = height;
-        this.height = width;
+        this.width = width;
+        this.height = height;
     }
 
     @Override
@@ -24,6 +24,7 @@ public class RectangularMap extends Map {
 
         for (int[] offset : offsets) {
             int neighborIndex = getNeighbour(pos, offset[0], offset[1], dispo.length);
+
             if (neighborIndex != -1)
                 validNeighbors.add(dispo[neighborIndex]);
         }

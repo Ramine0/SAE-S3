@@ -24,16 +24,15 @@ public class FileUpload extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         if (request.getHeader("Referer") == null) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+
             return;
         }
 
         String uploadPath = request.getServletContext().getRealPath("/") + "/" + getServletContext().getInitParameter("upload.path");
 
-        // Retrieve the file part from the request
         Part filePart = request.getPart("studentFile");
         String fileName = "etudiants.csv";
-
-        // Save the file to the server
+        
         InputStream inputStream = filePart.getInputStream();
         Files.copy(inputStream, Paths.get(uploadPath + File.separator + fileName), StandardCopyOption.REPLACE_EXISTING);
 

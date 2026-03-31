@@ -69,7 +69,7 @@
                         <label for="idTabVisu"> Numero de Table </label>
                         <input name="idTabVisu" id="idTabVisu" type="number" disabled>
                     </span>
-                    <span id="studentInfo">
+                    <div id="studentInfo">
 
                         <div>
                             <label for="numEtuVisu"> Numero Etudiant </label>
@@ -89,7 +89,7 @@
                             <input type="button" onclick="modeSwap()" value="echanger">
                         </span>
 
-                    </span>
+                    </div>
                 </div>
 
                 <button type="button" id="startConstr" class="validNbTable" onclick="enableZone()"> Valider le fichier

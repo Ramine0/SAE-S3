@@ -18,6 +18,7 @@ public class DisplayServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getHeader("Referer") == null) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+
             return;
         }
 
@@ -59,7 +60,6 @@ public class DisplayServlet extends HttpServlet {
                     <main>
                     """);
 
-
             PositioningIntermediate pos = room.getPositioning();
 
             if (room.generate())
@@ -67,10 +67,8 @@ public class DisplayServlet extends HttpServlet {
                         <h4> Génération réussie </h4>
                         <a href="double.jsp">Voir le résultat</a>
                         """);
-
             else {
-
-                out.println("<p>" + pos.getTablesForVisu() + "</p>");
+                out.println("<p>" + pos.getTablesForVisualisation() + "</p>");
                 out.println(pos.describeData());
                 out.println("""
                         <h4> Erreur de génération </h4>
@@ -78,13 +76,13 @@ public class DisplayServlet extends HttpServlet {
                         """);
             }
         }
-
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         if (request.getHeader("Referer") == null) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Direct access is not allowed.");
+
             return;
         }
 
@@ -93,30 +91,23 @@ public class DisplayServlet extends HttpServlet {
 
         if (room != null)
             pos = room.getPositioning();
+
         PrintWriter out = response.getWriter();
         response.setContentType("text/html");
 
         if (pos != null)
             switch (request.getParameter("action")) {
-                // on recup le visuel des tables
-                case "init" -> out.print(pos.getTablesForVisu());
+                case "init" -> out.print(pos.getTablesForVisualisation());
 
-                // on récupère les information de la table
                 case "infos" -> {
                     try {
-                        out.print(pos.tabInfoForVisu(Integer.parseInt(request.getParameter("number"))));
+                        out.print(pos.tableInfoForVisualisation(Integer.parseInt(request.getParameter("number"))));
                     } catch (Exception e) {
                         out.print("null");
                     }
                 }
 
-                // on swap les étudiants des tables donnees
-                case "swap" -> {
-                    if (room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))))
-                        out.println("0");
-                    else
-                        out.println("1");
-                }
+                case "swap" -> out.println(room.swapPlaces(Integer.parseInt(request.getParameter("number1")), Integer.parseInt(request.getParameter("number2"))) ? "0" : "1");
             }
         else
             out.print("rien");

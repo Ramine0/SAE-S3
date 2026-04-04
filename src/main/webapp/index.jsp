@@ -26,12 +26,6 @@
         <a href="double.jsp">Générer un placement</a>
         <a href="login.jsp">Connection</a>
     </div>
-
-    <hr>
-
-    <div id="tutorial">
-        <a href="resources/tuto.pdf">Télécharger le tutoriel</a>
-    </div>
 </main>
 
 <footer>
